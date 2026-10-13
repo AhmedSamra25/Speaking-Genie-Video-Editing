@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Speaking Genie video toolkit — run from anywhere: bin/sgv <command>
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PY="${SGV_PYTHON:-python3}"
+PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" exec "$PY" -m sgv "$@"

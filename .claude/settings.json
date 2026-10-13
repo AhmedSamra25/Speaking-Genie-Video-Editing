@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bin/sgv:*)",
+      "Bash(./bin/sgv:*)",
+      "Bash(ffmpeg:*)",
+      "Bash(ffprobe:*)",
+      "Bash(mediainfo:*)",
+      "Bash(whisper-cli:*)",
+      "Bash(npx remotion:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm run studio:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf projects/*/footage:*)",
+      "Bash(rm -rf projects/*/audio:*)",
+      "Bash(rm -rf projects/*/assets:*)"
+    ]
+  }
+}

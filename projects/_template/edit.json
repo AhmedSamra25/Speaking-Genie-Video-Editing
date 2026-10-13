@@ -1,0 +1,30 @@
+{
+  "title": "Untitled",
+  "aspect": "16:9",
+  "fps": 30,
+  "theme": "light",
+  "lang": "en",
+  "fit": "fill",
+  "transitionDuration": 0.5,
+  "exports": ["youtube-1080p"],
+  "timeline": [
+    { "type": "motion", "composition": "Intro", "duration": 3, "label": "logo intro" },
+    {
+      "type": "title",
+      "overline": "Speaking Genie",
+      "title": "Speak with confidence",
+      "subtitle": "AI speaking practice for language centres",
+      "duration": 3.5,
+      "transition": "dissolve"
+    },
+    {
+      "type": "motion",
+      "composition": "EndCard",
+      "duration": 4,
+      "transition": "dip",
+      "props": { "headline": "Start a free pilot", "url": "speakingenie.com" }
+    }
+  ],
+  "overlays": [],
+  "logo": { "enabled": false, "corner": "top-right", "variant": "light-on-dark" }
+}

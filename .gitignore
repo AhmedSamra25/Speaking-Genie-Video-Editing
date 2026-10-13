@@ -1,0 +1,27 @@
+# media & renders stay on the Mac (share exports via Drive / Frame.io, not git)
+projects/*/footage/
+projects/*/audio/
+projects/*/assets/
+projects/*/exports/
+projects/*/build/
+build/
+models/
+*.mov
+*.mp4
+*.m4v
+*.mxf
+*.wav
+*.mp3
+*.m4a
+
+# node / remotion
+motion/node_modules/
+motion/public/brand/
+motion/out/
+
+# python / os
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+.claude/settings.local.json
