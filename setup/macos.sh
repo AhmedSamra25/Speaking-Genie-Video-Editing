@@ -31,7 +31,15 @@ say "Media tools (ffmpeg with VideoToolbox, whisper.cpp with Metal, Node, Python
 # ffmpeg: H.264/HEVC/ProRes hardware encode via VideoToolbox, libass captions, zimg HDR tone-mapping
 # whisper-cpp: speech-to-text on the Apple GPU (Metal) for captions
 # mediainfo / exiftool: deep metadata of camera and iPhone files
-brew install ffmpeg whisper-cpp node python@3.12 mediainfo exiftool
+brew install whisper-cpp node python@3.12 mediainfo exiftool
+
+# Homebrew's core ffmpeg is a slim build without libass (captions) or zimg (HDR tone-mapping),
+# so use the homebrew-ffmpeg tap, which builds with them. Replaces the core formula if present.
+if ! ffmpeg -hide_banner -filters 2>/dev/null | grep -q " subtitles "; then
+  brew list --formula ffmpeg >/dev/null 2>&1 && brew uninstall --ignore-dependencies ffmpeg
+  brew tap homebrew-ffmpeg/ffmpeg
+  brew install homebrew-ffmpeg/ffmpeg/ffmpeg --with-libass --with-zimg
+fi
 
 say "Brand fonts → ~/Library/Fonts (so Keynote, Final Cut, DaVinci and Pages see them)"
 mkdir -p "$HOME/Library/Fonts"
