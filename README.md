@@ -18,11 +18,18 @@ CLAUDE.md     how Claude edits in this repo — read this first
 
 ## Set up the Mac (once)
 
+Run these one at a time in Terminal:
+
 ```bash
-git clone <this repo> && cd Speaking-Genie-Video-Editing
-setup/macos.sh --models     # Homebrew ffmpeg + whisper.cpp + Node, brand fonts, Remotion, Whisper model
-bin/sgv doctor              # everything should be ✓
+cd ~
+git clone https://github.com/AhmedSamra25/Speaking-Genie-Video-Editing.git
+cd Speaking-Genie-Video-Editing
+bash setup/macos.sh --models    # Homebrew ffmpeg + whisper.cpp + Node, brand fonts, Remotion, Whisper model
+bin/sgv doctor                  # everything should be ✓
 ```
+
+If `git` asks for a password (private repo), sign in once with the GitHub CLI and clone again:
+`brew install gh && gh auth login` (choose GitHub.com → HTTPS → Login with a web browser).
 
 What uses the Mac's hardware:
 
