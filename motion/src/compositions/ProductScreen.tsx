@@ -76,7 +76,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
   const panK = move === "pan" ? interpolate(frame, [0, durationInFrames], [0, 1]) : 0;
   const driftK = (p.drift ?? 0) * interpolate(frame, [0, durationInFrames], [0, 1]);
   const S = lerp(base, endS, k) * (1 + 0.04 * panK) * (1 + driftK);
-  const focusX = lerp(sw / 2, call ? call.x + call.w / 2 : sw / 2, k) + (panK - 0.5) * sw * 0.06;
+  const focusX = lerp(sw / 2, call ? call.x + call.w / 2 : sw / 2, k) + (move === "pan" ? (panK - 0.5) * sw * 0.06 : 0);
   const focusY = lerp(sh / 2, call ? call.y + call.h / 2 : sh / 2, k);
   const frameY = lerp(cy0, H * (portrait ? 0.4 : 0.44), k);
   // Keep the camera inside the window: once the scaled window is bigger than the frame on an axis,
