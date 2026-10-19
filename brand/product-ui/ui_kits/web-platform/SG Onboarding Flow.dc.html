@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Speaking Genie — Get started</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; background: var(--sg-canvas); color: var(--sg-ink); font-family: var(--sg-font); }
+    a { color: var(--sg-link); text-decoration: none; }
+    a:hover { color: var(--sg-purple-800); text-decoration: underline; }
+  </style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-direction: column;">
+  <div style="height: 64px; display: flex; align-items: center; gap: 20px; padding: 0 32px; background: var(--sg-surface); border-bottom: 1px solid var(--sg-border); position: sticky; top: 0; z-index: 10;">
+    <img src="assets/logo-light.png" alt="Speaking Genie" style="height: 28px; width: auto;">
+    <div style="flex: 1; display: flex; justify-content: center;">
+      <div style="display: flex; align-items: center; gap: 10px; width: 100%; max-width: 520px;">
+        <sc-for list="{{ steps }}" as="p" hint-placeholder-count="4">
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+            <div style="height: 4px; border-radius: 999px; background: {{ p.bar }};"></div>
+            <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: {{ p.color }}; white-space: nowrap;">{{ p.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" size="sm" onClick="{{ skip }}" hint-size="120px,32px">Skip to dashboard</x-import>
+  </div>
+
+  <div style="flex: 1; display: flex; justify-content: center; padding: 48px 24px 64px;">
+    <div style="width: 100%; max-width: 960px;">
+
+      <!-- 1. WELCOME -->
+      <sc-if value="{{ s.welcome }}" hint-placeholder-val="{{ true }}">
+        <div data-screen-label="Onboarding · Welcome" style="display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: center;">
+          <div>
+            <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sg-link);">Welcome, Admin</div>
+            <h1 style="margin: 10px 0 0; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; text-wrap: pretty;">See what your students will get, in about 60 seconds.</h1>
+            <p style="margin: 14px 0 28px; font-size: 16px; line-height: 1.6; color: var(--sg-ink-muted); text-wrap: pretty;">Answer one question from an AI character out loud. Speaking Genie will score it and correct your exact words, the same way it does for every student session.</p>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgRadioGroup" label="What do you want to do first?" options="{{ goals }}" value="{{ goal }}" onChange="{{ setGoal }}" hint-size="100%,230px"></x-import>
+            <div style="display: flex; gap: 12px; align-items: center; margin-top: 24px; flex-wrap: wrap;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" onClick="{{ startFromGoal }}" hint-size="200px,44px">{{ goalCta }}</x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" size="lg" onClick="{{ openVideo }}" hint-size="230px,44px">▶ Watch how it works · 47s</x-import>
+            </div>
+          </div>
+          <div onClick="{{ openVideo }}" style="position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; border: 1px solid var(--sg-border); background: var(--sg-surface); cursor: pointer; box-shadow: 0 16px 40px -12px rgba(16,24,40,.22);">
+            <iframe src="Onboarding Video.dc.html?embed" title="How Speaking Genie works" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none;"></iframe>
+            <div style="position: absolute; inset-inline-start: 16px; bottom: 16px; background: rgba(15,23,41,.86); color: #fff; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 10px;">▶ How it works · 47s</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- 2. SPEAKING TEST -->
+      <sc-if value="{{ s.speak }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Onboarding · Speaking test">
+          <div style="text-align: center; margin-bottom: 28px;">
+            <h1 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.02em;">Try a 60-second speaking task</h1>
+            <p style="margin: 8px 0 0; font-size: 15px; color: var(--sg-ink-muted);">Speak for 20–60 seconds. Your recording is used only for this test and is not stored.</p>
+          </div>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="28px 32px" style="max-width: 760px; margin: 0 auto;" hint-size="760px,460px">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAvatar" initials="LM" size="{{ 44 }}" hint-size="44px,44px"></x-import>
+              <div><div style="font-size: 15px; font-weight: 700;">Layla Mansour · AI character</div><div style="font-size: 13px; color: var(--sg-ink-muted);">Give travel directions · Level A2 · Topic-based task</div></div>
+            </div>
+            <div style="padding: 16px 20px; border-radius: 14px; border: 1px solid var(--sg-border); font-size: 18px; line-height: 1.5;">Excuse me, I'm a tourist. Can you tell me how to get to the Egyptian Museum from here?</div>
+            <sc-if value="{{ hasSaid }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+                <div style="max-width: 86%; padding: 14px 18px; border-radius: 14px; background: var(--sg-primary-soft); border: 1px solid var(--sg-primary-border, var(--sg-purple-200)); font-size: 16px; line-height: 1.55;">{{ said }}</div>
+              </div>
+            </sc-if>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 28px;">
+              <div onClick="{{ micClick }}" style="width: 88px; height: 88px; border-radius: 999px; background: {{ micBg }}; color: {{ micInk }}; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: {{ micRing }};">{{ micLabel }}</div>
+              <div style="display: flex; align-items: center; gap: 4px; height: 36px;">
+                <sc-for list="{{ wave }}" as="w" hint-placeholder-count="32"><div style="width: 5px; height: {{ w }}px; border-radius: 3px; background: var(--sg-purple-300);"></div></sc-for>
+              </div>
+              <div style="font-size: 14px; color: var(--sg-ink-muted); font-variant-numeric: tabular-nums;">{{ micHint }}</div>
+              <sc-if value="{{ idle }}" hint-placeholder-val="{{ true }}">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" size="sm" onClick="{{ useSample }}" hint-size="230px,32px">No microphone? Use a sample answer</x-import>
+              </sc-if>
+            </div>
+          </x-import>
+        </div>
+      </sc-if>
+
+      <!-- 3. RESULT -->
+      <sc-if value="{{ s.result }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Onboarding · Result">
+          <div style="margin-bottom: 20px;"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAlert" tone="info" title="This is what every student gets after a session." description="Teachers see the same feedback in student and group reports, with real quotes like these." hint-size="100%,60px"></x-import></div>
+          <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 20px; align-items: start;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Your result" description="Give travel directions · 00:41" padding="22px 24px" hint-size="100%,320px">
+              <div style="display: flex; align-items: baseline; gap: 10px;"><div style="font-size: 48px; font-weight: 700; font-variant-numeric: tabular-nums;">72%</div><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="brand" hint-size="110px,22px">Good progress</x-import></div>
+              <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 18px;">
+                <sc-for list="{{ resMetrics }}" as="m" hint-placeholder-count="4">
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="{{ m.n }}" value="{{ m.v }}" pct="{{ m.p }}" hint-size="100%,32px"></x-import>
+                </sc-for>
+              </div>
+            </x-import>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="20px 24px" hint-size="100%,200px">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;"><div style="font-size: 15px; font-weight: 700;">Grammar</div><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="danger" size="sm" caps="{{ true }}" hint-size="100px,20px">High priority</x-import></div>
+                <div style="font-size: 12px; color: var(--sg-ink-muted); margin-bottom: 6px;">What you said · 00:18</div>
+                <div style="padding: 12px 14px; border-radius: 12px; background: var(--sg-primary-soft); border: 1px solid var(--sg-primary-border, var(--sg-purple-200)); font-size: 15px; line-height: 1.55;">“Once you had the ground, walk straight for 200 meters.”</div>
+                <div style="display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 13px; margin-top: 8px;"><span style="color: var(--sg-danger); text-decoration: line-through;">once you had the ground</span><span style="color: var(--sg-ink-muted);">→</span><span style="color: var(--sg-success); font-weight: 600;">when you get to the ground floor</span></div>
+                <div style="margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: color-mix(in srgb, var(--sg-info) 9%, var(--sg-surface)); color: var(--sg-info); font-size: 13px;"><span style="font-weight: 700;">Practice tip · </span>Say five routes starting with “When you get to…”.</div>
+              </x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="18px 24px" hint-size="100%,100px">
+                <div style="display: flex; gap: 10px; font-size: 14px; line-height: 1.55;"><span style="color: var(--sg-success); font-weight: 700;">✓</span><span><span style="font-weight: 700;">Strength · </span>Clear sequence: “First, go upstairs… then turn left.”</span></div>
+              </x-import>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="lg" onClick="{{ goDemo }}" hint-size="230px,44px">Explore a demo centre first</x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" onClick="{{ toSetup }}" hint-size="180px,44px">Set up my centre</x-import>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- 4. SETUP -->
+      <sc-if value="{{ s.setup }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Onboarding · Setup" style="display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: start;">
+          <div>
+            <h1 style="margin: 0 0 6px; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Set up your centre</h1>
+            <p style="margin: 0 0 18px; font-size: 13px; color: var(--sg-ink-muted);">About 5 minutes. You can change everything later.</p>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <sc-for list="{{ subSteps }}" as="x" hint-placeholder-count="3">
+                <div onClick="{{ x.go }}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid {{ x.bd }}; background: {{ x.bg }}; cursor: pointer;">
+                  <div style="width: 28px; height: 28px; border-radius: 999px; background: {{ x.dotBg }}; color: {{ x.dotInk }}; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">{{ x.mark }}</div>
+                  <div><div style="font-size: 14px; font-weight: 700;">{{ x.t }}</div><div style="font-size: 12px; color: var(--sg-ink-muted);">{{ x.n }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <sc-if value="{{ ss.course }}" hint-placeholder-val="{{ true }}">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Pick a course template" description="AI drafts the levels, tasks, vocabulary, scenarios and stories. You review before anything goes live." hint-size="100%,460px">
+                <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+                  <sc-for list="{{ templates }}" as="tp" hint-placeholder-count="4">
+                    <div onClick="{{ tp.pick }}" style="padding: 16px 18px; border-radius: 12px; border: 1px solid {{ tp.bd }}; background: {{ tp.bg }}; cursor: pointer;">
+                      <div style="font-size: 15px; font-weight: 700;">{{ tp.t }}</div>
+                      <div style="font-size: 12px; color: var(--sg-ink-muted); margin-top: 4px;">{{ tp.n }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ generating }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--sg-border); background: var(--sg-surface-subtle);">
+                    <div style="font-size: 13px; font-weight: 700;">{{ genTitle }}</div>
+                    <sc-for list="{{ genBars }}" as="g" hint-placeholder-count="4">
+                      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="{{ g.n }}" value="{{ g.v }}" pct="{{ g.p }}" tone="{{ g.c }}" hint-size="100%,32px"></x-import>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" onClick="{{ blankCourse }}" hint-size="160px,40px">Start from blank</x-import>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ courseCta }}" disabled="{{ genBusy }}" hint-size="170px,40px">{{ courseCtaLabel }}</x-import>
+                </div>
+              </x-import>
+            </sc-if>
+            <sc-if value="{{ ss.group }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Create your first group" description="A group pairs a course level with a teacher and a cohort of students." hint-size="100%,420px">
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Group name" value="A2 Morning" hint-size="100%,64px"></x-import>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Level" value="General English · A2" options="{{ lvls }}" hint-size="100%,64px"></x-import>
+                    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Teacher" value="Me (Admin User)" options="{{ teachers }}" hint="Invite teachers later from Users" hint-size="100%,80px"></x-import>
+                  </div>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgChipGroup" label="Practice days" options="{{ days }}" value="{{ daySel }}" hint-size="100%,70px"></x-import>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" onClick="{{ toInvite }}" hint-size="100px,40px">Skip</x-import>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ toInvite }}" hint-size="140px,40px">Create group</x-import>
+                </div>
+              </x-import>
+            </sc-if>
+            <sc-if value="{{ ss.invite }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Invite your students" description="Students open the link, register and land in A2 Morning. Their first session triggers your first report." hint-size="100%,400px">
+                <div style="display: flex; gap: 10px;">
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" value="cairolc.speakingenie.com/join/a2m-7Kq2" read-only="{{ true }}" style="flex: 1;" hint-size="100%,40px"></x-import>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" onClick="{{ copyLink }}" hint-size="90px,40px">Copy</x-import>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" onClick="{{ copyLink }}" hint-size="110px,32px">WhatsApp</x-import>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" onClick="{{ copyLink }}" hint-size="90px,32px">Email</x-import>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" hint-size="110px,32px">Import CSV</x-import>
+                </div>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAlert" tone="success" title="1 hour of free practice per student." description="Your trial covers the first 25 students. No card needed." style="margin-top: 18px;" hint-size="100%,60px"></x-import>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ toDone }}" hint-size="120px,40px">Finish setup</x-import>
+                </div>
+              </x-import>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- 5. DONE -->
+      <sc-if value="{{ s.done }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Onboarding · Ready" style="max-width: 720px; margin: 0 auto; text-align: center;">
+          <div style="width: 64px; height: 64px; border-radius: 999px; background: var(--sg-success-solid); color: #fff; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto;">✓</div>
+          <h1 style="margin: 18px 0 0; font-size: 30px; font-weight: 700; letter-spacing: -0.02em;">Cairo Language Center is ready</h1>
+          <p style="margin: 8px 0 28px; font-size: 15px; color: var(--sg-ink-muted);">We'll notify you as soon as your first student finishes a session. It usually happens within a day of sharing the link.</p>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Get started checklist" description="3 of 6 done" flush="{{ true }}" style="text-align: start;" hint-size="100%,380px">
+            <sc-for list="{{ checklist }}" as="c" hint-placeholder-count="6">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" leading="{{ c.mark }}" title="{{ c.t }}" subtitle="{{ c.n }}" trailing="{{ c.tr }}" hint-size="100%,60px"></x-import>
+            </sc-for>
+          </x-import>
+          <div style="display: flex; justify-content: center; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="lg" onClick="{{ goDemo }}" hint-size="200px,44px">Take the 1-minute tour</x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" onClick="{{ skip }}" hint-size="170px,44px">Go to dashboard</x-import>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+
+<x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ videoOpen }}" onClose="{{ closeVideo }}" title="How Speaking Genie works" subtitle="47 seconds · no sound needed" width="{{ 1000 }}" hint-size="0px,0px">
+  <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #0F1729;">
+    <iframe src="https://www.youtube-nocookie.com/embed/HxOIqnt1i0w?rel=0&amp;modestbranding=1" title="How Speaking Genie works" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen="" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
+  </div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const q = new URLSearchParams(location.search);
+    this.state = { step: q.get("step") || "welcome", goal: "try", mic: q.get("mic") || "idle", secs: 0, sub: q.get("sub") || "course", tpl: "General English", gen: 0, video: q.has("video"), doneSub: [] };
+  }
+  componentWillUnmount() { clearInterval(this.ti); clearInterval(this.gi); }
+  startRec() {
+    clearInterval(this.ti); this.setState({ mic: "rec", secs: 0 });
+    this.ti = setInterval(() => this.setState(s => (s.secs >= 12 ? (clearInterval(this.ti), this.analyze(), null) : { secs: s.secs + 1 })), 1000);
+  }
+  analyze() { clearInterval(this.ti); this.setState({ mic: "analyzing" }); setTimeout(() => this.setState({ step: "result", mic: "idle" }), 1800); }
+  renderVals() {
+    const S = this.state, h = React.createElement;
+    const SG = window.SpeakingGenieDesignSystem_9bb41a;
+    const flag = cur => new Proxy({}, { get: (_, k) => cur === k, has: () => true });
+    const order = ["welcome", "speak", "result", "setup", "done"];
+    const idx = Math.min(3, Math.max(0, order.indexOf(S.step) - (order.indexOf(S.step) >= 3 ? 1 : 0)));
+    const labels = ["Welcome", "Speaking test", "Your result", "Set up"];
+    const toPlatform = (hash, extra) => { location.href = "Speaking Genie Platform.dc.html" + (extra ? "?" + extra : "") + "#" + hash; };
+    const said = "First, go upstairs. Once you had the ground, walk straight for 200 meters, then turn left. The museum is on your right.";
+    const rec = S.mic === "rec";
+    const wave = Array.from({ length: 32 }, (_, i) => rec ? 8 + Math.round(Math.abs(Math.sin(S.secs * 1.7 + i * 0.6)) * 26) : 6);
+    const genPct = Math.min(100, S.gen);
+    const subOrder = ["course", "group", "invite"];
+    return {
+      s: flag(S.step), ss: flag(S.sub),
+      steps: labels.map((label, i) => ({ label, bar: i <= idx ? "var(--sg-primary)" : "var(--sg-track)", color: i <= idx ? "var(--sg-link)" : "var(--sg-ink-muted)" })),
+      skip: () => toPlatform("dashboard"),
+      goals: [
+        { value: "try", label: "Try the speaking practice myself", note: "A 60-second task with instant feedback · recommended" },
+        { value: "setup", label: "Set up courses and groups", note: "Start from a template; AI fills in the content" },
+        { value: "team", label: "Invite my teaching team", note: "Teachers set up their own groups" }
+      ],
+      goal: S.goal, setGoal: v => this.setState({ goal: v }),
+      goalCta: { try: "Start speaking test", setup: "Set up my centre", team: "Invite teachers" }[S.goal],
+      startFromGoal: () => S.goal === "try" ? this.setState({ step: "speak" }) : S.goal === "setup" ? this.setState({ step: "setup" }) : toPlatform("users", "flow=userInvite"),
+      openVideo: () => this.setState({ video: true }), closeVideo: () => this.setState({ video: false }), videoOpen: S.video,
+      idle: S.mic === "idle", hasSaid: S.mic !== "idle", said: rec ? said.slice(0, Math.min(said.length, S.secs * 12)) + (S.secs * 12 < said.length ? "…" : "") : said,
+      micBg: rec ? "var(--sg-primary)" : S.mic === "analyzing" ? "var(--sg-surface-subtle)" : "var(--sg-primary-soft)",
+      micInk: rec ? "#fff" : "var(--sg-primary-ink)",
+      micRing: rec ? "0 0 0 10px rgba(109,40,217,.14), 0 0 0 20px rgba(109,40,217,.07)" : "none",
+      micLabel: rec ? "Stop" : S.mic === "analyzing" ? "…" : "Speak",
+      micHint: rec ? "Recording · 00:" + String(S.secs).padStart(2, "0") + " · tap Stop when you finish" : S.mic === "analyzing" ? "Analysing range, accuracy and fluency…" : "Tap Speak and answer Layla out loud",
+      micClick: () => S.mic === "idle" ? this.startRec() : rec ? this.analyze() : null,
+      wave, useSample: () => { this.setState({ mic: "analyzing" }); setTimeout(() => this.setState({ step: "result", mic: "idle" }), 1500); },
+      resMetrics: [["Fluency", 78], ["Vocabulary", 80], ["Grammar", 58], ["Task execution", 70]].map(([n, v]) => ({ n, v: v + "%", p: v })),
+      goDemo: () => toPlatform("dashboard", "tour=1"),
+      toSetup: () => this.setState({ step: "setup", sub: "course" }),
+      subSteps: [["course", "Course", S.doneSub.includes("course") ? S.tpl + " · 5 levels" : "From a template"], ["group", "First group", S.doneSub.includes("group") ? "A2 Morning" : "Level + teacher"], ["invite", "Invite students", "Share one link"]].map(([k, t, n], i) => {
+        const done = S.doneSub.includes(k), cur = S.sub === k;
+        return { t, n, mark: done ? "✓" : String(i + 1), go: () => this.setState({ sub: k }), bd: cur ? "var(--sg-purple-200)" : "var(--sg-border)", bg: cur ? "var(--sg-primary-soft)" : "var(--sg-surface)", dotBg: done ? "var(--sg-success-solid)" : cur ? "var(--sg-primary)" : "var(--sg-track)", dotInk: done || cur ? "#fff" : "var(--sg-ink-2)" };
+      }),
+      templates: [["General English", "Pre-A1 to B2 · everyday conversation"], ["Business English", "A2 to C1 · meetings, presentations, email"], ["Young Learners", "Pre-A1 to A2 · games, songs, stories"], ["IELTS Speaking", "B1 to C1 · parts 1–3 exam practice"]].map(([t, n]) => ({ t, n, pick: () => this.setState({ tpl: t, gen: 0 }), bd: S.tpl === t ? "var(--sg-primary)" : "var(--sg-border)", bg: S.tpl === t ? "var(--sg-primary-soft)" : "var(--sg-surface)" })),
+      generating: S.gen > 0, genBusy: S.gen > 0 && S.gen < 100,
+      genTitle: genPct < 100 ? "AI is drafting " + S.tpl + "…" : S.tpl + " is ready to review",
+      genBars: [["Levels", 5], ["Tasks", 86], ["Vocabulary & idioms", 420], ["Scenarios & stories", 24]].map(([n, max], i) => { const p = Math.max(0, Math.min(100, genPct * 1.4 - i * 15)); return { n, v: Math.round(max * p / 100) + " / " + max, p, c: p >= 100 ? "var(--sg-success-solid)" : "var(--sg-primary)" }; }),
+      courseCtaLabel: S.gen >= 100 ? "Continue" : S.gen > 0 ? "Drafting…" : "Generate with AI",
+      courseCta: () => {
+        if (S.gen >= 100) return this.setState(s => ({ sub: "group", doneSub: [...new Set([...s.doneSub, "course"])] }));
+        if (S.gen > 0) return;
+        clearInterval(this.gi); this.setState({ gen: 1 });
+        this.gi = setInterval(() => this.setState(s => { if (s.gen >= 100) { clearInterval(this.gi); return null; } return { gen: Math.min(100, s.gen + 9) }; }), 220);
+      },
+      blankCourse: () => this.setState(s => ({ sub: "group", doneSub: [...new Set([...s.doneSub, "course"])] })),
+      lvls: ["General English · A1", "General English · A2", "General English · B1"], teachers: ["Me (Admin User)", "Invite a teacher later"],
+      days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], daySel: ["Sun", "Tue", "Thu"],
+      toInvite: () => this.setState(s => ({ sub: "invite", doneSub: [...new Set([...s.doneSub, "group"])] })),
+      copyLink: () => this.setState({ copied: true }),
+      toDone: () => this.setState(s => ({ step: "done", doneSub: [...new Set([...s.doneSub, "invite"])] })),
+      checklist: [["Try a speaking task", "72% · Give travel directions", true], ["Create a course", S.tpl + " · 5 levels, 86 tasks", true], ["Create a group and share the link", "A2 Morning", true], ["First student completes a session", "We'll notify you and open their report", false], ["Invite a teacher", "Teachers review sessions and run groups", false], ["Recharge your hour wallet", "Trial covers 1 hour per student", false]].map(([t, n, d]) => ({
+        t, n,
+        mark: SG ? h("div", { style: { width: 28, height: 28, borderRadius: 999, background: d ? "var(--sg-success-solid)" : "var(--sg-track)", color: d ? "#fff" : "var(--sg-ink-muted)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700 } }, d ? "✓" : "") : null,
+        tr: SG ? (d ? h(SG.SgBadge, { tone: "success", size: "sm" }, "Done") : h(SG.SgBadge, { tone: "neutral", size: "sm" }, "Next")) : null
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Speaking Genie — How it works</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../_ds_bundle.js"></script>
+  <script>window.OM_SCENES = '[{"name":"Hook","dur":8.5,"desc":"Logo and promise: your students speak, Speaking Genie listens"},{"name":"Speak","dur":10.5,"desc":"Live call: the task goal and topics on screen, Layla and the student take turns speaking, topics tick off"},{"name":"Feedback","dur":11.1,"desc":"The session summary scores the answer, corrects the exact words and gives a tip"},{"name":"Teacher","dur":8.7,"desc":"The group ranking fills in and a real class example appears"},{"name":"Dashboard","dur":7,"desc":"Admin KPIs count up and the skill trend bars grow"},{"name":"Setup","dur":6,"desc":"Three setup steps check off: template, group, invite link"},{"name":"Close","dur":4,"desc":"Logo and call to action: start with a 60-second speaking test"}]';</script>
+  <script>window.OM_PLAYBACK = '{"mode":"loop"}';</script>
+  <script>window.SG_VIDEO_TWEAKS = /*EDITMODE-BEGIN*/{"motionEditor":true,"captions":"eg","voiceOver":true}/*EDITMODE-END*/;</script>
+  <style>
+    body { margin: 0; background: #0F1729; }
+    a { color: var(--sg-link); }
+    a:hover { color: var(--sg-purple-800); }
+  </style>
+</helmet>
+<div style="width: 100vw; height: 100vh;">
+  <x-import component-from-global-scope="OnboardingVideo" from="./animations-v3.jsx ./tweaks-panel.jsx ./onboarding-video.jsx" hint-size="100%,100%"></x-import>
+</div>
+</x-dc>
+</body>
+</html>

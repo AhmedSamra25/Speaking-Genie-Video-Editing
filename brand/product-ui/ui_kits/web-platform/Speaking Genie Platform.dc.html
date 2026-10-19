@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Speaking Genie — Platform</title>
+  <link rel="stylesheet" href="../../tokens/fonts.css">
+  <link rel="stylesheet" href="../../tokens/colors.css">
+  <link rel="stylesheet" href="../../tokens/theme-dark.css">
+  <link rel="stylesheet" href="../../tokens/typography.css">
+  <link rel="stylesheet" href="../../tokens/direction.css">
+  <link rel="stylesheet" href="../../tokens/spacing.css">
+  <link rel="stylesheet" href="../../tokens/elevation.css">
+  <link rel="stylesheet" href="../../tokens/base.css">
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="sg-helpers.js"></script>
+  <script src="i18n.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; background: var(--sg-canvas); color: var(--sg-ink); font-family: var(--sg-font); }
+    a { color: var(--sg-link); text-decoration: none; }
+    a:hover { color: var(--sg-purple-800); text-decoration: underline; }
+  </style>
+</helmet>
+<sc-if value="{{ isAuth }}" hint-placeholder-val="{{ false }}">
+  <dc-import name="SG Auth" screen="{{ screen }}" go="{{ go }}" open="{{ open }}" toast="{{ toast }}" data-state="{{ dataState }}" hint-size="100%,100vh"></dc-import>
+</sc-if>
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+  <div style="display: flex; min-height: 100vh; background: var(--sg-canvas); color: var(--sg-ink);">
+    <div id="sg-nav" style="position: sticky; top: 0; height: 100vh; width: var(--sg-sidebar-w); flex-shrink: 0; display: flex; flex-direction: column; background: var(--sg-surface); border-inline-end: 1px solid var(--sg-border);">
+      <div style="display: flex; align-items: center; height: 64px; padding: 0 20px; border-bottom: 1px solid var(--sg-divider); box-sizing: border-box; flex-shrink: 0;">
+        <div style="display: flex; align-items: center;"><span class="sg-logo" role="img" aria-label="Speaking Genie" style="height: 30px;"></span></div>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSidebar" dc-props="{{ sidebarProps }}" style="flex: 1; min-height: 0; display: flex; flex-direction: column;" hint-size="100%,100%"></x-import>
+    </div>
+    <main style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTopbar" dc-props="{{ topbarProps }}" style="position: sticky; top: 0; z-index: 20;" hint-size="100%,64px"></x-import>
+      <div style="flex: 1; padding: 28px 32px 64px; max-width: var(--sg-content-max); width: 100%; box-sizing: border-box;">
+        <sc-if value="{{ area.dashboard }}" hint-placeholder-val="{{ true }}">
+          <dc-import name="SG Dashboard" go="{{ go }}" open="{{ open }}" toast="{{ toast }}" data-state="{{ dataState }}" hint-size="100%,1400px"></dc-import>
+        </sc-if>
+        <sc-if value="{{ area.overview }}" hint-placeholder-val="{{ false }}">
+          <dc-import name="SG Overview" screen="{{ screen }}" go="{{ go }}" open="{{ open }}" toast="{{ toast }}" data-state="{{ dataState }}" persona="{{ persona }}" hint-size="100%,900px"></dc-import>
+        </sc-if>
+        <sc-if value="{{ area.courses }}" hint-placeholder-val="{{ false }}">
+          <dc-import name="SG Courses" screen="{{ screen }}" go="{{ go }}" open="{{ open }}" toast="{{ toast }}" data-state="{{ dataState }}" persona="{{ persona }}" hint-size="100%,900px"></dc-import>
+        </sc-if>
+        <sc-if value="{{ area.characters }}" hint-placeholder-val="{{ false }}">
+          <dc-import name="SG Characters" screen="{{ screen }}" go="{{ go }}" open="{{ open }}" toast="{{ toast }}" data-state="{{ dataState }}" hint-size="100%,900px"></dc-import>
+        </sc-if>
+        <sc-if value="{{ area.people }}" hint-placeholder-val="{{ false }}">
+          <dc-import name="SG People" screen="{{ screen }}" go="{{ go }}" open="{{ open }}" toast="{{ toast }}" data-state="{{ dataState }}" persona="{{ persona }}" hint-size="100%,900px"></dc-import>
+        </sc-if>
+        <sc-if value="{{ area.insights }}" hint-placeholder-val="{{ false }}">
+          <dc-import name="SG Insights" screen="{{ screen }}" go="{{ go }}" open="{{ open }}" toast="{{ toast }}" data-state="{{ dataState }}" hint-size="100%,900px"></dc-import>
+        </sc-if>
+        <sc-if value="{{ area.account }}" hint-placeholder-val="{{ false }}">
+          <dc-import name="SG Account" screen="{{ screen }}" go="{{ go }}" open="{{ open }}" toast="{{ toast }}" data-state="{{ dataState }}" hint-size="100%,900px"></dc-import>
+        </sc-if>
+        <sc-if value="{{ area.help }}" hint-placeholder-val="{{ false }}">
+          <dc-import name="SG Help" screen="{{ screen }}" go="{{ go }}" open="{{ open }}" toast="{{ toast }}" data-state="{{ dataState }}" hint-size="100%,900px"></dc-import>
+        </sc-if>
+      </div>
+    </main>
+  </div>
+</sc-if>
+<sc-if value="{{ notifOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeMenus }}" style="position: fixed; inset: 0; z-index: 60;"></div>
+  <div style="position: fixed; top: 58px; inset-inline-end: 24px; width: 380px; z-index: 61; border-radius: 14px; box-shadow: 0 16px 40px -12px rgba(16,24,40,.22);">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Notifications" description="4 unread" flush="{{ true }}" hint-size="380px,360px">
+      <sc-for list="{{ notifPeek }}" as="n" hint-placeholder-count="4">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" marker="{{ n.c }}" title="{{ n.t }}" subtitle="{{ n.s }}" onClick="{{ n.go }}" padding="12px 18px" hint-size="100%,58px"></x-import>
+      </sc-for>
+      <div style="display: flex; justify-content: space-between; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--sg-divider);">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" size="sm" onClick="{{ notifSettingsGo }}" hint-size="80px,32px">Settings</x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" onClick="{{ notifAllGo }}" hint-size="160px,32px">View all notifications</x-import>
+      </div>
+    </x-import>
+  </div>
+</sc-if>
+<sc-if value="{{ wsOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeMenus }}" style="position: fixed; inset: 0; z-index: 60;"></div>
+  <div style="position: fixed; bottom: 150px; inset-inline-start: 14px; width: 236px; z-index: 61; background: var(--sg-surface); border: 1px solid var(--sg-border); border-radius: 12px; box-shadow: 0 4px 12px -2px rgba(16,24,40,.10); padding: 6px;">
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--sg-ink-muted); padding: 8px 10px 6px;">WORKSPACES</div>
+    <sc-for list="{{ workspaces }}" as="w" hint-placeholder-count="3">
+      <div onClick="{{ closeMenus }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; background: {{ w.bg }};" style-hover="background: var(--sg-surface-hover);">
+        <div style="width: 26px; height: 26px; border-radius: 7px; background: var(--sg-primary-soft); color: var(--sg-primary-ink); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700;">{{ w.i }}</div>
+        <div style="flex: 1; min-width: 0;"><div style="font-size: 13px; font-weight: {{ w.fw }}; color: var(--sg-ink);">{{ w.n }}</div><div style="font-size: 11px; color: var(--sg-ink-muted);">{{ w.m }}</div></div>
+        <span style="color: var(--sg-link); font-weight: 700; font-size: 13px;">{{ w.check }}</span>
+      </div>
+    </sc-for>
+    <div style="border-top: 1px solid var(--sg-divider); margin: 6px -6px 0; padding: 6px 6px 0;">
+      <div onClick="{{ closeMenus }}" style="padding: 9px 10px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--sg-link); cursor: pointer;" style-hover="background: var(--sg-surface-hover);">+ Create workspace</div>
+    </div>
+  </div>
+</sc-if>
+<dc-import name="SG Flows" flow="{{ flow }}" open="{{ open }}" close="{{ closeFlow }}" done="{{ doneFlow }}" go="{{ go }}" hint-size="0px,0px"></dc-import>
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+  <div style="position: fixed; inset-inline-end: 24px; top: 80px; z-index: 80;">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgToast" title="{{ toastTitle }}" description="{{ toastDesc }}" hint-size="340px,72px"></x-import>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;dataState&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;default&quot;, &quot;empty&quot;, &quot;loading&quot;, &quot;blocked&quot;], &quot;default&quot;: &quot;default&quot;, &quot;tsType&quot;: &quot;'default'|'empty'|'loading'|'blocked'&quot;, &quot;section&quot;: &quot;Prototype&quot;}, &quot;navTitleStyle&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Caps&quot;, &quot;Caps with rule&quot;, &quot;Sentence case&quot;, &quot;Purple accent&quot;, &quot;Chip&quot;, &quot;Divided sections&quot;], &quot;default&quot;: &quot;Purple accent&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Side nav&quot;}}">
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const q = new URLSearchParams(location.search);
+    this.embed = q.has("embed");
+    const ls = k => (this.embed ? null : localStorage.getItem(k));
+    this.state = {
+      screen: location.hash.slice(1) || ls("sgp-screen") || "dashboard",
+      theme: q.get("theme") || ls("sgp-theme") || "light",
+      lang: q.get("lang") || ls("sgp-lang") || "en",
+      persona: q.get("persona") || "Admin",
+      flow: q.get("flow") || null,
+      menu: q.get("menu") || null,
+      toast: null
+    };
+  }
+  componentDidMount() {
+    this.onHash = () => { const h = location.hash.slice(1); if (h && h !== this.state.screen) this.setState({ screen: h }); };
+    window.addEventListener("hashchange", this.onHash);
+    this.apply();
+    this.poll = setInterval(() => { if (window.SG_I18N) { clearInterval(this.poll); this.apply(); } }, 100);
+  }
+  componentWillUnmount() { window.removeEventListener("hashchange", this.onHash); clearInterval(this.poll); }
+  componentDidUpdate() { const k = this.state.theme + "|" + this.state.lang; if (k !== this.applied) this.apply(); }
+  apply() {
+    const { theme, lang } = this.state, h = document.documentElement; this.applied = theme + "|" + lang;
+    h.setAttribute("data-theme", theme); h.dir = lang === "ar" ? "rtl" : "ltr"; h.lang = lang;
+    if (window.SG_I18N) window.SG_I18N.setLang(lang, document.body);
+    if (!this.embed) { localStorage.setItem("sgp-theme", theme); localStorage.setItem("sgp-lang", lang); }
+  }
+  renderVals() {
+    const { screen, theme, lang, persona, flow, toast } = this.state;
+    const q = new URLSearchParams(location.search);
+    const dataState = q.get("state") || this.props.dataState || "default";
+    const SG = window.SpeakingGenieDesignSystem_9bb41a;
+    const h = React.createElement;
+    const AREA = {
+      dashboard: ["dashboard"],
+      overview: ["teaching", "notifications", "achievements", "onboarding"],
+      courses: ["courses", "courseForm", "courseDetail", "levelDetail", "taskDetail"],
+      characters: ["characters", "characterDetail", "characterForm"],
+      people: ["students", "studentDetail", "studentForm", "invitations", "groups", "groupDetail", "users", "userDetail", "roles"],
+      insights: ["reports", "reportDetail", "groupReport", "consumption", "billing", "incentives"],
+      account: ["profile", "company", "levels"],
+      help: ["help", "helpCategory", "helpArticle", "helpFaq", "helpSearch", "helpContact"],
+      auth: ["signin", "register", "forgot", "reset", "joinGroup", "joinStudent", "notFound"]
+    };
+    let areaKey = Object.keys(AREA).find(k => AREA[k].includes(screen)) || "auth";
+    const effScreen = areaKey === "auth" && !AREA.auth.includes(screen) ? "notFound" : screen;
+    const area = {}; Object.keys(AREA).forEach(k => (area[k] = k === areaKey));
+    const go = s => { this.setState({ screen: s }); if (!this.embed) { localStorage.setItem("sgp-screen", s); history.replaceState(null, "", "#" + s); } window.scrollTo(0, 0); };
+    const showToast = (title, description) => { this.setState({ toast: { title, description } }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); };
+    const teacher = persona === "Teacher";
+    const NAV = teacher ? [
+      { group: "Overview", items: [{ id: "teaching", label: "My groups" }, { id: "notifications", label: "Notifications" }] },
+      { group: "Teaching", items: [{ id: "students", label: "Students" }, { id: "courses", label: "Courses" }, { id: "characters", label: "AI characters" }] },
+      { group: "Insights", items: [{ id: "reports", label: "Reports" }] },
+      { group: "Support", items: [{ id: "help", label: "Help center" }] }
+    ] : [
+      { group: "Overview", items: [{ id: "dashboard", label: "Dashboard" }, { id: "notifications", label: "Notifications" }, { id: "achievements", label: "Achievements" }] },
+      { group: "Teaching", items: [{ id: "courses", label: "Courses" }, { id: "groups", label: "Groups" }, { id: "students", label: "Students" }, { id: "characters", label: "AI characters" }] },
+      { group: "Insights", items: [{ id: "reports", label: "Reports" }, { id: "consumption", label: "Consumption" }, { id: "onboarding", label: "Onboarding analytics" }] },
+      { group: "Administration", items: [{ id: "users", label: "Users" }, { id: "roles", label: "Roles & permissions" }, { id: "billing", label: "Billing" }, { id: "incentives", label: "Incentive program" }, { id: "company", label: "Company profile" }] },
+      { group: "Support", items: [{ id: "help", label: "Help center" }] }
+    ];
+    const PARENT = { studentDetail: "students", studentForm: "students", invitations: "students", groupDetail: "groups", userDetail: "users", reportDetail: "reports", groupReport: "reports", courseForm: "courses", courseDetail: "courses", levelDetail: "courses", taskDetail: "courses", characterDetail: "characters", characterForm: "characters", levels: "company", helpCategory: "help", helpArticle: "help", helpFaq: "help", helpSearch: "help", helpContact: "help" };
+    const CRUMBS = {
+      dashboard: ["Overview", "Dashboard"], teaching: ["Overview", "My groups"], notifications: ["Overview", "Notifications"], achievements: ["Overview", "Achievements"], onboarding: ["Insights", "Onboarding analytics"],
+      courses: ["Teaching", "Courses"], courseForm: ["Courses", "New course"], courseDetail: ["Courses", "General English"], levelDetail: ["General English", "Level A2"], taskDetail: ["Level A2", "Ordering at a café"],
+      characters: ["Teaching", "AI characters"], characterDetail: ["AI characters", "Layla Mansour"], characterForm: ["AI characters", "New character"],
+      students: ["Teaching", "Students"], studentDetail: ["Students", "Mahmoud Youssef"], studentForm: ["Students", "Add student"], invitations: ["Students", "Invitations"],
+      groups: ["Teaching", "Groups"], groupDetail: ["Groups", "A2 Morning"], users: ["Administration", "Users"], userDetail: ["Users", "Nour Hassan"], roles: ["Administration", "Roles & permissions"],
+      reports: ["Insights", "Reports"], reportDetail: ["Reports", "Student progress report"], groupReport: ["Reports", "Group analysis"], consumption: ["Insights", "Consumption"], billing: ["Administration", "Billing"], incentives: ["Administration", "Incentive program"],
+      profile: ["Account", "My profile"], company: ["Administration", "Company profile"], levels: ["Company profile", "Levels"],
+      help: ["Support", "Help center"], helpCategory: ["Help center", "Courses"], helpArticle: ["Courses", "Creating your first course"], helpFaq: ["Help center", "FAQs"], helpSearch: ["Help center", "Search"], helpContact: ["Help center", "Contact support"]
+    };
+    const empty = dataState === "blocked";
+    const sidebarProps = {
+      groups: NAV, active: PARENT[effScreen] || effScreen, onNavigate: go, brand: false, titleStyle: ({"Caps":"caps","Caps with rule":"caps-rule","Sentence case":"sentence","Purple accent":"accent","Chip":"chip","Divided sections":"divided"})[this.props.navTitleStyle || "Purple accent"] || "accent",
+      style: { width: "100%", flex: 1, minHeight: 0, borderInlineEnd: "none", height: "auto" },
+      footer: SG ? h("div", { style: { display: "flex", flexDirection: "column", gap: 12 } },
+        h("div", { onClick: () => this.setState({ menu: this.state.menu === "workspace" ? null : "workspace" }), style: { display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", border: "1px solid var(--sg-border)", borderRadius: 10, cursor: "pointer" } },
+          h("div", { style: { width: 28, height: 28, borderRadius: 8, background: "var(--sg-primary-soft)", color: "var(--sg-primary-ink)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700 } }, "CL"),
+          h("div", { style: { flex: 1, minWidth: 0 } },
+            h("div", { style: { fontSize: 13, fontWeight: 600, color: "var(--sg-ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, "Cairo Language Center"),
+            h("div", { style: { fontSize: 11, color: "var(--sg-ink-muted)" } }, "Workspace")),
+          h("span", { style: { fontSize: 10, color: "var(--sg-ink-muted)" } }, "▾")),
+        h("div", null,
+          h("div", { style: { fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", color: "var(--sg-ink-muted)", padding: "0 4px 8px" } }, "VIEWING AS"),
+          h(SG.SgTabs, { variant: "segment", fullWidth: true, items: ["Admin", "Teacher"], value: persona, onChange: p => { this.setState({ persona: p }); go(p === "Teacher" ? "teaching" : "dashboard"); } }))) : null
+    };
+    const pill = (children, onClick, extra) => h("div", { onClick, style: { display: "flex", alignItems: "center", gap: 8, height: 34, padding: "0 12px", border: "1px solid var(--sg-border)", borderRadius: 9, fontSize: 13, cursor: "pointer", background: "var(--sg-surface)", color: "var(--sg-ink-2)", whiteSpace: "nowrap", ...extra } }, children);
+    const topbarProps = {
+      crumbs: CRUMBS[effScreen] || ["Overview", effScreen],
+      onUserClick: () => go("profile"),
+      language: lang, onLanguageChange: l => this.setState({ lang: l }),
+      languages: [{ value: "en", label: "English", short: "EN", dir: "ltr" }, { value: "ar", label: "العربية", short: "AR", dir: "rtl" }],
+      user: teacher ? { name: "Nour Hassan", role: "Teacher", initials: "NH" } : { name: "Admin User", role: "Admin · Cairo Language Center", initials: "AU" },
+      actions: SG ? h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+        teacher ? null : pill([
+          h("span", { key: 1, style: { width: 6, height: 6, borderRadius: 999, background: empty ? "var(--sg-danger-solid)" : "var(--sg-success-solid)" } }),
+          h("span", { key: 2, style: { fontWeight: 700, color: "var(--sg-ink)", fontVariantNumeric: "tabular-nums" } }, empty ? "0" : "184.5"),
+          h("span", { key: 3, style: { color: "var(--sg-ink-muted)" } }, "hours remaining")], () => go("billing")),
+        teacher ? null : h(SG.SgButton, { variant: empty ? "primary" : "secondary", size: "sm", onClick: () => this.setState({ flow: "billing.recharge" }) }, "Recharge"),
+        pill([h("span", { key: 1 }, "Notifications"), h("span", { key: 2, style: { minWidth: 18, height: 18, borderRadius: 999, background: "var(--sg-primary)", color: "#fff", fontSize: 11, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 5px", fontVariantNumeric: "tabular-nums" } }, "4")], () => this.setState({ menu: this.state.menu === "notifications" ? null : "notifications" })),
+        h(SG.SgButton, { variant: "secondary", size: "sm", iconOnly: true, onClick: () => go("help"), style: { height: 34, width: 34, borderRadius: 9 } }, "?"),
+        h(SG.SgButton, { variant: "secondary", size: "sm", iconOnly: true, onClick: () => this.setState({ theme: theme === "dark" ? "light" : "dark" }), style: { height: 34, width: 34, borderRadius: 9 } }, theme === "dark" ? "☀" : "☾")) : null
+    };
+    return {
+      navTitleStyle: this.props.navTitleStyle || "Purple accent",
+      screen: effScreen, dataState, persona, area,
+      isAuth: areaKey === "auth", isApp: areaKey !== "auth",
+      sidebarProps, topbarProps, go,
+      open: f => this.setState({ flow: f }),
+      toast: showToast,
+      flow, closeFlow: () => this.setState({ flow: null }),
+      doneFlow: (title) => { this.setState({ flow: null }); showToast(title, "Prototype only — nothing was saved."); },
+      notifOpen: this.state.menu === "notifications", wsOpen: this.state.menu === "workspace", closeMenus: () => this.setState({ menu: null }),
+      notifAllGo: () => { this.setState({ menu: null }); go("notifications"); }, notifSettingsGo: () => { this.setState({ menu: null }); go("notifications"); },
+      notifPeek: [["3 students are over their consumption tier", "Billing · 09:12", "var(--sg-danger-solid)"], ["Weekly report ready for A2 Morning", "Reports · 08:00", "var(--sg-info-solid)"], ["Mahmoud Youssef needs help with past simple", "Performance · 07:41", "var(--sg-tier-heavy)"], ["Omar Khaled added 12 students to A2 Morning", "Groups · Yesterday", "var(--sg-border-strong)"]].map(([t, s, c]) => ({ t, s, c, go: () => this.setState({ menu: null, flow: /past simple/.test(t) ? "notifConversation" : "notifDetail" }) })),
+      workspaces: [["CL", "Cairo Language Center", "Admin · 359 students", true], ["AL", "Alexandria Branch", "Admin · 142 students", false], ["GE", "Giza Evening School", "Teacher · 64 students", false]].map(([i, n, m, cur]) => ({ i, n, m, check: cur ? "✓" : "", bg: cur ? "var(--sg-primary-soft)" : "transparent", fw: cur ? "700" : "500" })),
+      hasToast: !!toast, toastTitle: toast ? toast.title : "", toastDesc: toast ? toast.description : ""
+    };
+  }
+}
+</script>
+</body>
+</html>

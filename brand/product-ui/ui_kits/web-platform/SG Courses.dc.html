@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="sg-helpers.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+</helmet>
+<sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 2 }}" widths="{{ skW }}" height="{{ 14 }}" hint-size="100%,40px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" hint-size="100%,360px"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 10 }}" hint-size="100%,300px"></x-import></x-import>
+  </div>
+</sc-if>
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+
+  <!-- COURSES LIST -->
+  <sc-if value="{{ s.courses }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Courses">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Courses</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">A course holds levels; each level holds tasks, vocabulary and idioms students practise with the AI partner.</p>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ to.courseForm }}" hint-size="120px,40px">Add course</x-import>
+      </div>
+      <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search courses" style="flex: 1;" hint-size="100%,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Language: All" hint-size="140px,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Audience: All" hint-size="140px,40px"></x-import>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ courseCols }}" rows="{{ courseRows }}" onRowClick="{{ to.courseDetail }}" row-height="{{ 62 }}" footer="{{ courseFooter }}" empty="{{ courseEmpty }}" hint-size="100%,400px"></x-import>
+    </div>
+  </sc-if>
+
+  <!-- COURSE FORM -->
+  <sc-if value="{{ s.courseForm }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Course form">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.courses }}" style="margin-bottom: 14px;" hint-size="120px,20px">All courses</x-import>
+      <div style="margin-bottom: 24px;">
+        <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Add course</h1>
+        <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Fill in the details to add a new course. You can add levels yourself or set them up with AI after saving.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Course details" hint-size="100%,520px">
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Course name" placeholder="English Grammar Fundamentals" value="Business English" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Language" value="English" options="{{ langs }}" hint-size="100%,64px"></x-import>
+            </div>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgChipGroup" label="Target audiences" hint="Pick all that apply, or add a custom audience below" options="{{ audiences }}" value="{{ audSel }}" onChange="{{ setAud }}" hint-size="100%,80px"></x-import>
+            <div style="display: flex; gap: 10px; align-items: flex-end;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" placeholder="Add custom audience" style="flex: 1;" hint-size="100%,40px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" hint-size="70px,40px">Add</x-import>
+            </div>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Description" rows="{{ 5 }}" placeholder="Describe the course objectives and content" value="Speaking practice for working professionals: meetings, presentations, negotiation and small talk with colleagues." hint-size="100%,140px"></x-import>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--sg-divider);">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" onClick="{{ to.courses }}" hint-size="80px,40px">Cancel</x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ createCourse }}" hint-size="130px,40px">Create course</x-import>
+          </div>
+        </x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Set up with AI" description="After you save, AI can draft levels, tasks, vocabulary and idioms from the description. You review the plan before anything is created." tone="brand" hint-size="100%,170px">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="soft" onClick="{{ op.aiSetup }}" hint-size="160px,40px">Preview AI setup</x-import>
+        </x-import>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- COURSE DETAIL -->
+  <sc-if value="{{ s.courseDetail }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Course detail">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.courses }}" style="margin-bottom: 14px;" hint-size="120px,20px">All courses</x-import>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 20px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">General English</h1>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="success" dot="{{ true }}" hint-size="60px,22px">Active</x-import>
+          </div>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">English · Adults · Teens · Created Mar 4, 2026</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="soft" onClick="{{ op.aiSetup }}" hint-size="150px,40px">Set up with AI</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" onClick="{{ to.courseForm }}" hint-size="110px,40px">Edit course</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ op.levelForm }}" hint-size="100px,40px">Add level</x-import>
+        </div>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTabs" items="{{ courseTabs }}" value="{{ courseTab }}" onChange="{{ setCourseTab }}" style="margin-bottom: 20px;" hint-size="100%,44px"></x-import>
+      <sc-if value="{{ ct.overview }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Total levels" value="5" note="Pre-A1 to B2" hint-size="100%,96px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Total students" value="214" note="Across 7 groups" hint-size="100%,96px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Tasks" value="86" note="42 time-based · 44 topic-based" hint-size="100%,96px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Avg completion" value="72%" note="↓ 3 pts vs July" note-tone="warning" hint-size="100%,96px"></x-import>
+        </div>
+        <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Description" hint-size="100%,220px">
+            <p style="margin: 0; font-size: 14px; line-height: 1.6; color: var(--sg-ink-2); text-wrap: pretty;">Everyday spoken English for adults and teens. Students build confidence through conversational tasks, role-plays and real-life scenarios, progressing from simple greetings at Pre-A1 to opinion and debate at B2.</p>
+            <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sg-ink-muted); margin: 22px 0 10px;">Learning goals</div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <sc-for list="{{ goals }}" as="g" hint-placeholder-count="4"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="goal" hint-size="120px,24px">{{ g }}</x-import></sc-for>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Content summary" padding="20px 22px" hint-size="100%,220px">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <sc-for list="{{ contentDist }}" as="c" hint-placeholder-count="3">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="{{ c.name }}" value="{{ c.value }}" pct="{{ c.pct }}" hint-size="100%,32px"></x-import>
+              </sc-for>
+            </div>
+          </x-import>
+        </div>
+      </sc-if>
+      <sc-if value="{{ ct.levels }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Course levels" description="Manage and reorder proficiency levels. Moving a level keeps completed tasks in history." flush="{{ true }}" hint-size="100%,400px">
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgEmptyState" title="No levels yet" description="Create your first level to start organising course content." action="{{ firstLevelBtn }}" style="margin: 20px;" hint-size="100%,180px"></x-import>
+          </sc-if>
+          <sc-if value="{{ notEmpty }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ levels }}" as="l" hint-placeholder-count="5">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" leading="{{ l.code }}" title="{{ l.name }}" subtitle="{{ l.meta }}" trailing="{{ l.actions }}" onClick="{{ to.levelDetail }}" hint-size="100%,64px"></x-import>
+            </sc-for>
+          </sc-if>
+        </x-import>
+      </sc-if>
+      <sc-if value="{{ ct.analysis }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-bottom: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Student distribution" description="Students enrolled per level" hint-size="100%,260px">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBarChart" data="{{ dist }}" series="{{ distSeries }}" height="{{ 170 }}" hint-size="100%,190px"></x-import>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Top performers" description="Highest completion rates" flush="{{ true }}" hint-size="100%,260px">
+            <sc-for list="{{ performers }}" as="p" hint-placeholder-count="4">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" leading="{{ p.avatar }}" title="{{ p.name }}" subtitle="{{ p.level }}" trailing="{{ p.pct }}" hint-size="100%,56px"></x-import>
+            </sc-for>
+          </x-import>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Progress timeline" description="Tasks completed per week" hint-size="100%,240px">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBarChart" data="{{ timeline }}" series="{{ tlSeries }}" height="{{ 150 }}" hint-size="100%,170px"></x-import>
+        </x-import>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- LEVEL DETAIL -->
+  <sc-if value="{{ s.levelDetail }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Level detail">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.courseDetail }}" style="margin-bottom: 14px;" hint-size="140px,20px">General English</x-import>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 20px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Level A2 · Elementary</h1>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="info" hint-size="40px,22px">A2</x-import>
+          </div>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Max output 80 words · Speaking speed 0.9× · 62 students in 3 groups</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" onClick="{{ op.levelForm }}" hint-size="100px,40px">Edit level</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ levelPrimary }}" hint-size="120px,40px">{{ levelPrimaryLabel }}</x-import>
+        </div>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTabs" items="{{ levelTabs }}" value="{{ levelTab }}" onChange="{{ setLevelTab }}" style="margin-bottom: 20px;" hint-size="100%,44px"></x-import>
+      <sc-if value="{{ lt.overview }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Learning goals" hint-size="100%,180px">
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <sc-for list="{{ levelGoals }}" as="g" hint-placeholder-count="4">
+                  <div style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--sg-ink-2);"><span style="color: var(--sg-link); font-weight: 700;">✓</span><span>{{ g }}</span></div>
+                </sc-for>
+              </div>
+            </x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Learning materials" description="Content students practise with at this level" flush="{{ true }}" hint-size="100%,200px">
+              <sc-for list="{{ materials }}" as="m" hint-placeholder-count="3">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ m.t }}" subtitle="{{ m.n }}" trailing="{{ m.c }}" onClick="{{ m.go }}" hint-size="100%,56px"></x-import>
+              </sc-for>
+            </x-import>
+          </div>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Key performance indicators" description="Level average vs target" hint-size="100%,300px">
+            <div style="display: flex; flex-direction: column; gap: 18px;">
+              <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="{{ k.name }}" value="{{ k.value }}" pct="{{ k.pct }}" note="{{ k.note }}" tone="{{ k.tone }}" hint-size="100%,44px"></x-import>
+              </sc-for>
+            </div>
+          </x-import>
+        </div>
+      </sc-if>
+      <sc-if value="{{ lt.tasks }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search tasks" style="flex: 1;" hint-size="100%,40px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Type: All" hint-size="120px,40px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Status: All" hint-size="120px,40px"></x-import>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ taskCols }}" rows="{{ taskRows }}" onRowClick="{{ to.taskDetail }}" footer="6 of 24 tasks" empty="{{ taskEmpty }}" hint-size="100%,420px"></x-import>
+      </sc-if>
+      <sc-if value="{{ lt.vocab }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search vocabularies" style="flex: 1;" hint-size="100%,40px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Category: All" hint-size="140px,40px"></x-import>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ vocabCols }}" rows="{{ vocabRows }}" footer="6 of 120 words" empty="{{ vocabEmpty }}" hint-size="100%,420px"></x-import>
+      </sc-if>
+      <sc-if value="{{ lt.idioms }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search idioms" style="flex: 1;" hint-size="100%,40px"></x-import>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ idiomCols }}" rows="{{ idiomRows }}" footer="4 of 30 idioms" empty="{{ idiomEmpty }}" hint-size="100%,320px"></x-import>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- TASK DETAIL -->
+  <sc-if value="{{ s.taskDetail }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Task detail">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.levelDetail }}" style="margin-bottom: 14px;" hint-size="100px,20px">Level A2</x-import>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Ordering at a café</h1>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="success" dot="{{ true }}" hint-size="70px,22px">Active</x-import>
+          </div>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Conversational task · General English · Level A2</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="danger" onClick="{{ op.confirmDeleteTask }}" hint-size="110px,40px">Delete task</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ op.taskForm }}" hint-size="100px,40px">Edit task</x-import>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Task brief" hint-size="100%,360px">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+              <sc-for list="{{ brief }}" as="b" hint-placeholder-count="4">
+                <div>
+                  <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sg-ink-muted); margin-bottom: 6px;">{{ b.k }}</div>
+                  <div style="font-size: 14px; line-height: 1.6; color: var(--sg-ink-2); text-wrap: pretty;">{{ b.v }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Recent attempts" flush="{{ true }}" hint-size="100%,260px">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ attemptCols }}" rows="{{ attemptRows }}" bordered="{{ false }}" onRowClick="{{ to.studentDetail }}" hint-size="100%,260px"></x-import>
+          </x-import>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Settings" padding="20px 22px" hint-size="100%,300px">
+            <div style="display: flex; flex-direction: column;">
+              <sc-for list="{{ taskMeta }}" as="m" hint-placeholder-count="7">
+                <div style="display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--sg-divider); font-size: 14px;">
+                  <span style="color: var(--sg-ink-muted);">{{ m.k }}</span>
+                  <span style="font-weight: 600; color: var(--sg-ink); font-variant-numeric: tabular-nums;">{{ m.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Completion" padding="20px 22px" hint-size="100%,150px">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Completed" value="48 / 62" hint-size="100%,44px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Avg fluency" value="71" hint-size="100%,44px"></x-import>
+            </div>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgProgress" value="{{ 77 }}" height="{{ 6 }}" style="margin-top: 14px;" hint-size="100%,6px"></x-import>
+          </x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { courseTab: "overview", levelTab: "overview", aud: ["Adults", "Professionals"] };
+  componentDidMount() { this.p = setInterval(() => { if (window.SGH && window.SpeakingGenieDesignSystem_9bb41a) { clearInterval(this.p); this.forceUpdate(); } }, 60); }
+  componentWillUnmount() { clearInterval(this.p); }
+  renderVals() {
+    const P = this.props, go = P.go || (() => {}), open = P.open || (() => {}), toast = P.toast || (() => {});
+    const SG = window.SpeakingGenieDesignSystem_9bb41a, X = window.SGH, ok = !!(SG && X);
+    const h = React.createElement, ds = P.dataState || "default", isEmpty = ds === "empty";
+    const s = new Proxy({}, { get: (_, k) => P.screen === k, has: () => true });
+    const to = new Proxy({}, { get: (_, k) => () => go(k), has: () => true });
+    const op = new Proxy({}, { get: (_, k) => () => open(k), has: () => true });
+    const btn = (l, f, v) => ok ? h(SG.SgButton, { variant: v || "primary", size: "md", onClick: f }, l) : null;
+    const emptyNode = (t, d, l, f) => ok ? X.empty(t, d, l, f) : null;
+    const flag = cur => new Proxy({}, { get: (_, k) => cur === k, has: () => true });
+    const lt = this.state.levelTab;
+    const courses = [
+      ["General English", "Everyday spoken English", "English", ["Adults", "Teens"], 5, 214, "Mar 4, 2026"],
+      ["Business English", "Meetings, presentations, negotiation", "English", ["Professionals"], 4, 68, "Apr 18, 2026"],
+      ["Young Learners", "Games, stories and songs", "English", ["Kids"], 3, 41, "May 2, 2026"],
+      ["IELTS Speaking", "Parts 1–3 exam practice", "English", ["Adults", "University"], 3, 27, "Jun 9, 2026"],
+      ["Conversational French", "Débutant à intermédiaire", "French", ["Adults"], 3, 9, "Jul 21, 2026"]
+    ].map(([n, d, l, a, lv, st, c]) => ({ n, d, l, a, lv, st, c }));
+    const levelsData = [["Pre-A1", "Starter", 12, 60, 10, 40, "0.8×"], ["A1", "Beginner", 18, 90, 20, 60, "0.85×"], ["A2", "Elementary", 24, 120, 30, 80, "0.9×"], ["B1", "Intermediate", 20, 100, 24, 120, "1.0×"], ["B2", "Upper intermediate", 0, 50, 12, 160, "1.0×"]];
+    const tasks = [
+      ["Ordering at a café", "Topic-based", "8 min", "High", "Active"], ["Describing your weekend", "Time-based", "5 min", "Medium", "Active"],
+      ["Giving directions", "Topic-based", "6 min", "Medium", "Active"], ["Talking about family", "Time-based", "5 min", "Low", "Active"],
+      ["Booking a hotel room", "Topic-based", "8 min", "High", "Draft"], ["Shopping for clothes", "Topic-based", "7 min", "Low", "Archived"]
+    ].map(([n, t, d, p, st]) => ({ n, t, d, p, st }));
+    const vocab = [["order", "Verb", "order", "ordered", "ordered", "ordering"], ["menu", "Noun", "—", "—", "—", "—"], ["recommend", "Verb", "recommend", "recommended", "recommended", "recommending"], ["bill", "Noun", "—", "—", "—", "—"], ["take away", "Phrasal verb", "take away", "took away", "taken away", "taking away"], ["spicy", "Adjective", "—", "—", "—", "—"]].map(([w, c, p1, p2, p3, p4]) => ({ w, c, p1, p2, p3, p4 }));
+    const idioms = [["a piece of cake", "Very easy", "The test was a piece of cake."], ["on the house", "Free, paid by the business", "The dessert is on the house."], ["grab a bite", "Eat something quickly", "Let's grab a bite before class."], ["cost an arm and a leg", "Be very expensive", "That jacket cost an arm and a leg."]].map(([i, m, e]) => ({ i, m, e }));
+    return {
+      loading: ds === "loading", ready: ok && ds !== "loading", s, to, op, isEmpty, notEmpty: !isEmpty, skW: ["30%", "50%"],
+      courseCols: [
+        { key: "n", label: "Course", width: "2.2fr", render: r => X.strong(r.n, r.d) },
+        { key: "l", label: "Language", width: "1fr", render: r => X.tag(r.l) },
+        { key: "a", label: "Target audiences", width: "1.6fr", render: r => X.tags(r.a) },
+        { key: "lv", label: "Levels", width: "80px", align: "right", render: r => X.num(r.lv) },
+        { key: "st", label: "Students", width: "90px", align: "right", render: r => X.num(r.st) },
+        { key: "c", label: "Created", width: "1fr", render: r => X.muted(r.c) },
+        { key: "x", label: "", width: "56px", render: r => X.more() }
+      ],
+      courseRows: isEmpty ? [] : courses, courseFooter: "5 of 5 courses",
+      courseEmpty: emptyNode("No courses yet", "A course holds levels of speaking content for your students.", "Add course", to.courseForm),
+      langs: ["English", "Arabic", "French", "German", "Spanish"],
+      audiences: ["Kids", "Teens", "Adults", "University", "Professionals", "Exam prep"],
+      audSel: this.state.aud, setAud: v => this.setState({ aud: v }),
+      createCourse: () => { toast("Course created", "Business English has been added"); go("courseDetail"); },
+      courseTabs: [{ value: "overview", label: "Overview" }, { value: "levels", label: "Levels · 5" }, { value: "analysis", label: "Analysis" }],
+      courseTab: this.state.courseTab, setCourseTab: v => this.setState({ courseTab: v }), ct: flag(this.state.courseTab),
+      goals: ["Hold a 5-minute conversation", "Use past and future tenses", "Express opinions politely", "Handle everyday transactions"],
+      contentDist: [{ name: "Tasks", value: "86", pct: 86 }, { name: "Vocabularies", value: "420", pct: 100 }, { name: "Idioms", value: "96", pct: 23 }],
+      firstLevelBtn: btn("Create first level", op.levelForm),
+      levels: levelsData.map(([c, n, t, v, i, w, sp]) => ({
+        code: ok ? h("div", { style: { width: 44, height: 32, borderRadius: 8, background: "var(--sg-primary-soft)", color: "var(--sg-primary-ink)", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" } }, c) : null,
+        name: "Level " + c + " · " + n, meta: t + " tasks · " + v + " vocab · " + i + " idioms · Max " + w + " words · " + sp + " speed",
+        actions: ok ? X.btns([["↑", null], ["↓", null], ["✎", op.levelForm]]) : null
+      })),
+      dist: levelsData.map(([c], i) => ({ label: c, values: [[38, 52, 62, 44, 18][i]] })), distSeries: [{ label: "Students", color: "var(--sg-link)" }],
+      timeline: ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"].map((l, i) => ({ label: l, values: [[120, 142, 160, 151, 178, 190, 184, 201][i]] })), tlSeries: [{ label: "Tasks completed", color: "var(--sg-link)" }],
+      performers: [["LA", "Laila Adel", "Level B1", "96%"], ["MY", "Mahmoud Youssef", "Level A2", "94%"], ["KS", "Karim Saleh", "Level A2", "91%"], ["HE", "Hana Ezzat", "Level B1", "89%"]].map(([i, name, level, pct]) => ({ avatar: ok ? h(SG.SgAvatar, { initials: i, size: 30 }) : null, name, level, pct })),
+      levelTabs: [{ value: "overview", label: "Overview" }, { value: "tasks", label: "Tasks · 24" }, { value: "vocab", label: "Vocabularies · 120" }, { value: "idioms", label: "Idioms · 30" }],
+      levelTab: lt, setLevelTab: v => this.setState({ levelTab: v }), lt: flag(lt),
+      levelPrimaryLabel: lt === "vocab" ? "Add vocabulary" : lt === "idioms" ? "Add idiom" : "Add task",
+      levelPrimary: lt === "vocab" ? op.vocabForm : lt === "idioms" ? op.idiomForm : op.taskForm,
+      levelGoals: ["Order food and drinks and ask about prices", "Describe past events using simple past", "Give and follow simple directions", "Talk about family, routines and hobbies"],
+      materials: [
+        { t: "Tasks", n: "Conversational tasks and role-plays", c: "24", go: () => this.setState({ levelTab: "tasks" }) },
+        { t: "Vocabularies", n: "Words with tense forms", c: "120", go: () => this.setState({ levelTab: "vocab" }) },
+        { t: "Idioms", n: "Expressions with meaning and example", c: "30", go: () => this.setState({ levelTab: "idioms" }) }
+      ],
+      kpis: [
+        { name: "Fluency score", value: "71 / 75", pct: 95, note: "Target 75", tone: "var(--sg-link)" },
+        { name: "Grammar accuracy", value: "64 / 70", pct: 91, note: "Past simple is the weakest area", tone: "var(--sg-link)" },
+        { name: "Vocabulary range", value: "58 / 70", pct: 83, note: "Target 70", tone: "var(--sg-tier-heavy)" },
+        { name: "Speaking time share", value: "62% / 60%", pct: 100, note: "Above target", tone: "var(--sg-success-solid)" }
+      ],
+      taskCols: [
+        { key: "n", label: "Task", width: "2.2fr", render: r => X.strong(r.n) },
+        { key: "t", label: "Type", width: "1.1fr", render: r => X.tag(r.t) },
+        { key: "d", label: "Duration", width: "90px", render: r => X.muted(r.d) },
+        { key: "p", label: "Priority", width: "100px", render: r => X.badge(r.p === "High" ? "danger" : r.p === "Medium" ? "warning" : "neutral", r.p) },
+        { key: "st", label: "Status", width: "100px", render: r => X.badge(r.st === "Active" ? "success" : r.st === "Draft" ? "info" : "neutral", r.st) },
+        { key: "x", label: "", width: "56px", render: () => X.more(op.taskForm) }
+      ], taskRows: isEmpty ? [] : tasks, taskEmpty: emptyNode("No tasks yet", "Create your first task for this level.", "Add task", op.taskForm),
+      vocabCols: [
+        { key: "w", label: "Word", width: "1.3fr", render: r => X.strong(r.w) },
+        { key: "c", label: "Category", width: "1fr", render: r => X.tag(r.c) },
+        { key: "p1", label: "Present", width: "1fr", render: r => X.muted(r.p1) },
+        { key: "p2", label: "Past", width: "1fr", render: r => X.muted(r.p2) },
+        { key: "p3", label: "Past participle", width: "1fr", render: r => X.muted(r.p3) },
+        { key: "p4", label: "Present participle", width: "1.1fr", render: r => X.muted(r.p4) },
+        { key: "x", label: "", width: "56px", render: () => X.more(op.vocabForm) }
+      ], vocabRows: isEmpty ? [] : vocab, vocabEmpty: emptyNode("No vocabulary yet", "Add vocabulary words for this level.", "Add vocabulary", op.vocabForm),
+      idiomCols: [
+        { key: "i", label: "Idiom", width: "1.3fr", render: r => X.strong(r.i) },
+        { key: "m", label: "Meaning", width: "1.3fr", render: r => X.two(r.m) },
+        { key: "e", label: "Example", width: "2fr", render: r => X.muted(r.e) },
+        { key: "x", label: "", width: "56px", render: () => X.more(op.idiomForm) }
+      ], idiomRows: isEmpty ? [] : idioms, idiomEmpty: emptyNode("No idioms yet", "Add idioms and expressions for this level.", "Add idiom", op.idiomForm),
+      brief: [
+        { k: "Description", v: "The student orders breakfast for two at a busy café, asks about the menu and pays the bill." },
+        { k: "Task goal", v: "Practise polite requests (Could I have…, I'd like…) and asking about prices." },
+        { k: "Discussion topics", v: "Menu items · Dietary preferences · Recommendations · Paying and tipping" },
+        { k: "Restrictions or guidelines", v: "Keep the AI waiter's turns under 25 words. Do not correct mid-sentence; collect feedback for the end." }
+      ],
+      taskMeta: [["Task type", "Topic-based"], ["Practice duration", "8 min"], ["Priority", "High"], ["Status", "Active"], ["Due date", "Aug 28, 2026"], ["Assigned to", "Level A2 · 3 groups"], ["Assigned by", "Nour Hassan"]].map(([k, v]) => ({ k, v })),
+      attemptCols: [
+        { key: "s", label: "Student", width: "2fr", render: r => X.person(r.i, r.n) },
+        { key: "d", label: "Date", width: "1fr", render: r => X.muted(r.d) },
+        { key: "t", label: "Duration", width: "90px", render: r => X.muted(r.t) },
+        { key: "f", label: "Fluency", width: "80px", align: "right", render: r => X.score(r.f) }
+      ],
+      attemptRows: [["MY", "Mahmoud Youssef", "Aug 18", "8:12", 74], ["KS", "Karim Saleh", "Aug 17", "7:40", 68], ["RA", "Rana Ashraf", "Aug 17", "8:03", 59]].map(([i, n, d, t, f]) => ({ i, n, d, t, f }))
+    };
+  }
+}
+</script>
+</body>
+</html>

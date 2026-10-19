@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../_ds_bundle.js"></script>
+</helmet>
+<sc-if value="{{ any }}" hint-placeholder-val="{{ false }}">
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.recharge }}" onClose="{{ close }}" overline="BILLING" title="Recharge hours" subtitle="Add more hours to your workspace wallet. Hours never expire." primary-label="{{ payLabel }}" onPrimary="{{ d.recharge }}" secondary-label="Cancel" footnote="Minimum purchase is 50 hours" width="{{ 520 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Number of hours" value="{{ hoursStr }}" onChange="{{ setHours }}" numeric="{{ true }}" hint="Minimum 50" hint-size="100%,80px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Rate per hour" value="E£180" read-only="{{ true }}" hint="Enterprise plan" hint-size="100%,80px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgChipGroup" label="Quick amounts" options="{{ quick }}" value="{{ quickSel }}" onChange="{{ pickQuick }}" hint-size="100%,70px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Total amount" value="{{ total }}" read-only="{{ true }}" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Promo code" placeholder="e.g. SAVE20" hint="Optional" hint-size="100%,80px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.planConfirm }}" onClose="{{ close }}" overline="BILLING" title="Confirm plan selection" subtitle="Professional · E£200 per hour · up to 150 students · min. 150 hours purchase" primary-label="Proceed to checkout" onPrimary="{{ d.plan }}" secondary-label="Cancel" footnote="Your current Enterprise plan stays active until Dec 31, 2026." width="{{ 520 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Promo code" placeholder="e.g. SAVE20" hint="Enter a promo code to receive a discount on the selected plan." hint-size="100%,80px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAlert" tone="success" title="SAVE20 applied." description="Discount 20% · E£24,000 instead of E£30,000" hint-size="100%,60px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.aiSetup }}" onClose="{{ close }}" overline="COURSES" title="Set up course with AI" subtitle="AI drafts levels, tasks, vocabulary and idioms from the course description. You review the plan before anything is created." primary-label="Generate course plan" onPrimary="{{ d.ai }}" secondary-label="Cancel" width="{{ 600 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Course" value="Business English · English · Professionals" read-only="{{ true }}" hint-size="100%,64px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Additional instructions" hint="Optional" rows="{{ 4 }}" placeholder="E.g. focus on business English, include pronunciation practice" hint-size="100%,140px"></x-import>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--sg-border); background: var(--sg-surface-subtle);">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Levels" value="4" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Tasks" value="~48" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Vocabularies" value="~240" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Idioms" value="~60" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.levelForm }}" onClose="{{ close }}" overline="GENERAL ENGLISH" title="Edit level" subtitle="Settings here shape how the AI partner speaks at this level." primary-label="Save level" onPrimary="{{ d.level }}" secondary-label="Cancel" danger-label="Delete level" onDanger="{{ o.confirmDeleteLevel }}" width="{{ 580 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Level" value="A2" options="{{ cefr }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Name" value="Elementary" hint-size="100%,64px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Description" rows="{{ 2 }}" value="Routine tasks and direct exchanges of information." hint-size="100%,90px"></x-import>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Max output words" value="80" numeric="{{ true }}" hint="Longest AI reply" hint-size="100%,80px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Speaking speed" value="0.9×" options="{{ speeds }}" hint-size="100%,64px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Goals" hint="One per line" rows="{{ 3 }}" value="Order food and drinks and ask about prices&#10;Describe past events using simple past" hint-size="100%,110px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgChipGroup" label="KPIs" options="{{ kpiOpts }}" value="{{ kpiSel }}" hint-size="100%,70px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.taskForm }}" onClose="{{ close }}" placement="drawer" overline="LEVEL A2" title="Add speaking task" subtitle="Students practise this task with an AI character." primary-label="Save task" onPrimary="{{ d.task }}" secondary-label="Cancel" width="{{ 560 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Task title" placeholder="Conversation practice: small talk" value="Ordering at a café" hint-size="100%,64px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Description" rows="{{ 2 }}" placeholder="Brief description of the speaking task" hint-size="100%,90px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Task goal" placeholder="Practise making small talk with strangers" hint-size="100%,64px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgRadioGroup" label="Task type" options="{{ taskTypes }}" value="{{ taskType }}" onChange="{{ setTaskType }}" hint-size="100%,150px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Discussion topics" rows="{{ 3 }}" placeholder="List the topics to be discussed during the speaking practice" hint-size="100%,110px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Restrictions or guidelines" rows="{{ 2 }}" placeholder="Any specific restrictions or guidelines for this speaking practice" hint-size="100%,90px"></x-import>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="AI character" value="Layla Mansour" options="{{ chars }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Practice duration (minutes)" value="8" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Priority" value="High" options="{{ prios }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Status" value="Active" options="{{ statuses }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Assign to" value="Course level" options="{{ assignTo }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Due date" value="Aug 28, 2026" hint-size="100%,64px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Assigned by" value="Nour Hassan" options="{{ teachers }}" hint-size="100%,64px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.vocabForm }}" onClose="{{ close }}" overline="LEVEL A2" title="Add vocabulary" primary-label="Add vocabulary" onPrimary="{{ d.vocab }}" secondary-label="Cancel" width="{{ 560 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Word" placeholder="recommend" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Category" value="Verb" options="{{ wordCats }}" hint-size="100%,64px"></x-import>
+    </div>
+    <div style="font-size: 13px; font-weight: 600;">Tenses</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: -8px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Present" placeholder="recommend" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Past" placeholder="recommended" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Past participle" placeholder="recommended" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Present participle" placeholder="recommending" hint-size="100%,64px"></x-import>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.idiomForm }}" onClose="{{ close }}" overline="LEVEL A2" title="Add idiom" primary-label="Add idiom" onPrimary="{{ d.idiom }}" secondary-label="Cancel" width="{{ 520 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Idiom" placeholder="a piece of cake" hint-size="100%,64px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Meaning" placeholder="Very easy" hint-size="100%,64px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Example" rows="{{ 2 }}" placeholder="The test was a piece of cake." hint-size="100%,90px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.importStudents }}" onClose="{{ close }}" overline="STUDENTS" title="Import students" subtitle="Upload a CSV with columns name, email, course, level and tier." primary-label="Import" onPrimary="{{ d.import }}" secondary-label="Cancel" footnote="Students receive an invitation email once imported." width="{{ 520 }}" hint-size="0px,0px">
+    <div style="border: 1.5px dashed var(--sg-purple-300); background: var(--sg-primary-soft); border-radius: 12px; padding: 28px; text-align: center;">
+      <div style="font-size: 14px; font-weight: 600; color: var(--sg-primary-ink);">Select file</div>
+      <div style="font-size: 12px; color: var(--sg-ink-muted); margin-top: 4px;">CSV or XLSX, up to 2,000 rows</div>
+    </div>
+    <span style="font-size: 13px; font-weight: 600; color: var(--sg-link); cursor: pointer;">Download template</span>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.invitationCreate }}" onClose="{{ close }}" overline="STUDENTS" title="Create invitation link" subtitle="Anyone with the link can register as a student until it expires or reaches its limit." primary-label="Generate invitation link" onPrimary="{{ d.invite }}" secondary-label="Cancel" width="{{ 580 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgRadioGroup" label="Invitation type" options="{{ invTypes }}" value="{{ invType }}" onChange="{{ setInvType }}" hint-size="100%,150px"></x-import>
+    <sc-if value="{{ invGroup }}" hint-placeholder-val="{{ false }}">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Select group" placeholder="Choose a group" value="A2 Morning" options="{{ groups }}" hint-size="100%,64px"></x-import>
+    </sc-if>
+    <sc-if value="{{ invGeneral }}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Select course" placeholder="Choose a course" value="General English" options="{{ courses }}" hint-size="100%,64px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Select level" placeholder="Choose a level" value="A1" options="{{ cefr }}" hint-size="100%,64px"></x-import>
+      </div>
+    </sc-if>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Expires in" value="30 days" options="{{ expiries }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Maximum uses" placeholder="Unlimited (leave empty)" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Welcome message" hint="Optional · shown on the registration page" rows="{{ 2 }}" hint-size="100%,100px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSwitch" boxed="{{ true }}" on="{{ true }}" label="Require email verification" note="Students confirm their email before their first session" hint-size="100%,56px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.groupForm }}" onClose="{{ close }}" overline="GROUPS" title="Create group" subtitle="A group pairs a course level with a teacher and a cohort of students." primary-label="Create group" onPrimary="{{ d.group }}" secondary-label="Cancel" width="{{ 580 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Group name" placeholder="A2 Morning" hint-size="100%,64px"></x-import>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Course" value="General English" options="{{ courses }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Level" value="A2" options="{{ cefr }}" hint-size="100%,64px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Teacher" value="Nour Hassan" options="{{ teachers }}" hint-size="100%,64px"></x-import>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Start date" value="Sep 1, 2026" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="End date" value="Dec 20, 2026" hint-size="100%,64px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgChipGroup" label="Days" options="{{ days }}" value="{{ daySel }}" hint-size="100%,70px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.groupInvite }}" onClose="{{ close }}" overline="A2 MORNING" title="Invite students" subtitle="Share the group link or add existing students. 1 seat left of 25." primary-label="Add 0 students" onPrimary="{{ d.groupInvite }}" secondary-label="Close" width="{{ 520 }}" hint-size="0px,0px">
+    <div style="display: flex; gap: 10px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" value="https://cairolc.speakingenie.com/join/a2m-7Kq2" read-only="{{ true }}" style="flex: 1;" hint-size="100%,40px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" hint-size="70px,40px">Copy</x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Add existing students" prefix="⌕" placeholder="Search by name or email" hint-size="100%,64px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.userInvite }}" onClose="{{ close }}" overline="USERS" title="Invite user" subtitle="They get an email to set a password. Invited users occupy a seat once they accept." primary-label="Send invitation" onPrimary="{{ d.user }}" secondary-label="Cancel" width="{{ 520 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Full name" placeholder="Rana Samir" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" placeholder="rana@cairolc.com" hint-size="100%,64px"></x-import>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Role" value="Teacher" options="{{ roles }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Specialty" placeholder="Young learners" hint="Optional" hint-size="100%,80px"></x-import>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.userEdit }}" onClose="{{ close }}" overline="USERS" title="Edit user" primary-label="Save changes" onPrimary="{{ d.userEdit }}" secondary-label="Cancel" danger-label="Delete user" onDanger="{{ o.confirmDeleteUser }}" width="{{ 520 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Full name" value="Nour Hassan" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" value="nour@cairolc.com" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Role" value="Teacher" options="{{ roles }}" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Specialty" value="Conversation" hint-size="100%,64px"></x-import>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.roleCreate }}" onClose="{{ close }}" overline="ROLES" title="Create role" subtitle="Add a role, then grant permissions by area. System roles cannot be modified." primary-label="Create role" onPrimary="{{ d.role }}" secondary-label="Cancel" width="{{ 500 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Role name" placeholder="e.g. Coordinator" hint-size="100%,64px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Key" value="coordinator" read-only="{{ true }}" hint="Generated from the name" hint-size="100%,80px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Start from" value="Teacher" options="{{ roles }}" hint-size="100%,64px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.reportRequest }}" onClose="{{ close }}" overline="REPORTS" title="Request report" subtitle="Generate a report for a student or group, with an optional recurring schedule." primary-label="{{ repPrimary }}" onPrimary="{{ d.report }}" secondary-label="Cancel" width="{{ 580 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTabs" variant="segment" items="{{ repTypes }}" value="{{ repType }}" onChange="{{ setRepType }}" hint-size="260px,36px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="{{ repTargetLabel }}" value="{{ repTarget }}" options="{{ repTargets }}" hint-size="100%,64px"></x-import>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Start date" value="Aug 11, 2026" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="End date" value="Aug 17, 2026" hint-size="100%,64px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSwitch" boxed="{{ true }}" on="{{ recurring }}" onChange="{{ setRecurring }}" label="Set up recurring report schedule" note="Generate automatically on a fixed day" hint-size="100%,56px"></x-import>
+    <sc-if value="{{ recurring }}" hint-placeholder-val="{{ false }}">
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Frequency" value="Weekly" options="{{ freqs }}" hint-size="100%,64px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Day of week" value="Sunday" options="{{ weekdays }}" hint-size="100%,64px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Time" value="08:00" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Report period (days)" value="7" numeric="{{ true }}" hint="How many days of data to include in each report" hint-size="100%,80px"></x-import>
+    </sc-if>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.tierEdit }}" onClose="{{ close }}" overline="CONSUMPTION" title="Edit tier" subtitle="Changing a tier's ceiling applies from the next billing month." primary-label="Save tier" onPrimary="{{ d.tier }}" secondary-label="Cancel" footnote="168 students hold this tier." width="{{ 480 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Tier name" value="Regular" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Hours per month" value="20" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSwitch" boxed="{{ true }}" on="{{ true }}" label="Block sessions at the ceiling" note="Otherwise students can go over and are flagged" hint-size="100%,56px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.payoutRequest }}" onClose="{{ close }}" overline="INCENTIVES" title="Request payout" subtitle="Available balance E£6,840 · minimum payout E£2,500" primary-label="Submit request" onPrimary="{{ d.payout }}" secondary-label="Cancel" footnote="Payouts are processed monthly." width="{{ 500 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Amount" value="E£6,840" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgRadioGroup" label="Method" options="{{ payMethods }}" value="bank" hint-size="100%,150px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Account details" placeholder="Enter bank account number or IBAN" hint-size="100%,64px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.settingsLevel }}" onClose="{{ close }}" overline="COMPANY PROFILE" title="Add level" subtitle="Levels are shared by every course in the workspace." primary-label="Add level" onPrimary="{{ d.settingsLevel }}" secondary-label="Cancel" width="{{ 480 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: 1fr 1.6fr; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Code" placeholder="C1" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Name" placeholder="Advanced" hint-size="100%,64px"></x-import>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Description" rows="{{ 2 }}" hint-size="100%,90px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.aiPlan }}" onClose="{{ close }}" placement="drawer" overline="SET UP WITH AI" title="Review and edit plan" subtitle="Nothing is created until you apply. Remove or rename anything first." primary-label="Apply plan" onPrimary="{{ o.aiApplying }}" secondary-label="Back" footnote="4 levels · 48 tasks · 240 vocabularies · 60 idioms" width="{{ 620 }}" hint-size="0px,0px">
+    <sc-for list="{{ plan }}" as="p" hint-placeholder-count="4">
+      <div style="border: 1px solid var(--sg-border); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="info" hint-size="40px,22px">{{ p.code }}</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" value="{{ p.name }}" size="md" style="flex: 1;" hint-size="100%,38px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" size="sm" hint-size="110px,32px">Remove level</x-import>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 12px; color: var(--sg-ink-muted);">
+          <div><div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;">Tasks</div><div style="color: var(--sg-ink-2); line-height: 1.5;">{{ p.tasks }}</div></div>
+          <div><div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;">Vocabularies</div><div style="color: var(--sg-ink-2); line-height: 1.5;">{{ p.vocab }}</div></div>
+          <div><div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;">Idioms</div><div style="color: var(--sg-ink-2); line-height: 1.5;">{{ p.idioms }}</div></div>
+        </div>
+      </div>
+    </sc-for>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.aiApplying }}" onClose="{{ close }}" overline="SET UP WITH AI" title="Applying course plan" subtitle="Creating levels, tasks, vocabularies and idioms. You can leave this page; we will notify you when it is done." primary-label="Done" onPrimary="{{ d.aiDone }}" width="{{ 500 }}" hint-size="0px,0px">
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Levels" value="4 / 4" pct="{{ 100 }}" tone="var(--sg-success-solid)" hint-size="100%,32px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Tasks" value="31 / 48" pct="{{ 65 }}" hint-size="100%,32px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Vocabularies" value="0 / 240" pct="{{ 0 }}" hint-size="100%,32px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Idioms" value="0 / 60" pct="{{ 0 }}" hint-size="100%,32px"></x-import>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.otp }}" onClose="{{ close }}" overline="CREATE ACCOUNT" title="Verify your phone number" subtitle="Enter the 6-digit code we sent to +20 100 412 7781. It expires in 10 minutes." primary-label="Verify and continue" onPrimary="{{ d.otp }}" secondary-label="Change number" footnote="Didn't get it? Resend in 0:42" width="{{ 460 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;" dir="ltr">
+      <sc-for list="{{ otpDigits }}" as="d" hint-placeholder-count="6">
+        <div style="height: 52px; border: 1px solid {{ d.border }}; border-radius: 10px; background: var(--sg-surface); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; box-shadow: {{ d.ring }};">{{ d.v }}</div>
+      </sc-for>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.appDownload }}" onClose="{{ close }}" overline="REGISTRATION COMPLETE" title="Get the Speaking Genie app" subtitle="Speaking practice happens in the mobile app. Sign in with the email and password you just created." primary-label="Done" onPrimary="{{ close }}" width="{{ 480 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <sc-for list="{{ stores }}" as="st" hint-placeholder-count="2">
+        <div style="border: 1px solid var(--sg-border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+          <div style="width: 112px; height: 112px; border-radius: 10px; border: 1.5px dashed var(--sg-border-strong); background: var(--sg-surface-subtle); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--sg-ink-muted); text-align: center;">QR code</div>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="md" full-width="{{ true }}" hint-size="100%,36px">{{ st }}</x-import>
+        </div>
+      </sc-for>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.assignTier }}" onClose="{{ close }}" overline="CONSUMPTION" title="Assign tier" subtitle="3 students selected. The new ceiling applies from the next billing month." primary-label="Assign tier" onPrimary="{{ d.assignTier }}" secondary-label="Cancel" width="{{ 520 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgChipGroup" label="Students" options="{{ tierStudents }}" value="{{ tierStudents }}" hint-size="100%,70px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgRadioGroup" label="Tier" options="{{ tierOpts }}" value="regular" hint-size="100%,260px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.notifDetail }}" onClose="{{ close }}" placement="drawer" overline="BILLING · CRITICAL" title="3 students are over their consumption tier" subtitle="Today, 09:12" primary-label="Open consumption" onPrimary="{{ goConsumption }}" secondary-label="Close" danger-label="Delete" onDanger="{{ d.notifDelete }}" width="{{ 480 }}" hint-size="0px,0px">
+    <div style="font-size: 14px; line-height: 1.6; color: var(--sg-ink-2);">Karim Saleh, Farida Magdy and Ali Hamdy reached their monthly ceiling. Their sessions are blocked until you recharge the wallet or move them to a higher tier.</div>
+    <div style="border: 1px solid var(--sg-border); border-radius: 12px; overflow: hidden;">
+      <sc-for list="{{ notifInfo }}" as="r" hint-placeholder-count="4">
+        <div style="display: flex; justify-content: space-between; gap: 12px; padding: 11px 14px; border-bottom: 1px solid var(--sg-divider); font-size: 13px;"><span style="color: var(--sg-ink-muted);">{{ r.k }}</span><span style="font-weight: 600;">{{ r.v }}</span></div>
+      </sc-for>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" onClick="{{ d.notifRead }}" hint-size="110px,32px">Mark as read</x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" onClick="{{ d.notifArchive }}" hint-size="80px,32px">Archive</x-import>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.notifConversation }}" onClose="{{ close }}" placement="drawer" overline="PERFORMANCE · HIGH" title="Mahmoud Youssef needs help with past simple" subtitle="A2 Morning · Ordering at a café · Session Aug 17, 09:41 · 8:12" primary-label="Review session" onPrimary="{{ goStudent }}" secondary-label="Close" width="{{ 560 }}" hint-size="0px,0px">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--sg-border); background: var(--sg-surface-subtle);">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Overall" value="66" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Accuracy" value="58" value-color="var(--sg-danger)" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Past simple errors" value="7" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+    </div>
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sg-ink-muted);">From the conversation</div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <sc-for list="{{ convo }}" as="m" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: {{ m.align }};">
+          <div style="font-size: 11px; color: var(--sg-ink-muted); font-variant-numeric: tabular-nums;">{{ m.who }} · {{ m.t }}</div>
+          <div style="max-width: 88%; padding: 10px 13px; border-radius: 12px; font-size: 14px; line-height: 1.55; background: {{ m.bg }}; border: 1px solid {{ m.bd }}; color: var(--sg-ink);" dir="ltr">{{ m.text }}</div>
+          <sc-if value="{{ m.isFix }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width: 88%; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 12px;" dir="ltr">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="{{ m.tone }}" size="sm" hint-size="90px,20px">{{ m.tag }}</x-import>
+              <span style="color: var(--sg-danger); text-decoration: line-through;">{{ m.wrong }}</span>
+              <span style="color: var(--sg-ink-muted);">→</span>
+              <span style="color: var(--sg-success); font-weight: 600;">{{ m.right }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ m.isStrength }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width: 88%; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 12px;" dir="ltr">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="success" size="sm" hint-size="90px,20px">{{ m.tag }}</x-import>
+              <span style="color: var(--sg-ink-muted);">{{ m.right }}</span>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAlert" tone="info" title="Suggested next step" description="Assign Describing your weekend; it asks for 6+ past-simple verbs. Mahmoud used go, buy and eat correctly in 2 of 9 attempts this week." hint-size="100%,72px"></x-import>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" onClick="{{ o.taskForm }}" hint-size="130px,32px">Assign practice</x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" onClick="{{ d.notifRead }}" hint-size="110px,32px">Mark as read</x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" size="sm" hint-size="110px,32px">Play recording</x-import>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.sessionSummary }}" onClose="{{ close }}" placement="drawer" overline="SESSION SUMMARY · AUG 17, 09:41" title="Give travel directions" subtitle="Mahmoud Youssef · Layla (AI) · General English · Level A2" primary-label="Assign again" onPrimary="{{ o.taskForm }}" secondary-label="Close" width="{{ 600 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAlert" tone="warning" title="Task not completed." description="The student ended the session before covering all discussion topics." hint-size="100%,60px"></x-import>
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 10px; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--sg-border); background: var(--sg-surface-subtle); align-items: center;">
+      <div>
+        <div style="display: flex; align-items: baseline; gap: 8px;"><div style="font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums;">65%</div><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="warning" size="sm" hint-size="110px,20px">Needs practice</x-import></div>
+        <div style="font-size: 12px; color: var(--sg-ink-muted); margin-top: 2px;">Overall performance</div>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Messages" value="4" size="{{ 20 }}" hint-size="100%,44px"></x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Duration" value="01:37" size="{{ 20 }}" hint-size="100%,44px"></x-import>
+    </div>
+    <div>
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sg-ink-muted); margin-bottom: 6px;">Task goal</div>
+      <div style="font-size: 14px; line-height: 1.55; color: var(--sg-ink-2);">Help a tourist reach the Egyptian Museum using clear, step-by-step directions and direction vocabulary.</div>
+    </div>
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sg-ink-muted);">Transcript</div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <sc-for list="{{ ssTurns }}" as="m" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column; gap: 4px; align-items: {{ m.align }};">
+          <div style="font-size: 11px; color: var(--sg-ink-muted); font-variant-numeric: tabular-nums;">{{ m.who }} · {{ m.t }}</div>
+          <div style="max-width: 88%; padding: 10px 13px; border-radius: 12px; font-size: 14px; line-height: 1.55; background: {{ m.bg }}; border: 1px solid {{ m.bd }};">{{ m.text }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sg-ink-muted);">Areas for improvement</div>
+    <sc-for list="{{ ssAreas }}" as="a" hint-placeholder-count="3">
+      <div style="border: 1px solid var(--sg-border); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;"><div style="font-size: 14px; font-weight: 700;">{{ a.t }}</div><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="{{ a.tone }}" size="sm" caps="{{ true }}" hint-size="110px,20px">{{ a.p }}</x-import></div>
+        <div style="font-size: 13px; line-height: 1.55; color: var(--sg-ink-2);"><span style="font-weight: 700;">Problem · </span>{{ a.problem }}</div>
+        <div style="font-size: 13px; line-height: 1.55; color: var(--sg-ink-2);"><span style="font-weight: 700;">Suggestion · </span>{{ a.sug }}</div>
+        <div style="padding: 10px 12px; border-radius: 10px; background: var(--sg-info-soft); color: var(--sg-info); font-size: 13px; line-height: 1.5;"><span style="font-weight: 700;">Practice tip · </span>{{ a.tip }}</div>
+      </div>
+    </sc-for>
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sg-ink-muted);">Strengths</div>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <sc-for list="{{ ssStrengths }}" as="g" hint-placeholder-count="3">
+        <div style="display: flex; gap: 10px; font-size: 13px; line-height: 1.55;"><span style="color: var(--sg-success); font-weight: 700;">✓</span><span><span style="font-weight: 700;">{{ g.t }} · </span><span style="color: var(--sg-ink-2);">{{ g.n }}</span></span></div>
+      </sc-for>
+    </div>
+    <div style="padding: 14px 16px; border-radius: 12px; background: var(--sg-primary-soft); font-size: 13px; line-height: 1.6; color: var(--sg-ink);"><span style="font-weight: 700;">Message shown to the student · </span>Good effort helping the tourist. You used the key words well. With more practice on past and present forms and clearer step-by-step directions, you will improve quickly.</div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.paySuccess }}" onClose="{{ close }}" overline="BILLING" title="Payment successful" subtitle="Your payment has been processed and 250 hours were added to the wallet." primary-label="OK" onPrimary="{{ close }}" width="{{ 460 }}" hint-size="0px,0px">
+    <div style="border: 1px solid var(--sg-border); border-radius: 12px; overflow: hidden;">
+      <sc-for list="{{ payInfo }}" as="r" hint-placeholder-count="4">
+        <div style="display: flex; justify-content: space-between; gap: 12px; padding: 11px 14px; border-bottom: 1px solid var(--sg-divider); font-size: 13px;"><span style="color: var(--sg-ink-muted);">{{ r.k }}</span><span style="font-weight: 600; font-variant-numeric: tabular-nums;">{{ r.v }}</span></div>
+      </sc-for>
+    </div>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.payFailed }}" onClose="{{ close }}" destructive="{{ true }}" title="Payment failed" subtitle="Your payment could not be processed. No hours were added. Try again, or contact support if it keeps happening." primary-label="Try again" onPrimary="{{ o.recharge }}" secondary-label="Close" width="{{ 460 }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAlert" tone="danger" title="Reason" description="Card declined by issuer (insufficient funds) · Ref TST2612950087" hint-size="100%,60px"></x-import>
+  </x-import>
+
+  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgModal" open="{{ f.confirm }}" onClose="{{ close }}" destructive="{{ true }}" title="{{ cf.title }}" subtitle="{{ cf.sub }}" primary-label="{{ cf.btn }}" onPrimary="{{ d.confirm }}" secondary-label="Cancel" width="{{ 460 }}" hint-size="0px,0px"></x-import>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { hours: 250, taskType: "topic", invType: "general", repType: "Student", recurring: false };
+  renderVals() {
+    const P = this.props, flow = P.flow || "", close = P.close || (() => {}), done = P.done || (() => {});
+    const key = { "billing.recharge": "recharge" }[flow] || (flow.startsWith("confirm") ? "confirm" : flow);
+    const f = new Proxy({}, { get: (_, k) => key === k, has: () => true });
+    const fmt = n => "E£" + n.toLocaleString("en-US");
+    const CONF = {
+      confirmDeleteLevel: ["Delete level", "Level A2 and its 24 tasks, 120 words and 30 idioms will be removed. Completed tasks stay in student history.", "Delete level"],
+      confirmDeleteTask: ["Delete task", "Ordering at a café will be removed from Level A2. 48 completed attempts stay in student history.", "Delete task"],
+      confirmDeleteCharacter: ["Delete character", "Layla Mansour is used in 14 tasks. Those tasks will need a new character.", "Delete character"],
+      confirmDeleteUser: ["Delete user", "Nour Hassan will lose access immediately. Her 3 groups need a new teacher.", "Delete user"],
+      "confirm.resetOnboarding": ["Reset onboarding data", "Tour progress and checklist state will be cleared for all 24 users.", "Reset data"],
+      "confirm.cancelSubscription": ["Cancel subscription", "Enterprise stays active until Dec 31, 2026 and will not renew. This cannot be undone.", "Cancel subscription"],
+      "confirm.leave": ["Leave workspace", "You will lose access to Cairo Language Center immediately.", "Leave workspace"]
+    };
+    const cf = CONF[flow] || ["", "", ""];
+    const h = this.state.hours;
+    const D = (t) => () => done(t);
+    return {
+      any: !!flow, f, close,
+      o: new Proxy({}, { get: (_, k) => () => (P.open ? P.open(k) : null), has: () => true }),
+      d: {
+        recharge: () => P.open && P.open("paySuccess"), plan: D("Redirecting to checkout"), ai: () => P.open && P.open("aiPlan"), aiDone: D("Course setup complete"), otp: D("Phone number verified"), assignTier: D("Tier assigned to 3 students"), notifDelete: D("Notification removed"), notifRead: D("Notification marked as read"), notifArchive: D("Notification archived"), level: D("Level updated"), task: D("Task created"), vocab: D("Vocabulary added"), idiom: D("Idiom added"),
+        import: D("Import started"), invite: D("Invitation link created"), group: D("Group created"), groupInvite: D("Students invited"), user: D("Invitation sent"), userEdit: D("User updated"), role: D("Role created"),
+        report: D(this.state.recurring ? "Schedule created" : "Report requested"), tier: D("Tier updated"), payout: D("Payout request submitted"), settingsLevel: D("Level added"), confirm: D(cf[0] + " — done")
+      },
+      hoursStr: String(h), setHours: e => this.setState({ hours: parseInt(e.target.value.replace(/\D/g, "")) || 0 }),
+      quick: ["100", "250", "500", "1000"], quickSel: [String(h)], pickQuick: v => v.length && this.setState({ hours: parseInt(v[v.length - 1]) }),
+      total: fmt(h * 180), payLabel: "Pay " + fmt(h * 180),
+      cefr: ["Pre-A1", "A1", "A2", "B1", "B2"], speeds: ["0.8×", "0.85×", "0.9×", "1.0×", "1.1×"],
+      kpiOpts: ["Fluency", "Grammar accuracy", "Vocabulary range", "Speaking time share", "Pronunciation"], kpiSel: ["Fluency", "Grammar accuracy", "Vocabulary range", "Speaking time share"],
+      taskTypes: [{ value: "time", label: "Time-based", note: "Student speaks for a set duration on an open prompt" }, { value: "topic", label: "Topic-based", note: "Conversation must cover the listed discussion topics" }],
+      taskType: this.state.taskType, setTaskType: v => this.setState({ taskType: v }),
+      chars: ["Layla Mansour", "James Carter", "Maya Rossi", "Sam Kim"], prios: ["Low", "Medium", "High"], statuses: ["Draft", "Active", "Archived"], assignTo: ["Course level", "Group", "Student"],
+      teachers: ["Nour Hassan", "Ahmed Mostafa", "Rana Samir"], wordCats: ["Noun", "Verb", "Adjective", "Adverb", "Phrasal verb"],
+      invTypes: [{ value: "general", label: "General enrollment", note: "Students pick up a course and level" }, { value: "group", label: "Group-specific", note: "Students join one group directly" }],
+      invType: this.state.invType, setInvType: v => this.setState({ invType: v }), invGroup: this.state.invType === "group", invGeneral: this.state.invType !== "group",
+      groups: ["A2 Morning", "B1 Evening", "Pre-A1 Kids", "Business B1"], courses: ["General English", "Business English", "Young Learners", "IELTS Speaking"],
+      expiries: ["7 days", "14 days", "30 days", "90 days"], days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], daySel: ["Sun", "Tue", "Thu"],
+      roles: ["Admin", "Teacher", "Head of academics", "Finance"],
+      repTypes: ["Student", "Group"], repType: this.state.repType, setRepType: v => this.setState({ repType: v }),
+      repTargetLabel: this.state.repType === "Student" ? "Target student" : "Target group",
+      repTarget: this.state.repType === "Student" ? "Mahmoud Youssef" : "A2 Morning",
+      repTargets: this.state.repType === "Student" ? ["Mahmoud Youssef", "Laila Adel", "Karim Saleh"] : ["A2 Morning", "B1 Evening", "Pre-A1 Kids"],
+      recurring: this.state.recurring, setRecurring: v => this.setState({ recurring: v }),
+      repPrimary: this.state.recurring ? "Create schedule" : "Request report",
+      freqs: ["One-time", "Daily", "Weekly", "Monthly"], weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      payMethods: [{ value: "bank", label: "Bank transfer", note: "2–3 business days" }, { value: "paypal", label: "PayPal" }, { value: "stripe", label: "Stripe" }],
+      cf: { title: cf[0], sub: cf[1], btn: cf[2] },
+      plan: [["A1", "Workplace basics", "Introducing yourself · Office small talk · Asking for help", "colleague, deadline, meeting room …", "on the same page …"], ["A2", "Everyday meetings", "Scheduling a meeting · Giving updates · Phone calls", "agenda, postpone, follow up …", "touch base, run late …"], ["B1", "Presenting and persuading", "Presenting a project · Handling questions · Negotiating terms", "proposal, budget, stakeholder …", "ballpark figure, win-win …"], ["B2", "Leading discussions", "Chairing a meeting · Giving feedback · Resolving conflict", "consensus, escalate, trade-off …", "think outside the box …"]].map(([code, name, tasks, vocab, idioms]) => ({ code, name, tasks, vocab, idioms })),
+      otpDigits: ["4", "8", "1", "", "", ""].map((v, i) => ({ v, border: i === 3 ? "var(--sg-primary)" : "var(--sg-border-strong)", ring: i === 3 ? "0 0 0 3px rgba(109,40,217,.18)" : "none" })),
+      stores: ["App Store", "Google Play"],
+      tierStudents: ["Karim Saleh", "Farida Magdy", "Ali Hamdy"],
+      tierOpts: [{ value: "light", label: "Light · 10 hrs/month" }, { value: "regular", label: "Regular · 20 hrs/month" }, { value: "heavy", label: "Heavy · 35 hrs/month" }, { value: "intensive", label: "Intensive · 50 hrs/month" }],
+      notifInfo: [["Module", "Billing"], ["Priority", "Critical"], ["Status", "New"], ["Students affected", "3"]].map(([k, v]) => ({ k, v })),
+      payInfo: [["Transaction ref", "TST2614809321"], ["Hours", "250"], ["Amount", "E£45,000"], ["New balance", "434.5 hrs"]].map(([k, v]) => ({ k, v })),
+      goConsumption: () => { close(); P.go && P.go("consumption"); },
+      goStudent: () => { close(); P.go && P.go("studentDetail"); },
+      ssTurns: [
+        ["ai", "Layla (AI)", "00:04", "Excuse me, I'm a tourist. Can you help me find the Egyptian Museum?"],
+        ["st", "Mahmoud", "00:12", "Welcome to Egypt. Are you asking for the Egyptian Museum?"],
+        ["st", "Mahmoud", "00:31", "First of all, you have to go upstairs from here and once you had the ground, you will walk straight for about 200 m then turn left."],
+        ["st", "Mahmoud", "00:52", "Keep the street as you're walking then you will count five building on your right hand then you will turn left again and you will find the museum on your right hand."]
+      ].map(([w, who, t, text]) => ({ who, t, text, align: w === "st" ? "flex-end" : "flex-start", bg: w === "st" ? "var(--sg-primary-soft)" : "var(--sg-surface)", bd: w === "st" ? "var(--sg-primary-border, var(--sg-purple-200))" : "var(--sg-border)" })),
+      ssAreas: [
+        { t: "Grammar", p: "High priority", tone: "danger", problem: "Used the past form 'had' instead of the present or 'get to'.", sug: "Say 'when you get to the ground floor' instead of 'once you had the ground'.", tip: "Review tenses for giving directions. Practise 'when you reach…' and 'once you are at…'." },
+        { t: "Clarity of directions", p: "Medium priority", tone: "warning", problem: "Sentences were long and could confuse the tourist.", sug: "Split directions into shorter steps: 'Go straight for 200 meters. Then, turn left.'", tip: "Write three steps to guide someone to a place you know. Read them aloud and simplify." },
+        { t: "Connectors", p: "Medium priority", tone: "warning", problem: "Some sentences lack clear linking words for the sequence.", sug: "Use Then, After that, Next: 'First, go upstairs. Then, walk straight.'", tip: "List 5–7 basic connectors and use each one in a different direction sentence." }
+      ],
+      ssStrengths: [["Basic communication", "Opened the conversation in a friendly way and tried to help the tourist."], ["Key vocabulary use", "Used target words such as 'turn left' and 'go straight' correctly."], ["Sentence construction", "Built complete sentences to give directions."]].map(([t, n]) => ({ t, n })),
+      convo: [
+        ["ai", "Layla (AI)", "00:42", "Good morning. What did you have for breakfast yesterday?"],
+        ["st", "Mahmoud", "00:47", "Yesterday I go to the café and I eat eggs and bread.", "Past simple", "danger", "I go … I eat", "I went … I ate"],
+        ["ai", "Layla (AI)", "00:55", "That sounds nice. Did you order anything to drink?"],
+        ["st", "Mahmoud", "01:02", "Yes, I buyed a tea with milk. It was very good.", "Irregular verb", "danger", "buyed", "bought"],
+        ["st", "Mahmoud", "03:18", "Could I have the bill, please? I'd like to pay by card.", "Strength", "success", "", "Polite request used correctly"]
+      ].map(([w, who, t, text, tag, tone, wrong, right]) => ({ who, t, text, tag, tone, wrong, right, isFix: !!tag && tone !== "success", isStrength: tone === "success", align: w === "st" ? "flex-end" : "flex-start", bg: w === "st" ? "var(--sg-primary-soft)" : "var(--sg-surface)", bd: w === "st" ? "var(--sg-primary-border, var(--sg-purple-200))" : "var(--sg-border)" }))
+    };
+  }
+}
+</script>
+</body>
+</html>

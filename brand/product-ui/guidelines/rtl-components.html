@@ -1,0 +1,19 @@
+<!-- @dsCard group="RTL & Arabic" viewport="700x340" name="Components in Arabic (RTL)" subtitle="dir="rtl" lang="ar" — mirrored via logical properties" -->
+<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script><style>body{margin:0;padding:20px;background:var(--sg-canvas)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const { SgButton, SgBadge, SgTag, SgInput, SgSelect, SgSwitch, SgCard, SgMetricCard, SgProgress, SgTabs, SgAlert, SgBreadcrumbs, SgPagination, SgAvatar } = window.SpeakingGenieDesignSystem_9bb41a;
+function Demo(){const [t,setT]=React.useState("r");return(<div style={{display:"flex",flexDirection:"column",gap:16}}>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><SgBreadcrumbs items={["الدورات","الإنجليزية العامة","المستوى A2"]} /><div style={{display:"flex",gap:10}}><SgButton variant="secondary">مصفوفة التدقيق</SgButton><SgButton>إنشاء دور</SgButton></div></div>
+<SgTabs items={[{value:"r",label:"قائمة الطلاب"},{value:"c",label:"المحتوى والجدولة"},{value:"a",label:"التحليلات"}]} value={t} onChange={setT} />
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+<SgCard padding={20}><div style={{display:"flex",flexDirection:"column",gap:14}}><SgInput label="اسم الدورة" defaultValue="الإنجليزية للأعمال" /><SgInput prefix="⌕" placeholder="ابحث عن الطلاب…" kbd="⌘K" /><SgSwitch on label="إيقاف الجلسات عند تجاوز الطالب فئته" note="عند الإيقاف، تتحمّل محفظة مساحة العمل الزيادة" /></div></SgCard>
+<div style={{display:"flex",flexDirection:"column",gap:12}}><SgMetricCard label="الطلاب النشطون" value="359" note="↑ 12 هذا الشهر" noteTone="success" /><div style={{display:"flex",alignItems:"center",gap:10}}><SgAvatar initials="MY" /><div><div style={{fontWeight:600}}>Mahmoud Youssef</div><div style={{fontSize:12,color:"var(--sg-ink-muted)"}}>المستوى A2: مستخدم أساسي</div></div><div style={{flex:1}}></div><SgBadge tone="success">نشط</SgBadge></div><SgProgress value={34} showValue /><div style={{display:"flex",gap:8}}><SgTag variant="key">students.index</SgTag><SgTag>الإنجليزية العامة</SgTag></div></div>
+</div>
+<div style={{border:"1px solid var(--sg-border)",borderRadius:12,background:"var(--sg-surface)"}}><SgPagination summary="1–6 من 359" page={1} pageCount={3} /></div>
+</div>)}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script></body></html>

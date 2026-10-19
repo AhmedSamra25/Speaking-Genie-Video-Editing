@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../_ds_bundle.js"></script>
+</helmet>
+<div style="min-height: 100vh; background: var(--sg-canvas); color: var(--sg-ink); display: flex; flex-direction: column; align-items: center; padding: 56px 24px 40px; box-sizing: border-box;">
+  <div style="margin-bottom: 32px;"><div style="display: flex; align-items: center;"><span class="sg-logo" role="img" aria-label="Speaking Genie" style="height: 40px;"></span></div></div>
+
+  <sc-if value="{{ s.signin }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Sign in" style="width: 100%; max-width: 420px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px" hint-size="100%,440px">
+        <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Sign in to your account</h1>
+        <p style="margin: 6px 0 24px; font-size: 14px; color: var(--sg-ink-muted);">Use the email your workspace admin invited.</p>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" placeholder="m@example.com" type="email" hint-size="100%,64px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Password" type="password" placeholder="Your password" hint-size="100%,64px"></x-import>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCheckbox" label="Remember me" checked="{{ true }}" hint-size="120px,22px"></x-import>
+            <span onClick="{{ to.forgot }}" style="font-size: 13px; font-weight: 600; color: var(--sg-link); cursor: pointer;">Forgot password?</span>
+          </div>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" full-width="{{ true }}" onClick="{{ to.dashboard }}" hint-size="100%,40px">Sign in</x-import>
+        </div>
+      </x-import>
+      <p style="text-align: center; font-size: 13px; color: var(--sg-ink-muted); margin: 18px 0 0;">New to Speaking Genie? <span onClick="{{ to.register }}" style="color: var(--sg-link); font-weight: 600; cursor: pointer;">Create an account</span></p>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.register }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Register" style="width: 100%; max-width: 560px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px" hint-size="100%,640px">
+        <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Create your account</h1>
+        <p style="margin: 6px 0 24px; font-size: 14px; color: var(--sg-ink-muted);">Set up a workspace for your organisation. You can invite staff and students afterwards.</p>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Full name" placeholder="What should we call you?" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Organisation name" placeholder="What should we call your organisation?" hint-size="100%,64px"></x-import>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email address" placeholder="your@email.com" type="email" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Phone number" placeholder="+20 100 000 0000" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+          </div>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Address" placeholder="Your address" hint-size="100%,64px"></x-import>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Password" type="password" placeholder="Min. 8 characters" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Confirm password" type="password" placeholder="Re-enter password" hint-size="100%,64px"></x-import>
+          </div>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgRadioGroup" label="Type" options="{{ orgTypes }}" value="{{ orgType }}" onChange="{{ setOrgType }}" hint-size="100%,150px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" full-width="{{ true }}" onClick="{{ openOtp }}" hint-size="100%,40px">Create account</x-import>
+        </div>
+      </x-import>
+      <p style="text-align: center; font-size: 13px; color: var(--sg-ink-muted); margin: 18px 0 0;">Already have an account? <span onClick="{{ to.signin }}" style="color: var(--sg-link); font-weight: 600; cursor: pointer;">Sign in</span></p>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.forgot }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Forgot password" style="width: 100%; max-width: 420px;">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px" hint-size="100%,300px">
+        <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Forgot password</h1>
+        <p style="margin: 6px 0 24px; font-size: 14px; color: var(--sg-ink-muted);">Enter your email and we will send a link to reset your password. The link is valid for 60 minutes.</p>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAlert" tone="success" title="Check your inbox." description="If m@example.com has an account, a reset link is on its way." style="margin-bottom: 16px;" hint-size="100%,64px"></x-import>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" placeholder="m@example.com" type="email" hint-size="100%,64px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" full-width="{{ true }}" onClick="{{ send }}" hint-size="100%,40px">Send reset link</x-import>
+        </div>
+      </x-import>
+      <p style="text-align: center; font-size: 13px; color: var(--sg-ink-muted); margin: 18px 0 0;"><span onClick="{{ to.signin }}" style="color: var(--sg-link); font-weight: 600; cursor: pointer;">← Back to sign in</span></p>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.reset }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Reset password" style="width: 100%; max-width: 420px;">
+      <sc-if value="{{ invalid }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px" hint-size="100%,220px">
+          <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--sg-danger);">Invalid reset link</h1>
+          <p style="margin: 6px 0 24px; font-size: 14px; color: var(--sg-ink-muted);">This link has expired or was already used. Request a new one to continue.</p>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" full-width="{{ true }}" onClick="{{ to.forgot }}" hint-size="100%,40px">Request a new link</x-import>
+        </x-import>
+      </sc-if>
+      <sc-if value="{{ valid }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px" hint-size="100%,340px">
+          <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Reset password</h1>
+          <p style="margin: 6px 0 24px; font-size: 14px; color: var(--sg-ink-muted);">Choose a new password for admin@cairolc.com.</p>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="New password" type="password" placeholder="Enter your new password" hint="At least 8 characters" hint-size="100%,80px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Confirm password" type="password" placeholder="Confirm your new password" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" full-width="{{ true }}" onClick="{{ to.signin }}" hint-size="100%,40px">Reset password</x-import>
+          </div>
+        </x-import>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.joinGroup }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Join group" style="width: 100%; max-width: 480px;">
+      <sc-if value="{{ invalid }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px" hint-size="100%,200px">
+          <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Invalid invite link</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">This invitation has expired or reached its maximum uses. Ask your teacher for a new link.</p>
+        </x-import>
+      </sc-if>
+      <sc-if value="{{ valid }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px" hint-size="100%,520px">
+          <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sg-ink-muted);">Cairo Language Center invites you</div>
+          <h1 style="margin: 6px 0 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Join A2 Morning</h1>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0 22px; padding: 16px; border-radius: 12px; background: var(--sg-surface-subtle); border: 1px solid var(--sg-border);">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Course" value="General English" size="{{ 15 }}" hint-size="100%,40px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Level" value="A2 · Elementary" size="{{ 15 }}" hint-size="100%,40px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Teacher" value="Nour Hassan" size="{{ 15 }}" hint-size="100%,40px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Schedule" value="Sun · Tue · Thu, 09:00" size="{{ 15 }}" hint-size="100%,40px"></x-import>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Full name" placeholder="Your full name" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" placeholder="your@email.com" type="email" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Password" type="password" placeholder="Min. 8 characters" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" full-width="{{ true }}" onClick="{{ joined }}" hint-size="100%,40px">Join group</x-import>
+          </div>
+        </x-import>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.joinStudent }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Join as a student" style="width: 100%; max-width: 480px;">
+      <sc-if value="{{ invalid }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px" hint-size="100%,220px">
+          <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Invalid invitation</h1>
+          <p style="margin: 6px 0 22px; font-size: 14px; color: var(--sg-ink-muted);">This invitation has reached its maximum uses.</p>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="lg" full-width="{{ true }}" onClick="{{ to.signin }}" hint-size="100%,40px">Go to home</x-import>
+        </x-import>
+      </sc-if>
+      <sc-if value="{{ valid }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px" hint-size="100%,560px">
+          <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Join as a student</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Complete your registration to start learning with Cairo Language Center.</p>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 8px; padding: 16px; border-radius: 12px; background: var(--sg-surface-subtle); border: 1px solid var(--sg-border);">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Course" value="General English" size="{{ 15 }}" hint-size="100%,40px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Level" value="A1" size="{{ 15 }}" hint-size="100%,40px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Valid until" value="Sep 30, 2026" size="{{ 15 }}" hint-size="100%,40px"></x-import>
+          </div>
+          <div style="font-size: 12px; color: var(--sg-ink-muted); margin-bottom: 20px;">64 students already registered</div>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAlert" tone="info" description="Welcome to General English. Your first speaking task unlocks right after you register." style="margin-bottom: 18px;" hint-size="100%,52px"></x-import>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Full name" placeholder="Your full name" hint-size="100%,64px"></x-import>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" placeholder="your@email.com" type="email" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Phone" placeholder="+20 100 000 0000" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+            </div>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Password" type="password" placeholder="Min. 8 characters" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="lg" full-width="{{ true }}" onClick="{{ openApp }}" hint-size="100%,40px">Register now</x-import>
+          </div>
+        </x-import>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.notFound }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="404" style="width: 100%; max-width: 420px; text-align: center; padding-top: 40px;">
+      <div style="font-size: 56px; font-weight: 800; letter-spacing: -0.03em; color: var(--sg-link); font-variant-numeric: tabular-nums;">404</div>
+      <h1 style="margin: 8px 0 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Page not found</h1>
+      <p style="margin: 8px 0 24px; font-size: 14px; color: var(--sg-ink-muted);">The link may be broken, or the page was moved.</p>
+      <div style="display: flex; justify-content: center; gap: 10px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" onClick="{{ to.help }}" hint-size="110px,40px">Help center</x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ to.dashboard }}" hint-size="130px,40px">Return to home</x-import>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="margin-top: auto; padding-top: 40px; font-size: 12px; color: var(--sg-ink-muted);">© 2026 Speaking Genie · Privacy · Terms</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { orgType: "center", sent: false };
+  renderVals() {
+    const P = this.props, go = P.go || (() => {}), toast = P.toast || (() => {});
+    const ds = P.dataState || "default";
+    const s = new Proxy({}, { get: (_, k) => P.screen === k, has: () => true });
+    const to = new Proxy({}, { get: (_, k) => () => go(k), has: () => true });
+    const invalid = ds === "empty" || ds === "blocked";
+    return {
+      s, to, invalid, valid: !invalid,
+      openOtp: () => P.open && P.open("otp"), openApp: () => P.open && P.open("appDownload"),
+      orgTypes: [{ value: "center", label: "Learning center", note: "Language schools, academies, tutors" }, { value: "corporate", label: "Corporate / L&D", note: "Companies training their employees" }],
+      orgType: this.state.orgType, setOrgType: v => this.setState({ orgType: v }),
+      sent: this.state.sent, send: () => this.setState({ sent: true }),
+      joined: () => { toast("Registration successful", "Check your email to verify your account"); go("signin"); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -7,7 +7,6 @@ The kit is a working click-through of the platform. URL options pick what it sho
 from __future__ import annotations
 
 import functools
-import html
 import os
 import re
 import subprocess
@@ -40,7 +39,7 @@ def cards() -> list:
         src = re.search(r'<iframe[^>]+src="([^"]+)"', text)
         if not src or APP.replace(" ", "%20") not in src.group(1):
             continue
-        u = urlsplit(html.unescape(src.group(1)))
+        u = urlsplit(src.group(1).replace("&amp;", "&"))  # not html.unescape: it reads "&gtab" as "&gt;ab"
         opts = {k: v for k, v in parse_qsl(u.query, keep_blank_values=True) if k in OPTIONS}
         out.append({"id": f.stem, "name": name.group(1) if name else f.stem, "route": u.fragment or "dashboard", "options": opts})
     return out

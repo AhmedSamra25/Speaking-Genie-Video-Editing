@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="sg-helpers.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+</helmet>
+<sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+  <div style="display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 20px;">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 4 }}" height="{{ 36 }}" hint-size="240px,200px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" hint-size="100%,400px"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 10 }}" hint-size="100%,320px"></x-import></x-import>
+  </div>
+</sc-if>
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+
+  <!-- MY PROFILE -->
+  <sc-if value="{{ s.profile }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="My profile">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">My profile</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Your personal account. Changes here do not affect other users.</p>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ save }}" hint-size="120px,40px">Save changes</x-import>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Personal information" hint-size="100%,320px">
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAvatar" initials="AU" size="{{ 64 }}" variant="brand" hint-size="64px,64px"></x-import>
+              <div style="display: flex; gap: 8px;">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" hint-size="110px,32px">Upload photo</x-import>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" size="sm" hint-size="80px,32px">Remove</x-import>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Full name" value="Admin User" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" value="admin@cairolc.com" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Phone" value="+20 122 555 0198" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Role" value="Admin" read-only="{{ true }}" hint-size="100%,64px"></x-import>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Password" description="Use at least 8 characters" hint-size="100%,220px">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Current password" type="password" value="••••••••••" hint-size="100%,64px"></x-import>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="New password" type="password" placeholder="Min. 8 characters" hint-size="100%,64px"></x-import>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Confirm new password" type="password" placeholder="Re-enter password" hint-size="100%,64px"></x-import>
+              </div>
+            </div>
+          </x-import>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Preferences" padding="20px 22px" hint-size="100%,200px">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Language" value="English" options="{{ uiLangs }}" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSwitch" on="{{ true }}" label="Weekly summary email" note="Every Sunday at 08:00" hint-size="100%,40px"></x-import>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Active sessions" flush="{{ true }}" hint-size="100%,170px">
+            <sc-for list="{{ devices }}" as="d" hint-placeholder-count="2">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ d.t }}" subtitle="{{ d.n }}" trailing="{{ d.tr }}" hint-size="100%,58px"></x-import>
+            </sc-for>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" tone="danger" title="Leave workspace" description="You will lose access to Cairo Language Center immediately." actions="{{ leaveBtn }}" padding="20px 22px" hint-size="100%,90px"></x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- COMPANY PROFILE + LEVELS -->
+  <sc-if value="{{ isCompany }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Company profile">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Company profile</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Details shown on invoices, reports and student invitations.</p>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ primary }}" hint-size="120px,40px">{{ primaryLabel }}</x-import>
+      </div>
+      <div style="display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 20px; align-items: start;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSideList" variant="tab" items="{{ sections }}" value="{{ section }}" onChange="{{ setSection }}" hint-size="240px,160px"></x-import>
+        <div>
+          <sc-if value="{{ s.company }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Organisation" hint-size="100%,420px">
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 22px;">
+                  <div style="width: 72px; height: 72px; border-radius: 14px; border: 1.5px dashed var(--sg-purple-300); background: var(--sg-primary-soft); color: var(--sg-primary-ink); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer;">Logo</div>
+                  <div><div style="font-size: 13px; font-weight: 600;">Company logo</div><div style="font-size: 12px; color: var(--sg-ink-muted); margin-top: 2px;">Square SVG or PNG, at least 256 px</div></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Company name" value="Cairo Language Center" hint-size="100%,64px"></x-import>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Type" value="Learning center" options="{{ orgTypes }}" hint-size="100%,64px"></x-import>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" value="hello@cairolc.com" hint-size="100%,64px"></x-import>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Phone" value="+20 2 2735 0011" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+                </div>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Address" value="14 Mohamed Mahmoud St, Bab El Louk, Cairo" style="margin-top: 14px;" hint-size="100%,64px"></x-import>
+              </x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Workspace" padding="20px 22px" hint-size="100%,140px">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Workspace URL" value="cairolc.speakingenie.com" read-only="{{ true }}" hint-size="100%,64px"></x-import>
+                  <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Default student language" value="Arabic" options="{{ uiLangs }}" hint-size="100%,64px"></x-import>
+                </div>
+              </x-import>
+            </div>
+          </sc-if>
+          <sc-if value="{{ s.levels }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Proficiency levels" description="Levels available to every course in this workspace. Courses pick from this list." flush="{{ true }}" hint-size="100%,420px">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ lvCols }}" rows="{{ lvRows }}" bordered="{{ false }}" empty="{{ lvEmpty }}" hint-size="100%,400px"></x-import>
+            </x-import>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { this.p = setInterval(() => { if (window.SGH && window.SpeakingGenieDesignSystem_9bb41a) { clearInterval(this.p); this.forceUpdate(); } }, 60); }
+  componentWillUnmount() { clearInterval(this.p); }
+  renderVals() {
+    const P = this.props, go = P.go || (() => {}), open = P.open || (() => {}), toast = P.toast || (() => {});
+    const SG = window.SpeakingGenieDesignSystem_9bb41a, X = window.SGH, ok = !!(SG && X);
+    const h = React.createElement, ds = P.dataState || "default", isEmpty = ds === "empty";
+    const s = new Proxy({}, { get: (_, k) => P.screen === k, has: () => true });
+    const isLevels = P.screen === "levels";
+    const save = () => toast("Changes saved", "Your profile has been updated");
+    return {
+      loading: ds === "loading", ready: ok && ds !== "loading", s, save,
+      isCompany: P.screen === "company" || isLevels,
+      uiLangs: ["English", "العربية", "Español", "Deutsch"],
+      devices: [["Chrome on macOS", "Cairo · Active now", "This device"], ["Safari on iPhone", "Cairo · 2 days ago", "Sign out"]].map(([t, n, tr], i) => ({ t, n, tr: ok ? (i === 0 ? h(SG.SgBadge, { tone: "brand", size: "sm", caps: true }, tr) : X.btn(tr, null, "tertiary")) : tr })),
+      leaveBtn: ok ? h(SG.SgButton, { variant: "danger", size: "md", onClick: () => open("confirm.leave") }, "Leave") : null,
+      sections: [{ id: "company", label: "Company profile" }, { id: "levels", label: "Levels" }],
+      section: isLevels ? "levels" : "company", setSection: id => go(id),
+      primaryLabel: isLevels ? "Add level" : "Save changes",
+      primary: isLevels ? () => open("settingsLevel") : () => toast("Company profile saved", "Changes appear on new invoices and reports"),
+      orgTypes: ["Learning center", "Corporate / L&D", "School", "University"],
+      lvCols: [
+        { key: "o", label: "#", width: "48px", render: r => X.muted(r.o) },
+        { key: "c", label: "Code", width: "90px", render: r => X.tag(r.c, "info") },
+        { key: "n", label: "Name", width: "1.2fr", render: r => X.strong(r.n) },
+        { key: "d", label: "Description", width: "2.2fr", render: r => X.muted(r.d) },
+        { key: "u", label: "Used by", width: "1fr", render: r => X.muted(r.u) },
+        { key: "x", label: "", width: "130px", align: "right", render: () => X.btns([["↑", null], ["↓", null], ["✎", () => open("settingsLevel")]]) }
+      ],
+      lvRows: isEmpty ? [] : [["Pre-A1", "Starter", "Recognises familiar words and very basic phrases", "2 courses"], ["A1", "Beginner", "Simple interactions about personal details", "3 courses"], ["A2", "Elementary", "Routine tasks and direct exchanges of information", "3 courses"], ["B1", "Intermediate", "Handles most travel situations; describes experiences", "4 courses"], ["B2", "Upper intermediate", "Interacts with fluency and spontaneity", "2 courses"]].map(([c, n, d, u], i) => ({ o: i + 1, c, n, d, u })),
+      lvEmpty: ok ? X.empty("No levels yet", "Levels like A1 or B2 are shared by every course in the workspace.", "Add level", () => open("settingsLevel")) : null
+    };
+  }
+}
+</script>
+</body>
+</html>

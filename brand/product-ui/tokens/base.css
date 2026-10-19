@@ -1,0 +1,16 @@
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--sg-canvas); color: var(--sg-ink); font-family: var(--sg-font); font-size: var(--sg-text-body-size); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+a { color: var(--sg-link); text-decoration: none; }
+a:hover { color: var(--sg-link-hover); text-decoration: underline; }
+code, kbd, .sg-mono { font-family: var(--sg-mono); }
+.sg-num { font-variant-numeric: tabular-nums; }
+:focus-visible { outline: none; box-shadow: var(--sg-focus); }
+input::placeholder, textarea::placeholder { color: var(--sg-ink-muted); }
+/* Arabic: taller lines, never letter-space or uppercase (breaks letter joining) */
+[dir="rtl"] body { line-height: var(--sg-lh-arabic); }
+[dir="rtl"] body * { letter-spacing: 0 !important; }
+/* Logo lockup — light/dark files swap with data-theme. Size with height; width follows the image ratio. */
+.sg-logo { display: block; height: 30px; aspect-ratio: 1291 / 284; background: url(../assets/logo-light.png) no-repeat left center / contain; flex-shrink: 0; }
+[dir="rtl"] .sg-logo { background-position: right center; }
+[data-theme="dark"] .sg-logo { background-image: url(../assets/logo-dark.png); }
+.sg-logo-mark { display: block; height: 30px; aspect-ratio: 370 / 284; background: url(../assets/logo-mark.png) no-repeat center / contain; flex-shrink: 0; }

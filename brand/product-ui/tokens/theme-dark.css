@@ -1,0 +1,79 @@
+/* Dark theme — set data-theme="dark" on <html> (or any container).
+   Derived from the light system: same cool-slate hue family, purple shifted one step lighter for contrast.
+   Not present in the source design; authored for this system. */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --sg-primary: #7C3AED;
+  --sg-primary-hover: #8B5CF6;
+  --sg-primary-soft: rgba(139, 92, 246, 0.14);
+  --sg-primary-soft-2: rgba(139, 92, 246, 0.24);
+  --sg-primary-border: rgba(139, 92, 246, 0.32);
+  --sg-primary-border-strong: rgba(139, 92, 246, 0.48);
+  --sg-primary-ink: #C4B5FD;
+  --sg-link: #A78BFA;
+  --sg-link-hover: #C4B5FD;
+  --sg-on-primary: #FFFFFF;
+
+  --sg-ink: #E8ECF4;
+  --sg-ink-2: #B6C0D2;
+  --sg-ink-muted: #97A3B8;
+  --sg-ink-3: #7F8BA3;
+  --sg-ink-4: #68748D;
+  --sg-ink-disabled: #5A6680;
+
+  --sg-backdrop: #060A13;
+  --sg-canvas: #0B1020;
+  --sg-surface: #121A2B;
+  --sg-surface-raised: #1B2438;
+  --sg-surface-subtle: #151E31;
+  --sg-surface-hover: #172036;
+  --sg-surface-muted: #1C263B;
+  --sg-surface-disabled: #1C263B;
+
+  --sg-border: #253049;
+  --sg-border-soft: #1F2940;
+  --sg-border-strong: #2F3B56;
+  --sg-border-hover: #435272;
+  --sg-divider: #1C2539;
+  --sg-divider-row: #192236;
+  --sg-control-off: #34415D;
+  --sg-control-border: #4A5878;
+  --sg-track: #222C43;
+
+  --sg-success: #34D399; --sg-success-bg: rgba(16, 185, 129, 0.12); --sg-success-solid: #10B981; --sg-success-border: rgba(16, 185, 129, 0.28); --sg-success-icon-bg: rgba(16, 185, 129, 0.2);
+  --sg-warning: #FBBF24; --sg-warning-bg: rgba(245, 158, 11, 0.10); --sg-warning-border: rgba(245, 158, 11, 0.28); --sg-warning-ink: #FCD34D; --sg-warning-icon-bg: rgba(245, 158, 11, 0.2); --sg-warning-solid: #F59E0B;
+  --sg-danger: #F87171; --sg-danger-bg: rgba(239, 68, 68, 0.10); --sg-danger-border: rgba(239, 68, 68, 0.30); --sg-danger-ink: #FCA5A5; --sg-danger-icon-bg: rgba(239, 68, 68, 0.2); --sg-danger-solid: #EF4444;
+  --sg-info: #60A5FA; --sg-info-bg: rgba(59, 130, 246, 0.12); --sg-info-solid: #3B82F6; --sg-info-border: rgba(59, 130, 246, 0.28); --sg-info-icon-bg: rgba(59, 130, 246, 0.2);
+  --sg-neutral: #B6C0D2; --sg-neutral-bg: #1C263B;
+
+  /* base tints consumed directly by a few components */
+  --sg-purple-75: rgba(139, 92, 246, 0.10);
+  --sg-purple-muted: #A99BD6;
+  --sg-purple-400: #B39DFA;
+  --sg-red-border-btn: rgba(239, 68, 68, 0.35);
+  --sg-red-border-input: rgba(239, 68, 68, 0.55);
+  --sg-amber-border-strong: rgba(245, 158, 11, 0.40);
+  --sg-chart-muted: #2D2754;
+
+  --sg-tier-light: #10B981; --sg-tier-regular: #3B82F6; --sg-tier-heavy: #F59E0B; --sg-tier-intensive: #EF4444;
+
+  --sg-e-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --sg-e-thumb: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --sg-e-md: 0 6px 16px -4px rgba(0, 0, 0, 0.55);
+  --sg-e-brand: 0 4px 16px -2px rgba(139, 92, 246, 0.25);
+  --sg-e-lg: 0 18px 44px -12px rgba(0, 0, 0, 0.65);
+  --sg-e-popover: 0 18px 44px -12px rgba(0, 0, 0, 0.7);
+  --sg-e-overlay: 0 24px 64px -16px rgba(0, 0, 0, 0.75);
+  --sg-e-fab: 0 8px 24px -6px rgba(0, 0, 0, 0.6);
+  --sg-focus: 0 0 0 3px rgba(167, 139, 250, 0.35);
+  --sg-focus-input: 0 0 0 3px rgba(167, 139, 250, 0.28);
+  --sg-scrim: rgba(2, 6, 16, 0.66);
+
+  --sg-nav-ink: #D3DAE6;
+  --sg-nav-dot: #56627D;
+  --sg-nav-hover: #1B2438;
+  --sg-nav-active: rgba(139, 92, 246, 0.26);
+  --sg-nav-title: var(--sg-link);
+  --sg-nav-title-muted: #A3AEC2;
+}

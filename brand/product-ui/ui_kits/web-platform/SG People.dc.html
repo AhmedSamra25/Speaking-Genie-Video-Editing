@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="sg-helpers.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+</helmet>
+<sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 2 }}" widths="{{ skW }}" height="{{ 14 }}" hint-size="100%,40px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 1 }}" height="{{ 40 }}" hint-size="100%,40px"></x-import>
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" hint-size="100%,380px"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 12 }}" hint-size="100%,320px"></x-import></x-import>
+  </div>
+</sc-if>
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+
+  <!-- STUDENTS -->
+  <sc-if value="{{ s.students }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Students">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Students</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">{{ studentsSub }}</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" onClick="{{ to.invitations }}" hint-size="110px,40px">Invitations</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" onClick="{{ op.importStudents }}" hint-size="140px,40px">Import students</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ to.studentForm }}" hint-size="120px,40px">Add student</x-import>
+        </div>
+      </div>
+      <sc-if value="{{ blocked }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAlert" layout="banner" tone="danger" title="3 students are blocked." description="Their hours are over the consumption tier and the hour wallet is empty." action="{{ rechargeBtn }}" style="margin-bottom: 16px;" hint-size="100%,56px"></x-import>
+      </sc-if>
+      <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search by name or email" style="flex: 1;" hint-size="100%,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Course: All" hint-size="120px,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Level: All" hint-size="110px,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Tier: All" hint-size="100px,40px"></x-import>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ stuCols }}" rows="{{ stuRows }}" onRowClick="{{ to.studentDetail }}" row-height="{{ 62 }}" footer="{{ stuFooter }}" empty="{{ stuEmpty }}" hint-size="100%,460px"></x-import>
+    </div>
+  </sc-if>
+
+  <!-- STUDENT DETAIL -->
+  <sc-if value="{{ s.studentDetail }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Student detail">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.students }}" style="margin-bottom: 14px;" hint-size="120px,20px">All students</x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="24px" style="margin-bottom: 20px;" hint-size="100%,130px">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; flex-wrap: wrap;">
+          <div style="display: flex; gap: 18px; align-items: center;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAvatar" initials="MY" size="{{ 56 }}" hint-size="56px,56px"></x-import>
+            <div>
+              <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Mahmoud Youssef</h1>
+              <div style="font-size: 13px; color: var(--sg-ink-muted); margin-top: 5px;">mahmoud.youssef@gmail.com · +20 100 412 7781 · Enrolled Aug 4, 2026</div>
+              <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" hint-size="110px,22px">General English</x-import>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" hint-size="110px,22px">Level A2 · Elementary</x-import>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="link" onClick="{{ to.groupDetail }}" hint-size="90px,22px">A2 Morning</x-import>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="info" hint-size="130px,22px">Regular · 20 hrs/mo</x-import>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="md" onClick="{{ to.studentForm }}" hint-size="80px,36px">Edit</x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="md" onClick="{{ remind }}" hint-size="130px,36px">Send reminder</x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" size="md" onClick="{{ op.reportRequest }}" hint-size="130px,36px">Request report</x-import>
+          </div>
+        </div>
+      </x-import>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Tasks completed" value="12 / 24" note="Level A2" hint-size="100%,96px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Sessions" value="24" note="Last on Aug 17" hint-size="100%,96px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Avg performance score" value="74" note="↑ 6 vs last month" note-tone="success" hint-size="100%,96px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Practice time" value="6.8 hrs" note="This month" hint-size="100%,96px"></x-import>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Student reports" description="One row per speaking session" flush="{{ true }}" hint-size="100%,340px">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ repCols }}" rows="{{ repRows }}" bordered="{{ false }}" onRowClick="{{ to.reportDetail }}" footer="5 of 24 sessions" hint-size="100%,360px"></x-import>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Recent activity" padding="20px 22px" hint-size="100%,200px">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <sc-for list="{{ stuActivity }}" as="a" hint-placeholder-count="4">
+                <div style="display: flex; gap: 12px; align-items: flex-start;">
+                  <div style="width: 6px; height: 6px; border-radius: 999px; background: var(--sg-primary); margin-top: 7px; flex-shrink: 0;"></div>
+                  <div><div style="font-size: 13px; line-height: 1.45;">{{ a.t }}</div><div style="font-size: 11px; color: var(--sg-ink-muted); margin-top: 3px;">{{ a.w }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </x-import>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Learning progress" padding="20px" hint-size="100%,200px">
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Tasks" value="12 / 24" pct="{{ 50 }}" hint-size="100%,32px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Vocabularies" value="74 / 120" pct="{{ 62 }}" hint-size="100%,32px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Idioms" value="9 / 30" pct="{{ 30 }}" hint-size="100%,32px"></x-import>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Performance statistics" padding="20px" hint-size="100%,240px">
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Grammar" value="68 / 100" pct="{{ 68 }}" note="Limited control of past tense; recurring article errors." hint-size="100%,44px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Pronunciation" value="77 / 100" pct="{{ 77 }}" note="Clear vowels; th sounds still replaced with s." hint-size="100%,44px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Vocabulary" value="80 / 100" pct="{{ 80 }}" note="Uses level vocabulary in context." hint-size="100%,44px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Fluency" value="74 / 100" pct="{{ 74 }}" note="Pauses shortening month over month." hint-size="100%,44px"></x-import>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Hours this month" padding="20px" hint-size="100%,140px">
+            <div style="display: flex; align-items: baseline; gap: 8px;"><div style="font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums;">6.8</div><div style="font-size: 14px; color: var(--sg-ink-muted);">/ 20 hrs</div></div>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgProgress" value="{{ 34 }}" height="{{ 8 }}" style="margin-top: 12px;" hint-size="100%,8px"></x-import>
+            <div style="font-size: 12px; color: var(--sg-ink-muted); margin-top: 10px;">34% of the Regular tier used · resets Sep 1</div>
+          </x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- STUDENT FORM -->
+  <sc-if value="{{ s.studentForm }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Student form">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.students }}" style="margin-bottom: 14px;" hint-size="120px,20px">All students</x-import>
+      <div style="margin-bottom: 24px;">
+        <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Add student</h1>
+        <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">The student receives an email to set a password. Hours are drawn from the workspace wallet up to their tier.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Student information" hint-size="100%,600px">
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 22px;">
+            <div style="width: 64px; height: 64px; border-radius: 999px; border: 1.5px dashed var(--sg-purple-300); background: var(--sg-primary-soft); color: var(--sg-primary-ink); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer;">Photo</div>
+            <div><div style="font-size: 13px; font-weight: 600;">Profile photo</div><div style="font-size: 12px; color: var(--sg-ink-muted); margin-top: 2px;">Optional · JPG or PNG, up to 2 MB</div></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Full name" placeholder="Emma Wilson" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" placeholder="emma.wilson@example.com" type="email" hint-size="100%,64px"></x-import>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Course" placeholder="Select course" options="{{ courseOpts }}" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Level" placeholder="Select level" options="{{ levelOpts }}" hint-size="100%,64px"></x-import>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Phone number" placeholder="+20 100 000 0000" numeric="{{ true }}" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Address" placeholder="12 Tahrir St, Cairo" hint-size="100%,64px"></x-import>
+            </div>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgRadioGroup" label="Consumption tier" hint="Changing a tier's ceiling applies from the next billing month." options="{{ tierOpts }}" value="{{ tier }}" onChange="{{ setTier }}" hint-size="100%,260px"></x-import>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--sg-divider);">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" onClick="{{ to.students }}" hint-size="80px,40px">Cancel</x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ addStudent }}" hint-size="120px,40px">Add student</x-import>
+          </div>
+        </x-import>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Adding many students?" description="Import a CSV with name, email, course and level, or share an invitation link so students register themselves." padding="20px 22px" hint-size="100%,170px">
+            <div style="display: flex; gap: 10px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="md" onClick="{{ op.importStudents }}" hint-size="110px,36px">Import CSV</x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="md" onClick="{{ op.invitationCreate }}" hint-size="140px,36px">Create invite link</x-import>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" tone="warning" title="Seats" description="Seats: 359 of 400 used. Adding this student uses one seat." padding="20px 22px" hint-size="100%,100px"></x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- INVITATIONS -->
+  <sc-if value="{{ s.invitations }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Student invitations">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.students }}" style="margin-bottom: 14px;" hint-size="120px,20px">All students</x-import>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Student invitations</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Shareable links that let students register themselves into a course level or a specific group.</p>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ op.invitationCreate }}" hint-size="150px,40px">Create invitation</x-import>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" label="Active invitations" value="{{ inv.active }}" hint-size="100%,96px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" label="Total registrations" value="{{ inv.regs }}" note="↑ 18 this week" note-tone="success" hint-size="100%,96px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" label="Expiring soon" value="{{ inv.exp }}" note="Within 3 days" note-tone="warning" hint-size="100%,96px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" label="Total invitations" value="{{ inv.total }}" hint-size="100%,96px"></x-import>
+      </div>
+      <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search by group, course or creator" style="flex: 1;" hint-size="100%,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Status: All" hint-size="120px,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Type: All" hint-size="110px,40px"></x-import>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ invCols }}" rows="{{ invRows }}" row-height="{{ 62 }}" footer="5 of 12 invitations" empty="{{ invEmpty }}" hint-size="100%,400px"></x-import>
+    </div>
+  </sc-if>
+
+  <!-- GROUPS -->
+  <sc-if value="{{ s.groups }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Groups">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Groups</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">A group pairs a course level with a teacher and a cohort of students.</p>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ op.groupForm }}" hint-size="120px,40px">Create group</x-import>
+      </div>
+      <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search groups" style="flex: 1;" hint-size="100%,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Teacher: All" hint-size="120px,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Status: Active" active="{{ true }}" hint-size="130px,40px"></x-import>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ grpCols }}" rows="{{ grpRows }}" onRowClick="{{ to.groupDetail }}" row-height="{{ 62 }}" footer="6 of 7 groups" empty="{{ grpEmpty }}" hint-size="100%,440px"></x-import>
+    </div>
+  </sc-if>
+
+  <!-- GROUP DETAIL -->
+  <sc-if value="{{ s.groupDetail }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Group detail">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.groups }}" style="margin-bottom: 14px;" hint-size="110px,20px">All groups</x-import>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 20px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">A2 Morning</h1>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="success" hint-size="60px,22px">Active</x-import>
+          </div>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">General English · Level A2 · Nour Hassan · Sun · Tue · Thu, 09:00 · Aug 1 to Dec 20, 2026</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" onClick="{{ op.groupForm }}" hint-size="100px,40px">Edit group</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ op.groupInvite }}" hint-size="140px,40px">Invite students</x-import>
+        </div>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTabs" items="{{ grpTabs }}" value="{{ grpTab }}" onChange="{{ setGrpTab }}" style="margin-bottom: 20px;" hint-size="100%,44px"></x-import>
+      <sc-if value="{{ gt.roster }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Students" value="24" note="of 25 seats" hint-size="100%,96px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Avg fluency" value="71" note="↑ 4 vs July" note-tone="success" hint-size="100%,96px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Hours this month" value="118" note="of 480 tier ceiling" hint-size="100%,96px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgMetricCard" size="md" label="Awaiting review" value="11" note="Oldest 6 days" note-tone="warning" hint-size="100%,96px"></x-import>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ rosterCols }}" rows="{{ rosterRows }}" onRowClick="{{ to.studentDetail }}" row-height="{{ 60 }}" footer="5 of 24 students" hint-size="100%,380px"></x-import>
+      </sc-if>
+      <sc-if value="{{ gt.content }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Pacing plan" description="Tasks unlock for the whole group on these dates" flush="{{ true }}" hint-size="100%,360px">
+          <sc-for list="{{ pacing }}" as="p" hint-placeholder-count="5">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" marker="{{ p.marker }}" title="{{ p.t }}" subtitle="{{ p.n }}" trailing="{{ p.badge }}" onClick="{{ to.taskDetail }}" hint-size="100%,60px"></x-import>
+          </sc-for>
+        </x-import>
+      </sc-if>
+      <sc-if value="{{ gt.analytics }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Practice time distribution" description="Students by weekly practice time" hint-size="100%,260px">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBarChart" data="{{ ptDist }}" series="{{ ptSeries }}" height="{{ 170 }}" hint-size="100%,190px"></x-import>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Class-wide focus areas" padding="20px" hint-size="100%,260px">
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Past simple errors" value="14 of 24" pct="{{ 58 }}" tone="var(--sg-tier-heavy)" hint-size="100%,32px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Th / s substitution" value="9 of 24" pct="{{ 38 }}" tone="var(--sg-tier-heavy)" hint-size="100%,32px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgKpiBar" name="Food vocabulary (strength)" value="19 of 24" pct="{{ 79 }}" tone="var(--sg-success-solid)" hint-size="100%,32px"></x-import>
+            </div>
+            <div style="margin-top: 18px;"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="md" onClick="{{ to.groupReport }}" hint-size="160px,36px">Open group report</x-import></div>
+          </x-import>
+        </div>
+      </sc-if>
+      <sc-if value="{{ gt.ranking }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTabs" variant="segment" items="{{ rankPeriods }}" value="{{ rankPeriod }}" onChange="{{ setRankPeriod }}" hint-size="250px,36px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTabs" variant="segment" items="{{ rankBys }}" value="{{ rankBy }}" onChange="{{ setRankBy }}" hint-size="240px,36px"></x-import>
+          </div>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="md" onClick="{{ shareRanking }}" hint-size="150px,36px">Share with group</x-import>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <sc-for list="{{ podium }}" as="p" hint-placeholder-count="3">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" tone="{{ p.tone }}" padding="18px 20px" onClick="{{ to.studentDetail }}" hint-size="100%,130px">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 30px; height: 30px; border-radius: 8px; background: var(--sg-surface-subtle); border: 1px solid var(--sg-border); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums;">{{ p.rank }}</div>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAvatar" initials="{{ p.i }}" size="{{ 36 }}" hint-size="36px,36px"></x-import>
+                <div style="min-width: 0;">
+                  <div style="font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ p.n }}</div>
+                  <div style="font-size: 12px; color: var(--sg-ink-muted); margin-top: 2px;">{{ p.move }}</div>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px;">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Sessions" value="{{ p.s }}" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Practice" value="{{ p.hrs }}" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgStat" label="Score" value="{{ p.sc }}" size="{{ 18 }}" hint-size="100%,44px"></x-import>
+              </div>
+            </x-import>
+          </sc-for>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="{{ rankTitle }}" description="{{ rankDesc }}" flush="{{ true }}" hint-size="100%,520px">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ rankCols }}" rows="{{ rankRows }}" bordered="{{ false }}" onRowClick="{{ to.studentDetail }}" footer="{{ rankFooter }}" hint-size="100%,520px"></x-import>
+        </x-import>
+      </sc-if>
+      <sc-if value="{{ gt.reports }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Group reports" description="Generated analysis for this group, newest first" actions="{{ genGroupReportBtn }}" flush="{{ true }}" hint-size="100%,300px">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ gRepCols }}" rows="{{ gRepRows }}" bordered="{{ false }}" onRowClick="{{ to.groupReport }}" hint-size="100%,280px"></x-import>
+        </x-import>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- USERS -->
+  <sc-if value="{{ s.users }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Users">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Users</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Staff accounts for this workspace. Students live under Students.</p>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ op.userInvite }}" hint-size="120px,40px">Invite user</x-import>
+      </div>
+      <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search by name or email" style="flex: 1;" hint-size="100%,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" variant="filter" value="Role: All" hint-size="110px,40px"></x-import>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ userCols }}" rows="{{ userRows }}" onRowClick="{{ to.userDetail }}" row-height="{{ 62 }}" footer="Seats: 6 of 25 used. Invited users occupy a seat once they accept." empty="{{ userEmpty }}" hint-size="100%,420px"></x-import>
+    </div>
+  </sc-if>
+
+  <!-- USER DETAIL -->
+  <sc-if value="{{ s.userDetail }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="User detail">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.users }}" style="margin-bottom: 14px;" hint-size="100px,20px">All users</x-import>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="24px" style="margin-bottom: 20px;" hint-size="100%,120px">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+          <div style="display: flex; gap: 18px; align-items: center;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAvatar" initials="NH" size="{{ 56 }}" hint-size="56px,56px"></x-import>
+            <div>
+              <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Nour Hassan</h1>
+              <div style="font-size: 13px; color: var(--sg-ink-muted); margin-top: 5px;">nour@cairolc.com · Joined Jan 12, 2026 · Last active 2 hours ago</div>
+              <div style="display: flex; gap: 8px; margin-top: 12px;">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="link" onClick="{{ to.roles }}" hint-size="70px,22px">Teacher</x-import>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" hint-size="140px,22px">Specialty · Conversation</x-import>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="danger" size="md" onClick="{{ op.confirmDeleteUser }}" hint-size="110px,36px">Delete user</x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="md" onClick="{{ op.userEdit }}" hint-size="80px,36px">Edit</x-import>
+          </div>
+        </div>
+      </x-import>
+      <div style="height: 20px;"></div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTabs" items="{{ userTabs }}" value="{{ userTab }}" onChange="{{ setUserTab }}" style="margin-bottom: 20px;" hint-size="100%,44px"></x-import>
+      <sc-if value="{{ ut.activity }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Activity log" description="Actions Nour Hassan took in this workspace" flush="{{ true }}" hint-size="100%,320px">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ logCols }}" rows="{{ logRows }}" bordered="{{ false }}" footer="5 of 214 events" hint-size="100%,320px"></x-import>
+        </x-import>
+      </sc-if>
+      <sc-if value="{{ ut.main }}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Groups taught" flush="{{ true }}" hint-size="100%,260px">
+          <sc-for list="{{ taught }}" as="g" hint-placeholder-count="3">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ g.t }}" subtitle="{{ g.n }}" trailing="{{ g.c }}" onClick="{{ to.groupDetail }}" hint-size="100%,60px"></x-import>
+          </sc-for>
+        </x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Permissions from Teacher role" padding="20px" hint-size="100%,260px">
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <sc-for list="{{ userKeys }}" as="k" hint-placeholder-count="6"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="key" hint-size="120px,22px">{{ k }}</x-import></sc-for>
+          </div>
+          <div style="font-size: 12px; color: var(--sg-ink-muted); margin-top: 14px;">Change permissions on the role. Changes apply to everyone holding it.</div>
+        </x-import>
+      </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- ROLES -->
+  <sc-if value="{{ s.roles }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Roles and permissions">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 20px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Roles &amp; permissions</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Pick a role, then grant permissions by area. Changes apply to everyone holding the role.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" onClick="{{ op.roleCreate }}" hint-size="110px,40px">Create role</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ publish }}" hint-size="140px,40px">Publish changes</x-import>
+        </div>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTabs" items="{{ roleTabs }}" value="{{ roleTab }}" onChange="{{ setRoleTab }}" style="margin-bottom: 20px;" hint-size="100%,44px"></x-import>
+      <sc-if value="{{ rt.roles }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: 296px minmax(0, 1fr); gap: 20px; align-items: start;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSideList" variant="card" items="{{ roleItems }}" value="{{ role }}" onChange="{{ setRole }}" hint-size="296px,400px"></x-import>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="20px 22px" hint-size="100%,80px">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 10px;"><div style="font-size: 17px; font-weight: 700;">{{ roleName }}</div><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="key" hint-size="100px,22px">{{ roleKey }}</x-import></div>
+                  <div style="font-size: 13px; color: var(--sg-ink-muted); margin-top: 4px;">{{ roleMeta }}</div>
+                </div>
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBadge" tone="{{ roleBadgeTone }}" size="sm" caps="{{ true }}" hint-size="60px,20px">{{ roleKind }}</x-import>
+              </div>
+            </x-import>
+            <sc-for list="{{ permGroups }}" as="g" hint-placeholder-count="4">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgPermissionGroup" title="{{ g.title }}" hint="{{ g.hint }}" permissions="{{ g.perms }}" onToggle="{{ togglePerm }}" onToggleAll="{{ g.all }}" readonly="{{ roleReadonly }}" hint-size="100%,180px"></x-import>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ rt.matrix }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Permission matrix" description="Overview of all permissions across roles" flush="{{ true }}" hint-size="100%,480px">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTable" columns="{{ matrixCols }}" rows="{{ matrixRows }}" bordered="{{ false }}" row-height="{{ 52 }}" hint-size="100%,520px"></x-import>
+        </x-import>
+      </sc-if>
+    </div>
+  </sc-if>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tier: "regular", grpTab: new URLSearchParams(location.search).get("gtab") || "roster", userTab: new URLSearchParams(location.search).get("utab") || "main", roleTab: "roles", role: "teacher", perms: null };
+  componentDidMount() { this.p = setInterval(() => { if (window.SGH && window.SpeakingGenieDesignSystem_9bb41a) { clearInterval(this.p); this.forceUpdate(); } }, 60); }
+  componentWillUnmount() { clearInterval(this.p); }
+  renderVals() {
+    const P = this.props, go = P.go || (() => {}), open = P.open || (() => {}), toast = P.toast || (() => {});
+    const SG = window.SpeakingGenieDesignSystem_9bb41a, X = window.SGH, ok = !!(SG && X);
+    const h = React.createElement, ds = P.dataState || "default", isEmpty = ds === "empty", blocked = ds === "blocked";
+    const s = new Proxy({}, { get: (_, k) => P.screen === k, has: () => true });
+    const to = new Proxy({}, { get: (_, k) => () => go(k), has: () => true });
+    const op = new Proxy({}, { get: (_, k) => () => open(k), has: () => true });
+    const flag = cur => new Proxy({}, { get: (_, k) => cur === k, has: () => true });
+    const E = (t, d, l, f) => ok ? X.empty(t, d, l, f) : null;
+    const tierTone = { Light: "var(--sg-tier-light)", Regular: "var(--sg-tier-regular)", Heavy: "var(--sg-tier-heavy)", Intensive: "var(--sg-tier-intensive)" };
+    const students = [
+      ["MY", "Mahmoud Youssef", "mahmoud.youssef@gmail.com", "General English", "Level A2", "Regular", 20, 6.8, 12, "Aug 4, 2026", "Active"],
+      ["LA", "Laila Adel", "laila.adel@outlook.com", "General English", "Level B1", "Heavy", 35, 29.4, 18, "Jul 12, 2026", "Active"],
+      ["KS", "Karim Saleh", "karim.saleh@gmail.com", "General English", "Level A2", "Light", 10, 10.4, 9, "Jul 28, 2026", blocked ? "Blocked" : "Over limit"],
+      ["HE", "Hana Ezzat", "hana.ezzat@yahoo.com", "Business English", "Level B1", "Regular", 20, 16.9, 14, "Jun 30, 2026", "Active"],
+      ["YT", "Youssef Tarek", "youssef.t@gmail.com", "Young Learners", "Pre-A1", "Light", 10, 3.1, 4, "Aug 10, 2026", "Active"],
+      ["RA", "Rana Ashraf", "rana.ashraf@gmail.com", "General English", "Level A2", "Regular", 20, 0, 0, "Aug 16, 2026", "Invited"]
+    ].map(([i, n, e, c, l, t, cap, used, tasks, d, st]) => ({ i, n, e, c, l, t, cap, used, tasks, d, st, pct: Math.round(used / cap * 100) }));
+    const roles = {
+      admin: { name: "Admin", key: "admin", kind: "System", users: 2, desc: "Full access to every area of the workspace" },
+      teacher: { name: "Teacher", key: "teacher", kind: "System", users: 15, desc: "Runs groups, reviews sessions and assigns tasks" },
+      academics: { name: "Head of academics", key: "head-of-academics", kind: "Custom", users: 1, desc: "Owns courses and content; read-only billing" },
+      finance: { name: "Finance", key: "finance", kind: "Custom", users: 2, desc: "Billing, wallet and consumption reports" }
+    };
+    const baseGroups = [
+      ["Students", "Profiles, tiers and invitations", [["View students", "students.index"], ["Add & edit students", "students.store"], ["Change tier", "students.tier"], ["Manage invitations", "invitations.manage"]]],
+      ["Courses & content", "Courses, levels, tasks, vocabulary, idioms, characters", [["View courses", "courses.index"], ["Edit content", "courses.update"], ["Use AI setup", "courses.ai"], ["Manage characters", "characters.manage"]]],
+      ["Groups & sessions", "Rosters, pacing and session reviews", [["View groups", "groups.index"], ["Manage groups", "groups.manage"], ["Review sessions", "session.review"], ["Assign tasks", "tasks.assign"]]],
+      ["Billing & reports", "Wallet, plans, consumption and report requests", [["View billing", "billing.index"], ["Recharge hours", "billing.recharge"], ["View consumption", "consumption.index"], ["Request reports", "reports.request"]]]
+    ];
+    const defaults = { admin: () => true, teacher: k => /students\.index|courses\.index|groups\.index|session\.review|tasks\.assign|reports\.request/.test(k), academics: k => /^(students\.index|courses|characters|groups|reports|tasks)/.test(k), finance: k => /^(billing|consumption|reports)/.test(k) };
+    const role = this.state.role;
+    const perms = this.state.perms && this.state.perms.role === role ? this.state.perms.map : Object.fromEntries(baseGroups.flatMap(g => g[2].map(([, k]) => [k, defaults[role](k)])));
+    const setPerms = m => this.setState({ perms: { role, map: m } });
+    const R = roles[role];
+    const gt = this.state.grpTab;
+    return {
+      loading: ds === "loading", ready: ok && ds !== "loading", s, to, op, blocked, skW: ["30%", "50%"],
+      rechargeBtn: ok ? h(SG.SgButton, { variant: "warning", size: "md", style: { height: 34 }, onClick: op["billing.recharge"] }, "Recharge hours") : null,
+      studentsSub: isEmpty ? "No students enrolled yet." : "359 enrolled across 4 courses · 3 over their tier",
+      stuCols: [
+        { key: "n", label: "Student", width: "2.2fr", render: r => X.person(r.i, r.n, r.e) },
+        { key: "c", label: "Course & level", width: "1.4fr", render: r => X.two(r.c, r.l) },
+        { key: "t", label: "Tier", width: "1fr", render: r => X.dot(tierTone[r.t], r.t + " · " + r.cap) },
+        { key: "h", label: "Hours this month", width: "1.4fr", render: r => X.meter(r.pct, r.used + " / " + r.cap) },
+        { key: "k", label: "Tasks", width: "70px", align: "right", render: r => X.num(r.tasks) },
+        { key: "d", label: "Enrolled", width: "1fr", render: r => X.muted(r.d) },
+        { key: "s", label: "Status", width: "110px", align: "right", render: r => X.badge(r.st === "Active" ? "success" : r.st === "Invited" ? "info" : "danger", r.st) }
+      ],
+      stuRows: isEmpty ? [] : students,
+      stuFooter: ok ? h(SG.SgPagination, { summary: "1–6 of 359", page: 1, pageCount: 60 }) : "1–6 of 359",
+      stuEmpty: E("No students yet", "Students practise speaking with the AI partner and draw hours from the workspace wallet.", "Add student", to.studentForm),
+      remind: () => toast("Reminder sent", "Mahmoud Youssef will get an email and app notification"),
+      repCols: [
+        { key: "d", label: "Date", width: "1fr", render: r => X.two(r.d, r.task) },
+        { key: "t", label: "Session duration", width: "1fr", render: r => X.muted(r.t) },
+        { key: "s", label: "Performance score", width: "1fr", render: r => X.score(r.s) },
+        { key: "q", label: "Quality", width: "1fr", render: r => X.badge(r.s >= 75 ? "success" : r.s >= 62 ? "warning" : "danger", r.s >= 75 ? "Good" : r.s >= 62 ? "Fair" : "Needs work") },
+        { key: "x", label: "", width: "80px", align: "right", render: () => X.btn("View", to.reportDetail, "tertiary") }
+      ],
+      repRows: [["Aug 17, 2026", "Ordering at a café", "8:12", 78], ["Aug 15, 2026", "Describing your weekend", "5:40", 74], ["Aug 13, 2026", "Giving directions", "6:05", 66], ["Aug 11, 2026", "Talking about family", "5:12", 71], ["Aug 9, 2026", "Booking a hotel room", "7:58", 59]].map(([d, task, t, s]) => ({ d, task, t, s })),
+      stuActivity: [["Completed Ordering at a café · score 78", "Aug 17, 09:41"], ["Learned 6 new words in Food & drink", "Aug 16, 19:02"], ["Nour Hassan left feedback on Giving directions", "Aug 14, 11:20"], ["Moved from Level A1 to Level A2", "Aug 4"]].map(([t, w]) => ({ t, w })),
+      courseOpts: ["General English", "Business English", "Young Learners", "IELTS Speaking"],
+      levelOpts: ["Pre-A1 · Starter", "A1 · Beginner", "A2 · Elementary", "B1 · Intermediate", "B2 · Upper intermediate"],
+      tierOpts: [{ value: "light", label: "Light · 10 hrs/month", note: "Occasional practice, about 2 sessions a week" }, { value: "regular", label: "Regular · 20 hrs/month", note: "Recommended for most adult learners" }, { value: "heavy", label: "Heavy · 35 hrs/month", note: "Daily practice" }, { value: "intensive", label: "Intensive · 50 hrs/month", note: "Exam preparation and immersion" }],
+      tier: this.state.tier, setTier: v => this.setState({ tier: v }),
+      addStudent: () => { toast("Student added", "An invitation email has been sent"); go("studentDetail"); },
+      inv: isEmpty ? { active: "0", regs: "0", exp: "0", total: "0" } : { active: "7", regs: "146", exp: "2", total: "12" },
+      invCols: [
+        { key: "t", label: "Target", width: "2fr", render: r => X.strong(r.target, r.sub) },
+        { key: "ty", label: "Type", width: "1fr", render: r => X.tag(r.type) },
+        { key: "u", label: "Uses", width: "1.2fr", render: r => X.meter(r.max ? Math.round(r.uses / r.max * 100) : 0, r.max ? r.uses + " / " + r.max : r.uses + " · Unlimited", "brand") },
+        { key: "e", label: "Expires", width: "1fr", render: r => X.two(r.exp, r.left) },
+        { key: "s", label: "Status", width: "110px", render: r => X.badge(r.st === "Active" ? "success" : r.st === "Expired" ? "neutral" : r.st === "Max reached" ? "warning" : "danger", r.st) },
+        { key: "x", label: "", width: "190px", align: "right", render: r => X.btns([["Copy link", () => toast("Link copied", "Invitation link copied to clipboard")], [r.st === "Disabled" ? "Enable" : "Disable", null]]) }
+      ],
+      invRows: isEmpty ? [] : [
+        { target: "A2 Morning", sub: "General English · Level A2 · by Nour Hassan", type: "Group", uses: 21, max: 25, exp: "Aug 20, 2026", left: "2 days left", st: "Active" },
+        { target: "General English · A1", sub: "General enrollment · by Admin User", type: "General", uses: 64, max: 0, exp: "Sep 30, 2026", left: "43 days left", st: "Active" },
+        { target: "Business English · B1", sub: "General enrollment · by Omar Khaled", type: "General", uses: 30, max: 30, exp: "Oct 1, 2026", left: "44 days left", st: "Max reached" },
+        { target: "Pre-A1 Kids", sub: "Young Learners · Pre-A1 · by Nour Hassan", type: "Group", uses: 18, max: 20, exp: "Jul 31, 2026", left: "Ended", st: "Expired" },
+        { target: "IELTS Speaking · B2", sub: "General enrollment · by Admin User", type: "General", uses: 13, max: 50, exp: "Dec 1, 2026", left: "105 days left", st: "Disabled" }
+      ],
+      invEmpty: E("No invitations yet", "An invitation link lets students register themselves into a course level or a group.", "Create invitation", op.invitationCreate),
+      grpCols: [
+        { key: "n", label: "Group", width: "1.6fr", render: r => X.strong(r.n, r.sched) },
+        { key: "c", label: "Course & level", width: "1.4fr", render: r => X.two(r.c, r.l) },
+        { key: "t", label: "Teacher", width: "1.4fr", render: r => X.person(r.ti, r.t) },
+        { key: "s", label: "Students", width: "90px", align: "right", render: r => X.num(r.s) },
+        { key: "p", label: "Period", width: "1.4fr", render: r => X.muted(r.p) },
+        { key: "st", label: "Status", width: "100px", align: "right", render: r => X.badge(r.st === "Active" ? "success" : r.st === "Upcoming" ? "info" : "neutral", r.st) }
+      ],
+      grpRows: isEmpty ? [] : [
+        ["A2 Morning", "Sun · Tue · Thu, 09:00", "General English", "Level A2", "NH", "Nour Hassan", 24, "Aug 1 to Dec 20, 2026", "Active"],
+        ["B1 Evening", "Mon · Wed, 18:30", "General English", "Level B1", "NH", "Nour Hassan", 22, "Aug 1 to Dec 20, 2026", "Active"],
+        ["Pre-A1 Kids", "Sat, 10:00", "Young Learners", "Pre-A1", "NH", "Nour Hassan", 18, "Jul 5 to Nov 29, 2026", "Active"],
+        ["Business B1", "Tue · Thu, 19:00", "Business English", "Level B1", "AM", "Ahmed Mostafa", 16, "Aug 10 to Nov 10, 2026", "Active"],
+        ["IELTS Weekend", "Fri, 11:00", "IELTS Speaking", "Level B2", "AM", "Ahmed Mostafa", 12, "Sep 4 to Dec 18, 2026", "Upcoming"],
+        ["A1 Summer", "Daily, 10:00", "General English", "Level A1", "RS", "Rana Samir", 20, "Jun 1 to Jul 31, 2026", "Ended"]
+      ].map(([n, sched, c, l, ti, t, s, p, st]) => ({ n, sched, c, l, ti, t, s, p, st })),
+      grpEmpty: E("No groups yet", "Groups pair a course level with a teacher and a cohort of students.", "Create group", op.groupForm),
+      grpTabs: [{ value: "roster", label: "Roster · 24" }, { value: "ranking", label: "Ranking" }, { value: "content", label: "Content & pacing" }, { value: "analytics", label: "Analytics" }, { value: "reports", label: "Reports · 3" }],
+      ...(() => {
+        const per = this.state.rankPeriod || "week", by = this.state.rankBy || "hours";
+        const mult = per === "week" ? 1 : per === "month" ? 4.1 : 11.6;
+        const base = [["LA","Laila Adel",7,58,82,1],["MY","Mahmoud Youssef",6,49,77,2],["KS","Karim Saleh",6,44,66,-1],["HE","Hana Ezzat",5,46,80,0],["NA","Nadia Amin",5,38,73,3],["OF","Omar Farouk",4,36,70,-2],["SM","Salma Mostafa",4,31,68,0],["TA","Tarek Ali",3,27,64,1],["DN","Dina Nabil",2,15,61,-3],["RA","Rana Ashraf",0,0,58,-4]];
+        const rows = base.map(([i, n, s, m, sc, mv]) => { const S = Math.round(s * mult), M = Math.round(m * mult); return { i, n, s: S, mins: M, hrs: M < 60 ? M + " min" : Math.floor(M / 60) + "h " + String(M % 60).padStart(2, "0") + "m", sc, mv }; });
+        const key = by === "sessions" ? (a, b) => b.s - a.s || b.mins - a.mins : (a, b) => b.mins - a.mins || b.s - a.s;
+        rows.sort(key); rows.forEach((r, ix) => (r.rank = ix + 1));
+        const maxS = Math.max(...rows.map(r => r.s)) || 1, maxM = Math.max(...rows.map(r => r.mins)) || 1;
+        const pl = v => Math.abs(v) === 1 ? " place" : " places";
+        const mvTxt = v => v > 0 ? "↑ " + v + pl(v) : v < 0 ? "↓ " + Math.abs(v) + pl(v) : "→ same place";
+        const mvNode = v => h("span", { style: { fontSize: 12, fontWeight: 600, whiteSpace: "nowrap", color: v > 0 ? "var(--sg-success)" : v < 0 ? "var(--sg-danger)" : "var(--sg-ink-muted)" } }, v > 0 ? "↑ " + v : v < 0 ? "↓ " + Math.abs(v) : "→");
+        const perLabel = { week: "this week", month: "this month", term: "this term" }[per];
+        return {
+          rankPeriods: [{ value: "week", label: "This week" }, { value: "month", label: "This month" }, { value: "term", label: "This term" }],
+          rankPeriod: per, setRankPeriod: v => this.setState({ rankPeriod: v }),
+          rankBys: [{ value: "hours", label: "By practice hours" }, { value: "sessions", label: "By sessions" }],
+          rankBy: by, setRankBy: v => this.setState({ rankBy: v }),
+          shareRanking: () => toast("Ranking shared", "Students in A2 Morning see their own place and the top 3"),
+          podium: rows.slice(0, 3).map((r, ix) => ({ ...r, rank: r.rank, move: mvTxt(r.mv) + " vs previous", tone: ix === 0 ? "brand" : "default", s: String(r.s), hrs: r.hrs, sc: String(r.sc) })),
+          rankTitle: "A2 Morning ranking · " + perLabel,
+          rankDesc: "Ranked by " + (by === "hours" ? "practice hours, then sessions" : "sessions, then practice hours") + " · same period for every student",
+          rankCols: [
+            { key: "r", label: "#", width: "48px", render: r => X.num(r.rank) },
+            { key: "n", label: "Student", width: "1.8fr", render: r => X.person(r.i, r.n) },
+            { key: "s", label: "Sessions", width: "1.3fr", render: r => X.meter(Math.round(r.s / maxS * 100), String(r.s), by === "sessions" ? "brand" : "success") },
+            { key: "h", label: "Practice hours", width: "1.3fr", render: r => X.meter(Math.round(r.mins / maxM * 100), r.hrs, by === "hours" ? "brand" : "success") },
+            { key: "a", label: "Avg / session", width: "110px", align: "right", render: r => X.muted(r.s ? Math.round(r.mins / r.s) + " min" : "—") },
+            { key: "sc", label: "Avg score", width: "100px", align: "right", render: r => X.score(r.sc) },
+            { key: "m", label: "Move", width: "80px", align: "right", render: r => mvNode(r.mv) }
+          ],
+          rankRows: rows,
+          rankFooter: "Students with 0 sessions are ranked last and flagged in Students at risk."
+        };
+      })(),
+      genGroupReportBtn: ok ? h(SG.SgButton, { variant: "secondary", size: "sm", onClick: op.reportRequest }, "Generate report") : null,
+      gRepCols: [
+        { key: "p", label: "Period", width: "1.4fr", render: r => X.strong(r.p, r.by) },
+        { key: "s", label: "Students", width: "90px", align: "right", render: r => X.num(r.s) },
+        { key: "f", label: "Avg fluency", width: "110px", align: "right", render: r => X.score(r.f) },
+        { key: "t", label: "Avg practice", width: "1fr", render: r => X.muted(r.t) },
+        { key: "x", label: "", width: "150px", align: "right", render: () => X.btns([["View", to.groupReport], ["Download", null]]) }
+      ],
+      gRepRows: [["Aug 11–17, 2026", "Weekly schedule · Nour Hassan", 24, 71, "1h 52m"], ["Aug 4–10, 2026", "Weekly schedule · Nour Hassan", 23, 67, "1h 40m"], ["Jul 28–Aug 3, 2026", "Requested by Omar Khaled", 21, 66, "1h 31m"]].map(([p, by, s2, f, t]) => ({ p, by, s: s2, f, t })),
+      userTabs: [{ value: "main", label: "Permissions & assignments" }, { value: "activity", label: "Activity log" }],
+      userTab: this.state.userTab || "main", setUserTab: v => this.setState({ userTab: v }), ut: flag(this.state.userTab || "main"),
+      logCols: [
+        { key: "a", label: "Action", width: "2.4fr", render: r => X.two(r.a) },
+        { key: "k", label: "Permission", width: "1.2fr", render: r => X.tag(r.k, "key") },
+        { key: "w", label: "When", width: "1fr", render: r => X.muted(r.w) }
+      ],
+      logRows: [["Reviewed 5 sessions in B1 Evening", "session.review", "Aug 18, 11:20"], ["Assigned Ordering at a café to A2 Morning", "tasks.assign", "Aug 17, 08:45"], ["Requested weekly report for A2 Morning", "reports.request", "Aug 16, 19:02"], ["Viewed Mahmoud Youssef", "students.index", "Aug 16, 18:40"], ["Reviewed 3 sessions in Pre-A1 Kids", "session.review", "Aug 15, 12:10"]].map(([a, k, w]) => ({ a, k, w })),
+      grpTab: gt, setGrpTab: v => this.setState({ grpTab: v }), gt: flag(gt),
+      rosterCols: [
+        { key: "n", label: "Student", width: "2.2fr", render: r => X.person(r.i, r.n, r.e) },
+        { key: "t", label: "Tier", width: "1fr", render: r => X.dot(tierTone[r.t], r.t) },
+        { key: "h", label: "Hours this month", width: "1.4fr", render: r => X.meter(r.pct, r.used + " / " + r.cap) },
+        { key: "k", label: "Tasks", width: "80px", align: "right", render: r => X.num(r.tasks + " / 24") },
+        { key: "s", label: "Status", width: "110px", align: "right", render: r => X.badge(r.st === "Active" ? "success" : r.st === "Invited" ? "info" : "danger", r.st) }
+      ],
+      rosterRows: students.filter(r => r.l === "Level A2" || r.l === "Level B1").slice(0, 5),
+      pacing: [["Talking about family", "Unlocked Aug 3 · 22 of 24 completed", "Done", "success"], ["Describing your weekend", "Unlocked Aug 10 · 19 of 24 completed", "Done", "success"], ["Ordering at a café", "Unlocked Aug 17 · 9 of 24 completed", "In progress", "brand"], ["Giving directions", "Unlocks Aug 24", "Scheduled", "neutral"], ["Booking a hotel room", "Unlocks Aug 31", "Scheduled", "neutral"]].map(([t, n, b, tone]) => ({ t, n, marker: tone === "success" ? "var(--sg-success-solid)" : tone === "brand" ? "var(--sg-primary)" : "var(--sg-border-strong)", badge: ok ? h(SG.SgBadge, { tone }, b) : b })),
+      ptDist: [["<1h", 3], ["1–2h", 6], ["2–3h", 8], ["3–4h", 5], ["4h+", 2]].map(([label, v]) => ({ label, values: [v] })), ptSeries: [{ label: "Students", color: "var(--sg-link)" }],
+      userCols: [
+        { key: "n", label: "User", width: "2.2fr", render: r => X.person(r.i, r.n, r.e) },
+        { key: "r", label: "Role", width: "1.2fr", render: r => r.r ? X.tag(r.r, "link") : X.muted("No role assigned") },
+        { key: "sp", label: "Specialty", width: "1.2fr", render: r => X.muted(r.sp) },
+        { key: "s", label: "Status", width: "1fr", render: r => X.badge(r.st === "Active" ? "success" : "info", r.st) },
+        { key: "l", label: "Last active", width: "1fr", render: r => X.muted(r.l) },
+        { key: "x", label: "", width: "56px", render: () => X.more(op.userEdit) }
+      ],
+      userRows: isEmpty ? [] : [["AU", "Admin User", "admin@cairolc.com", "Admin", "—", "Active", "Now"], ["NH", "Nour Hassan", "nour@cairolc.com", "Teacher", "Conversation", "Active", "2 hours ago"], ["AM", "Ahmed Mostafa", "ahmed@cairolc.com", "Teacher", "Business, IELTS", "Active", "Yesterday"], ["OK", "Omar Khaled", "omar@cairolc.com", "Head of academics", "Curriculum", "Active", "35 minutes ago"], ["SF", "Sara Fouad", "sara@cairolc.com", "Finance", "—", "Active", "Aug 16"], ["RS", "Rana Samir", "rana@cairolc.com", "", "Young learners", "Invited", "—"]].map(([i, n, e, r, sp, st, l]) => ({ i, n, e, r, sp, st, l })),
+      userEmpty: E("Only you so far", "Invite teachers and staff. Each user takes a seat once they accept.", "Invite user", op.userInvite),
+      taught: [["A2 Morning", "General English · Level A2 · 24 students", "11 to review"], ["B1 Evening", "General English · Level B1 · 22 students", "9 to review"], ["Pre-A1 Kids", "Young Learners · Pre-A1 · 18 students", "4 to review"]].map(([t, n, c]) => ({ t, n, c })),
+      userKeys: ["students.index", "courses.index", "groups.index", "session.review", "tasks.assign", "reports.request"],
+      roleTabs: [{ value: "roles", label: "Roles" }, { value: "matrix", label: "Permission matrix" }],
+      roleTab: this.state.roleTab, setRoleTab: v => this.setState({ roleTab: v }), rt: flag(this.state.roleTab),
+      roleItems: Object.entries(roles).map(([id, r]) => ({ id, label: r.name, meta: r.users + " users", badge: r.kind })),
+      role, setRole: v => this.setState({ role: v }),
+      roleName: R.name, roleKey: R.key, roleMeta: R.desc + " · " + R.users + " users assigned", roleKind: R.kind, roleBadgeTone: R.kind === "System" ? "neutral" : "brand", roleReadonly: role === "admin",
+      permGroups: baseGroups.map(([title, hint, list]) => ({ title, hint, perms: list.map(([label, key]) => ({ label, key, on: !!perms[key] })), all: () => { const m = { ...perms }; const allOn = list.every(([, k]) => m[k]); list.forEach(([, k]) => (m[k] = !allOn)); setPerms(m); } })),
+      togglePerm: k => setPerms({ ...perms, [k]: !perms[k] }),
+      publish: () => toast("Changes published", R.name + " role updated for " + R.users + " users"),
+      matrixCols: [
+        { key: "m", label: "Module", width: "1.2fr", render: r => X.strong(r.m) },
+        { key: "p", label: "Permission", width: "1.6fr", render: r => X.two(r.p, null) },
+        ...Object.entries(roles).map(([id, rr]) => ({ key: id, label: rr.name, width: "1fr", align: "center", render: r => r[id] ? h("span", { style: { color: "var(--sg-link)", fontWeight: 700 } }, "✓") : h("span", { style: { color: "var(--sg-ink-muted)" } }, "—") }))
+      ],
+      matrixRows: baseGroups.flatMap(([m, , list]) => list.map(([p, k]) => ({ m, p, admin: true, teacher: defaults.teacher(k), academics: defaults.academics(k), finance: defaults.finance(k) })))
+    };
+  }
+}
+</script>
+</body>
+</html>

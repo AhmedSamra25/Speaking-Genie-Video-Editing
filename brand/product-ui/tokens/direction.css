@@ -1,0 +1,3 @@
+/* Direction — set dir="rtl" lang="ar" on <html>. Typography swaps in tokens/typography.css. */
+:root { --sg-flip: 1; /* @kind other */ }
+[dir="rtl"] { --sg-flip: -1; /* @kind other */ }

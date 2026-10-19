@@ -1,0 +1,53 @@
+{
+  "v": 3,
+  "assetGroups": {
+    "Other": {
+      "files": {},
+      "name": "Other",
+      "order": []
+    },
+    "fonts": {
+      "files": {},
+      "name": "fonts",
+      "order": []
+    },
+    "notes": {
+      "files": {},
+      "name": "notes",
+      "order": []
+    }
+  },
+  "blobs": {},
+  "createdOnFiles": {
+    "at": "2026-10-13T04:36:52.100Z",
+    "v": 1
+  },
+  "docs": {
+    "readme": "project/README.md",
+    "sections": [
+      "project/ui_kits/admin-dashboard/README.md",
+      "project/ui_kits/web-platform/Group Report User Stories.md",
+      "project/ui_kits/web-platform/Onboarding Video Script.md",
+      "project/ui_kits/web-platform/README.md"
+    ]
+  },
+  "editing": "off",
+  "groups": [
+    "Other",
+    "fonts",
+    "notes"
+  ],
+  "layout": "files",
+  "libraries": [],
+  "namespace": "SpeakingGenieDesignSystem_9bb41a",
+  "sections": {},
+  "source": {
+    "app": "claude-design",
+    "exportedAt": "2026-10-13T04:36:52.100Z",
+    "map": "project/migration-map.json",
+    "projectId": "9bb41a16-4b7c-4241-b62f-2e3439c68d51",
+    "url": "https://claude.ai/design/p/9bb41a16-4b7c-4241-b62f-2e3439c68d51",
+    "v": 1
+  },
+  "title": "Speaking Genie Design System"
+}

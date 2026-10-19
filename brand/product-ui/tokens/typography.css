@@ -1,0 +1,23 @@
+:root {
+  --sg-font: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --sg-mono: 'JetBrains Mono', ui-monospace, monospace; /* @kind font */
+  --sg-font-arabic: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+
+  --sg-weight-regular: 400; --sg-weight-medium: 500; --sg-weight-semibold: 600; --sg-weight-bold: 700; --sg-weight-extrabold: 800;
+
+  /* Scale: size / line-height / weight / tracking */
+  --sg-text-display-size: 32px; --sg-text-display-lh: 38px; --sg-text-display-weight: 800; --sg-text-display-tracking: -0.025em;
+  --sg-text-title-size: 24px; --sg-text-title-lh: 32px; --sg-text-title-weight: 700; --sg-text-title-tracking: -0.02em;
+  --sg-text-section-size: 17px; --sg-text-section-lh: 24px; --sg-text-section-weight: 700; --sg-text-section-tracking: -0.01em;
+  --sg-text-card-title-size: 15px;
+  --sg-text-body-size: 14px; --sg-text-body-lh: 22px;
+  --sg-text-label-size: 13px; --sg-text-label-lh: 18px; --sg-text-label-weight: 600;
+  --sg-text-caption-size: 12px; --sg-text-caption-lh: 16px; --sg-text-caption-weight: 500; --sg-text-caption-tracking: 0.01em;
+  --sg-text-overline-size: 12px; --sg-text-overline-weight: 700; --sg-text-overline-tracking: 0.1em;
+  --sg-text-nav-group-size: 11px;
+  --sg-text-table-head-tracking: 0.04em;
+  --sg-text-mono-size: 12.5px; --sg-text-mono-lh: 18px;
+  --sg-text-metric-size: 30px; --sg-text-metric-tracking: -0.02em;
+  --sg-lh-arabic: 1.7; /* @kind other */
+}
+[dir="rtl"] { --sg-font: var(--sg-font-arabic); }

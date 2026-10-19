@@ -1,0 +1,24 @@
+:root {
+  /* 4px grid */
+  --sg-1: 4px; --sg-2: 8px; --sg-3: 12px; --sg-4: 16px; --sg-5: 20px; --sg-6: 24px; --sg-8: 32px; --sg-10: 40px;
+
+  /* Radius */
+  --sg-r-xs: 5px;   /* checkbox, kbd */
+  --sg-r-tag: 7px;  /* meta tags, keys */
+  --sg-r-sm: 8px;   /* small button, pagination, icon tiles */
+  --sg-r-btn-md: 9px;
+  --sg-r-md: 10px;  /* inputs, large buttons, nav items */
+  --sg-r-card-inner: 12px;
+  --sg-r-lg: 14px;  /* cards */
+  --sg-r-xl: 16px;  /* drawer, showcase panel */
+  --sg-r-modal: 18px;
+  --sg-r-full: 999px;
+
+  /* Control heights */
+  --sg-h-lg: 40px; --sg-h-md: 36px; --sg-h-sm: 32px; --sg-h-filter: 38px; --sg-h-chip: 34px;
+
+  /* Layout */
+  --sg-sidebar-w: 264px; --sg-sidebar-collapsed-w: 72px; --sg-topbar-h: 64px;
+  --sg-page-gutter: 32px; --sg-row-h: 56px; --sg-content-max: 1440px;
+  --sg-hit-min: 44px;
+}

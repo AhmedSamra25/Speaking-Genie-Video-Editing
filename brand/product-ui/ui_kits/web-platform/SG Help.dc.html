@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="sg-helpers.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+</helmet>
+<sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 2 }}" widths="{{ skW }}" height="{{ 14 }}" hint-size="100%,40px"></x-import>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+      <sc-for list="{{ six }}" as="k" hint-placeholder-count="6"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" hint-size="100%,110px"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 3 }}" hint-size="100%,60px"></x-import></x-import></sc-for>
+    </div>
+  </div>
+</sc-if>
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+
+  <sc-if value="{{ s.help }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Help center">
+      <div style="margin-bottom: 20px;">
+        <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Help center</h1>
+        <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Find answers and get support for Speaking Genie.</p>
+      </div>
+      <div style="display: flex; gap: 10px; margin-bottom: 28px; max-width: 720px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search for help articles" kbd="⌘K" style="flex: 1;" hint-size="100%,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ to.helpSearch }}" hint-size="90px,40px">Search</x-import>
+      </div>
+      <h2 style="margin: 0 0 14px; font-size: 17px; font-weight: 700;">Browse by category</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-bottom: 28px;">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="7">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" onClick="{{ to.helpCategory }}" padding="18px 20px" hint-size="100%,110px">
+            <div style="font-size: 15px; font-weight: 700;">{{ c.n }}</div>
+            <div style="font-size: 13px; color: var(--sg-ink-muted); margin-top: 4px; line-height: 1.5;">{{ c.d }}</div>
+            <div style="font-size: 12px; color: var(--sg-link); font-weight: 600; margin-top: 12px;">{{ c.c }}</div>
+          </x-import>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Popular articles" flush="{{ true }}" hint-size="100%,280px">
+          <sc-for list="{{ popular }}" as="p" hint-placeholder-count="4">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ p.t }}" subtitle="{{ p.n }}" trailing="→" onClick="{{ to.helpArticle }}" hint-size="100%,60px"></x-import>
+          </sc-for>
+        </x-import>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Frequently asked questions" description="Short answers about billing, hours, students and reports." onClick="{{ to.helpFaq }}" padding="20px 22px" hint-size="100%,100px"></x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Need more help?" description="Can't find what you're looking for? Contact our support team." tone="brand" padding="20px 22px" hint-size="100%,150px">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="md" onClick="{{ to.helpContact }}" hint-size="140px,36px">Contact support</x-import>
+          </x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.helpCategory }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Help category">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.help }}" style="margin-bottom: 14px;" hint-size="120px,20px">Help center</x-import>
+      <div style="margin-bottom: 24px;">
+        <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Courses</h1>
+        <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Create and manage your courses · 3 articles</p>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" flush="{{ true }}" hint-size="100%,260px">
+        <sc-for list="{{ catArticles }}" as="a" hint-placeholder-count="3">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ a.t }}" subtitle="{{ a.n }}" trailing="{{ a.tr }}" onClick="{{ to.helpArticle }}" padding="18px 22px" hint-size="100%,70px"></x-import>
+        </sc-for>
+      </x-import>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.helpArticle }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Help article">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.helpCategory }}" style="margin-bottom: 14px;" hint-size="100px,20px">Courses</x-import>
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" padding="32px 36px" hint-size="100%,600px">
+          <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" hint-size="70px,22px">Beginner</x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" hint-size="70px,22px">5 min read</x-import>
+          </div>
+          <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">Creating your first course</h1>
+          <div style="font-size: 13px; color: var(--sg-ink-muted); margin-top: 8px;">Updated on Aug 2, 2026</div>
+          <div style="max-width: 680px; margin-top: 24px; font-size: 15px; line-height: 1.7; color: var(--sg-ink-2); display: flex; flex-direction: column; gap: 14px;">
+            <p style="margin: 0; text-wrap: pretty;">A course is the container for everything students practise: levels, and inside each level the tasks, vocabulary and idioms the AI partner uses in conversation.</p>
+            <h2 style="margin: 10px 0 0; font-size: 17px; font-weight: 700; color: var(--sg-ink);">1. Add the course</h2>
+            <p style="margin: 0; text-wrap: pretty;">Go to Courses and choose Add course. Give it a name, pick the language, choose target audiences and write a short description of the objectives.</p>
+            <h2 style="margin: 10px 0 0; font-size: 17px; font-weight: 700; color: var(--sg-ink);">2. Add levels</h2>
+            <p style="margin: 0; text-wrap: pretty;">Open the course and add levels from the Levels tab. Each level has learning goals, KPIs, a maximum number of output words and a speaking speed for the AI partner.</p>
+            <h2 style="margin: 10px 0 0; font-size: 17px; font-weight: 700; color: var(--sg-ink);">3. Or set it up with AI</h2>
+            <p style="margin: 0; text-wrap: pretty;">Choose Set up with AI to generate a plan of levels, tasks, vocabulary and idioms. You can review and edit the plan before applying it.</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--sg-divider);">
+            <div style="font-size: 14px; font-weight: 600;">Was this article helpful?</div>
+            <div style="display: flex; gap: 8px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" onClick="{{ thanks }}" hint-size="60px,32px">Yes</x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="secondary" size="sm" onClick="{{ thanks }}" hint-size="60px,32px">No</x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" size="sm" onClick="{{ share }}" hint-size="70px,32px">Share</x-import>
+            </div>
+          </div>
+        </x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Related articles" flush="{{ true }}" hint-size="300px,200px">
+          <sc-for list="{{ related }}" as="r" hint-placeholder-count="3">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ r.t }}" subtitle="{{ r.n }}" onClick="{{ to.helpArticle }}" hint-size="100%,58px"></x-import>
+          </sc-for>
+        </x-import>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.helpFaq }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Help FAQ">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.help }}" style="margin-bottom: 14px;" hint-size="120px,20px">Help center</x-import>
+      <div style="margin-bottom: 20px;">
+        <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Frequently asked questions</h1>
+      </div>
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search FAQs" style="max-width: 560px; margin-bottom: 24px;" hint-size="560px,40px"></x-import>
+      <div style="display: flex; flex-direction: column; gap: 20px; max-width: 860px;">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="3">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="{{ f.cat }}" flush="{{ true }}" hint-size="100%,200px">
+            <sc-for list="{{ f.items }}" as="q" hint-placeholder-count="3">
+              <div onClick="{{ q.toggle }}" style="padding: 16px 20px; border-top: 1px solid var(--sg-divider); cursor: pointer;" style-hover="background: var(--sg-surface-hover);">
+                <div style="display: flex; justify-content: space-between; gap: 16px; font-size: 14px; font-weight: 600;"><span>{{ q.q }}</span><span style="color: var(--sg-ink-muted);">{{ q.glyph }}</span></div>
+                <sc-if value="{{ q.open }}" hint-placeholder-val="{{ false }}"><div style="font-size: 14px; line-height: 1.6; color: var(--sg-ink-2); margin-top: 10px; text-wrap: pretty;">{{ q.a }}</div></sc-if>
+              </div>
+            </sc-for>
+          </x-import>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.helpSearch }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Help search">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.help }}" style="margin-bottom: 14px;" hint-size="120px,20px">Help center</x-import>
+      <div style="display: flex; gap: 10px; margin-bottom: 8px; max-width: 720px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" value="{{ query }}" style="flex: 1;" hint-size="100%,40px"></x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" hint-size="90px,40px">Search</x-import>
+      </div>
+      <div style="font-size: 13px; color: var(--sg-ink-muted); margin-bottom: 20px;">{{ resultCount }}</div>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgEmptyState" title="No results found" description="Try different keywords, or contact support and we will answer directly." action="{{ contactBtn }}" hint-size="100%,200px"></x-import>
+      </sc-if>
+      <sc-if value="{{ notEmpty }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" flush="{{ true }}" hint-size="100%,260px">
+          <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ r.t }}" subtitle="{{ r.n }}" trailing="{{ r.c }}" onClick="{{ to.helpArticle }}" padding="18px 22px" hint-size="100%,70px"></x-import>
+          </sc-for>
+        </x-import>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.helpContact }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Contact support">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.help }}" style="margin-bottom: 14px;" hint-size="120px,20px">Help center</x-import>
+      <div style="margin-bottom: 24px;">
+        <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Contact support</h1>
+        <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Tell us what you need and the right team will reply by email.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Send us a message" hint-size="100%,520px">
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Name" value="Admin User" placeholder="Your full name" hint-size="100%,64px"></x-import>
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Email" value="admin@cairolc.com" placeholder="your.email@example.com" hint-size="100%,64px"></x-import>
+            </div>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSelect" label="Department" placeholder="Select a department" options="{{ depts }}" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Subject" placeholder="Brief description of your issue" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Message" rows="{{ 6 }}" placeholder="Please provide as much detail as possible" hint-size="100%,160px"></x-import>
+          </div>
+          <div style="display: flex; justify-content: flex-end; margin-top: 22px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ send }}" hint-size="130px,40px">Send message</x-import>
+          </div>
+        </x-import>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Other ways to reach us" flush="{{ true }}" hint-size="100%,200px">
+            <sc-for list="{{ channels }}" as="c" hint-placeholder-count="3">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ c.t }}" subtitle="{{ c.n }}" hint-size="100%,58px"></x-import>
+            </sc-for>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Response time" padding="20px 22px" hint-size="100%,140px">
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+              <sc-for list="{{ sla }}" as="r" hint-placeholder-count="3">
+                <div style="display: flex; justify-content: space-between;"><span style="color: var(--sg-ink-muted);">{{ r.k }}</span><span style="font-weight: 600;">{{ r.v }}</span></div>
+              </sc-for>
+            </div>
+          </x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { openQ: "0-0" };
+  componentDidMount() { this.p = setInterval(() => { if (window.SGH && window.SpeakingGenieDesignSystem_9bb41a) { clearInterval(this.p); this.forceUpdate(); } }, 60); }
+  componentWillUnmount() { clearInterval(this.p); }
+  renderVals() {
+    const P = this.props, go = P.go || (() => {}), toast = P.toast || (() => {});
+    const SG = window.SpeakingGenieDesignSystem_9bb41a, X = window.SGH, ok = !!(SG && X);
+    const h = React.createElement, ds = P.dataState || "default", isEmpty = ds === "empty";
+    const s = new Proxy({}, { get: (_, k) => P.screen === k, has: () => true });
+    const to = new Proxy({}, { get: (_, k) => () => go(k), has: () => true });
+    const faqData = [
+      ["Billing and hours", [["How are hours charged?", "Every minute a student spends in a speaking session is deducted from the workspace hour wallet, up to that student's monthly consumption tier."], ["What happens when the wallet is empty?", "Students cannot start new sessions until you recharge. Sessions already in progress finish normally."], ["Can I get an invoice?", "Yes. Every payment in Billing → Transaction history has a downloadable invoice with your company details."]]],
+      ["Students and groups", [["How do students join?", "Add them one by one, import a CSV, or share an invitation link that registers them into a course level or group."], ["Can a student be in two groups?", "Yes, but their hours still count against a single consumption tier."]]],
+      ["Reports", [["When are weekly reports generated?", "Scheduled reports run at the day and time you choose. One-time requests are usually ready within a few minutes."], ["Who can see reports?", "Anyone with the reports.request permission, plus the teacher assigned to the group."]]]
+    ];
+    return {
+      loading: ds === "loading", ready: ok && ds !== "loading", s, to, isEmpty, notEmpty: !isEmpty, skW: ["30%", "50%"], six: [1, 2, 3, 4, 5, 6],
+      cats: [["Getting started", "New to Speaking Genie? Start here", 3], ["Courses", "Create and manage your courses", 3], ["Students", "Manage students and track progress", 3], ["Groups", "Organise students into groups", 3], ["Reports", "Generate and analyse reports", 3], ["Billing", "Manage subscriptions and payments", 3], ["Settings", "Workspace, users and permissions", 3]].map(([n, d, c]) => ({ n, d, c: c + " articles" })),
+      popular: [["How to create your first course", "Courses · 1,204 views"], ["Understanding student progress reports", "Reports · 986 views"], ["Setting up groups and invitations", "Groups · 742 views"], ["Billing and recharging FAQs", "Billing · 611 views"]].map(([t, n]) => ({ t, n })),
+      catArticles: [["Creating your first course", "Step-by-step guide to course creation", "5 min read"], ["Course levels and tasks", "Organise content with levels and tasks", "4 min read"], ["AI course plan generator", "Use AI to create course plans", "3 min read · New"]].map(([t, n, tr]) => ({ t, n, tr })),
+      related: [["Course levels and tasks", "Courses"], ["AI course plan generator", "Courses"], ["Assigning courses", "Students"]].map(([t, n]) => ({ t, n })),
+      thanks: () => toast("Thank you for your feedback", "Your feedback helps us improve"),
+      share: () => toast("Link copied", "Article link copied to clipboard"),
+      faqs: faqData.map(([cat, items], ci) => ({ cat, items: items.map(([q, a], qi) => { const id = ci + "-" + qi, open = this.state.openQ === id; return { q, a, open, glyph: open ? "–" : "+", toggle: () => this.setState({ openQ: open ? null : id }) }; }) })),
+      query: "course levels", resultCount: isEmpty ? "0 results found" : "4 results found",
+      contactBtn: ok ? h(SG.SgButton, { size: "md", onClick: to.helpContact }, "Contact support") : null,
+      results: [["Course levels and tasks", "Organise content with levels and tasks", "Courses"], ["Creating your first course", "Step-by-step guide to course creation", "Courses"], ["Assigning courses", "Assign courses to students", "Students"], ["Student progress reports", "Track student performance by level", "Reports"]].map(([t, n, c]) => ({ t, n, c })),
+      depts: ["Technical support", "Billing", "Sales", "Content and curriculum"],
+      send: () => toast("Message sent", "We usually reply within 4 business hours"),
+      channels: [["Email", "support@speakingenie.com"], ["Phone", "+20 2 2461 9900 · Sun–Thu, 09:00–17:00"], ["WhatsApp", "+20 100 600 7711"]].map(([t, n]) => ({ t, n })),
+      sla: [["Technical support", "Within 4 hours"], ["Billing", "Within 1 business day"], ["Sales", "Within 1 business day"]].map(([k, v]) => ({ k, v }))
+    };
+  }
+}
+</script>
+</body>
+</html>

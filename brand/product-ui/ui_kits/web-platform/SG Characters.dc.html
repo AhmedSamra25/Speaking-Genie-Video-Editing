@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="sg-helpers.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+</helmet>
+<sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+    <sc-for list="{{ six }}" as="k" hint-placeholder-count="6"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" hint-size="100%,180px"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgSkeleton" lines="{{ 5 }}" hint-size="100%,120px"></x-import></x-import></sc-for>
+  </div>
+</sc-if>
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+
+  <sc-if value="{{ s.characters }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="AI characters">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">AI characters</h1>
+          <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Practice partners students talk to. A character's background and interests shape every conversation.</p>
+        </div>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ to.characterForm }}" hint-size="140px,40px">Create character</x-import>
+      </div>
+      <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" prefix="⌕" placeholder="Search characters" style="flex: 1;" hint-size="100%,40px"></x-import>
+      </div>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgEmptyState" title="No characters yet" description="Characters are AI practice partners with a background, interests and topics students can talk about." action="{{ createBtn }}" hint-size="100%,200px"></x-import>
+      </sc-if>
+      <sc-if value="{{ notEmpty }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+          <sc-for list="{{ chars }}" as="c" hint-placeholder-count="6">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" onClick="{{ to.characterDetail }}" padding="20px 22px" hint-size="100%,200px">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAvatar" initials="{{ c.i }}" size="{{ 44 }}" hint-size="44px,44px"></x-import>
+                <div style="min-width: 0;">
+                  <div style="font-size: 15px; font-weight: 700;">{{ c.name }}</div>
+                  <div style="font-size: 12px; color: var(--sg-ink-muted); margin-top: 2px;">{{ c.role }}</div>
+                </div>
+              </div>
+              <p style="margin: 14px 0 0; font-size: 13px; line-height: 1.55; color: var(--sg-ink-2); text-wrap: pretty;">{{ c.bg }}</p>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px;">
+                <sc-for list="{{ c.tags }}" as="t" hint-placeholder-count="3"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="meta" hint-size="70px,22px">{{ t }}</x-import></sc-for>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--sg-ink-muted); margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--sg-divider);">
+                <span>{{ c.topics }}</span><span>{{ c.used }}</span>
+              </div>
+            </x-import>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.characterDetail }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Character detail">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.characters }}" style="margin-bottom: 14px;" hint-size="120px,20px">All characters</x-import>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgAvatar" initials="LM" size="{{ 56 }}" hint-size="56px,56px"></x-import>
+          <div>
+            <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Layla Mansour</h1>
+            <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Café owner in Alexandria · Used in 14 tasks</p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="danger" onClick="{{ op.confirmDeleteCharacter }}" hint-size="110px,40px">Delete</x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ to.characterForm }}" hint-size="130px,40px">Edit character</x-import>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Background" hint-size="100%,150px">
+            <p style="margin: 0; font-size: 14px; line-height: 1.65; color: var(--sg-ink-2); text-wrap: pretty;">Layla, 34, runs a small café near the Corniche that she opened after ten years as a hotel receptionist. She is warm and patient, speaks slowly with learners, and loves recommending the day's special. She asks follow-up questions and gently rephrases when a student is stuck.</p>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Conversation topics" description="Subjects the character steers towards" flush="{{ true }}" hint-size="100%,240px">
+            <sc-for list="{{ topics }}" as="t" hint-placeholder-count="5">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ t.t }}" subtitle="{{ t.n }}" hint-size="100%,56px"></x-import>
+            </sc-for>
+          </x-import>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Interests" padding="20px 22px" hint-size="100%,140px">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <sc-for list="{{ interests }}" as="t" hint-placeholder-count="6"><x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTag" variant="goal" hint-size="80px,24px">{{ t }}</x-import></sc-for>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Used in" flush="{{ true }}" hint-size="100%,200px">
+            <sc-for list="{{ usedIn }}" as="u" hint-placeholder-count="3">
+              <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgListRow" title="{{ u.t }}" subtitle="{{ u.n }}" onClick="{{ to.taskDetail }}" trailing="→" hint-size="100%,56px"></x-import>
+            </sc-for>
+          </x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.characterForm }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Character form">
+      <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgBackLink" onClick="{{ to.characters }}" style="margin-bottom: 14px;" hint-size="120px,20px">All characters</x-import>
+      <div style="margin-bottom: 24px;">
+        <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">Create AI character</h1>
+        <p style="margin: 6px 0 0; font-size: 14px; color: var(--sg-ink-muted);">Students meet this character in tasks and scenarios. Write the background in third person.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Character information" hint-size="100%,560px">
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgInput" label="Name" placeholder="Enter character name" value="Layla Mansour" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Background" rows="{{ 5 }}" placeholder="Enter character background" hint="Who they are, how they speak, how they help a learner who is stuck" value="Layla, 34, runs a small café near the Corniche. She is warm and patient, speaks slowly with learners and loves recommending the day's special." hint-size="100%,150px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Interests" rows="{{ 3 }}" placeholder="Enter character interests" hint="One per line" value="Baking&#10;Travel&#10;Old films" hint-size="100%,110px"></x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgTextarea" label="Conversation topics" rows="{{ 4 }}" placeholder="Enter topics for conversation" hint="One per line" value="Ordering food and drinks&#10;Daily specials&#10;Alexandria landmarks&#10;Weekend plans" hint-size="100%,130px"></x-import>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--sg-divider);">
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" variant="tertiary" onClick="{{ to.characters }}" hint-size="80px,40px">Cancel</x-import>
+            <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgButton" onClick="{{ save }}" hint-size="140px,40px">Create character</x-import>
+          </div>
+        </x-import>
+        <x-import component-from-global-scope="SpeakingGenieDesignSystem_9bb41a.SgCard" title="Writing a good character" padding="20px 22px" hint-size="100%,220px">
+          <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px; line-height: 1.55; color: var(--sg-ink-2);">
+            <div>Give them a job and a place — it gives students something concrete to ask about.</div>
+            <div>Say how they talk to learners: pace, patience, how they rephrase.</div>
+            <div>Keep topics to things a student at the target level can discuss.</div>
+          </div>
+        </x-import>
+      </div>
+    </div>
+  </sc-if>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { this.p = setInterval(() => { if (window.SGH && window.SpeakingGenieDesignSystem_9bb41a) { clearInterval(this.p); this.forceUpdate(); } }, 60); }
+  componentWillUnmount() { clearInterval(this.p); }
+  renderVals() {
+    const P = this.props, go = P.go || (() => {}), open = P.open || (() => {}), toast = P.toast || (() => {});
+    const SG = window.SpeakingGenieDesignSystem_9bb41a, X = window.SGH, ok = !!(SG && X);
+    const h = React.createElement, ds = P.dataState || "default", isEmpty = ds === "empty";
+    const s = new Proxy({}, { get: (_, k) => P.screen === k, has: () => true });
+    const to = new Proxy({}, { get: (_, k) => () => go(k), has: () => true });
+    const op = new Proxy({}, { get: (_, k) => () => open(k), has: () => true });
+    return {
+      loading: ds === "loading", ready: ok && ds !== "loading", s, to, op, isEmpty, notEmpty: !isEmpty, six: [1, 2, 3, 4, 5, 6],
+      createBtn: ok ? h(SG.SgButton, { size: "md", onClick: to.characterForm }, "Create character") : null,
+      chars: [
+        ["LM", "Layla Mansour", "Café owner · Alexandria", "Warm and patient; speaks slowly and loves recommending the day's special.", ["Food", "Travel"], 6, 14],
+        ["JC", "James Carter", "Hiring manager · London", "Runs structured job interviews and gives clear, polite follow-up questions.", ["Careers", "Business"], 8, 9],
+        ["MR", "Maya Rossi", "Tour guide · Rome", "Energetic storyteller who asks students about their own cities.", ["History", "Travel"], 7, 6],
+        ["DO", "Dr. Omar Fathy", "Family doctor · Cairo", "Calm and precise; good for health vocabulary and describing symptoms.", ["Health"], 5, 4],
+        ["SK", "Sam Kim", "University student · Toronto", "Casual and curious; small talk about hobbies, games and campus life.", ["Hobbies", "Study"], 9, 11],
+        ["NA", "Nadia Aziz", "Hotel receptionist · Dubai", "Formal and helpful; bookings, complaints and directions.", ["Hospitality"], 6, 7]
+      ].map(([i, name, role, bg, tags, t, u]) => ({ i, name, role, bg, tags, topics: t + " conversation topics", used: "Used in " + u + " tasks" })),
+      topics: [["Ordering food and drinks", "Menus, polite requests, prices"], ["Daily specials", "Describing dishes and ingredients"], ["Alexandria landmarks", "Directions and recommendations"], ["Weekend plans", "Future forms and invitations"], ["Her café's story", "Past simple narrative"]].map(([t, n]) => ({ t, n })),
+      interests: ["Baking", "Travel", "Old films", "Sea fishing", "Coffee", "Music"],
+      usedIn: [["Ordering at a café", "General English · Level A2"], ["Recommending a dish", "General English · Level A1"], ["Weekend in Alexandria", "General English · Level B1"]].map(([t, n]) => ({ t, n })),
+      save: () => { toast("Character created", "Layla Mansour is ready for tasks"); go("characterDetail"); }
+    };
+  }
+}
+</script>
+</body>
+</html>

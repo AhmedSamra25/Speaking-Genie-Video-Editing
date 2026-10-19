@@ -1,0 +1,107 @@
+:root {
+  /* Brand purple ramp */
+  --sg-purple-50: #F5F3FF;
+  --sg-purple-75: #F9F7FF;
+  --sg-purple-100: #EDE9FE;
+  --sg-purple-150: #E9E2FE;
+  --sg-purple-200: #D9C9F7;
+  --sg-purple-300: #C4B5FD;
+  --sg-purple-400: #7C5CD6;
+  --sg-purple-muted: #7C6BA8;
+  --sg-purple-500: #8B5CF6;
+  --sg-purple-600: #6D28D9;
+  --sg-purple-700: #5B21B6;
+  --sg-purple-800: #4C1D95;
+
+  /* Cool neutrals */
+  --sg-white: #FFFFFF;
+  --sg-gray-25: #FAFAFD;
+  --sg-gray-50: #FAFBFC;
+  --sg-gray-75: #F7F8FB;
+  --sg-gray-100: #F4F6F9;
+  --sg-gray-150: #F1F3F7;
+  --sg-gray-200: #EEF0F5;
+  --sg-gray-250: #EDEFF3;
+  --sg-gray-275: #EDEFF4;
+  --sg-gray-300: #E7E9EF;
+  --sg-gray-400: #D9DDE5;
+  --sg-gray-450: #C6CCD6;
+  --sg-gray-500: #B9BFCC;
+  --sg-gray-550: #A3ABB9;
+  --sg-gray-600: #94A3B8;
+  --sg-gray-700: #64748B;
+  --sg-gray-800: #475569;
+  --sg-gray-950: #0F1729;
+
+  /* Semantic bases */
+  --sg-green-700: #047857; --sg-green-600: #059669; --sg-green-50: #ECFDF5;
+  --sg-amber-800: #92400E; --sg-amber-700: #B45309; --sg-amber-600: #D97706; --sg-amber-100: #FEF3C7; --sg-amber-50: #FFFBEB; --sg-amber-border: #FDE9C0; --sg-amber-border-strong: #E7C98A;
+  --sg-red-800: #991B1B; --sg-red-700: #B91C1C; --sg-red-600: #DC2626; --sg-red-100: #FEE2E2; --sg-red-50: #FEF2F2; --sg-red-border: #F6D3D3; --sg-red-border-btn: #F3CFCF; --sg-red-border-input: #E0A0A0;
+  --sg-blue-700: #1D4ED8; --sg-blue-600: #2563EB; --sg-blue-50: #EFF6FF;
+
+  /* ---- Semantic aliases (use these in components) ---- */
+  --sg-primary: var(--sg-purple-600);
+  --sg-primary-hover: var(--sg-purple-700);
+  --sg-primary-soft: var(--sg-purple-50);
+  --sg-primary-soft-2: var(--sg-purple-100);
+  --sg-primary-border: var(--sg-purple-150);
+  --sg-primary-border-strong: var(--sg-purple-200);
+  --sg-primary-ink: var(--sg-purple-700);
+  --sg-brand-gradient: linear-gradient(135deg, #8B5CF6, #4C1D95); /* @kind color */
+
+  --sg-ink: var(--sg-gray-950);
+  --sg-ink-2: var(--sg-gray-800);
+  --sg-ink-muted: var(--sg-gray-700);
+  --sg-ink-3: var(--sg-gray-600);
+  --sg-ink-4: var(--sg-gray-550);
+  --sg-ink-disabled: var(--sg-gray-550);
+
+  --sg-backdrop: var(--sg-gray-275);
+  --sg-canvas: var(--sg-gray-75);
+  --sg-surface: var(--sg-white);
+  --sg-surface-subtle: var(--sg-gray-50);
+  --sg-surface-hover: var(--sg-gray-25);
+  --sg-surface-muted: var(--sg-gray-150);
+  --sg-surface-disabled: var(--sg-gray-250);
+
+  --sg-border: var(--sg-gray-300);
+  --sg-border-soft: var(--sg-gray-200);
+  --sg-border-strong: var(--sg-gray-400);
+  --sg-border-hover: var(--sg-gray-500);
+  --sg-divider: var(--sg-gray-150);
+  --sg-divider-row: var(--sg-gray-100);
+  --sg-control-off: var(--sg-gray-400);
+  --sg-control-border: var(--sg-gray-450);
+  --sg-track: var(--sg-gray-250);
+
+  --sg-success: var(--sg-green-700); --sg-success-bg: var(--sg-green-50); --sg-success-solid: var(--sg-green-600);
+  --sg-warning: var(--sg-amber-700); --sg-warning-bg: var(--sg-amber-50); --sg-warning-border: var(--sg-amber-border); --sg-warning-ink: var(--sg-amber-800); --sg-warning-icon-bg: var(--sg-amber-100); --sg-warning-solid: var(--sg-amber-600);
+  --sg-danger: var(--sg-red-700); --sg-danger-bg: var(--sg-red-50); --sg-danger-border: var(--sg-red-border); --sg-danger-ink: var(--sg-red-800); --sg-danger-icon-bg: var(--sg-red-100); --sg-danger-solid: var(--sg-red-600);
+  --sg-info: var(--sg-blue-700); --sg-info-bg: var(--sg-blue-50); --sg-info-solid: var(--sg-blue-600);
+  --sg-neutral: var(--sg-gray-800); --sg-neutral-bg: var(--sg-gray-150);
+
+  /* Tier markers (consumption tiers, 3px rule or dot only) */
+  --sg-tier-light: var(--sg-green-600);
+  --sg-tier-regular: var(--sg-blue-600);
+  --sg-tier-heavy: var(--sg-amber-600);
+  --sg-tier-intensive: var(--sg-red-600);
+
+  --sg-scrim: rgba(15, 23, 41, 0.45);
+
+  /* Added for theming: text-colour purple, raised surfaces, alert borders, chart context series */
+  --sg-link: var(--sg-purple-600);
+  --sg-link-hover: var(--sg-purple-800);
+  --sg-surface-raised: var(--sg-white);
+  --sg-success-border: #C7EBDA; --sg-success-icon-bg: #D1FAE5;
+  --sg-info-border: #D6E4FD; --sg-info-icon-bg: #DBEAFE;
+  --sg-chart-muted: var(--sg-purple-100);
+  --sg-on-primary: var(--sg-white);
+
+  /* Sidebar nav (scoped to SgSidebar) */
+  --sg-nav-ink: #334155;
+  --sg-nav-dot: #A3ACBC;
+  --sg-nav-hover: #EEF0F4;
+  --sg-nav-active: var(--sg-purple-100);
+  --sg-nav-title: var(--sg-link);
+  --sg-nav-title-muted: #5B6577;
+}
