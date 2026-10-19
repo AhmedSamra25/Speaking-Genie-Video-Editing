@@ -5,7 +5,7 @@ description: Screen producer craft for the Speaking Genie video crew — choosin
 
 # Screen producer
 
-You show the real product. Every screen comes from one of two working click-throughs: the **mobile app kit** (`brand/product-ui-mobile`, the learner app: home, the AI call while speaking or listening, session feedback, reports, certificates, placement test; native 9:16 in the kit's phone frame) and the **web platform kit** (`brand/product-ui`, teachers and admins). Which one fits which story is in `.claude/skills/video-crew/EDITING.md`. You never mock up, redraw or retouch product UI. Read first: `crew/treatment.md`, `.claude/skills/video-crew/CREW.md`, and `brand/product-ui/ui_kits/web-platform/README.md`. If `brand/product-ui/` is missing, stop and tell the producer: the kit has to be installed from the design system first.
+You show the real product. Every screen comes from one of two working click-throughs: the **mobile app kit** (`brand/product-ui-mobile`, the learner app: home, the AI call while speaking or listening, session feedback, reports, certificates, placement test; native 9:16 in the kit's phone frame) and the **web platform kit** (`brand/product-ui`, teachers and admins). Which one fits which story is in `.claude/skills/video-crew/EDITING.md`. You never mock up, redraw or retouch product UI. Read first: `crew/treatment.md`, `.claude/skills/video-crew/CREW.md`, `brand/product-ui/ui_kits/web-platform/README.md`, and `.claude/skills/video-crew/DESIGN-SYSTEMS.md` (step 4: show the product as shipped, never restyled to the video's accent; mobile for the learner's side, web for the manager's). If `brand/product-ui/` is missing, stop and tell the producer: the kit has to be installed from the design system first.
 
 ## Find the screen
 

@@ -12,7 +12,7 @@ projects/<slug>/
   assets/screens/                screen-producer: captured product screens
   captions/                      editor
   crew/
-    brief.md                     producer: goal, audience, platforms, length, language, must-haves
+    brief.md                     producer: goal, audience, platforms, design system + track, length, language, must-haves
     treatment.md                 creative-director
     script.md                    scriptwriter: human-readable script, both languages side by side
     vo.json                      scriptwriter: voice-over lines (machine-readable, see below)

@@ -105,6 +105,15 @@ Real product screens come from two design system kits, both working click-throug
 platform** in `brand/product-ui/` (every screen, EN/AR, light/dark, states and flows). Never mock up product UI.
 The editing playbook (`.claude/skills/video-crew/EDITING.md`) says which kit to use and how to make it move.
 
+**Three design systems, each with its own job** (guide: `.claude/skills/video-crew/DESIGN-SYSTEMS.md`). The
+**Enablement DS** (`brand/enablement/`) governs marketing and sales videos in two tracks: learners on social
+(Egyptian colloquial, green accent, close on an app install) and buyers such as centre owners and corporates on
+LinkedIn and the website (simplified formal Arabic or English, orange accent, close on a conversation). Its company
+brief holds the verified facts, approved lines and retired claims. The **Platform DS** (`brand/product-ui/`,
+`brand/BRAND.md`) governs the web product and in-product video; the **Mobile App DS** (`brand/product-ui-mobile/`)
+is the learner app as shipped. Screens are always shown as shipped, never restyled to the video's accent. The
+motion compositions draw the Platform look; an Enablement look is not built yet.
+
 ## Editing craft
 
 - **Hook in the first 2 seconds.** For social cuts, open on the strongest line or result, not the logo.

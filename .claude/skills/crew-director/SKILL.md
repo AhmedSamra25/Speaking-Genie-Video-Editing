@@ -23,7 +23,7 @@ Keep it to one page:
 
 ## Choosing visual sources
 
-Read `.claude/skills/video-crew/EDITING.md` first: it says which product kit fits which audience (mobile app for learners, web platform for teachers and owners) and how the crew makes it move.
+Read `.claude/skills/video-crew/DESIGN-SYSTEMS.md` first: it says which design system and track the video belongs to (marketing to learners, marketing to buyers, or in-product), and the treatment states the track, accent, register, close and look. Then read `.claude/skills/video-crew/EDITING.md`: it says which product kit fits which audience (mobile app for learners, web platform for teachers and owners) and how the crew makes it move.
 
 
 - **Real product screens** prove the product. Use them whenever a beat makes a claim about what Speaking Genie does: feedback (`flow-sessionSummary`, `reportDetail`), teacher insight (`groupDetail` with `gtab=ranking`, `groupReport`), admin overview (`dashboard`), setup (`onboarding-*`, `flow-groupInvite`). Arabic cuts use the Arabic RTL version of each screen (`lang=ar`). Ask the screen-producer for a callout on the one element that matters; never show a whole dense screen without a focus point.

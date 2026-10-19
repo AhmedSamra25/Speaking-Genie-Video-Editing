@@ -1,0 +1,86 @@
+/* Eleven surface tokens, resolved by four themes.
+   light    — the website's light sections, documents, this documentation
+   dark     — product screenshots, projector rooms
+   purple   — the brand ground: social posts, slide covers, campaign pages
+   business — the same purple ground with the orange accent, for partner and
+              corporate surfaces (LinkedIn, website B2B pages, partner decks) */
+:root{
+--page:#ffffff; /* @kind color */
+--surface:#f8fafc; /* @kind color */
+--card:#ffffff; /* @kind color */
+--ink:#0f172a; /* @kind color */
+--ink-muted:#475569; /* @kind color */
+--ink-subtle:#94a3b8; /* @kind color */
+--border:#e2e8f0; /* @kind color */
+--hairline:#f1f5f9; /* @kind color */
+--accent:#4a0c79; /* @kind color */
+--accent-ink:#3d096d; /* @kind color */
+--accent-soft:#f6f1fb; /* @kind color */
+--chip-bg:#f1f5f9; /* @kind color */
+--chip-ink:#475569; /* @kind color */
+--ghost-border:#e2e8f0; /* @kind color */
+--ghost-ink:#475569; /* @kind color */
+--surface-shadow:0 1px 2px rgba(15,23,42,0.05);
+--surface-blur:none; /* @kind other */
+--highlight:#0a8f63; /* @kind color */
+}
+[data-theme="dark"]{
+--page:#0b011a; /* @kind color */
+--surface:#1c0136; /* @kind color */
+--card:#2a0346; /* @kind color */
+--ink:#ffffff; /* @kind color */
+--ink-muted:#e0cdf0; /* @kind color */
+--ink-subtle:#c9a6e8; /* @kind color */
+--border:rgba(255,255,255,0.18); /* @kind color */
+--hairline:rgba(255,255,255,0.10); /* @kind color */
+--accent:#c9a6e8; /* @kind color */
+--accent-ink:#d7bced; /* @kind color */
+--accent-soft:rgba(201,166,232,0.14); /* @kind color */
+--chip-bg:rgba(255,255,255,0.14); /* @kind color */
+--chip-ink:#ece0f7; /* @kind color */
+--ghost-border:rgba(255,255,255,0.35); /* @kind color */
+--ghost-ink:#ffffff; /* @kind color */
+--surface-shadow:0 12px 28px -16px rgba(0,0,0,0.7);
+--surface-blur:none; /* @kind other */
+--highlight:#10c185; /* @kind color */
+}
+[data-theme="purple"],[data-theme="gradient"]{
+--page:var(--ground-dome); /* @kind color */
+--surface:rgba(255,255,255,0.09); /* @kind color */
+--card:rgba(255,255,255,0.11); /* @kind color */
+--ink:#ffffff; /* @kind color */
+--ink-muted:rgba(236,224,247,0.92); /* @kind color */
+--ink-subtle:rgba(201,166,232,0.85); /* @kind color */
+--border:rgba(255,255,255,0.30); /* @kind color */
+--hairline:rgba(255,255,255,0.14); /* @kind color */
+--accent:#ffffff; /* @kind color */
+--accent-ink:#10c185; /* @kind color */
+--accent-soft:rgba(255,255,255,0.14); /* @kind color */
+--chip-bg:rgba(255,255,255,0.14); /* @kind color */
+--chip-ink:#ffffff; /* @kind color */
+--ghost-border:rgba(255,255,255,0.55); /* @kind color */
+--ghost-ink:#ffffff; /* @kind color */
+--surface-shadow:0 18px 40px -20px rgba(11,1,26,0.6);
+--surface-blur:blur(6px); /* @kind other */
+--highlight:#10c185; /* @kind color */
+}
+[data-theme="business"]{
+--page:var(--ground-dome); /* @kind color */
+--surface:rgba(255,255,255,0.09); /* @kind color */
+--card:rgba(255,255,255,0.11); /* @kind color */
+--ink:#ffffff; /* @kind color */
+--ink-muted:rgba(247,231,214,0.92); /* @kind color */
+--ink-subtle:rgba(247,197,138,0.85); /* @kind color */
+--border:rgba(255,255,255,0.30); /* @kind color */
+--hairline:rgba(255,255,255,0.14); /* @kind color */
+--accent:#ffffff; /* @kind color */
+--accent-ink:#ff8e31; /* @kind color */
+--accent-soft:rgba(255,255,255,0.14); /* @kind color */
+--chip-bg:rgba(255,255,255,0.14); /* @kind color */
+--chip-ink:#ffffff; /* @kind color */
+--ghost-border:rgba(255,255,255,0.55); /* @kind color */
+--ghost-ink:#ffffff; /* @kind color */
+--surface-shadow:0 18px 40px -20px rgba(11,1,26,0.6);
+--surface-blur:blur(6px); /* @kind other */
+--highlight:#ff8e31; /* @kind color */
+}

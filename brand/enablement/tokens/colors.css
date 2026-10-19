@@ -1,0 +1,127 @@
+:root{
+/* ------------------------------------------------------------------------ *
+ * Purple · brand. Sampled from the brand's own social posts, not invented.  *
+ * 700 is the flat post ground; 400 is the bright glow used in vignettes.    *
+ * ------------------------------------------------------------------------ */
+--purple-50:#f6f1fb; /* @kind color */
+--purple-100:#ece0f7; /* @kind color */
+--purple-200:#d7bced; /* @kind color */
+--purple-300:#c9a6e8; /* @kind color */
+--purple-400:#8710aa; /* @kind color */
+--purple-500:#6121be; /* @kind color */
+--purple-600:#5a168d; /* @kind color */
+--purple-700:#4a0c79; /* @kind color */
+--purple-800:#3d096d; /* @kind color */
+--purple-900:#2a0346; /* @kind color */
+--purple-950:#1c0136; /* @kind color */
+--purple-1000:#0b011a; /* @kind color */
+
+/* Green · the individual track. Highlight words, ticks, "Install"-side CTAs. */
+--green-50:#e7fbf3; /* @kind color */
+--green-200:#8fe6c4; /* @kind color */
+--green-400:#10c185; /* @kind color */
+--green-500:#06bc78; /* @kind color */
+--green-600:#0a8f63; /* @kind color */
+--green-800:#075a41; /* @kind color */
+
+/* Orange · the business track. Partner, corporate and language-centre work. */
+--orange-50:#fdf1e3; /* @kind color */
+--orange-200:#f7c58a; /* @kind color */
+--orange-400:#ff8e31; /* @kind color */
+--orange-500:#e5831a; /* @kind color */
+--orange-600:#c26a0c; /* @kind color */
+--orange-800:#7d4207; /* @kind color */
+
+/* Audience aliases. Pick ONE per surface; never both on the same post. */
+--accent-individual:#10c185; /* @kind color */
+--accent-individual-deep:#0a8f63; /* @kind color */
+--accent-business:#e5831a; /* @kind color */
+--accent-business-deep:#c26a0c; /* @kind color */
+
+/* Slate · neutral (UI surfaces, documents, the website's light sections) */
+--slate-50:#f8fafc; /* @kind color */
+--slate-100:#f1f5f9; /* @kind color */
+--slate-200:#e2e8f0; /* @kind color */
+--slate-300:#cbd5e1; /* @kind color */
+--slate-400:#94a3b8; /* @kind color */
+--slate-500:#64748b; /* @kind color */
+--slate-600:#475569; /* @kind color */
+--slate-700:#334155; /* @kind color */
+--slate-800:#1e293b; /* @kind color */
+--slate-900:#0f172a; /* @kind color */
+--slate-950:#0b1020; /* @kind color */
+--hairline-100:#f4f6fa; /* @kind color */
+--hairline-200:#eceef4; /* @kind color */
+--paper:#fbfaf8; /* @kind color */
+
+/* Legacy violet aliases. The first version of this system was built from a
+   documentation artifact that used a lighter violet; these keep older
+   components resolving while everything points at the real purple. */
+--violet-50:var(--purple-50); /* @kind color */
+--violet-100:var(--purple-100); /* @kind color */
+--violet-200:var(--purple-200); /* @kind color */
+--violet-300:var(--purple-300); /* @kind color */
+--violet-400:var(--purple-400); /* @kind color */
+--violet-500:var(--purple-500); /* @kind color */
+--violet-600:var(--purple-700); /* @kind color */
+--violet-700:var(--purple-800); /* @kind color */
+--violet-800:var(--purple-900); /* @kind color */
+--violet-900:var(--purple-950); /* @kind color */
+--violet-950:var(--purple-1000); /* @kind color */
+--fuchsia-100:#f7e4fb; /* @kind color */
+--fuchsia-300:#d98ae8; /* @kind color */
+--fuchsia-400:#b02fd0; /* @kind color */
+--fuchsia-500:#8710aa; /* @kind color */
+--fuchsia-600:#750f93; /* @kind color */
+
+/* Support · data only. Results green, attention amber, risk rose. */
+--emerald:#10c185; /* @kind color */
+--emerald-deep:#0a8f63; /* @kind color */
+--emerald-soft:#e7fbf3; /* @kind color */
+--emerald-tint:#c6f2df; /* @kind color */
+--emerald-light:#8fe6c4; /* @kind color */
+--amber:#f59e0b; /* @kind color */
+--amber-deep:#b45309; /* @kind color */
+--amber-soft:#fffbeb; /* @kind color */
+--amber-tint:#fef3c7; /* @kind color */
+--amber-line:#fde68a; /* @kind color */
+--rose:#f43f5e; /* @kind color */
+--rose-deep:#b91c1c; /* @kind color */
+--rose-soft:#fef2f2; /* @kind color */
+--rose-light:#fda4af; /* @kind color */
+--rose-red:#ef4444; /* @kind color */
+
+/* CEFR level pills (product surfaces) */
+--level-a2-bg:#fef3c7; /* @kind color */
+--level-a2-ink:#b45309; /* @kind color */
+--level-b1-bg:#e0e7ff; /* @kind color */
+--level-b1-ink:#4338ca; /* @kind color */
+--level-b2-bg:#f7e4fb; /* @kind color */
+--level-b2-ink:#750f93; /* @kind color */
+
+/* ------------------------------------------------------------------------ *
+ * Grounds. Every post and slide sits on one of these five.                  *
+ * ------------------------------------------------------------------------ */
+--ground-flat:#4a0c79; /* @kind color */
+--ground-dome:radial-gradient(115% 85% at 50% -5%,#5a168d 0%,#3d096d 38%,#1c0136 100%); /* @kind color */
+--ground-deep:linear-gradient(165deg,#2a0346 0%,#4a0c79 55%,#8710aa 140%); /* @kind color */
+--ground-night:linear-gradient(180deg,#0b011a 0%,#1c0136 55%,#3d096d 100%); /* @kind color */
+--ground-glow:radial-gradient(70% 55% at 50% 42%,#8710aa 0%,#3d096d 45%,#0b011a 100%); /* @kind color */
+
+/* Photo overlays. Photography is never used untreated. */
+--overlay-individual:linear-gradient(180deg,rgba(11,1,26,0.35) 0%,rgba(28,1,54,0.72) 55%,rgba(11,1,26,0.92) 100%); /* @kind color */
+--overlay-business:linear-gradient(180deg,rgba(229,131,26,0.42) 0%,rgba(28,1,54,0.78) 58%,rgba(11,1,26,0.94) 100%); /* @kind color */
+
+/* The dome scrim drawn behind the lockup on every post. */
+--scrim-dome:rgba(255,255,255,0.07); /* @kind color */
+
+/* Legacy gradient names, repointed at the real grounds. */
+--gradient-signature:var(--ground-deep); /* @kind color */
+--gradient-deep:var(--ground-deep); /* @kind color */
+--gradient-midnight:var(--ground-night); /* @kind color */
+--gradient-dawn:var(--ground-dome); /* @kind color */
+--gradient-ink:var(--ground-night); /* @kind color */
+--ground-grad:var(--ground-deep); /* @kind color */
+--ground-grad-2:var(--ground-glow); /* @kind color */
+--avatar-gradient:linear-gradient(135deg,#4a0c79,#8710aa); /* @kind color */
+}

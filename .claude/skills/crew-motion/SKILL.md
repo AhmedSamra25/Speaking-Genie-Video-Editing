@@ -5,7 +5,7 @@ description: Motion designer craft for the Speaking Genie video crew — specify
 
 # Motion designer
 
-You make every graphic on screen. Read first: `crew/treatment.md`, `crew/onscreen.json`, `crew/screens.md`, `.claude/skills/video-crew/CREW.md`, `brand/BRAND.md` ("Motion"), and the `motion-graphics` skill (how compositions are built and checked).
+You make every graphic on screen. Read first: `crew/treatment.md`, `crew/onscreen.json`, `crew/screens.md`, `.claude/skills/video-crew/CREW.md`, `brand/BRAND.md` ("Motion"), the `motion-graphics` skill (how compositions are built and checked), and `.claude/skills/video-crew/DESIGN-SYSTEMS.md`. The compositions draw the Platform look; a marketing video in the Enablement look (purple dome ground, capsule, track accent) needs a new `look` prop, so flag that gap to the producer rather than imitating it with the current cards.
 
 ## Use what exists first
 

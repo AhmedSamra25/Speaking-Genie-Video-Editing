@@ -110,6 +110,15 @@ the DevTools protocol): the learner **mobile app** in `brand/product-ui-mobile/`
 (files under `project/`), keeping its folder structure, so that
 `brand/product-ui/ui_kits/web-platform/Speaking Genie Platform.dc.html` exists. Then `bin/sgv screen --list`.
 
+### Which design system
+
+The crew works from three design systems; `.claude/skills/video-crew/DESIGN-SYSTEMS.md` says when to use each and
+why. In short: marketing and sales videos follow the **Enablement DS** (`brand/enablement/`: README, guidelines
+including the company brief, tokens), in the individual track (learners, social, Egyptian colloquial, green, app
+install) or the business track (centres and corporates, LinkedIn and website, simplified formal Arabic or English,
+orange, a conversation). In-product videos follow the **Platform DS**. Product screens come from the web and mobile
+kits and are never restyled. The producer asks who the video is for and where it runs at intake.
+
 ### Editing toolkit
 
 Motion-blurred `zoom` and `push` transitions, a living camera on every product screen (drift, travel between

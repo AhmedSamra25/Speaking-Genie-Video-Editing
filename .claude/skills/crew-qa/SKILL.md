@@ -30,6 +30,7 @@ You are the last check before the user sees it. You check; you don't fix. Every 
 
 **Picture**
 - 9:16: no text or faces in the bottom 20% (captions excepted, in their safe band); faces in frame after reframing.
+- Design system (`.claude/skills/video-crew/DESIGN-SYSTEMS.md`): one track throughout (one accent, one register, one close; never store badges on a business video, never both an install and a partnership), no retired claims, customers named only from the approved list, feature names verbatim, every number with its method, and the call screen never transcribed.
 - Product screens come from the design system kit, are sharp (no upscaling blur), have the callout on the right element, and are held long enough to read (≥ 1.5 s + 0.06 s per character).
 - No black, frozen or flash frames; no cut in the middle of a word.
 

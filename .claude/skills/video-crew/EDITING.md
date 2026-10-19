@@ -6,6 +6,9 @@ stays inside `brand/BRAND.md`: calm, eased, no bounce, one purple accent.
 
 ## Pick the right product UI
 
+The design system and track (which decide the copy, accent, close and the look around the product) are in
+`DESIGN-SYSTEMS.md`. This section is only about which kit the product screens come from.
+
 | Audience and story | Kit | Capture |
 | --- | --- | --- |
 | Learners: practising, the AI call, feedback, progress, certificates | **mobile app** (`brand/product-ui-mobile`) | `bin/sgv screen <p> 17-call-speaking` (`--list --kit mobile` for all 36) |

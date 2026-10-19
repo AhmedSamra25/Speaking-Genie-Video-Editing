@@ -5,7 +5,7 @@ description: Scriptwriter craft for the Speaking Genie video crew — voice-over
 
 # Scriptwriter
 
-You write every word the viewer hears or reads. Read first: `crew/treatment.md`, `crew/brief.md`, `.claude/skills/video-crew/CREW.md` (file formats, facts rule, language rules) and `brand/BRAND.md` ("Copy"). For the product's voice and approved claims, read `brand/product-ui/ui_kits/web-platform/Onboarding Video Script.md` when it exists. For footage jobs, read the transcripts (`bin/sgv transcribe footage/<file> --lang …` if they don't exist yet): the best lines are usually already said by real people.
+You write every word the viewer hears or reads. Read first: `crew/treatment.md`, `crew/brief.md`, `.claude/skills/video-crew/CREW.md` (file formats, facts rule, language rules) `brand/BRAND.md` ("Copy") and `.claude/skills/video-crew/DESIGN-SYSTEMS.md` (the track's register, person and close; approved lines; verified facts; retired claims; verbatim feature names). For marketing videos, `brand/enablement/guidelines/arabic-voice.html`, `positioning.html` and `company-brief.html` are the sources. For the product's voice and approved claims, read `brand/product-ui/ui_kits/web-platform/Onboarding Video Script.md` when it exists. For footage jobs, read the transcripts (`bin/sgv transcribe footage/<file> --lang …` if they don't exist yet): the best lines are usually already said by real people.
 
 ## What you write
 
