@@ -204,6 +204,12 @@ def write_ass(cues: list, out: Path, width: int, height: int, tokens: dict) -> P
     for c in cues:
         text = c["text"].replace("\n", " ").strip()
         lines = _wrap(text, width_chars)[:2] or [text]
+        if len(lines) == 2 and len(lines[1]) < len(text) / 3:  # balance two lines: never one stranded word below
+            for w in range(-(-len(text) // 2), width_chars + 1):
+                balanced = _wrap(text, w)
+                if len(balanced) == 2:
+                    lines = balanced
+                    break
         body = r"\N".join(l.replace("{", "(").replace("}", ")") for l in lines)
         items.append(("AR" if ARABIC.search(text) else "EN", body, len(lines), c))
     refs = [(k, ref) for k, ref in REFERENCE.items()] + [(k, f"{ref}\\N{ref}") for k, ref in REFERENCE.items()]

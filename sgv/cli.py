@@ -102,7 +102,7 @@ def cmd_voice(a):
     p = project.find(a.project)
     script = p.root / a.script
     lines = voice.run(p, script, a.engine, voice=a.voice, take=p.path(a.take) if a.take else None, gap=a.gap,
-                      lead=a.lead, min_silence=a.min_silence, rate=a.rate, clean_up=not a.no_enhance)
+                      lead=a.lead, min_silence=a.min_silence, rate=a.rate, clean_up=not a.no_enhance, keep_timing=a.keep_timing)
     over = 0
     for l in lines:
         limit = l.get("max_seconds")
@@ -277,6 +277,8 @@ def main(argv=None) -> int:
     s.add_argument("--min-silence", type=float, default=1.2, help="pause that separates lines in a take")
     s.add_argument("--rate", type=int, help="speaking rate for --engine say, words per minute (scratch timing)")
     s.add_argument("--no-enhance", action="store_true", help="skip the clean-up of a human recording (engine files)")
+    s.add_argument("--keep-timing", action="store_true",
+                   help="with --take: place each line where it was said (keeps the speaker's pauses) instead of at its beat")
     s.set_defaults(fn=cmd_voice)
 
     s = sub.add_parser("voices", help="list installed Arabic/English system voices (premium, enhanced) for --engine say")

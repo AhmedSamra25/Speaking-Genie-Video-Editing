@@ -41,13 +41,15 @@ def _elevenlabs(text: str, voice: str, model: str, out: Path) -> None:
         raise SystemExit(f"ElevenLabs refused the request ({e.code}): {e.read().decode(errors='replace')[:400]}")
 
 
-# Clean-up for a human recording (phone or USB mic in an ordinary room): cut rumble, two gentle passes of noise
-# reduction, soften harsh "s" sounds, take out boxiness, add a little presence, even out the level, and a soft gate
-# (set from the recording's own noise floor) so the room drops about 14 dB between phrases without dead silence.
-ENHANCE = ("highpass=f=80,afftdn=nr=18:nf=-50:tn=1,afftdn=nr=12:nf=-55:tn=1,deesser=i=0.35,"
-           "equalizer=f=250:t=q:w=1.2:g=-2,equalizer=f=3500:t=q:w=1.4:g=2,"
-           "acompressor=threshold=-21dB:ratio=2.5:attack=8:release=120:makeup=1.5,"
-           "agate=threshold={gate:.5f}:ratio=2:range=0.2:attack=5:release=200")
+# Clean-up for a human recording (phone or USB mic in an ordinary room): cut rumble, soften harsh "s" sounds, take
+# out boxiness, add a little presence and even out the level. Noise reduction scales with the room: a clean recording
+# gets one light pass; a noisy one gets a second pass and a gentle, slow gate (set from its own noise floor). Heavier
+# settings were tested and blur soft word endings (Arabic ة, final consonants), so they are not used.
+SHAPE = ("deesser=i=0.3,equalizer=f=250:t=q:w=1.2:g=-2,equalizer=f=3500:t=q:w=1.4:g=2,"
+         "acompressor=threshold=-21dB:ratio=2.5:attack=8:release=120:makeup=1.5")
+CLEAN_ROOM = "highpass=f=80,afftdn=nr=10:nf=-50:tn=1," + SHAPE
+NOISY_ROOM = ("highpass=f=80,afftdn=nr=14:nf=-45:tn=1,afftdn=nr=8:nf=-50:tn=1," + SHAPE +
+              ",agate=threshold={gate:.5f}:ratio=1.5:range=0.4:attack=10:release=350")
 
 _VOICES_JS = """
 ObjC.import("AVFoundation");
@@ -87,8 +89,8 @@ def voices(langs: tuple = ("ar", "en"), include_default: bool = False) -> list:
 def enhance(raw: Path, out: Path) -> Path:
     levels = sorted(_rms_windows(raw)) or [-60.0]
     floor = levels[len(levels) // 10]
-    gate = 10 ** ((floor + 8) / 20)  # just above the room's noise, far below speech
-    ff.run(["ffmpeg", "-i", raw, "-af", ENHANCE.format(gate=gate), "-ar", "48000", "-c:a", "pcm_s24le", out])
+    chain = CLEAN_ROOM if floor < -48 else NOISY_ROOM.format(gate=10 ** ((floor + 6) / 20))
+    ff.run(["ffmpeg", "-i", raw, "-af", chain, "-ar", "48000", "-c:a", "pcm_s24le", out])
     return out
 
 
@@ -131,11 +133,18 @@ def _split_take(take: Path, n: int, tmp: Path, min_silence: float) -> list:
                 ranges.append((max(0.0, start * WINDOW - 0.08), (i - quiet + 1) * WINDOW + 0.08))
                 start, quiet = None, 0
     ranges = [(a, b) for a, b in ranges if b - a >= 0.3]  # ignore clicks and breaths
+    # soft final syllables (Arabic ة, a trailing vowel) fall under the threshold: give each line up to 0.3 s more
+    # tail and 0.1 s more lead-in, never into its neighbour; _clean trims the real silence afterwards
+    total = len(rms) * WINDOW
+    ranges = [(max(0.0, a - 0.1, (ranges[i - 1][1] + 0.05) if i else 0.0),
+               min(total, b + 0.3, (ranges[i + 1][0] - 0.05) if i + 1 < len(ranges) else total))
+              for i, (a, b) in enumerate(ranges)]
     if len(ranges) != n:
         raise SystemExit(f"{take.name}: found {len(ranges)} spoken parts but vo.json has {n} lines. "
                          f"Try --min-silence {min_silence + 0.3:.1f} (fewer splits) or {max(0.3, min_silence - 0.3):.1f} "
                          "(more), or record the lines as separate files in audio/vo-takes/.")
     parts = []
+    _split_take.ranges = ranges  # the take's own timing, for keep_timing
     for i, (s, e) in enumerate(ranges):
         part = tmp / f"take-{i}.wav"
         ff.run(["ffmpeg", "-ss", f"{s:.3f}", "-to", f"{e:.3f}", "-i", take, "-c:a", "pcm_s16le", part])
@@ -145,7 +154,7 @@ def _split_take(take: Path, n: int, tmp: Path, min_silence: float) -> list:
 
 def run(project: Project, script: Path, engine: str, voice: str | None = None, take: Path | None = None,
         gap: float = 0.35, lead: float = 0.3, min_silence: float = 1.2, rate: int | None = None,
-        clean_up: bool = True) -> list:
+        clean_up: bool = True, keep_timing: bool = False) -> list:
     data = json.loads(script.read_text(encoding="utf-8"))
     lines = data.get("lines", [])
     if not lines:
@@ -183,6 +192,11 @@ def run(project: Project, script: Path, engine: str, voice: str | None = None, t
             line["duration"] = round(_clean(raw, vo_dir / f"{line['id']}.wav"), 3)
             line["file"] = f"audio/vo/{line['id']}.wav"
 
+    if keep_timing and engine == "files" and take:
+        # keep the speaker's own rhythm: each line where it was said, minus the silence before the first line
+        first = _split_take.ranges[0][0]
+        for line, (a, _) in zip(lines, _split_take.ranges):
+            line["at"] = round(a - first + lead, 3)
     cursor = 0.0 if "at" in lines[0] else lead
     for line in lines:  # a line never starts before the previous one has finished: late lines push back, never overlap
         wanted = float(line["at"]) if "at" in line else cursor
