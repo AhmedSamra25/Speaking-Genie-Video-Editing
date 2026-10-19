@@ -51,6 +51,7 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
   "title": "Pilot results",            // file metadata
   "aspect": "16:9",                    // aspect of drafts
   "fps": 30, "theme": "light", "lang": "en",   // theme: light|dark  lang: en|ar
+  "look": "enablement", "track": "individual",  // motion graphics: platform (default) | enablement; track individual|business
   "fit": "fill",                       // default reframing: fill (crop) | fit (pad with brand canvas)
   "transitionDuration": 0.5,
   "exports": ["youtube-1080p", "reels-1080x1920"],   // see `sgv presets`; each aspect is laid out natively
@@ -112,7 +113,8 @@ LinkedIn and the website (simplified formal Arabic or English, orange accent, cl
 brief holds the verified facts, approved lines and retired claims. The **Platform DS** (`brand/product-ui/`,
 `brand/BRAND.md`) governs the web product and in-product video; the **Mobile App DS** (`brand/product-ui-mobile/`)
 is the learner app as shipped. Screens are always shown as shipped, never restyled to the video's accent. The
-motion compositions draw the Platform look; an Enablement look is not built yet.
+motion compositions draw the Platform look by default and the Enablement look with `"look": "enablement"` and a
+`"track"` (purple dome ground, capsule, track accent, and a close that depends on the track).
 
 ## Editing craft
 

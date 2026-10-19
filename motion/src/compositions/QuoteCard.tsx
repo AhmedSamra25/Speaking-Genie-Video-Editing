@@ -1,11 +1,18 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
-import { BaseProps, colors, isPortrait, scaleOf } from "../brand";
+import { BaseProps, colors, fonts, isEnablement, isPortrait, scaleOf } from "../brand";
 import { enter } from "../anim";
 import { Avatar } from "../components/Avatar";
+import { Phrase, trackOf } from "../components/Enablement";
 import { Stage } from "../components/Stage";
 
-export type QuoteCardProps = BaseProps & { quote: string; name: string; role?: string };
+export type QuoteCardProps = BaseProps & {
+  quote: string;
+  name: string;
+  role?: string;
+  /** Enablement look: the words of `quote` set in the track accent. */
+  highlight?: string;
+};
 
 /** Testimonial: the quote set large, then who said it. */
 export const QuoteCard: React.FC<QuoteCardProps> = (p) => {
@@ -15,8 +22,12 @@ export const QuoteCard: React.FC<QuoteCardProps> = (p) => {
   const c = colors(p.theme);
   const portrait = isPortrait(p);
   const ar = p.lang === "ar";
+  // Enablement: Poppins/Cairo on the purple ground, marks and the highlighted phrase in the track accent.
+  const enab = isEnablement(p);
+  const t = trackOf(p);
+  const mark = enab ? t.phrase : c.link;
   return (
-    <Stage p={p}>
+    <Stage p={p} lockup>
       <AbsoluteFill
         style={{
           justifyContent: "center",
@@ -29,15 +40,16 @@ export const QuoteCard: React.FC<QuoteCardProps> = (p) => {
           style={{
             ...enter(frame, durationInFrames, 2, s),
             fontSize: (portrait ? 58 : 56) * s,
-            fontWeight: ar ? 600 : 700,
+            fontWeight: ar ? 600 : enab ? 600 : 700,
             letterSpacing: ar ? 0 : "-0.015em",
-            lineHeight: ar ? 1.7 : 1.25,
+            lineHeight: ar ? (enab ? 1.5 : 1.7) : 1.25,
             maxWidth: portrait ? "100%" : 1400 * s,
+            ...(enab ? { fontFamily: fonts.display } : {}),
           }}
         >
-          <span style={{ color: c.link }}>{ar ? "«" : "“"}</span>
-          {p.quote}
-          <span style={{ color: c.link }}>{ar ? "»" : "”"}</span>
+          <span style={{ color: mark }}>{ar ? "«" : "“"}</span>
+          {enab ? <Phrase text={p.quote} phrase={p.highlight} color={t.phrase} /> : p.quote}
+          <span style={{ color: mark }}>{ar ? "»" : "”"}</span>
         </div>
         <div
           style={{
@@ -49,10 +61,12 @@ export const QuoteCard: React.FC<QuoteCardProps> = (p) => {
             textAlign: "start",
           }}
         >
-          <Avatar name={p.name} size={72 * s} />
+          <Avatar name={p.name} size={72 * s} enablement={enab} />
           <div>
-            <div style={{ fontSize: 30 * s, fontWeight: 700 }}>{p.name}</div>
-            {p.role ? <div style={{ fontSize: 24 * s, fontWeight: 500, color: c.inkMuted }}>{p.role}</div> : null}
+            <div style={{ fontSize: 30 * s, fontWeight: 700, ...(enab ? { fontFamily: fonts.display } : {}) }}>{p.name}</div>
+            {p.role ? (
+              <div style={{ fontSize: (enab ? 26 : 24) * s, fontWeight: 500, color: enab ? t.inkMuted : c.inkMuted }}>{p.role}</div>
+            ) : null}
           </div>
         </div>
       </AbsoluteFill>

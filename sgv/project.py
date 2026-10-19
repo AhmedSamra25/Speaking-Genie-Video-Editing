@@ -17,6 +17,8 @@ TRANSITIONS = {"cut": None, "dissolve": "fade", "dip": None, "wipe-left": "wipel
                # motion transitions: short, with motion blur and an optional whoosh (sfx)
                "zoom": "zoomin", "push-left": "slideleft", "push-right": "slideright", "push-up": "slideup"}
 MOTION_BLUR = {"zoom", "push-left", "push-right", "push-up"}
+# design-system look of the motion graphics (project-wide in edit.json, or per clip in props)
+LOOKS = {"look": ("platform", "enablement"), "track": ("individual", "business"), "ground": ("dome", "flat", "deep")}
 
 
 class Project:
@@ -48,6 +50,10 @@ class Project:
     def lang(self) -> str:
         return self.edit.get("lang", "en")
 
+    def motion_defaults(self) -> dict:
+        """Project-wide `look`, `track` and `ground` for every motion graphic (a clip's own props win)."""
+        return {k: self.edit[k] for k in LOOKS if k in self.edit}
+
     @property
     def aspect(self) -> str:
         return self.edit.get("aspect", "16:9")
@@ -65,6 +71,9 @@ class Project:
     # -- validation -------------------------------------------------------
     def validate(self) -> None:
         errors = []
+        for k, allowed in LOOKS.items():
+            if k in self.edit and self.edit[k] not in allowed:
+                errors.append(f"`{k}` must be one of {list(allowed)}")
         tl = self.edit.get("timeline")
         if not isinstance(tl, list) or not tl:
             errors.append("`timeline` must be a non-empty list of clips")

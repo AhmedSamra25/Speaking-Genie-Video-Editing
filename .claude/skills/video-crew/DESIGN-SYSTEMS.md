@@ -50,11 +50,17 @@ purple frame, split panel) with a full-purple close; the only dark surface allow
 device. Photography always goes through the track overlay, never untreated. Motion follows
 `brand/product-ui-mobile/guidelines/motion-*.html` (the same calm, eased system as the product).
 
-> **Gap:** the Remotion compositions in `motion/` currently draw the **Platform look** (white or slate canvas,
-> `#6D28D9`, Plus Jakarta Sans / IBM Plex Sans Arabic). An Enablement look (purple dome ground, capsule, track
-> accent, Cairo/Poppins) is not built yet. Until it is, a marketing video uses the Platform-look cards with
-> Enablement copy rules, and the motion designer flags it in `crew/motion.md`. Building it follows the
-> `motion-graphics` skill, as a `look: "enablement"` prop with `track: "individual" | "business"`.
+**In the compositions:** every composition in `motion/` draws both looks. Set `"look": "enablement"` and
+`"track": "individual" | "business"` once at the top of `edit.json` (or per clip in `props`); the default is the
+Platform look. Enablement frames get a purple ground (`"ground": "dome"` by default, or `flat` or `deep`), the dome,
+the white lockup top-centre, Poppins/Inter/Cairo and the track accent. `highlight` sets words of a title, quote or
+headline in the accent, and `capsule` adds the one capsule (TitleCard, StatCard). EndCard closes by track:
+individual gets the install line in a capsule plus the App Store and Google Play badges (Arabic badges when
+`lang` is `ar`); business gets a white "Book a walkthrough" / "اتكلم معنا" button and the URL, never badges
+(`cta` overrides the line). ProductScreen keeps the screen as shipped on the purple ground, with the ring in the
+accent and the label as a solid purple capsule. The light business-deck grounds (lilac haze, purple frame) are
+not built; video uses the purple grounds on both tracks. Assets: `brand/enablement/assets/` (white lockup and
+mark, store badges) and `brand/fonts/` (Cairo, Poppins, Inter).
 
 ## Step 3: what every marketing video must respect (company brief)
 

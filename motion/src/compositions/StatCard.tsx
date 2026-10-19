@@ -1,7 +1,8 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
-import { BaseProps, brand, colors, isPortrait, scaleOf } from "../brand";
+import { BaseProps, brand, colors, fonts, isEnablement, isPortrait, scaleOf } from "../brand";
 import { FadeProps, enter, enterClip, progress } from "../anim";
+import { Capsule, en, kicker, trackOf } from "../components/Enablement";
 import { Stage } from "../components/Stage";
 import { Window } from "../components/Window";
 
@@ -19,6 +20,8 @@ export type StatCardProps = BaseProps &
   countDelay?: number;
   /** Put the label under the number (reads "58% من طلاب المجموعة"). Default false: label above. */
   labelBelow?: boolean;
+  /** Enablement look: the one phrase in a capsule under the card (the number's punchline). */
+  capsule?: string;
 };
 
 /** One big metric that counts up inside a window card, with a delta and a caption. */
@@ -34,10 +37,20 @@ export const StatCard: React.FC<StatCardProps> = (p) => {
   // In a cut sequence (enterFade false) everything is on screen from frame 0; the number still counts up.
   const sub = (delay: number) =>
     p.enterFade === false ? enterClip(frame, durationInFrames, 0, s, { enterFade: false, exitFade: false }, false) : enter(frame, durationInFrames, delay, s, false);
+  // The figure keeps one line: a long final value ("150,000 EGP") steps down to fit the card (~0.62 em per glyph).
+  const fmt = (v: number) =>
+    v.toLocaleString("en-US", { minimumFractionDigits: p.decimals ?? 0, maximumFractionDigits: p.decimals ?? 0 });
+  const finalText = `${p.prefix ?? ""}${fmt(p.value)}${p.suffix ?? ""}`;
+  const inner = p.width - 160 * s - 2 * (portrait ? 56 : 88) * s;
+  const numberSize = Math.min(168 * s * f, inner / (finalText.length * 0.62));
   const shown = p.value * progress(frame, p.countDelay ?? (p.enterFade === false ? 0 : 8), Math.min(45, durationInFrames * 0.4));
   const tone =
     p.deltaTone === "danger" ? brand.status.danger : p.deltaTone === "neutral" ? c.ink2 : brand.status.success;
   const toneDark = p.deltaTone === "danger" ? "#F87171" : p.deltaTone === "neutral" ? c.ink2 : "#34D399";
+  // Enablement: a glass panel on the purple ground, Poppins figures, the delta in the track accent.
+  const enab = isEnablement(p);
+  const t = trackOf(p);
+  const deltaColor = enab ? (p.deltaTone === "neutral" ? t.inkMuted : t.phrase) : p.theme === "dark" ? toneDark : tone;
   const labelEl = (
     <div
       style={{
@@ -47,14 +60,15 @@ export const StatCard: React.FC<StatCardProps> = (p) => {
         textTransform: ar ? "none" : "uppercase",
         color: portrait ? c.ink2 : c.inkMuted,
         marginTop: p.labelBelow ? 12 * s : 0,
+        ...(enab ? { ...kicker(p.lang, s, portrait ? 44 : 26, t.inkMuted), marginTop: p.labelBelow ? 12 * s : 0 } : {}),
       }}
     >
       {p.label}
     </div>
   );
   return (
-    <Stage p={p}>
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
+    <Stage p={p} lockup>
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
         <Window
           theme={p.theme}
           s={s}
@@ -64,26 +78,32 @@ export const StatCard: React.FC<StatCardProps> = (p) => {
             minWidth: (portrait ? 920 : 980) * s,
             maxWidth: p.width - 160 * s,
             textAlign: "center",
+            ...(enab
+              ? {
+                  background: en.surface,
+                  border: `${Math.max(1, s)}px solid ${en.border}`,
+                  borderRadius: en.radius.panel * s,
+                  backdropFilter: `blur(${6 * s}px)`,
+                  boxShadow: `0 ${18 * s}px ${40 * s}px -${20 * s}px ${en.shadow}`,
+                }
+              : {}),
           }}
         >
           {p.labelBelow ? null : labelEl}
           <div
             style={{
-              fontSize: 168 * s * f,
-              fontWeight: 800,
-              letterSpacing: "-0.03em",
+              fontSize: numberSize,
+              fontWeight: enab ? 700 : 800,
+              letterSpacing: enab ? "-0.035em" : "-0.03em",
               lineHeight: 1.1,
               marginTop: (p.labelBelow ? 0 : 16) * s,
-              fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+              fontFamily: enab ? fonts.display : "'Plus Jakarta Sans', system-ui, sans-serif",
               fontVariantNumeric: "tabular-nums",
               direction: "ltr",
             }}
           >
             {p.prefix ?? ""}
-            {shown.toLocaleString("en-US", {
-              minimumFractionDigits: p.decimals ?? 0,
-              maximumFractionDigits: p.decimals ?? 0,
-            })}
+            {fmt(shown)}
             {p.suffix ?? ""}
           </div>
           {p.labelBelow ? labelEl : null}
@@ -93,7 +113,7 @@ export const StatCard: React.FC<StatCardProps> = (p) => {
                 ...sub(30),
                 fontSize: 32 * s * f,
                 fontWeight: 700,
-                color: p.theme === "dark" ? toneDark : tone,
+                color: deltaColor,
                 marginTop: 8 * s,
               }}
             >
@@ -107,7 +127,7 @@ export const StatCard: React.FC<StatCardProps> = (p) => {
                 fontSize: (portrait ? 40 : 26) * s,
                 lineHeight: portrait ? (ar ? 1.6 : 1.35) : undefined,
                 fontWeight: 500,
-                color: c.ink2,
+                color: enab ? t.inkMuted : c.ink2,
                 marginTop: 20 * s * f,
               }}
             >
@@ -115,6 +135,13 @@ export const StatCard: React.FC<StatCardProps> = (p) => {
             </div>
           ) : null}
         </Window>
+        {enab && p.capsule ? (
+          <div style={{ ...sub(42), marginTop: 48 * s }}>
+            <Capsule s={s} size={portrait ? 46 : 40} lang={p.lang} ink={t.phrase}>
+              {p.capsule}
+            </Capsule>
+          </div>
+        ) : null}
       </AbsoluteFill>
     </Stage>
   );

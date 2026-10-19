@@ -1,8 +1,9 @@
 import React from "react";
 import { brand } from "../brand";
 
-/** Initials on Purple 100 / Purple 700 — the design system's avatar. */
-export const Avatar: React.FC<{ name: string; size: number }> = ({ name, size }) => {
+/** Initials on Purple 100 / Purple 700 — the design system's avatar. `enablement` uses that system's purples. */
+export const Avatar: React.FC<{ name: string; size: number; enablement?: boolean }> = ({ name, size, enablement }) => {
+  const pal = enablement ? brand.enablement.purple : brand.purple;
   const initials = name
     .split(/\s+/)
     .filter(Boolean)
@@ -16,8 +17,8 @@ export const Avatar: React.FC<{ name: string; size: number }> = ({ name, size })
         width: size,
         height: size,
         borderRadius: 999,
-        background: brand.purple["100"],
-        color: brand.purple["700"],
+        background: pal["100"],
+        color: pal["700"],
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

@@ -1,10 +1,22 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
-import { BaseProps, brand, colors, isPortrait, scaleOf } from "../brand";
+import { BaseProps, brand, colors, isEnablement, isPortrait, scaleOf } from "../brand";
 import { FadeProps, enterClip } from "../anim";
+import { Capsule, Phrase, display, en, kicker, trackOf } from "../components/Enablement";
 import { Stage } from "../components/Stage";
 
-export type TitleCardProps = BaseProps & FadeProps & { overline?: string; title: string; subtitle?: string };
+export type TitleCardProps = BaseProps &
+  FadeProps & {
+  overline?: string;
+  title: string;
+  subtitle?: string;
+  /** Enablement look: the words of `title` set in the track accent. */
+  highlight?: string;
+  /** Enablement look: the one phrase in a capsule, under the title. */
+  capsule?: string;
+  /** Enablement look: capsule ink, "accent" for a punchline (default), "white" for an instruction. */
+  capsuleInk?: "accent" | "white";
+};
 
 /** Chapter / section title: purple overline, 76px title, muted subtitle. */
 export const TitleCard: React.FC<TitleCardProps> = (p) => {
@@ -15,6 +27,7 @@ export const TitleCard: React.FC<TitleCardProps> = (p) => {
   const portrait = isPortrait(p);
   const ar = p.lang === "ar";
   const margin = (portrait ? 96 : 160) * s;
+  if (isEnablement(p)) return <TitleCardEnablement {...p} />;
   return (
     <Stage p={p}>
       <AbsoluteFill
@@ -65,6 +78,67 @@ export const TitleCard: React.FC<TitleCardProps> = (p) => {
             }}
           >
             {p.subtitle}
+          </div>
+        ) : null}
+      </AbsoluteFill>
+    </Stage>
+  );
+};
+
+/** Enablement look: kicker, Poppins/Cairo headline with the accent phrase, lead, then the capsule. */
+const TitleCardEnablement: React.FC<TitleCardProps> = (p) => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const s = scaleOf(p);
+  const t = trackOf(p);
+  const portrait = isPortrait(p);
+  const ar = p.lang === "ar";
+  const margin = (portrait ? 96 : 160) * s;
+  return (
+    <Stage p={p} lockup>
+      <AbsoluteFill
+        style={{
+          justifyContent: "center",
+          alignItems: portrait ? "center" : "flex-start",
+          textAlign: portrait ? "center" : "start",
+          padding: `0 ${margin}px`,
+        }}
+      >
+        {p.overline ? (
+          <div style={{ ...enterClip(frame, durationInFrames, 2, s, p), ...kicker(p.lang, s, 26, t.inkSubtle), marginBottom: 26 * s }}>
+            {p.overline}
+          </div>
+        ) : null}
+        <div
+          style={{
+            ...enterClip(frame, durationInFrames, 6, s, p),
+            ...display(p.lang),
+            fontSize: (portrait ? 84 : 96) * s,
+            maxWidth: portrait ? "100%" : 1450 * s,
+          }}
+        >
+          <Phrase text={p.title} phrase={p.highlight} color={t.phrase} />
+        </div>
+        {p.subtitle ? (
+          <div
+            style={{
+              ...enterClip(frame, durationInFrames, 12, s, p),
+              fontSize: (portrait ? 36 : 34) * s,
+              fontWeight: 500,
+              color: t.inkMuted,
+              marginTop: 30 * s,
+              maxWidth: portrait ? "100%" : 1100 * s,
+              lineHeight: ar ? 1.75 : 1.5,
+            }}
+          >
+            {p.subtitle}
+          </div>
+        ) : null}
+        {p.capsule ? (
+          <div style={{ ...enterClip(frame, durationInFrames, 16, s, p), marginTop: 44 * s }}>
+            <Capsule s={s} size={portrait ? 46 : 40} lang={p.lang} ink={p.capsuleInk === "white" ? en.ink : t.phrase}>
+              {p.capsule}
+            </Capsule>
           </div>
         ) : null}
       </AbsoluteFill>

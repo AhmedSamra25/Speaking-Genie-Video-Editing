@@ -81,6 +81,7 @@ def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, dra
         src_stamp = [str(sp), sp.stat().st_mtime, sp.stat().st_size]
     if clip["type"] in ("motion", "title"):
         src_stamp = motion._source_hash()
+        clip = {**clip, "props": {**project.motion_defaults(), **clip.get("props", {})}}
         if clip.get("props", {}).get("src"):
             clip = {**clip, "props": motion.stage_assets(clip["props"], project.root)}
     key = _hash(clip, w, h, fps, theme, project.lang, draft, aspect, _fit_mode(project, clip, aspect), src_stamp, ff.hw(), 3)
@@ -321,7 +322,8 @@ def finish(project: Project, assembled: Path, preset: dict, master_w: int, maste
             continue
         at = project.resolve_at(o.get("at", 0))
         d = float(o.get("duration", 4))
-        src = motion.render(o["composition"], motion.stage_assets(o.get("props", {}), project.root), width=master_w, height=master_h, fps=project.fps,
+        o_props = {**project.motion_defaults(), **o.get("props", {})}
+        src = motion.render(o["composition"], motion.stage_assets(o_props, project.root), width=master_w, height=master_h, fps=project.fps,
                             duration=d, theme=o.get("theme", project.theme), lang=o.get("lang", project.lang),
                             cache_dir=project.build / "cache" / "motion", draft=draft)
         extra_inputs += ["-i", src]

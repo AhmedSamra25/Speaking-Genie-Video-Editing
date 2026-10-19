@@ -5,19 +5,22 @@ description: Motion designer craft for the Speaking Genie video crew — specify
 
 # Motion designer
 
-You make every graphic on screen. Read first: `crew/treatment.md`, `crew/onscreen.json`, `crew/screens.md`, `.claude/skills/video-crew/CREW.md`, `brand/BRAND.md` ("Motion"), the `motion-graphics` skill (how compositions are built and checked), and `.claude/skills/video-crew/DESIGN-SYSTEMS.md`. The compositions draw the Platform look; a marketing video in the Enablement look (purple dome ground, capsule, track accent) needs a new `look` prop, so flag that gap to the producer rather than imitating it with the current cards.
+You make every graphic on screen. Read first: `crew/treatment.md`, `crew/onscreen.json`, `crew/screens.md`, `.claude/skills/video-crew/CREW.md`, `brand/BRAND.md` ("Motion"), the `motion-graphics` skill (how compositions are built and checked), and `.claude/skills/video-crew/DESIGN-SYSTEMS.md`. Every composition draws the Platform look by default and the Enablement look with `look: "enablement"` plus `track` (set both at the top of `edit.json` for a marketing video; see DESIGN-SYSTEMS.md for what each track closes on).
 
 ## Use what exists first
 
-| Composition | For | Props |
-| --- | --- | --- |
-| `Intro` | logo open (≤ 1.5 s on social, or none) | `tagline?` |
-| `TitleCard` | chapter or hook line | `title`, `overline?`, `subtitle?` |
-| `StatCard` | one number | `label`, `value`, `suffix?`, `delta?`, `caption?` |
-| `QuoteCard` | a real person's words | `quote`, `name`, `role?` |
-| `LowerThird` | name and role over footage (overlay) | `name`, `role?` |
-| `ProductScreen` | a real product screen in a window, slow push-in to one callout | `src`, `callout?`, `label?`, `move?` |
-| `EndCard` | CTA | `headline`, `subline?`, `url?` |
+| Composition | For | Props | Enablement-look props |
+| --- | --- | --- | --- |
+| `Intro` | logo open (≤ 1.5 s on social, or none) | `tagline?` | white lockup on the ground |
+| `TitleCard` | chapter or hook line | `title`, `overline?`, `subtitle?` | `highlight?`, `capsule?`, `capsuleInk?` (`accent` \| `white`) |
+| `StatCard` | one number | `label`, `value`, `suffix?`, `delta?`, `caption?` | `capsule?`; glass panel, delta in the accent |
+| `QuoteCard` | a real person's words | `quote`, `name`, `role?` | `highlight?` |
+| `LowerThird` | name and role over footage (overlay) | `name`, `role?` | solid purple plate |
+| `ProductScreen` | a real product screen in a window, slow push-in to one callout | `src`, `callout?`, `label?`, `move?` | accent ring, label as a solid capsule |
+| `EndCard` | CTA | `headline`, `subline?`, `url?` | `highlight?`, `cta?`; individual: capsule + store badges; business: button + URL, no badges |
+
+Every composition also takes `look` (`platform` default \| `enablement`), `track` (`individual` default \|
+`business`) and `ground` (`dome` default \| `flat` \| `deep`). One capsule per frame: use `capsule` on one element only.
 
 `ProductScreen` takes `src` as a path relative to the project (`assets/screens/summary.png`; add `"scale": 3` for mobile captures and 3x crops); `sgv` stages it for Remotion. The props that make it feel edited (see `.claude/skills/video-crew/EDITING.md`):
 

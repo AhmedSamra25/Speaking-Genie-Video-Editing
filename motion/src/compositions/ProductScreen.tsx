@@ -1,7 +1,8 @@
 import React from "react";
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { BaseProps, brand, colors, isPortrait, scaleOf } from "../brand";
+import { BaseProps, brand, colors, fonts, isEnablement, isPortrait, scaleOf } from "../brand";
 import { FadeProps, enterClip, progress } from "../anim";
+import { en, trackOf } from "../components/Enablement";
 import { Stage } from "../components/Stage";
 
 export type Callout = { x: number; y: number; w: number; h: number };
@@ -129,6 +130,11 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
   const pad = 10 * s;
   const labelBelow = box ? box.y + box.h + 140 * s < H * (portrait ? 0.78 : 0.9) : true;
   const ar = p.lang === "ar";
+  // Enablement: the screen sits on the purple dome ground as shipped (never restyled); the ring and tap take the
+  // track accent, the dim is night purple, and the label is a solid purple capsule with white ink (an instruction).
+  const enab = isEnablement(p);
+  const t = trackOf(p);
+  const ringColor = enab ? t.phrase : c.primary;
 
   return (
     <Stage p={p}>
@@ -143,11 +149,13 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
             transformOrigin: "0 0",
             transform: `translate(${tx}px, ${ty}px) scale(${S})`,
             background: c.surface,
-            border: `${Math.max(1, s) / S}px solid ${c.border}`,
+            border: `${Math.max(1, s) / S}px solid ${enab ? en.border : c.border}`,
             borderRadius: (brand.video.windowRadius * s) / S,
             overflow: "hidden",
             boxShadow:
-              p.theme === "light"
+              enab
+                ? `0 ${18 / base}px ${40 / base}px -${20 / base}px ${en.shadow}`
+                : p.theme === "light"
                 ? `0 ${16 / base}px ${40 / base}px -${12 / base}px rgba(16, 24, 40, 0.18)`
                 : `0 ${18 / base}px ${44 / base}px -${12 / base}px rgba(0, 0, 0, 0.65)`,
           }}
@@ -164,7 +172,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
             width: box.w + 2 * pad,
             height: box.h + 2 * pad,
             borderRadius: brand.video.cardRadius * s,
-            boxShadow: `0 0 0 ${4000 * s}px ${p.theme === "light" ? "rgba(15, 23, 41, 0.28)" : "rgba(2, 6, 16, 0.5)"}`,
+            boxShadow: `0 0 0 ${4000 * s}px ${enab ? en.dim : p.theme === "light" ? "rgba(15, 23, 41, 0.28)" : "rgba(2, 6, 16, 0.5)"}`,
             opacity: mark.opacity,
           }}
         />
@@ -175,7 +183,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
         return (
           <svg style={{ position: "absolute", left: box.x - pad, top: box.y - pad, overflow: "visible", opacity: leaving }}
             width={rw} height={rh}>
-            <rect x={sw2 / 2} y={sw2 / 2} width={rw - sw2} height={rh - sw2} rx={r} ry={r} fill="none" stroke={c.primary}
+            <rect x={sw2 / 2} y={sw2 / 2} width={rw - sw2} height={rh - sw2} rx={r} ry={r} fill="none" stroke={ringColor}
               strokeWidth={sw2} strokeLinecap="round" strokeDasharray={perim} strokeDashoffset={perim * (1 - draw)} />
           </svg>
         );
@@ -197,7 +205,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
             {frame >= at ? (
               <div style={{ position: "absolute", left: pt.x - (d / 2) * (1 + 1.6 * ripple), top: pt.y - (d / 2) * (1 + 1.6 * ripple),
                 width: d * (1 + 1.6 * ripple), height: d * (1 + 1.6 * ripple), borderRadius: "50%",
-                border: `${2.5 * s}px solid ${c.primary}`, opacity: (1 - ripple) * 0.9 }} />
+                border: `${2.5 * s}px solid ${ringColor}`, opacity: (1 - ripple) * 0.9 }} />
             ) : null}
             <div style={{ position: "absolute", left: x - d / 2, top: y - d / 2, width: d, height: d, borderRadius: "50%",
               // like iOS's recorded-touch indicator: a dark translucent disc with a white rim reads on light and dark UI
@@ -227,6 +235,17 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
               border: `${Math.max(1, s)}px solid ${c.border}`,
               borderRadius: brand.video.cardRadius * s,
               color: c.ink,
+              ...(enab
+                ? {
+                    padding: `${18 * s}px ${36 * s}px`,
+                    // over a busy screen the capsule is solid (the brand's plate), never see-through
+                    background: en.plate,
+                    border: `${1.5 * s}px solid ${en.capsule.stroke}`,
+                    borderRadius: 999,
+                    color: en.ink,
+                    fontFamily: fonts.display,
+                  }
+                : {}),
               fontSize: (p.labelSize ?? brand.video.bodySize) * s,
               fontWeight: ar ? 600 : 700,
               letterSpacing: ar ? 0 : "-0.01em",
