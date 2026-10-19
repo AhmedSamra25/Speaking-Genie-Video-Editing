@@ -92,9 +92,14 @@ Ask for a video and Claude runs a crew of nine specialist agents, each with its 
 You approve three things: the treatment, the script (the exact voice-over lines), and the draft. Everything the crew
 writes lives in `projects/<p>/crew/` and gets committed with the project.
 
-Voice-over options: record it yourself (best for Egyptian Arabic; the voice-director gives you a recording sheet
-and `sgv voice --take` cuts it into lines), ElevenLabs (set `ELEVENLABS_API_KEY`; the script is sent to ElevenLabs),
-or macOS voices for scratch timing only.
+Voice-over options (the producer asks at the start, together with the video's language):
+- **Record it yourself.** Best for Egyptian Arabic. The voice-director gives you a recording sheet; record one take
+  with 2-second pauses on your phone and `sgv voice --take` cleans it up (noise, rumble, harsh "s", level) and cuts it
+  into timed lines.
+- **A local voice on this Mac.** `bin/sgv voices` lists the premium and enhanced Arabic and English voices you have
+  installed (add more in System Settings → Accessibility → Spoken Content → System voice → Manage Voices; Siri voices
+  can't be used). Apple's Arabic voices are Modern Standard Arabic with a Gulf accent, not Egyptian.
+- **ElevenLabs.** Set `ELEVENLABS_API_KEY`; the script is sent to ElevenLabs.
 
 ### Product screens
 

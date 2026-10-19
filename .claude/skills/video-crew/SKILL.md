@@ -28,7 +28,10 @@ You are the **producer**. You don't make the video yourself: you run the crew, k
 
 Dispatch independent agents **in parallel** (several Agent calls in one message). Give each agent the project path, its task, and the files to read; never paste whole files into prompts. After each agent returns, read what it wrote, update `crew/log.md`, and route any `→ @role` notes to the right agent on its next dispatch.
 
-1. **Intake (you).** `bin/sgv new "<name>" --aspect … --lang …` if the project doesn't exist, then create `crew/` from `CREW.md`'s layout. Write `crew/brief.md`: the goal, audience, platform(s), length, language (`en`, `ar-eg`, or both as separate versions), deadline, must-haves, and what the user has supplied. If something important is missing, ask the user **once**, in one message. For footage jobs, run `bin/sgv ingest <p> --sheets` first so the brief can describe the material.
+1. **Intake (you).** Before anything else, ask the user two things in one message (skip either only if their request already answers it):
+   - **Language of the video:** English, Egyptian Arabic, or both as separate cuts.
+   - **Voice-over:** (a) they record it themselves, and `sgv voice --engine files` cleans it up (noise, rumble, harsh "s", level) and cuts it into lines; (b) a local voice on this Mac, from the list `bin/sgv voices` prints (premium and enhanced Arabic and English voices, with gender), which you audition for them with `bin/sgv voices --try "<a script line>"` once the script exists; or (c) ElevenLabs (needs `ELEVENLABS_API_KEY`, sends the script out). Tell them plainly that Apple's Arabic voices are Modern Standard Arabic with a Gulf accent, so an Egyptian voice-over needs (a) or (c).
+   Then `bin/sgv new "<name>" --aspect … --lang …` if the project doesn't exist, create `crew/` from `CREW.md`'s layout, and write `crew/brief.md`: the goal, audience, platform(s), length, language (`en`, `ar-eg`, or both), **voice source** (and the chosen voice, if local), deadline, must-haves, and what the user has supplied. If something else important is missing, ask in that same message. For footage jobs, run `bin/sgv ingest <p> --sheets` first so the brief can describe the material.
 2. **Treatment (`creative-director`).** One page: the single idea, the beats with timings, which visual source carries each beat (footage, product screen, motion graphic), tone, language plan and CTA.
    **Gate 1: show the user the treatment and get a yes before going on.** Keep it to the logline, the beats and the open questions.
 3. **Pre-production, in parallel:**
@@ -40,7 +43,7 @@ Dispatch independent agents **in parallel** (several Agent calls in one message)
    - `voice-director`: records or generates the voice-over and writes the line timings.
    - `motion-designer`: the graphics and screen callouts the treatment calls for.
    - `sound-designer`: a music plan, using the user's tracks from `audio/`.
-   If the user must record the voice or film something, say exactly what and wait. Scratch VO (`sgv voice --engine say`) keeps the edit moving meanwhile.
+   If the user records the voice, send them a clean recording script (`crew/recording-script.md`: the approved lines in order, how to say the product terms, and the recording setup) as soon as Gate 2 passes, and wait for the file. A scratch voice (`sgv voice --engine say`, any installed voice) keeps the edit moving meanwhile; tell the user it is a timing placeholder before they watch a draft with it.
 6. **Assembly (`editor`).** `edit.json` from the treatment, the line timings, the screens and the graphics. Then `sound-designer` sets the mix keys, and the editor renders the draft and the captions.
 7. **Review, in parallel:** `creative-director` (does it land the idea?) and `qa-reviewer` (brand, language, safe zones, loudness). Merge their notes into one list, send it to the editor (and anyone else it names), and re-render. At most two rounds before you bring the open points to the user.
    **Gate 3: send the user the draft path with a short "what changed" list.**

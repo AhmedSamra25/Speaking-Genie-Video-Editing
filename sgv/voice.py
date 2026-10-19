@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -40,6 +41,57 @@ def _elevenlabs(text: str, voice: str, model: str, out: Path) -> None:
         raise SystemExit(f"ElevenLabs refused the request ({e.code}): {e.read().decode(errors='replace')[:400]}")
 
 
+# Clean-up for a human recording (phone or USB mic in an ordinary room): cut rumble, two gentle passes of noise
+# reduction, soften harsh "s" sounds, take out boxiness, add a little presence, even out the level, and a soft gate
+# (set from the recording's own noise floor) so the room drops about 14 dB between phrases without dead silence.
+ENHANCE = ("highpass=f=80,afftdn=nr=18:nf=-50:tn=1,afftdn=nr=12:nf=-55:tn=1,deesser=i=0.35,"
+           "equalizer=f=250:t=q:w=1.2:g=-2,equalizer=f=3500:t=q:w=1.4:g=2,"
+           "acompressor=threshold=-21dB:ratio=2.5:attack=8:release=120:makeup=1.5,"
+           "agate=threshold={gate:.5f}:ratio=2:range=0.2:attack=5:release=200")
+
+_VOICES_JS = """
+ObjC.import("AVFoundation");
+var vs = $.AVSpeechSynthesisVoice.speechVoices, out = [];
+for (var i = 0; i < vs.count; i++) { var v = vs.objectAtIndex(i);
+  out.push({name: ObjC.unwrap(v.name), lang: ObjC.unwrap(v.language), quality: Number(v.quality), gender: Number(v.gender),
+            id: ObjC.unwrap(v.identifier)}); }
+JSON.stringify(out);
+"""
+
+
+def voices(langs: tuple = ("ar", "en"), include_default: bool = False) -> list:
+    """Installed system voices for the given languages: name, locale, quality, gender, and whether `say` can use it.
+    Voices downloaded for Siri stay private to Siri; only those under System Settings → Accessibility →
+    Spoken Content → System voice → Manage Voices are available to apps."""
+    proc = subprocess.run(["osascript", "-l", "JavaScript", "-e", _VOICES_JS], capture_output=True, text=True)
+    if proc.returncode != 0:
+        raise SystemExit(f"Couldn't list voices: {proc.stderr.strip()[:300]}")
+    say_names = set()
+    if shutil.which("say"):
+        listing = subprocess.run(["say", "-v", "?"], capture_output=True, text=True).stdout
+        say_names = {line.split("  ")[0].strip() for line in listing.splitlines() if line.strip()}
+    rank = {3: "premium", 2: "enhanced", 1: "default"}
+    out = []
+    for v in json.loads(proc.stdout):
+        if not v["lang"].split("-")[0] in langs:
+            continue
+        q = rank.get(v["quality"], "default")
+        if q == "default" and not include_default and not v["lang"].startswith("ar"):
+            continue
+        out.append({**v, "quality": q, "gender": {1: "male", 2: "female"}.get(v["gender"], "-"),
+                    "say": v["name"] in say_names})
+    order = {"premium": 0, "enhanced": 1, "default": 2}
+    return sorted(out, key=lambda v: (v["lang"].split("-")[0], order[v["quality"]], v["lang"], v["name"]))
+
+
+def enhance(raw: Path, out: Path) -> Path:
+    levels = sorted(_rms_windows(raw)) or [-60.0]
+    floor = levels[len(levels) // 10]
+    gate = 10 ** ((floor + 8) / 20)  # just above the room's noise, far below speech
+    ff.run(["ffmpeg", "-i", raw, "-af", ENHANCE.format(gate=gate), "-ar", "48000", "-c:a", "pcm_s24le", out])
+    return out
+
+
 def _clean(raw: Path, out: Path) -> float:
     """Trim leading and trailing silence but keep a natural breath at each end (soft onsets and word endings sit
     below any threshold), fade the edges, level to a consistent loudness, 48 kHz mono."""
@@ -51,8 +103,34 @@ def _clean(raw: Path, out: Path) -> float:
     return ff.probe(str(out))["duration"]
 
 
+WINDOW = 0.05  # seconds per loudness window
+
+
+def _rms_windows(take: Path) -> list:
+    """Loudness (RMS dB) of each 50 ms window. RMS, not peak: room hiss has sharp peaks that hide real pauses."""
+    rate = 48000
+    proc = ff.run(["ffmpeg", "-loglevel", "info", "-i", take, "-af",
+                   f"aresample={rate},asetnsamples=n={int(rate * WINDOW)},astats=metadata=1:reset=1,"
+                   "ametadata=print:key=lavfi.astats.Overall.RMS_level", "-f", "null", "-"], capture=True)
+    return [-120.0 if v == "-inf" else float(v) for v in re.findall(r"RMS_level=(-inf|-?[\d.]+)", proc.stderr)]
+
+
 def _split_take(take: Path, n: int, tmp: Path, min_silence: float) -> list:
-    ranges = analyze.speech_ranges(take, -38, min_silence, 0.08)
+    rms = _rms_windows(take)
+    ordered = sorted(rms) or [-60.0]
+    floor, speech = ordered[len(ordered) // 10], ordered[(len(ordered) * 9) // 10]
+    threshold = floor + (speech - floor) / 3  # pauses sit near the room's noise floor, well below speech
+    ranges, start, quiet = [], None, 0
+    for i, level in enumerate(rms + [-120.0] * int(min_silence / WINDOW + 1)):
+        if level > threshold:
+            start = i if start is None else start
+            quiet = 0
+        elif start is not None:
+            quiet += 1
+            if quiet * WINDOW >= min_silence:
+                ranges.append((max(0.0, start * WINDOW - 0.08), (i - quiet + 1) * WINDOW + 0.08))
+                start, quiet = None, 0
+    ranges = [(a, b) for a, b in ranges if b - a >= 0.3]  # ignore clicks and breaths
     if len(ranges) != n:
         raise SystemExit(f"{take.name}: found {len(ranges)} spoken parts but vo.json has {n} lines. "
                          f"Try --min-silence {min_silence + 0.3:.1f} (fewer splits) or {max(0.3, min_silence - 0.3):.1f} "
@@ -66,7 +144,8 @@ def _split_take(take: Path, n: int, tmp: Path, min_silence: float) -> list:
 
 
 def run(project: Project, script: Path, engine: str, voice: str | None = None, take: Path | None = None,
-        gap: float = 0.35, lead: float = 0.3, min_silence: float = 1.2, rate: int | None = None) -> list:
+        gap: float = 0.35, lead: float = 0.3, min_silence: float = 1.2, rate: int | None = None,
+        clean_up: bool = True) -> list:
     data = json.loads(script.read_text(encoding="utf-8"))
     lines = data.get("lines", [])
     if not lines:
@@ -80,7 +159,8 @@ def run(project: Project, script: Path, engine: str, voice: str | None = None, t
         tmp = Path(td)
         raws = []
         if engine == "files" and take:
-            raws = _split_take(take, len(lines), tmp, min_silence)
+            # clean the whole take first: noise reduction learns the room better from the full recording
+            raws = _split_take(enhance(take, tmp / "take-enhanced.wav") if clean_up else take, len(lines), tmp, min_silence)
         for i, line in enumerate(lines):
             if engine == "say":
                 raw = tmp / f"{line['id']}.aiff"
@@ -98,6 +178,8 @@ def run(project: Project, script: Path, engine: str, voice: str | None = None, t
                 raw = next((f for f in found if f.exists()), None)
                 if raw is None:
                     raise SystemExit(f"No recording for {line['id']}: expected audio/vo-takes/{line['id']}.wav (or .m4a, .mp3).")
+                if clean_up:
+                    raw = enhance(raw, tmp / f"{line['id']}-enhanced.wav")
             line["duration"] = round(_clean(raw, vo_dir / f"{line['id']}.wav"), 3)
             line["file"] = f"audio/vo/{line['id']}.wav"
 

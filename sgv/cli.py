@@ -102,7 +102,7 @@ def cmd_voice(a):
     p = project.find(a.project)
     script = p.root / a.script
     lines = voice.run(p, script, a.engine, voice=a.voice, take=p.path(a.take) if a.take else None, gap=a.gap,
-                      lead=a.lead, min_silence=a.min_silence, rate=a.rate)
+                      lead=a.lead, min_silence=a.min_silence, rate=a.rate, clean_up=not a.no_enhance)
     over = 0
     for l in lines:
         limit = l.get("max_seconds")
@@ -112,6 +112,28 @@ def cmd_voice(a):
         print(f"  {l['id']:>4}  {analyze.fmt_time(l['start']):>9}  {l['duration']:5.2f}s{flag}")
     print(f"{p.root.relative_to(paths.ROOT)}/audio/vo.wav  {len(lines)} lines"
           + (f" · {over} over their slot" if over else "") + f" · timings written to {a.script}")
+
+
+def cmd_voices(a):
+    found = voice.voices(tuple(a.lang.split(",")), include_default=a.all)
+    if not found:
+        print("No matching voices. Add them in System Settings → Accessibility → Spoken Content → System voice → "
+              "Manage Voices (Siri voices can't be used by apps).")
+        return
+    print(f"  {'voice':26} {'locale':8} {'quality':9} {'gender':7} usable by say")
+    for v in found:
+        print(f"  {v['name']:26} {v['lang']:8} {v['quality']:9} {v['gender']:7} {'yes' if v['say'] else 'no'}")
+    if any(v["lang"].startswith("ar") for v in found):
+        print("  note: Apple's Arabic voices (ar-001) are Modern Standard Arabic with a Gulf accent; there is no Egyptian "
+              "voice. For Egyptian Arabic, record it yourself (bin/sgv voice <p> --engine files) or use ElevenLabs.")
+    if a.try_text:
+        out_dir = Path(a.out or paths.ROOT / "build" / "voices")
+        out_dir.mkdir(parents=True, exist_ok=True)
+        for v in found:
+            if v["say"]:
+                f = out_dir / f"{v['name'].split(' (')[0].lower()}-{v['quality']}.aiff"
+                subprocess.run(["say", "-v", v["name"], "-o", str(f), a.try_text], check=True)
+                print(f"  sample  {f}")
 
 
 def cmd_screen(a):
@@ -254,7 +276,15 @@ def main(argv=None) -> int:
     s.add_argument("--lead", type=float, default=0.3, help="seconds before the first line")
     s.add_argument("--min-silence", type=float, default=1.2, help="pause that separates lines in a take")
     s.add_argument("--rate", type=int, help="speaking rate for --engine say, words per minute (scratch timing)")
+    s.add_argument("--no-enhance", action="store_true", help="skip the clean-up of a human recording (engine files)")
     s.set_defaults(fn=cmd_voice)
+
+    s = sub.add_parser("voices", help="list installed Arabic/English system voices (premium, enhanced) for --engine say")
+    s.add_argument("--lang", default="ar,en", help="comma-separated language codes")
+    s.add_argument("--all", action="store_true", help="include default-quality voices")
+    s.add_argument("--try", dest="try_text", metavar="TEXT", help="render TEXT with every usable voice to compare")
+    s.add_argument("-o", "--out", help="folder for --try samples (default build/voices)")
+    s.set_defaults(fn=cmd_voices)
 
     s = sub.add_parser("screen", help="capture a real product screen from the design system kit (or --list)")
     s.add_argument("project", nargs="?")

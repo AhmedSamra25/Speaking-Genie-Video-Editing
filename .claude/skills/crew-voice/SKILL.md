@@ -1,19 +1,28 @@
 ---
 name: crew-voice
-description: Voice-over director craft for the Speaking Genie video crew — casting, generating voice-over (ElevenLabs or macOS scratch voices) or directing the user's own recording in English or Egyptian Arabic, cutting it into timed lines with `bin/sgv voice`, and checking every line fits its beat. Used by the voice-director agent.
+description: Voice-over director craft for the Speaking Genie video crew — directing and cleaning up the user's own recording, choosing and tuning a local premium or enhanced Mac voice (`bin/sgv voices`, تشكيل and pauses in say_as), or ElevenLabs, in English or Egyptian Arabic; cutting it into timed lines with `bin/sgv voice` and checking every line fits its beat. Used by the voice-director agent.
 ---
 
 # Voice director
 
 You turn `crew/vo.json` into clean, timed voice-over in `audio/vo/` and `audio/vo.wav`. Read first: `crew/vo.json`, `crew/script.md` ("Recording notes"), `crew/treatment.md` (beat timings) and `.claude/skills/video-crew/CREW.md`.
 
-## Pick the engine (write the choice and why in `crew/voice.md`)
+## Pick the engine (the user chose at intake; write it and why in `crew/voice.md`)
 
 | Engine | When | Notes |
 | --- | --- | --- |
-| `files` | the user records the lines (best for Egyptian Arabic and for anything client-facing) | One take with a 2-second pause between lines; `sgv voice` splits it |
+| `files` | the user records the lines (best for Egyptian Arabic and anything client-facing) | One take with a 2-second pause between lines (`--take`), or one file per line in `audio/vo-takes/`. Cleaned up automatically: rumble cut, noise reduction, de-essing, presence EQ, compression and a soft gate set from the room's own noise floor (`--no-enhance` to skip) |
+| `say` | a local voice on this Mac, as final voice-over or as a scratch | `bin/sgv voices` lists the installed premium and enhanced Arabic and English voices with gender; `bin/sgv voices --try "<line>"` renders a sample per voice for the user to pick. Apple's Arabic voices (ar-001: Majed, Mariam, Tarik) are MSA with a Gulf accent, never Egyptian |
 | `elevenlabs` | `ELEVENLABS_API_KEY` is set and the user agreed to send the script to ElevenLabs | Multilingual voices handle Egyptian Arabic and code-switching; needs a `voice_id` |
-| `say` | scratch voice-over to time the edit while the real one is pending | macOS voices: Samantha or Daniel (en), Majed (Arabic, closer to MSA than Egyptian). Never ship it |
+
+### Making a local voice read well
+
+The `text` of each line is what the captions show; never change it for pronunciation. Put what the voice should read in `say_as`:
+- **Full تشكيل** on Arabic so the voice doesn't guess vowels, in the dialect of the script (Egyptian: بِيِغْلَطوا, مِتْرَتِّبين, النَّهارْدَه).
+- **English terms in Arabic letters** the way they are said (جْروب رِيبورْت, بي دي إف, تِب). An Arabic voice reads Latin letters badly.
+- **Breathing:** `[[slnc 250]]` inside the line at commas (macOS silence command, in milliseconds), and leave at least 0.3 s between lines (beat `at` times or `--gap`).
+- Audition two or three lines with the candidate voices before generating everything, and let the user choose.
+- Calm, natural reads run longer than the beats: report the overruns and ask the scriptwriter to trim before speeding up (`--rate`) past about 1.1x.
 
 Sending the script to ElevenLabs is sending content to an outside service: only use it when the brief or the user says so. Generated voices must be cleared for commercial use. Remind the producer if the brief doesn't say.
 

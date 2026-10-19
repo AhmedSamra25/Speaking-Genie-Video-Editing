@@ -35,6 +35,7 @@ Design System.
 | `bin/sgv captions <p>` | Renders a draft, transcribes it and sets `captions/master.srt` on the project |
 | `bin/sgv captions <p> --from-vo` | Captions from the approved script text and voice timings (`crew/vo.json`) |
 | `bin/sgv voice <p> [--engine say\|elevenlabs\|files] [--take f]` | Voice-over lines from `crew/vo.json` → `audio/vo.wav`, timed |
+| `bin/sgv voices [--lang ar,en] [--try "text"]` | Lists the installed premium/enhanced system voices (gender, usable by `say`); `--try` renders a sample per voice |
 | `bin/sgv screen <p> <screen> [--lang ar] [--theme dark] [--flow k]` · `--list` | Captures a real product screen from the design system kit |
 | `bin/sgv timeline <p>` | Shows each clip's start and end on the assembled timeline (use it to place overlays) |
 | `bin/sgv render <p> [--draft] [--preset a,b]` | Renders the exports |

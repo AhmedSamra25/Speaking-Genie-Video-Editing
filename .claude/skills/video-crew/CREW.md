@@ -67,6 +67,7 @@ Visual source is one of `footage: …`, `screen: <screen id>`, `motion: <Composi
 ```
 
 - `text` is exactly what is spoken; the captions come from it. Product names stay in Latin script (`Speaking Genie`, `AI`, `feedback`, `group`), as people say them.
+- `say_as` (optional, voice-director) is what a synthetic voice reads instead of `text`: full تشكيل, English terms in Arabic letters, `[[slnc 250]]` pauses. Captions never use it.
 - `max_seconds` is the slot in the beat. Budget about 2.6 words per second in English and 2.2 in Egyptian Arabic.
 - After recording, the voice-director adds `"file"`, `"start"` and `"duration"` to each line. The editor places voice-over from those numbers.
 - A bilingual project has one `vo.json` per language: `vo.json` (main) and `vo.en.json` or `vo.ar-eg.json`.
