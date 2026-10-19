@@ -194,6 +194,8 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
     parts = [f"[{i}:v]scale=in_range=auto:out_range=tv,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[s{i}]"
              for i in range(len(segments))]
     fps = project.fps
+    vinfo = ff.probe(str(segments[0]))["video"] or {}
+    vw, vh = vinfo.get("width", 1920), vinfo.get("height", 1080)
     v, a = "[s0]", "[0:a]"
     acc = project.clip_duration(tl[0])
     dip = "fadewhite" if project.theme == "light" else "fadeblack"
@@ -210,10 +212,15 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
             td = min(td, d / 2, acc / 2)
             name = dip if tr == "dip" else TRANSITIONS[tr]
             if tr in MOTION_BLUR:
-                # Real motion blur: run the transition window at 4x the frame rate and average each group of 4
-                # frames back down (a 360° shutter), so the move smears smoothly instead of strobing. The window is
-                # cut out and spliced back because tmix with enable= scrambles the chroma in this ffmpeg.
-                a0, sub = acc - td, fps * 8
+                # Real motion blur: run the transition window at 16x the frame rate and average each group of 16
+                # frames back down (a 360° shutter), then soften what's left of the sub-frame steps along the direction
+                # of travel, so a push smears into a streak instead of showing combs of copies. The window is cut out
+                # and spliced back because tmix with enable= scrambles the chroma in this ffmpeg.
+                a0, sub = acc - td, fps * 16
+                step_x, step_y = vw / (td * sub), vh / (td * sub)  # px the picture moves per sub-frame
+                streak = {"push-left": f",gblur=sigma={step_x * 0.7:.2f}:sigmaV=0.01",
+                          "push-right": f",gblur=sigma={step_x * 0.7:.2f}:sigmaV=0.01",
+                          "push-up": f",gblur=sigma=0.01:sigmaV={step_y * 0.7:.2f}"}.get(tr, "")
                 if tr == "zoom":  # a gentle zoom-through instead of xfade's zoomin, which dives into the frame centre
                     name = f"custom:expr='{_zoom_through()}'"
                 parts.append(f"{v}split=2[pre{i}][win{i}]")
@@ -222,7 +229,7 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
                 parts.append(f"[win{i}]trim=start={a0:.3f},setpts=PTS-STARTPTS,fps={sub}[wa{i}]")
                 parts.append(f"[inw{i}]trim=end={td:.3f},setpts=PTS-STARTPTS,fps={sub}[wb{i}]")
                 parts.append(f"[wa{i}][wb{i}]xfade=transition={name}:duration={td:.3f}:offset=0,"
-                             f"tmix=frames=8,fps={fps},settb=AVTB[pb{i}]")
+                             f"tmix=frames=16{streak},fps={fps},settb=AVTB[pb{i}]")
                 parts.append(f"[post{i}]trim=start={td:.3f},setpts=PTS-STARTPTS[pc{i}]")
                 parts.append(f"[pa{i}][pb{i}][pc{i}]concat=n=3:v=1:a=0,settb=AVTB{nv}")
             else:

@@ -15,6 +15,8 @@ export type StatCardProps = BaseProps &
   delta?: string;
   deltaTone?: "success" | "danger" | "neutral";
   caption?: string;
+  /** Frames before the number starts counting (e.g. after a zoom transition has landed). */
+  countDelay?: number;
   /** Put the label under the number (reads "58% من طلاب المجموعة"). Default false: label above. */
   labelBelow?: boolean;
 };
@@ -32,7 +34,7 @@ export const StatCard: React.FC<StatCardProps> = (p) => {
   // In a cut sequence (enterFade false) everything is on screen from frame 0; the number still counts up.
   const sub = (delay: number) =>
     p.enterFade === false ? enterClip(frame, durationInFrames, 0, s, { enterFade: false, exitFade: false }, false) : enter(frame, durationInFrames, delay, s, false);
-  const shown = p.value * progress(frame, p.enterFade === false ? 0 : 8, Math.min(45, durationInFrames * 0.4));
+  const shown = p.value * progress(frame, p.countDelay ?? (p.enterFade === false ? 0 : 8), Math.min(45, durationInFrames * 0.4));
   const tone =
     p.deltaTone === "danger" ? brand.status.danger : p.deltaTone === "neutral" ? c.ink2 : brand.status.success;
   const toneDark = p.deltaTone === "danger" ? "#F87171" : p.deltaTone === "neutral" ? c.ink2 : "#34D399";

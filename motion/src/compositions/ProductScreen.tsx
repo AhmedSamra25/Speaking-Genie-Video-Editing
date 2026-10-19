@@ -189,7 +189,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
         const vis = interpolate(frame, [at - 16, at - 10], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) * away;
         const press = frame >= at && frame < at + 6 ? 0.86 : 1;
         const ripple = progress(frame, at, 16);
-        const d = 46 * s;
+        const d = 56 * s;
         const x = lerp(pt.x + 130 * s, pt.x, approach), y = lerp(pt.y + 190 * s, pt.y, approach);
         if (vis <= 0) return null;
         return (
@@ -200,8 +200,9 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
                 border: `${2.5 * s}px solid ${c.primary}`, opacity: (1 - ripple) * 0.9 }} />
             ) : null}
             <div style={{ position: "absolute", left: x - d / 2, top: y - d / 2, width: d, height: d, borderRadius: "50%",
-              background: "rgba(255, 255, 255, 0.55)", border: `${2 * s}px solid rgba(15, 23, 41, 0.35)`,
-              boxShadow: `0 ${6 * s}px ${18 * s}px rgba(15, 23, 41, 0.25)`, transform: `scale(${press})`, opacity: vis }} />
+              // like iOS's recorded-touch indicator: a dark translucent disc with a white rim reads on light and dark UI
+              background: "rgba(15, 23, 41, 0.32)", border: `${3 * s}px solid rgba(255, 255, 255, 0.95)`,
+              boxShadow: `0 ${6 * s}px ${18 * s}px rgba(15, 23, 41, 0.3)`, transform: `scale(${press})`, opacity: vis }} />
           </React.Fragment>
         );
       })}
