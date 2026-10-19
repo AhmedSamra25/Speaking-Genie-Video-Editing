@@ -12,7 +12,7 @@ from sgv import ff, paths
 LAYOUT = ["footage", "audio", "assets", "captions", "exports", "build"]
 CLIP_TYPES = {"video", "image", "title", "motion", "color"}
 REQUIRED_PROPS = {"TitleCard": ["title"], "StatCard": ["label", "value"], "QuoteCard": ["quote", "name"],
-                  "EndCard": ["headline"], "LowerThird": ["name"], "Intro": []}
+                  "EndCard": ["headline"], "LowerThird": ["name"], "Intro": [], "ProductScreen": ["src"]}
 TRANSITIONS = {"cut": None, "dissolve": "fade", "dip": None, "wipe-left": "wipeleft", "slide-left": "slideleft"}
 
 

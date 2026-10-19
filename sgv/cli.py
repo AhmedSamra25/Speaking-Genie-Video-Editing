@@ -6,7 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from sgv import analyze, captions, doctor, ff, motion, paths, presets, project, render
+from sgv import analyze, captions, doctor, ff, motion, paths, presets, project, render, screens, voice
 
 
 def cmd_new(a):
@@ -80,14 +80,51 @@ def cmd_transcribe(a):
 
 
 def cmd_captions(a):
-    """Transcribe the project's current cut, so caption timing matches the timeline."""
+    """Transcribe the project's current cut, so caption timing matches the timeline (or, with --from-vo,
+    build the captions from the approved script and the voice-over timings)."""
     p = project.find(a.project)
+    if a.from_vo:
+        vo = p.root / (a.vo or "crew/vo.json")
+        srt = captions.from_vo(json.loads(vo.read_text(encoding="utf-8")), p.root / "captions" / "master.srt")
+        p.edit["captions"] = {**p.edit.get("captions", {}), "src": str(srt.relative_to(p.root)), "burn": True}
+        p.edit_path.write_text(json.dumps(p.edit, indent=2, ensure_ascii=False) + "\n")
+        print(f"{srt.relative_to(paths.ROOT)} — from {vo.relative_to(p.root)}")
+        return
     drafts = render.render(p, draft=True)
     out = p.root / "captions" / "master"
     srt = captions.transcribe(drafts[0], out, lang=a.lang or ("auto" if p.lang == "auto" else p.lang), model=a.model)
     p.edit["captions"] = {**p.edit.get("captions", {}), "src": str(srt.relative_to(p.root)), "burn": True}
     p.edit_path.write_text(json.dumps(p.edit, indent=2, ensure_ascii=False) + "\n")
     print(f"{srt.relative_to(paths.ROOT)} — proofread it, then `bin/sgv render {p.name}`")
+
+
+def cmd_voice(a):
+    p = project.find(a.project)
+    script = p.root / a.script
+    lines = voice.run(p, script, a.engine, voice=a.voice, take=p.path(a.take) if a.take else None, gap=a.gap,
+                      lead=a.lead, min_silence=a.min_silence)
+    over = 0
+    for l in lines:
+        limit = l.get("max_seconds")
+        flag = f"  OVER by {l['duration'] - limit:.2f}s" if limit and l["duration"] > limit else ""
+        over += bool(flag)
+        print(f"  {l['id']:>4}  {analyze.fmt_time(l['start']):>9}  {l['duration']:5.2f}s{flag}")
+    print(f"{p.root.relative_to(paths.ROOT)}/audio/vo.wav  {len(lines)} lines"
+          + (f" · {over} over their slot" if over else "") + f" · timings written to {a.script}")
+
+
+def cmd_screen(a):
+    if a.list or not a.screen:
+        for c in screens.cards():
+            opts = " ".join(f"--{k} {v}" for k, v in c["options"].items())
+            print(f"  {c['id']:32} #{c['route']:16} {opts:28} {c['name']}")
+        return
+    p = project.find(a.project)
+    out = p.root / "assets" / "screens" / f"{a.name or a.screen}.png"
+    opts = {k: getattr(a, k) for k in screens.OPTIONS}
+    screens.capture(a.screen, out, options=opts, size=a.size, scale=a.scale)
+    info = ff.probe(str(out))["video"]
+    print(f"{out.relative_to(paths.ROOT)}  {info['width']}x{info['height']}")
 
 
 def cmd_timeline(a):
@@ -111,7 +148,7 @@ def cmd_render(a):
 
 def cmd_motion(a):
     w, h = (int(x) for x in a.size.split("x"))
-    props = json.loads(a.props) if a.props else {}
+    props = motion.stage_assets(json.loads(a.props) if a.props else {}, Path.cwd())
     out = motion.render(a.composition, props, width=w, height=h, fps=a.fps, duration=a.duration, theme=a.theme,
                         lang=a.lang, cache_dir=paths.ROOT / "build" / "motion")
     if a.out:
@@ -202,7 +239,31 @@ def main(argv=None) -> int:
     s.add_argument("project")
     s.add_argument("--lang")
     s.add_argument("--model")
+    s.add_argument("--from-vo", action="store_true", help="build captions from crew/vo.json text and timings")
+    s.add_argument("--vo", help="vo.json path inside the project (default crew/vo.json)")
     s.set_defaults(fn=cmd_captions)
+
+    s = sub.add_parser("voice", help="voice-over lines from crew/vo.json → audio/vo/*.wav + audio/vo.wav, timed")
+    s.add_argument("project")
+    s.add_argument("--engine", default="say", choices=["say", "elevenlabs", "files"])
+    s.add_argument("--voice", help="say voice name or ElevenLabs voice id")
+    s.add_argument("--take", help="one recorded take with pauses between lines (engine files)")
+    s.add_argument("--script", default="crew/vo.json")
+    s.add_argument("--gap", type=float, default=0.35, help="seconds between lines without an `at`")
+    s.add_argument("--lead", type=float, default=0.3, help="seconds before the first line")
+    s.add_argument("--min-silence", type=float, default=1.2, help="pause that separates lines in a take")
+    s.set_defaults(fn=cmd_voice)
+
+    s = sub.add_parser("screen", help="capture a real product screen from the design system kit (or --list)")
+    s.add_argument("project", nargs="?")
+    s.add_argument("screen", nargs="?", help="screen card id (sgv screen --list) or route, e.g. dashboard")
+    s.add_argument("--list", action="store_true")
+    s.add_argument("--name", help="output name in assets/screens/ (default: the screen id)")
+    for k in screens.OPTIONS:
+        s.add_argument(f"--{k}")
+    s.add_argument("--size", default="1440x900", help="CSS viewport")
+    s.add_argument("--scale", type=float, default=2, help="device pixel ratio")
+    s.set_defaults(fn=cmd_screen)
 
     s = sub.add_parser("timeline", help="show clip start/end times on the assembled timeline")
     s.add_argument("project")

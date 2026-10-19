@@ -17,6 +17,7 @@ models/
 # node / remotion
 motion/node_modules/
 motion/public/brand/
+motion/public/stage/
 motion/out/
 
 # python / os

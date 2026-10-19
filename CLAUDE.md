@@ -14,11 +14,12 @@ Design System.
   `build/look/` before choosing shots. Use `bin/sgv look <file> --start A --end B` to check a
   range, and `--at T` for a single frame. Don't describe footage you haven't looked at.
 - **Never modify source media.** Footage in `footage/`, `audio/` and `assets/` is read-only.
-  Everything generated goes to `build/` (cache) or `exports/`.
+  Everything generated goes to `build/` (cache) or `exports/`; the only generated media inside those folders
+  are `audio/vo/` + `audio/vo.wav` (`sgv voice`) and `assets/screens/` (`sgv screen`).
 - **Draft, then final.** Iterate with `bin/sgv render <project> --draft` (540p, fast). Run the full
   render only after the user approves the cut, then check the exports (see "Finishing" below).
 - **Log decisions** in the project's `NOTES.md` (brief, chosen takes, why a shot was cut).
-- Media files are git-ignored; commit only `edit.json`, `NOTES.md` and caption files.
+- Media files are git-ignored; commit only `edit.json`, `NOTES.md`, caption files and `crew/*.md|json`.
 
 ## Tools
 
@@ -32,6 +33,9 @@ Design System.
 | `bin/sgv scenes <file>` | Lists scene-change timestamps (for B-roll and montage selects) |
 | `bin/sgv transcribe <file> [--lang ar]` | Writes a whisper.cpp transcript (`.srt` + `.json`) next to the file |
 | `bin/sgv captions <p>` | Renders a draft, transcribes it and sets `captions/master.srt` on the project |
+| `bin/sgv captions <p> --from-vo` | Captions from the approved script text and voice timings (`crew/vo.json`) |
+| `bin/sgv voice <p> [--engine say\|elevenlabs\|files] [--take f]` | Voice-over lines from `crew/vo.json` → `audio/vo.wav`, timed |
+| `bin/sgv screen <p> <screen> [--lang ar] [--theme dark] [--flow k]` · `--list` | Captures a real product screen from the design system kit |
 | `bin/sgv timeline <p>` | Shows each clip's start and end on the assembled timeline (use it to place overlays) |
 | `bin/sgv render <p> [--draft] [--preset a,b]` | Renders the exports |
 | `bin/sgv motion <Comp> --props '{…}' [--size 1080x1920]` | Renders a single motion graphic |
@@ -78,8 +82,22 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
 
 Compositions and their required props: `Intro` (none; optional `tagline`) · `TitleCard` (`title`)
 · `StatCard` (`label`, `value`) · `QuoteCard` (`quote`, `name`) · `EndCard` (`headline`) ·
-`LowerThird` (`name`, overlay only). Every composition supports Arabic RTL (`lang: "ar"` per clip
+`LowerThird` (`name`, overlay only) · `ProductScreen` (`src`: a project image, usually `assets/screens/*.png`;
+optional `callout` `{x,y,w,h}` in the screen's CSS pixels, `label`, `move`: push|still|pan). Every composition supports Arabic RTL (`lang: "ar"` per clip
 or per project) and both themes.
+
+## The video crew
+
+For a video made from an idea, or footage turned into a finished piece with a script, voice-over, product
+screens and graphics, follow the `video-crew` skill. You act as the producer and dispatch the crew agents in
+`.claude/agents/` (creative-director, scriptwriter, voice-director, cinematographer, screen-producer,
+motion-designer, editor, sound-designer, qa-reviewer), each with its own `crew-*` skill. They hand work to each
+other through files in `projects/<p>/crew/` (protocol: `.claude/skills/video-crew/CREW.md`). The crew works in
+English and Egyptian Arabic (MSA for on-screen text). There are three user gates: treatment, script, and draft. For a quick
+trim or caption pass, use `edit-video` instead.
+
+Real product screens come from the design system's web-platform kit in `brand/product-ui/` (a working
+click-through of the platform: every screen, EN/AR, light/dark, data states and flows). Never mock up product UI.
 
 ## Editing craft
 

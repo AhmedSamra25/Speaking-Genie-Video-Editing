@@ -10,8 +10,31 @@ from pathlib import Path
 
 from sgv import ff, paths
 
-COMPOSITIONS = ["Intro", "TitleCard", "StatCard", "QuoteCard", "EndCard", "LowerThird"]
+COMPOSITIONS = ["Intro", "TitleCard", "StatCard", "QuoteCard", "EndCard", "LowerThird", "ProductScreen"]
 ALPHA = {"LowerThird"}  # rendered with transparency, composited over footage
+
+
+def stage_assets(props: dict, base: Path) -> dict:
+    """Copy an image prop (`src`, relative to `base`) into motion/public/stage/ so staticFile() can load it.
+    The staged name is the file's content hash, so a recaptured screen invalidates cached renders."""
+    src = props.get("src")
+    if not src or str(src).startswith("stage/"):
+        return props
+    f = Path(src) if Path(src).is_absolute() else base / src
+    if not f.exists():
+        raise SystemExit(f"Image not found: {f}")
+    data = f.read_bytes()
+    name = hashlib.sha256(data).hexdigest()[:16] + f.suffix.lower()
+    dest = paths.MOTION / "public" / "stage" / name
+    if not dest.exists():
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(data)
+    out = {**props, "src": f"stage/{name}"}
+    if "srcW" not in props:  # the screen's size in CSS pixels: captures are taken at `scale` device pixels per CSS pixel
+        v = ff.probe(str(f))["video"] or {}
+        scale = float(props.get("scale", 2))
+        out.update(srcW=round(v.get("width", 2880) / scale), srcH=round(v.get("height", 1800) / scale))
+    return out
 
 
 def _check() -> None:

@@ -69,6 +69,40 @@ onto the brand canvas, and captions sit clear of the platform UI.
 
 Motion graphics preview: `bin/sgv studio` opens Remotion Studio.
 
+## The video crew
+
+Ask for a video and Claude runs a crew of nine specialist agents, each with its own skill, coordinated by a producer
+(the main Claude session):
+
+| Agent | Does |
+| --- | --- |
+| creative-director | the idea: treatment, beat sheet, which beats use footage, product screens or graphics; reviews drafts |
+| scriptwriter | voice-over and on-screen text in English and Egyptian Arabic (MSA on screen) |
+| voice-director | directs your recording, or generates voice-over (ElevenLabs, or macOS scratch voices), timed per line |
+| cinematographer | footage selects, framing and 9:16 focus points, or an iPhone shoot plan |
+| screen-producer | captures real product screens from the design system and picks the one thing to highlight |
+| motion-designer | branded graphics, including ProductScreen callouts over real screens |
+| editor | assembles the cut, captions from the script, renders |
+| sound-designer | music from your tracks, mix, ducking, loudness |
+| qa-reviewer | checks brand, Arabic and English, safe zones, captions and loudness before you see it |
+
+> Make a 30-second Reel in Egyptian Arabic for language-centre owners: how teachers see their class's mistakes
+> after every session. End with "Start a free pilot".
+
+You approve three things: the treatment, the script (the exact voice-over lines), and the draft. Everything the crew
+writes lives in `projects/<p>/crew/` and gets committed with the project.
+
+Voice-over options: record it yourself (best for Egyptian Arabic; the voice-director gives you a recording sheet
+and `sgv voice --take` cuts it into lines), ElevenLabs (set `ELEVENLABS_API_KEY`; the script is sent to ElevenLabs),
+or macOS voices for scratch timing only.
+
+### Product screens
+
+`brand/product-ui/` holds the design system's web-platform kit, a working click-through of the platform, captured
+with `bin/sgv screen` (headless Chrome, 2x). Install it once from the Speaking Genie Design System artifact
+(files under `project/`), keeping its folder structure, so that
+`brand/product-ui/ui_kits/web-platform/Speaking Genie Platform.dc.html` exists. Then `bin/sgv screen --list`.
+
 ## Design system
 
 `brand/` is derived from the

@@ -35,6 +35,33 @@ def transcribe(media: Path, out_base: Path, lang: str = "auto", model: str | Non
     return out_base.with_suffix(".srt")
 
 
+def _srt_time(t: float) -> str:
+    ms = int(round(max(0.0, t) * 1000))
+    h, ms = divmod(ms, 3600000)
+    m, ms = divmod(ms, 60000)
+    s, ms = divmod(ms, 1000)
+    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+
+def from_vo(vo: dict, out: Path, max_chars: int = 42) -> Path:
+    """Captions from the approved script text and the recorded line timings (crew/vo.json after `sgv voice`):
+    exact wording, product names and Egyptian Arabic, with no transcription errors."""
+    cues = []
+    for line in vo.get("lines", []):
+        if "start" not in line:
+            raise SystemExit(f"{line.get('id')} has no timing — run `bin/sgv voice` first.")
+        chunks = _wrap(line["text"].strip(), max_chars) or [line["text"]]
+        t, end, chars = float(line["start"]), float(line["start"]) + float(line["duration"]), sum(map(len, chunks))
+        for c in chunks:  # split the line's time by characters
+            d = (end - float(line["start"])) * len(c) / chars
+            cues.append((t, t + d, c))
+            t += d
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("\n".join(f"{i}\n{_srt_time(a)} --> {_srt_time(b)}\n{text}\n" for i, (a, b, text) in enumerate(cues, 1)),
+                   encoding="utf-8")
+    return out
+
+
 # -- SRT parsing -----------------------------------------------------------
 def _secs(m) -> float:
     h, mi, s, ms = (int(x) for x in m.groups())
@@ -82,6 +109,13 @@ def _ass_time(t: float) -> str:
 FONTS = {"EN": ("Plus Jakarta Sans SemiBold", "PlusJakartaSans-SemiBold.ttf"),
          "AR": ("IBM Plex Sans Arabic SemiBold", "IBMPlexSansArabic-SemiBold.ttf")}
 REFERENCE = {"EN": "Hgy", "AR": "جميل"}  # an ascender and a descender, for line height
+KEEP_TOGETHER = ("Speaking Genie",)  # never split across caption lines
+
+
+def _wrap(text: str, width: int) -> list:
+    for phrase in KEEP_TOGETHER:
+        text = text.replace(phrase, phrase.replace(" ", "\u00a0"))
+    return textwrap.wrap(text, width=width)
 
 
 def _em_scale(font_file: Path) -> float:
@@ -151,7 +185,7 @@ def write_ass(cues: list, out: Path, width: int, height: int, tokens: dict) -> P
     items = []
     for c in cues:
         text = c["text"].replace("\n", " ").strip()
-        lines = textwrap.wrap(text, width=width_chars)[:2] or [text]
+        lines = _wrap(text, width_chars)[:2] or [text]
         body = r"\N".join(l.replace("{", "(").replace("}", ")") for l in lines)
         items.append(("AR" if ARABIC.search(text) else "EN", body, len(lines), c))
     refs = [(k, ref) for k, ref in REFERENCE.items()] + [(k, f"{ref}\\N{ref}") for k, ref in REFERENCE.items()]

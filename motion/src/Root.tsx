@@ -4,6 +4,7 @@ import { BaseProps, baseDefaults } from "./brand";
 import { EndCard } from "./compositions/EndCard";
 import { Intro } from "./compositions/Intro";
 import { LowerThird } from "./compositions/LowerThird";
+import { ProductScreen } from "./compositions/ProductScreen";
 import { QuoteCard } from "./compositions/QuoteCard";
 import { StatCard } from "./compositions/StatCard";
 import { TitleCard } from "./compositions/TitleCard";
@@ -42,5 +43,6 @@ export const Root: React.FC = () => (
     })}
     {comp("EndCard", EndCard, { headline: "Start a free pilot" })}
     {comp("LowerThird", LowerThird, { name: "Mona Adel" })}
+    {comp("ProductScreen", ProductScreen, { src: "" })}
   </>
 );
