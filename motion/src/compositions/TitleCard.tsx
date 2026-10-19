@@ -1,10 +1,10 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
 import { BaseProps, brand, colors, isPortrait, scaleOf } from "../brand";
-import { enter } from "../anim";
+import { FadeProps, enterClip } from "../anim";
 import { Stage } from "../components/Stage";
 
-export type TitleCardProps = BaseProps & { overline?: string; title: string; subtitle?: string };
+export type TitleCardProps = BaseProps & FadeProps & { overline?: string; title: string; subtitle?: string };
 
 /** Chapter / section title: purple overline, 76px title, muted subtitle. */
 export const TitleCard: React.FC<TitleCardProps> = (p) => {
@@ -28,7 +28,7 @@ export const TitleCard: React.FC<TitleCardProps> = (p) => {
         {p.overline ? (
           <div
             style={{
-              ...enter(frame, durationInFrames, 2, s),
+              ...enterClip(frame, durationInFrames, 2, s, p),
               fontSize: brand.video.overlineSize * s,
               fontWeight: 700,
               letterSpacing: ar ? 0 : "0.1em",
@@ -42,7 +42,7 @@ export const TitleCard: React.FC<TitleCardProps> = (p) => {
         ) : null}
         <div
           style={{
-            ...enter(frame, durationInFrames, 6, s),
+            ...enterClip(frame, durationInFrames, 6, s, p),
             fontSize: brand.video.heroSize * s * (portrait ? 0.95 : 1),
             fontWeight: ar ? 700 : 800,
             letterSpacing: ar ? 0 : "-0.02em",
@@ -55,7 +55,7 @@ export const TitleCard: React.FC<TitleCardProps> = (p) => {
         {p.subtitle ? (
           <div
             style={{
-              ...enter(frame, durationInFrames, 12, s),
+              ...enterClip(frame, durationInFrames, 12, s, p),
               fontSize: brand.video.bodySize * s,
               fontWeight: 500,
               color: c.ink2,

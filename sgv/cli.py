@@ -102,11 +102,12 @@ def cmd_voice(a):
     p = project.find(a.project)
     script = p.root / a.script
     lines = voice.run(p, script, a.engine, voice=a.voice, take=p.path(a.take) if a.take else None, gap=a.gap,
-                      lead=a.lead, min_silence=a.min_silence)
+                      lead=a.lead, min_silence=a.min_silence, rate=a.rate)
     over = 0
     for l in lines:
         limit = l.get("max_seconds")
         flag = f"  OVER by {l['duration'] - limit:.2f}s" if limit and l["duration"] > limit else ""
+        flag += f"  pushed {l['late']:.2f}s late (previous line ran long)" if l.get("late") else ""
         over += bool(flag)
         print(f"  {l['id']:>4}  {analyze.fmt_time(l['start']):>9}  {l['duration']:5.2f}s{flag}")
     print(f"{p.root.relative_to(paths.ROOT)}/audio/vo.wav  {len(lines)} lines"
@@ -252,6 +253,7 @@ def main(argv=None) -> int:
     s.add_argument("--gap", type=float, default=0.35, help="seconds between lines without an `at`")
     s.add_argument("--lead", type=float, default=0.3, help="seconds before the first line")
     s.add_argument("--min-silence", type=float, default=1.2, help="pause that separates lines in a take")
+    s.add_argument("--rate", type=int, help="speaking rate for --engine say, words per minute (scratch timing)")
     s.set_defaults(fn=cmd_voice)
 
     s = sub.add_parser("screen", help="capture a real product screen from the design system kit (or --list)")

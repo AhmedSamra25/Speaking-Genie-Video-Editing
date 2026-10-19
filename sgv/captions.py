@@ -43,6 +43,20 @@ def _srt_time(t: float) -> str:
     return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
 
 
+def _cue_chunks(text: str, max_chars: int) -> list:
+    """Split a spoken line into caption cues: at a clause break (، , : ؛ .) near the middle when there is one,
+    otherwise into balanced pieces, so no cue is a single stranded word."""
+    if len(text) <= max_chars:
+        return [text]
+    breaks = [i + 1 for i, ch in enumerate(text) if ch in "،,:؛;." and 0 < i < len(text) - 1]
+    best = min(breaks, key=lambda i: abs(i - len(text) / 2), default=None)
+    if best and max(best, len(text) - best) <= max_chars and min(best, len(text) - best) >= max_chars // 4:
+        return [text[:best].strip(), text[best:].strip()]
+    n = -(-len(text) // max_chars)
+    balanced = _wrap(text, -(-len(text) // n) + 4)
+    return balanced if len(balanced) <= n else (_wrap(text, max_chars) or [text])
+
+
 def from_vo(vo: dict, out: Path, max_chars: int = 42) -> Path:
     """Captions from the approved script text and the recorded line timings (crew/vo.json after `sgv voice`):
     exact wording, product names and Egyptian Arabic, with no transcription errors."""
@@ -50,12 +64,16 @@ def from_vo(vo: dict, out: Path, max_chars: int = 42) -> Path:
     for line in vo.get("lines", []):
         if "start" not in line:
             raise SystemExit(f"{line.get('id')} has no timing — run `bin/sgv voice` first.")
-        chunks = _wrap(line["text"].strip(), max_chars) or [line["text"]]
+        chunks = [c.replace("\u00a0", " ") for c in _cue_chunks(line["text"].strip(), max_chars)]
         t, end, chars = float(line["start"]), float(line["start"]) + float(line["duration"]), sum(map(len, chunks))
         for c in chunks:  # split the line's time by characters
             d = (end - float(line["start"])) * len(c) / chars
             cues.append((t, t + d, c))
             t += d
+    cues.sort()
+    for i in range(len(cues) - 1):  # a line that runs long never overlaps the next one's caption
+        a, b, text = cues[i]
+        cues[i] = (a, min(b, cues[i + 1][0] - 0.04), text)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("\n".join(f"{i}\n{_srt_time(a)} --> {_srt_time(b)}\n{text}\n" for i, (a, b, text) in enumerate(cues, 1)),
                    encoding="utf-8")

@@ -20,10 +20,10 @@ TAKE_EXTS = (".wav", ".m4a", ".mp3", ".aiff", ".aif", ".caf", ".flac")
 ELEVENLABS_URL = "https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=mp3_44100_128"
 
 
-def _say(text: str, voice: str, out: Path) -> None:
+def _say(text: str, voice: str, out: Path, rate: int | None = None) -> None:
     if not shutil.which("say"):
         raise SystemExit("`say` is macOS only — use --engine elevenlabs or --engine files elsewhere.")
-    subprocess.run(["say", "-v", voice, "-o", str(out), text], check=True)
+    subprocess.run(["say", "-v", voice, *(["-r", str(rate)] if rate else []), "-o", str(out), text], check=True)
 
 
 def _elevenlabs(text: str, voice: str, model: str, out: Path) -> None:
@@ -41,9 +41,11 @@ def _elevenlabs(text: str, voice: str, model: str, out: Path) -> None:
 
 
 def _clean(raw: Path, out: Path) -> float:
-    """Trim silence at both ends, level to a consistent loudness, 48 kHz mono."""
-    trim = "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05"
-    ff.run(["ffmpeg", "-i", raw, "-af", f"{trim},areverse,{trim},areverse,loudnorm=I=-18:TP=-2:LRA=11,"
+    """Trim leading and trailing silence but keep a natural breath at each end (soft onsets and word endings sit
+    below any threshold), fade the edges, level to a consistent loudness, 48 kHz mono."""
+    trim = "silenceremove=start_periods=1:start_threshold=-55dB:start_duration=0.02:start_silence=0.12"
+    ff.run(["ffmpeg", "-i", raw, "-af", f"{trim},areverse,{trim.replace('0.12', '0.25')},areverse,"
+            "afade=t=in:d=0.03,areverse,afade=t=in:d=0.08,areverse,loudnorm=I=-18:TP=-2:LRA=11,"
             "aresample=48000", "-ac", "1", "-c:a", "pcm_s16le", out])
     ff.probe.cache_clear()
     return ff.probe(str(out))["duration"]
@@ -64,7 +66,7 @@ def _split_take(take: Path, n: int, tmp: Path, min_silence: float) -> list:
 
 
 def run(project: Project, script: Path, engine: str, voice: str | None = None, take: Path | None = None,
-        gap: float = 0.35, lead: float = 0.3, min_silence: float = 1.2) -> list:
+        gap: float = 0.35, lead: float = 0.3, min_silence: float = 1.2, rate: int | None = None) -> list:
     data = json.loads(script.read_text(encoding="utf-8"))
     lines = data.get("lines", [])
     if not lines:
@@ -82,7 +84,7 @@ def run(project: Project, script: Path, engine: str, voice: str | None = None, t
         for i, line in enumerate(lines):
             if engine == "say":
                 raw = tmp / f"{line['id']}.aiff"
-                _say(line.get("say_as", line["text"]), voice or meta.get("say_voice") or SAY_VOICES["ar" if lang.startswith("ar") else "en"], raw)
+                _say(line.get("say_as", line["text"]), voice or meta.get("say_voice") or SAY_VOICES["ar" if lang.startswith("ar") else "en"], raw, rate)
             elif engine == "elevenlabs":
                 vid = voice or meta.get("voice_id")
                 if not vid:
@@ -99,10 +101,14 @@ def run(project: Project, script: Path, engine: str, voice: str | None = None, t
             line["duration"] = round(_clean(raw, vo_dir / f"{line['id']}.wav"), 3)
             line["file"] = f"audio/vo/{line['id']}.wav"
 
-    cursor = lead
-    for line in lines:
-        line["start"] = round(float(line["at"]) if "at" in line else cursor, 3)
-        cursor = line["start"] + line["duration"] + gap
+    cursor = 0.0 if "at" in lines[0] else lead
+    for line in lines:  # a line never starts before the previous one has finished: late lines push back, never overlap
+        wanted = float(line["at"]) if "at" in line else cursor
+        line["start"] = round(max(wanted, cursor), 3)
+        line["late"] = round(line["start"] - wanted, 3) if line["start"] > wanted + 0.01 else 0
+        if not line["late"]:
+            line.pop("late")
+        cursor = line["start"] + line["duration"] + min(gap, 0.15 if "at" in line else gap)
     total = max(l["start"] + l["duration"] for l in lines) + 0.5
 
     inputs, parts = [], []

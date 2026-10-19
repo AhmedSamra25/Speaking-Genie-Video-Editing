@@ -56,13 +56,20 @@ def contact_sheet(src: Path, out: Path, n: int = 12, cols: int = 4, start: float
     span = max(0.1, end - start)
     rows = math.ceil(n / cols)
     font = ff.escape_filter_path(paths.FONTS / "JetBrainsMono-Medium.ttf")
-    vf = (f"fps={n}/{span:.3f},scale=480:-2,"
-          f"drawtext=fontfile={font}:text='%{{pts\\:hms}}':x=10:y=h-th-10:fontsize=22:fontcolor=white:"
-          f"box=1:boxcolor=0x0F1729@0.8:boxborderw=6,"
-          f"tile={cols}x{rows}:padding=6:margin=6:color=0xF7F8FB")
+    # seek every tile to its exact time and print that time: the fps filter labels a slot but fills it with a
+    # frame from up to one slot later, and restarts the clock at --start
+    times = [min(start + i * span / n, end - 0.05) for i in range(n)]
+    inputs, parts = [], []
+    for i, t in enumerate(times):
+        inputs += ["-ss", f"{t:.3f}", "-i", src]
+        label = fmt_time(t).replace(":", "\\:")
+        parts.append(f"[{i}:v]trim=end_frame=1,setpts=PTS-STARTPTS,scale=480:-2,setsar=1,"
+                     f"drawtext=fontfile={font}:text='{label}':x=10:y=h-th-10:fontsize=22:fontcolor=white:"
+                     f"box=1:boxcolor=0x0F1729@0.8:boxborderw=6[f{i}]")
+    parts.append("".join(f"[f{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=0,"
+                 f"tile={cols}x{rows}:padding=6:margin=6:color=0xF7F8FB[out]")
     out.parent.mkdir(parents=True, exist_ok=True)
-    ff.run(["ffmpeg", *ff.decode_args(src), "-ss", f"{start:.3f}", "-t", f"{span:.3f}", "-i", src,
-            "-vf", vf, "-frames:v", "1", "-update", "1", out])
+    ff.run(["ffmpeg", *inputs, "-filter_complex", ";".join(parts), "-map", "[out]", "-frames:v", "1", "-update", "1", out])
     return out
 
 

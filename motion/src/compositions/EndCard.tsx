@@ -1,11 +1,11 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
 import { BaseProps, colors, scaleOf } from "../brand";
-import { enter } from "../anim";
+import { FadeProps, enterClip } from "../anim";
 import { Logo } from "../components/Logo";
 import { Stage } from "../components/Stage";
 
-export type EndCardProps = BaseProps & { headline: string; subline?: string; url?: string };
+export type EndCardProps = BaseProps & FadeProps & { headline: string; subline?: string; url?: string };
 
 /** Closing card: logo, call to action, URL. Holds to the last frame (no exit fade). */
 export const EndCard: React.FC<EndCardProps> = (p) => {
@@ -17,12 +17,12 @@ export const EndCard: React.FC<EndCardProps> = (p) => {
   return (
     <Stage p={p}>
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", textAlign: "center", padding: 96 * s }}>
-        <div style={enter(frame, durationInFrames, 2, s, false)}>
+        <div style={enterClip(frame, durationInFrames, 2, s, p, false)}>
           <Logo theme={p.theme} height={72 * s} />
         </div>
         <div
           style={{
-            ...enter(frame, durationInFrames, 10, s, false),
+            ...enterClip(frame, durationInFrames, 10, s, p, false),
             fontSize: 68 * s,
             fontWeight: ar ? 700 : 800,
             letterSpacing: ar ? 0 : "-0.02em",
@@ -35,7 +35,7 @@ export const EndCard: React.FC<EndCardProps> = (p) => {
         {p.subline ? (
           <div
             style={{
-              ...enter(frame, durationInFrames, 16, s, false),
+              ...enterClip(frame, durationInFrames, 16, s, p, false),
               fontSize: 30 * s,
               fontWeight: 500,
               color: c.ink2,
@@ -48,7 +48,7 @@ export const EndCard: React.FC<EndCardProps> = (p) => {
         {p.url ? (
           <div
             style={{
-              ...enter(frame, durationInFrames, 22, s, false),
+              ...enterClip(frame, durationInFrames, 22, s, p, false),
               fontSize: 32 * s,
               fontWeight: 700,
               color: c.link,
