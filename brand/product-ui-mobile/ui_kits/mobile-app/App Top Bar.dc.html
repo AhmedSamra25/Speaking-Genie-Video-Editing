@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round|Material+Icons+Outlined">
+  <link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+  <script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+</helmet>
+<div dir="{{ dir }}" style="position:relative;font-family:Inter, system-ui, sans-serif;">
+  <div style="position:absolute;inset:0;backdrop-filter:blur({{ blur }});-webkit-backdrop-filter:blur({{ blur }});background:linear-gradient(180deg, rgba(255,255,255,{{ a1 }}), rgba(245,243,255,{{ a2 }}));border-bottom:0.6px solid rgba(124,58,237,{{ a3 }});box-shadow:0 {{ sy }} {{ sb }} rgba(15,23,42,{{ a4 }});"></div>
+  <div style="position:relative;padding-top:50px;">
+    <div style="height:60px;padding:0 20px;display:flex;align-items:center;">
+      <div style="flex:1;min-width:0;display:flex;align-items:center;">
+        <sc-if value="{{ showWorkspace }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;padding-block:5px;padding-inline-start:6px;padding-inline-end:8px;background:#FFFFFF;border-radius:9999px;border:1px solid #E5E7EB;box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+            <div style="width:22px;height:22px;border-radius:7px;background:#EDE9FE;color:#7C3AED;display:flex;align-items:center;justify-content:center;font-size:9.24px;font-weight:700;line-height:1;">{{ wsInitial }}</div>
+            <div style="margin-inline-start:7px;max-width:120px;font-size:13px;font-weight:700;color:#1F2937;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ wsTitle }}</div>
+            <sc-if value="{{ canSwitch }}" hint-placeholder-val="{{ true }}">
+              <span style="margin-inline-start:2px;font-family:'Material Icons Round';font-size:18px;line-height:1;color:#9CA3AF;font-feature-settings:'liga';">keyboard_arrow_down</span>
+            </sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ hasTitle }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:22px;font-weight:700;color:#1F2937;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ title }}</div>
+        </sc-if>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-inline-start:8px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <img src="assets/icons/c/certificate_icon-7C3AED.svg" alt="" style="display:block;width:20px;height:20px;">
+        </div>
+        <div style="position:relative;width:40px;height:40px;cursor:pointer;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'Material Icons Outlined';font-size:22px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">notifications</span>
+          </div>
+          <sc-if value="{{ hasUnread }}" hint-placeholder-val="{{ true }}">
+            <div style="position:absolute;top:-4px;right:-4px;min-width:20px;min-height:20px;box-sizing:border-box;padding:2px 5px;background:#EF4444;border-radius:10px;border:1.5px solid #FFFFFF;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#FFFFFF;line-height:1;">{{ unreadLabel }}</div>
+          </sc-if>
+        </div>
+        <div style="width:40px;height:40px;box-sizing:border-box;border-radius:50%;padding:2px;background:linear-gradient(135deg,#7C3AED,#9333EA);box-shadow:0 3px 8px rgba(124,58,237,0.2);cursor:pointer;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#9333EA);display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'Material Icons Round';font-size:20px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">person</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:110},&quot;dir&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ltr&quot;,&quot;rtl&quot;],&quot;default&quot;:&quot;ltr&quot;,&quot;tsType&quot;:&quot;'ltr'|'rtl'&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;unread&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;tsType&quot;:&quot;number&quot;},&quot;scrollT&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:1,&quot;step&quot;:0.05,&quot;default&quot;:0,&quot;tsType&quot;:&quot;number&quot;},&quot;workspaceTitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Personal&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;canSwitch&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const t = Math.max(0, Math.min(1, p.scrollT ?? 0));
+    const unread = p.unread ?? 3;
+    const title = p.title ?? '';
+    return {
+      dir: p.dir ?? 'ltr',
+      title,
+      hasTitle: !!title,
+      showWorkspace: !title && (p.showWorkspace ?? true),
+      wsTitle: p.workspaceTitle ?? 'Personal',
+      wsInitial: (p.workspaceTitle ?? 'Personal').trim().charAt(0).toUpperCase(),
+      canSwitch: p.canSwitch ?? true,
+      hasUnread: unread > 0,
+      unreadLabel: unread > 99 ? '99+' : String(unread),
+      blur: (14 * t) + 'px',
+      a1: (0.82 * t).toFixed(3), a2: (0.72 * t).toFixed(3), a3: (0.08 * t).toFixed(3), a4: (0.06 * t).toFixed(3),
+      sy: (6 * t) + 'px', sb: (18 * t) + 'px'
+    };
+  }
+}
+</script>
+</body>
+</html>

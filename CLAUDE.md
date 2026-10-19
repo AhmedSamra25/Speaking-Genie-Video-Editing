@@ -36,7 +36,7 @@ Design System.
 | `bin/sgv captions <p> --from-vo` | Captions from the approved script text and voice timings (`crew/vo.json`) |
 | `bin/sgv voice <p> [--engine say\|elevenlabs\|files] [--take f]` | Voice-over lines from `crew/vo.json` → `audio/vo.wav`, timed |
 | `bin/sgv voices [--lang ar,en] [--try "text"]` | Lists the installed premium/enhanced system voices (gender, usable by `say`); `--try` renders a sample per voice |
-| `bin/sgv screen <p> <screen> [--lang ar] [--theme dark] [--flow k]` · `--list` | Captures a real product screen from the design system kit |
+| `bin/sgv screen <p> <card> [--lang ar] [--theme dark] [--flow k] [--status speaking]` · `--list [--kit mobile\|web]` | Captures a real product screen from the mobile app or web platform kit |
 | `bin/sgv timeline <p>` | Shows each clip's start and end on the assembled timeline (use it to place overlays) |
 | `bin/sgv render <p> [--draft] [--preset a,b]` | Renders the exports |
 | `bin/sgv motion <Comp> --props '{…}' [--size 1080x1920]` | Renders a single motion graphic |
@@ -69,7 +69,8 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
     { "type": "motion", "composition": "EndCard", "duration": 4, "transition": "dip",
       "props": { "headline": "Start a free pilot", "subline": "…", "url": "speakingenie.com" } }
   ],
-  // transition = how a clip comes IN: cut (default) | dissolve | dip (through white on light theme, black on dark) | wipe-left | slide-left
+  // transition = how a clip comes IN: cut (default) | dissolve | dip (through white on light theme, black on dark)
+  //   | zoom | push-left | push-right | push-up (0.3–0.4 s, motion-blurred; set "transitionDuration" on the clip)
   "overlays": [
     { "composition": "LowerThird", "at": { "clip": 2, "offset": 0.5 }, "duration": 4,
       "props": { "name": "Mona Adel", "role": "Head of Academics · Cairo Language Center" } }
@@ -77,14 +78,16 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
   "logo": { "enabled": true, "corner": "top-right", "variant": "light-on-dark" },  // hidden during motion clips
   "voiceover": { "src": "audio/vo.wav", "at": 0, "volume": 1 },
   "music": { "src": "audio/bed.mp3", "volume": 0.5, "duckUnderVoice": true, "fadeIn": 1, "fadeOut": 3 },
-  "captions": { "src": "captions/master.srt", "burn": true, "offset": 0 }
+  "captions": { "src": "captions/master.srt", "burn": true, "offset": 0, "style": "words" },  // style words = word-by-word highlight
+  "sfx": true   // generated whooshes under motion transitions and taps on ProductScreen taps
 }
 ```
 
 Compositions and their required props: `Intro` (none; optional `tagline`) · `TitleCard` (`title`)
 · `StatCard` (`label`, `value`) · `QuoteCard` (`quote`, `name`) · `EndCard` (`headline`) ·
 `LowerThird` (`name`, overlay only) · `ProductScreen` (`src`: a project image, usually `assets/screens/*.png`;
-optional `callout` `{x,y,w,h}` in the screen's CSS pixels, `label`, `move`: push|still|pan). Every composition supports Arabic RTL (`lang: "ar"` per clip
+optional `callout` `{x,y,w,h}` in the screen's CSS pixels, `label`, `move`: push|still|pan, `steps` for camera travel
+between several points, `tap` `{x,y,at}`, `drift`, `scale` 3 for mobile captures). Every composition supports Arabic RTL (`lang: "ar"` per clip
 or per project) and both themes.
 
 ## The video crew
@@ -97,8 +100,10 @@ other through files in `projects/<p>/crew/` (protocol: `.claude/skills/video-cre
 English and Egyptian Arabic (MSA for on-screen text). There are three user gates: treatment, script, and draft. For a quick
 trim or caption pass, use `edit-video` instead.
 
-Real product screens come from the design system's web-platform kit in `brand/product-ui/` (a working
-click-through of the platform: every screen, EN/AR, light/dark, data states and flows). Never mock up product UI.
+Real product screens come from two design system kits, both working click-throughs: the learner **mobile app** in
+`brand/product-ui-mobile/` (36 screens: home, the AI call, feedback, reports, EN/AR) and the teacher/admin **web
+platform** in `brand/product-ui/` (every screen, EN/AR, light/dark, states and flows). Never mock up product UI.
+The editing playbook (`.claude/skills/video-crew/EDITING.md`) says which kit to use and how to make it move.
 
 ## Editing craft
 

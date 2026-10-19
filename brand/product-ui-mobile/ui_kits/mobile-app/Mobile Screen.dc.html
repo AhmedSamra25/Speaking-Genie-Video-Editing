@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+<script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+<style>html,body{margin:0;background:#EEF0F4;}</style>
+</helmet>
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;">
+<sc-if value="{{ is.HomeScreen }}" hint-placeholder-val="{{ false }}"><dc-import name="Home Screen" dir="{{ p.dir }}" screen="{{ p.screen }}" state="{{ p.state }}" status="{{ p.status }}" task="{{ p.task }}" eligible="{{ p.eligible }}" streak-expanded="{{ p.streak }}" speak-to-hire="{{ p.sth }}" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ is.LabScreens }}" hint-placeholder-val="{{ false }}"><dc-import name="Lab Screens" dir="{{ p.dir }}" screen="{{ p.screen }}" state="{{ p.state }}" status="{{ p.status }}" task="{{ p.task }}" eligible="{{ p.eligible }}" streak-expanded="{{ p.streak }}" speak-to-hire="{{ p.sth }}" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ is.LabPracticeScreens }}" hint-placeholder-val="{{ false }}"><dc-import name="Lab Practice Screens" dir="{{ p.dir }}" screen="{{ p.screen }}" state="{{ p.state }}" status="{{ p.status }}" task="{{ p.task }}" eligible="{{ p.eligible }}" streak-expanded="{{ p.streak }}" speak-to-hire="{{ p.sth }}" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ is.AIPartnersScreens }}" hint-placeholder-val="{{ false }}"><dc-import name="AI Partners Screens" dir="{{ p.dir }}" screen="{{ p.screen }}" state="{{ p.state }}" status="{{ p.status }}" task="{{ p.task }}" eligible="{{ p.eligible }}" streak-expanded="{{ p.streak }}" speak-to-hire="{{ p.sth }}" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ is.ReportsScreens }}" hint-placeholder-val="{{ false }}"><dc-import name="Reports Screens" dir="{{ p.dir }}" screen="{{ p.screen }}" state="{{ p.state }}" status="{{ p.status }}" task="{{ p.task }}" eligible="{{ p.eligible }}" streak-expanded="{{ p.streak }}" speak-to-hire="{{ p.sth }}" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ is.ProfileScreens }}" hint-placeholder-val="{{ false }}"><dc-import name="Profile Screens" dir="{{ p.dir }}" screen="{{ p.screen }}" state="{{ p.state }}" status="{{ p.status }}" task="{{ p.task }}" eligible="{{ p.eligible }}" streak-expanded="{{ p.streak }}" speak-to-hire="{{ p.sth }}" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ is.AuthScreens }}" hint-placeholder-val="{{ false }}"><dc-import name="Auth Screens" dir="{{ p.dir }}" screen="{{ p.screen }}" state="{{ p.state }}" status="{{ p.status }}" task="{{ p.task }}" eligible="{{ p.eligible }}" streak-expanded="{{ p.streak }}" speak-to-hire="{{ p.sth }}" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ is.OnboardingScreens }}" hint-placeholder-val="{{ false }}"><dc-import name="Onboarding Screens" dir="{{ p.dir }}" screen="{{ p.screen }}" state="{{ p.state }}" status="{{ p.status }}" task="{{ p.task }}" eligible="{{ p.eligible }}" streak-expanded="{{ p.streak }}" speak-to-hire="{{ p.sth }}" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ is.PlacementTestScreens }}" hint-placeholder-val="{{ false }}"><dc-import name="Placement Test Screens" dir="{{ p.dir }}" screen="{{ p.screen }}" state="{{ p.state }}" status="{{ p.status }}" task="{{ p.task }}" eligible="{{ p.eligible }}" streak-expanded="{{ p.streak }}" speak-to-hire="{{ p.sth }}" hint-size="390px,844px"></dc-import></sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const q = new URLSearchParams(location.search), c = (q.get("c") || "Home Screen").replace(/\W/g, "");
+    const b = k => q.get(k) === "1";
+    const is = {}; ["HomeScreen","LabScreens","LabPracticeScreens","AIPartnersScreens","ReportsScreens","ProfileScreens","AuthScreens","OnboardingScreens","PlacementTestScreens"].forEach(k => is[k] = k === c);
+    return { is, p: { dir: q.get("dir") || "ltr", screen: q.get("screen") || undefined, state: q.get("state") || "default", status: q.get("status") || undefined, task: b("task"), eligible: b("eligible"), streak: b("streak"), sth: b("sth") } };
+  }
+}
+</script>
+</body>
+</html>

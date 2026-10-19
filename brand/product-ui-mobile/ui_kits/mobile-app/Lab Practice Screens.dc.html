@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round|Material+Icons+Outlined">
+  <link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+  <script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+</helmet>
+<x-import component-from-global-scope="SpeakingGenieDesignSystem_ac4dbc.PhoneFrame" scrollable="{{ false }}" hint-size="390px,844px">
+<div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;font-family:Poppins, system-ui, sans-serif;background:#F9FAFB;">
+  <div style="height:50px;flex-shrink:0;"></div>
+  <div style="background:#FFFFFF;padding:8px;display:flex;align-items:center;gap:4px;flex-shrink:0;font-family:Inter, sans-serif;">
+    <div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;"><span style="font-family:'Material Icons Round';font-size:24px;line-height:1;color:#374151;font-feature-settings:'liga';">{{ arrowBack }}</span></div>
+    <div style="flex:1;font-size:20px;font-weight:700;color:#1F2937;">{{ title }}</div>
+  </div>
+
+  <sc-if value="{{ hasStepper }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:4px 16px 0;display:flex;justify-content:center;flex-shrink:0;">
+      <div style="padding:12px 16px;border-radius:12px;background:#FFFFFF;border:1px solid #E5E7EB;box-shadow:0 1px 6px rgba(0,0,0,0.04);display:flex;align-items:center;font-family:Inter, sans-serif;">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+          <sc-if value="{{ s.line }}" hint-placeholder-val="{{ false }}"><div style="width:20px;height:2px;margin:0 8px;border-radius:999px;background:{{ s.lineColor }};"></div></sc-if>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:{{ s.bg }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:{{ s.numColor }};"><sc-if value="{{ s.done }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Material Icons Round';font-size:16px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">check</span></sc-if><sc-if value="{{ s.notDone }}" hint-placeholder-val="{{ true }}">{{ s.n }}</sc-if></div>
+            <span style="font-size:12px;font-weight:700;color:{{ s.color }};">{{ s.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:16px;">
+
+    <!-- DRILL + LINE STAGES -->
+    <sc-if value="{{ isCard }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:24px;border-radius:20px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 2px 10px rgba(0,0,0,0.04);display:flex;flex-direction:column;align-items:center;">
+        <sc-if value="{{ isDrill }}" hint-placeholder-val="{{ true }}">
+          <div style="height:8px;"></div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:12px;"><span style="font-size:28px;font-weight:700;color:#1F2937;text-align:center;">Resilient</span><div style="width:40px;height:40px;border-radius:50%;background:#F3E8FF;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:20px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">volume_up</span></div></div>
+          <div style="height:24px;"></div>
+          <div style="align-self:stretch;padding:16px;border-radius:14px;background:#EFF6FF;"><div style="font-size:11px;font-weight:600;letter-spacing:0.8px;color:#2563EB;">{{ t.meaningUp }}</div><div style="margin-top:4px;font-size:16px;color:#1E40AF;">Able to recover quickly from difficult situations.</div></div>
+          <div style="align-self:stretch;margin-top:12px;padding:16px;border-radius:14px;background:#F3F4F6;"><div style="font-size:11px;font-weight:600;letter-spacing:0.8px;color:#6B7280;">{{ t.exampleUp }}</div><div style="margin-top:4px;font-size:16px;font-style:italic;color:#374151;">"She stayed resilient after losing the match."</div></div>
+          <div style="height:32px;"></div>
+        </sc-if>
+        <sc-if value="{{ isLine }}" hint-placeholder-val="{{ false }}">
+          <div style="height:16px;"></div>
+          <div style="font-size:24px;font-weight:700;line-height:1.5;color:#1F2937;text-align:center;" dir="ltr">Hi, I have a reservation under the name Ahmed.</div>
+          <div style="height:24px;"></div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;" dir="ltr">
+            <sc-for list="{{ dots }}" as="d" hint-placeholder-count="6"><div style="width:{{ d.s }};height:{{ d.s }};border-radius:50%;background:{{ d.c }};"></div></sc-for>
+          </div>
+          <div style="height:24px;"></div>
+        </sc-if>
+
+        <div style="display:flex;justify-content:center;align-items:flex-start;gap:24px;font-family:Inter, sans-serif;" dir="ltr">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div style="width:56px;height:56px;box-sizing:border-box;border-radius:50%;background:{{ c1.bg }};border:2px solid {{ c1.border }};display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:24px;line-height:1;color:{{ c1.fg }};font-feature-settings:'liga';">{{ c1.icon }}</span></div>
+            <sc-if value="{{ hasLabels }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:500;color:#6B7280;">{{ c1.label }}</span></sc-if>
+          </div>
+          <div style="width:72px;height:72px;border-radius:50%;background:{{ micBg }};box-shadow:0 5px 14px {{ micGlow }};display:flex;align-items:center;justify-content:center;">
+            <sc-if value="{{ listening }}" hint-placeholder-val="{{ false }}"><div style="width:14px;height:14px;border-radius:50%;background:#FFFFFF;"></div></sc-if>
+            <sc-if value="{{ notListening }}" hint-placeholder-val="{{ true }}"><span style="font-family:'Material Icons Round';font-size:30px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">mic</span></sc-if>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div style="width:56px;height:56px;box-sizing:border-box;border-radius:50%;background:{{ c2.bg }};border:2px solid {{ c2.border }};display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:24px;line-height:1;color:{{ c2.fg }};font-feature-settings:'liga';">play_arrow</span></div>
+            <sc-if value="{{ hasLabels }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:500;color:#6B7280;">{{ c2.label }}</span></sc-if>
+          </div>
+        </div>
+        <div style="height:8px;"></div>
+        <div style="height:24px;font-size:13px;font-weight:500;color:#6B7280;">{{ listeningText }}</div>
+
+        <sc-if value="{{ resPass }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;align-self:stretch;padding:16px;border-radius:12px;background:#F0FDF4;border:1px solid #BBF7D0;font-family:Inter, sans-serif;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:48px;height:48px;box-sizing:border-box;border-radius:50%;background:#FFFFFF;border:4px solid #22C55E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#15803D;">92%</div>
+              <div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-family:'Material Icons Round';font-size:17px;line-height:1;color:#16A34A;font-feature-settings:'liga';">check</span><span style="font-size:15px;font-weight:700;color:#14532D;">{{ t.passTitle }}</span></div><div style="margin-top:2px;font-size:12px;color:#4B5563;">{{ t.passMsg }}</div></div>
+            </div>
+            <div style="margin-top:12px;padding:12px;border-radius:10px;background:#FFFFFF;border:1px solid #F3F4F6;"><div style="font-size:11px;font-weight:700;letter-spacing:0.8px;color:#6B7280;">{{ t.weHeard }}</div><div style="margin-top:6px;font-size:14px;color:#1F2937;" dir="ltr">resilient</div></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ resFail }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;align-self:stretch;padding:16px;border-radius:12px;background:#FFF7ED;border:1px solid #FED7AA;font-family:Inter, sans-serif;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:48px;height:48px;box-sizing:border-box;border-radius:50%;background:#FFFFFF;border:4px solid #F97316;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#C2410C;">64%</div>
+              <div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-family:'Material Icons Outlined';font-size:17px;line-height:1;color:#EA580C;font-feature-settings:'liga';">cancel</span><span style="font-size:15px;font-weight:700;color:#7C2D12;">{{ t.failTitle }}</span></div><div style="margin-top:2px;font-size:12px;color:#4B5563;">{{ t.failMsg }}</div></div>
+            </div>
+            <div style="margin-top:12px;padding:12px;border-radius:10px;background:#FFFFFF;border:1px solid #F3F4F6;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;color:#6B7280;">{{ t.weHeard }}</div>
+              <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;" dir="ltr">
+                <span style="font-size:14px;color:#1F2937;">Hi,</span><span style="font-size:14px;color:#1F2937;">I</span><span style="font-size:14px;color:#1F2937;">have</span><span style="font-size:14px;color:#1F2937;">a</span>
+                <span style="padding:2px 5px;border-radius:4px;background:#FFF1F2;font-size:14px;font-weight:600;color:#BE123C;text-decoration:underline;text-decoration-color:#FB7185;text-decoration-thickness:2px;">revelation</span>
+                <span style="font-size:14px;color:#1F2937;">under</span><span style="font-size:14px;color:#1F2937;">the</span><span style="font-size:14px;color:#1F2937;">name</span>
+              </div>
+              <div style="margin:8px 0;height:1px;background:#F3F4F6;"></div>
+              <div style="font-size:12px;color:#6B7280;">{{ t.tryIncluding }}</div>
+              <div style="margin-top:6px;display:flex;gap:6px;" dir="ltr"><span style="padding:5px 10px;border-radius:9999px;background:#FFF1F2;font-size:12px;font-weight:600;color:#BE123C;">Ahmed</span></div>
+            </div>
+            <div style="margin-top:12px;padding:12px;border-radius:10px;background:#F5F3FF;border:1px solid #EDE9FE;display:flex;align-items:flex-start;gap:12px;">
+              <div style="flex:1;"><div style="font-size:12px;font-weight:600;color:#6D28D9;">{{ t.trySaying }}</div><div style="margin-top:2px;font-size:15px;font-weight:700;color:#111827;" dir="ltr">reservation</div></div>
+              <div style="min-height:36px;box-sizing:border-box;padding:8px 12px;border-radius:8px;background:#FFFFFF;border:1px solid #EDE9FE;display:flex;align-items:center;gap:6px;"><span style="font-family:'Material Icons Round';font-size:15px;line-height:1;color:#6D28D9;font-feature-settings:'liga';">volume_up</span><span style="font-size:13px;font-weight:600;color:#6D28D9;">{{ t.listen }}</span></div>
+            </div>
+            <div style="margin-top:12px;display:flex;"><div style="min-height:36px;box-sizing:border-box;padding:8px 12px;border-radius:8px;background:#FFFFFF;border:1px solid #FDBA74;display:flex;align-items:center;gap:6px;"><span style="font-family:'Material Icons Round';font-size:15px;line-height:1;color:#C2410C;font-feature-settings:'liga';">refresh</span><span style="font-size:13px;font-weight:600;color:#C2410C;">{{ t.retry }}</span></div></div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- FREE SPEECH -->
+    <sc-if value="{{ isFree }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:24px;border-radius:20px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 2px 10px rgba(0,0,0,0.04);display:flex;flex-direction:column;align-items:center;font-family:Inter, sans-serif;">
+        <div style="align-self:stretch;padding:20px;border-radius:14px;background:#FAF5FF;border:1px solid #F3E8FF;text-align:center;">
+          <div style="font-size:16px;font-weight:700;color:#6B21A8;">{{ t.yourTurn }}</div>
+          <div style="margin-top:12px;font-size:15px;line-height:1.6;color:#374151;" dir="ltr">You arrive at the front desk and give your booking details to the receptionist.</div>
+        </div>
+        <div style="height:32px;"></div>
+        <div style="display:flex;justify-content:center;align-items:flex-start;gap:24px;" dir="ltr">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:56px;height:56px;box-sizing:border-box;border-radius:50%;background:rgba(249,115,22,0.1);border:2px solid rgba(249,115,22,0.35);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:24px;line-height:1;color:#F97316;font-feature-settings:'liga';">refresh</span></div><span style="font-size:12px;font-weight:500;color:#6B7280;">{{ t.retry }}</span></div>
+          <div style="width:72px;height:72px;border-radius:50%;background:#7C3AED;box-shadow:0 5px 14px rgba(124,58,237,0.35);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:30px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">mic</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:56px;height:56px;box-sizing:border-box;border-radius:50%;background:rgba(147,51,234,0.1);border:2px solid rgba(147,51,234,0.35);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:24px;line-height:1;color:#9333EA;font-feature-settings:'liga';">play_arrow</span></div><span style="font-size:12px;font-weight:500;color:#6B7280;">{{ t.playback }}</span></div>
+        </div>
+        <div style="height:44px;"></div>
+        <div style="align-self:stretch;padding:4px 16px;border-radius:14px;background:#EFF6FF;border:1px solid #DBEAFE;display:flex;align-items:center;gap:16px;min-height:56px;box-sizing:border-box;">
+          <div style="width:18px;height:18px;border-radius:2px;background:#2563EB;display:flex;align-items:center;justify-content:center;margin:0 3px;"><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">check</span></div>
+          <span style="font-size:14px;font-weight:500;color:#374151;">{{ t.selfCheck }}</span>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- REPORT -->
+    <sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:16px;font-family:Inter, sans-serif;">
+        <div style="padding:16px;border-radius:14px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+          <div style="display:flex;align-items:center;">
+            <div style="flex:1;"><div style="font-size:13px;color:#6B7280;">{{ t.overallScore }}</div><div style="margin-top:4px;display:flex;align-items:center;gap:8px;"><span style="font-size:22px;font-weight:700;color:#16A34A;" dir="ltr">84/100</span><span style="display:flex;" dir="ltr"><sc-for list="{{ stars }}" as="s" hint-placeholder-count="5"><span style="font-family:'Material Icons Round';font-size:18px;line-height:1;color:{{ s.c }};font-feature-settings:'liga';">{{ s.i }}</span></sc-for></span></div></div>
+            <div style="text-align:end;"><div style="font-size:13px;color:#6B7280;">{{ t.duration }}</div><div style="margin-top:4px;font-size:16px;font-weight:700;color:#1F2937;" dir="ltr">1m 24s</div></div>
+          </div>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">
+            <span style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:999px;background:#DCFCE7;font-size:12px;font-weight:600;color:#15803D;"><span style="font-family:'Material Icons Round';font-size:14px;line-height:1;font-feature-settings:'liga';">check_circle</span>{{ t.goalAchieved }}</span>
+            <span style="padding:5px 10px;border-radius:999px;background:#F3F4F6;font-size:12px;font-weight:600;color:#374151;">Upper Intermediate</span>
+          </div>
+          <div style="margin-top:12px;padding:12px;border-radius:10px;background:#FAF5FF;font-size:14px;line-height:1.5;color:#374151;">You checked in clearly and gave every detail the receptionist needed. Keep working on linking words together.</div>
+        </div>
+        <sc-for list="{{ skills }}" as="k" hint-placeholder-count="2">
+          <div style="padding:16px;border-radius:14px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:40px;height:40px;border-radius:50%;background:{{ k.bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Material Icons Round';font-size:20px;line-height:1;color:{{ k.c }};font-feature-settings:'liga';">{{ k.icon }}</span></div>
+              <div style="flex:1;"><div style="font-size:16px;font-weight:700;color:#1F2937;">{{ k.title }}</div><div style="margin-top:6px;display:flex;align-items:center;gap:8px;"><div style="flex:1;height:6px;border-radius:999px;background:#E5E7EB;overflow:hidden;"><div style="width:{{ k.w }};height:100%;background:{{ k.bar }};"></div></div><span style="font-size:12px;font-weight:600;color:{{ k.bar }};" dir="ltr">{{ k.score }}/100</span></div></div>
+            </div>
+            <div style="margin-top:12px;font-size:14px;line-height:1.5;color:#4B5563;">{{ k.assess }}</div>
+            <div style="margin-top:12px;font-size:13px;font-weight:600;color:#374151;">{{ t.strengths }}</div>
+            <div style="margin-top:8px;padding:12px;border-radius:10px;background:#F0FDF4;display:flex;gap:8px;"><span style="font-family:'Material Icons Round';font-size:16px;line-height:1;color:#22C55E;font-feature-settings:'liga';">check_circle</span><span style="flex:1;font-size:14px;line-height:1.4;color:#374151;">{{ k.good }}</span></div>
+            <div style="margin-top:12px;font-size:13px;font-weight:600;color:#374151;">{{ t.improvements }}</div>
+            <div style="margin-top:8px;padding:12px;border-radius:10px;background:#FFF7ED;display:flex;gap:8px;"><span style="font-family:'Material Icons Round';font-size:16px;line-height:1;color:#F97316;font-feature-settings:'liga';">cancel</span><span style="flex:1;font-size:14px;line-height:1.4;color:#374151;">{{ k.bad }}</span></div>
+          </div>
+        </sc-for>
+        <div style="padding:16px;border-radius:14px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:20px;line-height:1;color:#16A34A;font-feature-settings:'liga';">menu_book</span></div>
+            <div style="flex:1;"><div style="font-size:16px;font-weight:700;color:#1F2937;">{{ t.vocabulary }}</div><div style="margin-top:6px;display:flex;align-items:center;gap:8px;"><div style="flex:1;height:6px;border-radius:999px;background:#E5E7EB;overflow:hidden;"><div style="width:76%;height:100%;background:#7C3AED;"></div></div><span style="font-size:12px;font-weight:600;color:#7C3AED;" dir="ltr">76/100</span></div></div>
+          </div>
+          <div style="margin-top:12px;font-size:13px;font-weight:600;color:#374151;">{{ t.wordsWell }}</div>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;"><span style="padding:5px 10px;border-radius:999px;background:#DCFCE7;font-size:12px;font-weight:600;color:#15803D;">reservation</span><span style="padding:5px 10px;border-radius:999px;background:#DCFCE7;font-size:12px;font-weight:600;color:#15803D;">check in</span></div>
+          <div style="margin-top:12px;font-size:13px;font-weight:600;color:#374151;">{{ t.suggested }}</div>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;"><span style="padding:5px 10px;border-radius:999px;background:#F3E8FF;font-size:12px;font-weight:600;color:#7E22CE;">confirmation number</span><span style="padding:5px 10px;border-radius:999px;background:#F3E8FF;font-size:12px;font-weight:600;color:#7E22CE;">late checkout</span></div>
+        </div>
+        <div style="padding:16px;border-radius:14px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+          <div style="font-size:16px;font-weight:700;color:#1F2937;">{{ t.nextSteps }}</div>
+          <div style="margin-top:12px;padding:12px;border-radius:10px;background:#F9FAFB;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="font-size:12px;font-weight:700;color:#6B7280;">Pronunciation</span><span style="padding:5px 10px;border-radius:999px;background:#FEE2E2;font-size:12px;font-weight:600;color:#B91C1C;">high</span></div><div style="font-size:14px;line-height:1.5;color:#374151;">Practise the stress in "reservation": re-ser-VA-tion.</div></div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="background:#FFFFFF;border-top:1px solid #E5E7EB;padding:16px 16px 50px;flex-shrink:0;">
+    <sc-if value="{{ footHint }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:8px 0;text-align:center;font-size:13px;color:#6B7280;">{{ t.drillHint }}</div>
+    </sc-if>
+    <sc-if value="{{ footCta }}" hint-placeholder-val="{{ false }}">
+      <div style="height:52px;border-radius:14px;background:#7C3AED;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="font-family:'Material Icons Round';font-size:20px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">{{ ctaIcon }}</span><span style="font-size:16px;font-weight:700;color:#FFFFFF;">{{ ctaLabel }}</span></div>
+    </sc-if>
+    <sc-if value="{{ footOutline }}" hint-placeholder-val="{{ false }}">
+      <div style="height:52px;box-sizing:border-box;border-radius:14px;border:1px solid #7C3AED;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="font-family:'Material Icons Round';font-size:20px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">replay</span><span style="font-size:16px;font-weight:700;color:#7C3AED;">{{ t.practiceAgain }}</span></div>
+    </sc-if>
+    <sc-if value="{{ footNav }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:12px;">
+        <div style="flex:1;height:48px;border-radius:12px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;gap:8px;color:{{ prevColor }};"><span style="font-family:'Material Icons Round';font-size:18px;line-height:1;font-feature-settings:'liga';">skip_previous</span><span style="font-size:14px;font-weight:600;">{{ t.previous }}</span></div>
+        <div style="flex:1;height:48px;border-radius:12px;background:{{ nextBg }};display:flex;align-items:center;justify-content:center;gap:8px;color:{{ nextFg }};"><span style="font-family:'Material Icons Round';font-size:18px;line-height:1;font-feature-settings:'liga';">skip_next</span><span style="font-size:14px;font-weight:700;">{{ t.next }}</span></div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;dir&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ltr&quot;,&quot;rtl&quot;],&quot;default&quot;:&quot;ltr&quot;,&quot;tsType&quot;:&quot;'ltr'|'rtl'&quot;},&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;drill&quot;,&quot;drillPassed&quot;,&quot;listen&quot;,&quot;readSay&quot;,&quot;free&quot;,&quot;report&quot;],&quot;default&quot;:&quot;drill&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const dir = p.dir ?? 'ltr';
+    const ar = dir === 'rtl';
+    const screen = p.screen ?? 'drill';
+    const E = { drillTitle: 'Pronunciation Drill', meaning: 'Meaning', example: 'Example', drillReadyCta: 'Ready to use it in conversation', drillHint: 'Record yourself and pass the pronunciation check to continue.',
+      listening: 'Listening…', passTitle: 'Great progress', failTitle: 'Almost there', passMsg: "Nice work. You can continue when you're ready.", failMsg: 'Try the highlighted word once more.',
+      weHeard: 'WE HEARD', tryIncluding: 'Try including:', trySaying: 'Try saying', listen: 'Listen', retry: 'Retry',
+      stageListen: 'Listen', stageDrill: 'Drill', stageSpeak: 'Speak', original: 'Listen', hint: 'Hint', playback: 'Playback', yourTurn: 'Your Turn to Speak', selfCheck: 'I addressed the scenario clearly', getFeedback: 'Get Feedback',
+      previous: 'Previous', next: 'Next', overallScore: 'Overall Score', duration: 'Duration', goalAchieved: 'Goal achieved', strengths: 'Strengths', improvements: 'Areas to Improve',
+      fluency: 'Fluency', pronunciation: 'Pronunciation', vocabulary: 'Vocabulary', wordsWell: 'Words you used well', suggested: 'Suggested words', nextSteps: 'Recommended Next Steps', done: 'Done', practiceAgain: 'Practice Again' };
+    const A = { drillTitle: 'تدريب النطق', meaning: 'المعنى', example: 'مثال', drillReadyCta: 'جاهز لاستخدامها في محادثة', drillHint: 'سجّل صوتك واجتز اختبار النطق للمتابعة.',
+      listening: 'يستمع…', passTitle: 'تقدّم رائع', failTitle: 'اقتربت كثيرًا', passMsg: 'أحسنت. يمكنك المتابعة عندما تكون مستعدًا.', failMsg: 'جرّب نطق الكلمة المميّزة مرة أخرى.',
+      weHeard: 'ما سمعناه', tryIncluding: 'حاول أن تضيف:', trySaying: 'جرّب أن تقول', listen: 'استمع', retry: 'إعادة المحاولة',
+      stageListen: 'استمع', stageDrill: 'تدرّب', stageSpeak: 'تحدث', original: 'استمع', hint: 'تلميح', playback: 'إعادة التشغيل', yourTurn: 'دورك للتحدث', selfCheck: 'عبّرت عن الموقف بوضوح', getFeedback: 'احصل على التقييم',
+      previous: 'السابق', next: 'التالي', overallScore: 'النتيجة الإجمالية', duration: 'المدة', goalAchieved: 'تم تحقيق الهدف', strengths: 'نقاط القوة', improvements: 'جوانب للتحسين',
+      fluency: 'الطلاقة', pronunciation: 'النطق', vocabulary: 'المفردات', wordsWell: 'كلمات استخدمتها جيدًا', suggested: 'كلمات مقترحة', nextSteps: 'الخطوات التالية الموصى بها', done: 'تم', practiceAgain: 'تدرّب مرة أخرى' };
+    const s = ar ? A : E;
+    const t = Object.assign({}, s, { meaningUp: s.meaning.toUpperCase(), exampleUp: s.example.toUpperCase() });
+    const isDrill = screen === 'drill' || screen === 'drillPassed';
+    const isLine = screen === 'listen' || screen === 'readSay';
+    const stageNum = screen === 'listen' ? 1 : screen === 'readSay' ? 2 : 3;
+    const steps = [s.stageListen, s.stageDrill, s.stageSpeak].map((label, i) => {
+      const n = i + 1, done = n < stageNum, cur = n === stageNum;
+      return { n, label, done, notDone: !done, line: i > 0, lineColor: (done || cur) ? '#16A34A' : '#E9D5FF',
+        bg: done ? '#16A34A' : cur ? '#9333EA' : '#F3F4F6', numColor: cur ? '#FFFFFF' : '#9CA3AF', color: done ? '#16A34A' : cur ? '#9333EA' : '#9CA3AF' };
+    });
+    const dotState = screen === 'listen' ? 2 : 4;
+    const dots = [0, 1, 2, 3, 4, 5].map(i => ({ s: i === dotState ? '10px' : '8px', c: i === dotState ? '#9333EA' : i < dotState ? '#16A34A' : '#E9D5FF' }));
+    const en = (c) => ({ bg: c + '1A', border: c + '59', fg: c });
+    const off = { bg: '#F9FAFB', border: '#E5E7EB', fg: '#D1D5DB' };
+    let c1, c2;
+    if (isDrill) { c1 = Object.assign(screen === 'drillPassed' ? en('#F97316') : off, { icon: 'refresh' }); c2 = screen === 'drillPassed' ? en('#4F46E5') : off; }
+    else if (screen === 'listen') { c1 = Object.assign(en('#9333EA'), { icon: 'play_arrow', label: s.original }); c2 = Object.assign(off, { label: s.playback }); }
+    else { c1 = Object.assign({}, off, { icon: 'volume_up', label: s.hint }); c2 = Object.assign(en('#4F46E5'), { label: s.playback }); }
+    const listening = screen === 'listen';
+    const stars = [1, 2, 3, 4, 5].map(i => ({ i: i <= 4 ? 'star' : 'star_outline', c: i <= 4 ? '#FACC15' : '#D1D5DB' }));
+    const skills = [
+      { title: s.fluency, icon: 'graphic_eq', c: '#2563EB', bg: '#DBEAFE', score: 86, bar: '#16A34A', assess: 'You spoke at a steady pace with few pauses.', good: 'Smooth opening and clear request.', bad: 'A long pause before giving your name.' },
+      { title: s.pronunciation, icon: 'mic', c: '#DC2626', bg: '#FEE2E2', score: 72, bar: '#7C3AED', assess: 'Most words were clear. Word stress needs attention.', good: 'Clear vowels in "name" and "under".', bad: 'Stress on the wrong syllable in "reservation".' }
+    ].map(k => Object.assign(k, { w: k.score + '%' }));
+    const titles = { drill: s.drillTitle, drillPassed: s.drillTitle, listen: 'Checking in at a hotel', readSay: 'Checking in at a hotel', free: 'Checking in at a hotel', report: 'Checking in at a hotel' };
+    return {
+      dir, t, steps, dots, c1, c2, stars, skills,
+      title: titles[screen], arrowBack: ar ? 'arrow_forward' : 'arrow_back',
+      hasStepper: isLine || screen === 'free', isCard: isDrill || isLine, isDrill, isLine, isFree: screen === 'free', isReport: screen === 'report',
+      hasLabels: isLine, listening, notListening: !listening,
+      micBg: listening ? '#EF4444' : '#7C3AED', micGlow: listening ? 'rgba(239,68,68,0.35)' : 'rgba(124,58,237,0.35)',
+      listeningText: listening ? s.listening : '',
+      resPass: screen === 'drillPassed', resFail: screen === 'readSay',
+      footHint: screen === 'drill', footCta: screen === 'drillPassed' || screen === 'free', footOutline: screen === 'report', footNav: isLine,
+      ctaIcon: screen === 'free' ? 'check_circle_outline' : 'mic_none', ctaLabel: screen === 'free' ? s.getFeedback : s.drillReadyCta,
+      prevColor: screen === 'listen' ? '#9CA3AF' : '#374151', nextBg: '#E5E7EB', nextFg: '#9CA3AF'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap");
+/* Poppins (display) and Inter (UI) are loaded from Google Fonts, exactly as the source app loads them.
+   No self-hosted binaries were supplied with the source file — see readme.md "Fonts". */
+:root{--font-display:Poppins,"Poppins Fallback",sans-serif;--font-sans:Inter,"Inter Fallback",system-ui,sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,monospace}

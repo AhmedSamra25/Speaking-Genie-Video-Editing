@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round">
+  <link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+  <script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+</helmet>
+<x-import component-from-global-scope="SpeakingGenieDesignSystem_ac4dbc.PhoneFrame" scrollable="{{ false }}" tone="{{ tone }}" hint-size="390px,844px">
+<div dir="{{ dir }}" style="height:100%;position:relative;display:flex;flex-direction:column;overflow:hidden;font-family:Poppins, system-ui, sans-serif;background:{{ bg }};">
+
+<!-- SPLASH -->
+<sc-if value="{{ isSplash }}" hint-placeholder-val="{{ true }}">
+  <div style="position:absolute;inset:0;background:#4C1D95;"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(circle 506px at 50% 38%, #A78BFA 0%, #7C3AED 55%, #4C1D95 100%);transform:scale(1.03);"></div>
+  <div style="position:absolute;top:-80px;left:-64px;width:288px;height:288px;border-radius:50%;background:radial-gradient(circle, rgba(255,255,255,0.1), rgba(255,255,255,0));opacity:0.5;transform:translateY(15px);"></div>
+  <div style="position:absolute;bottom:-40px;right:-64px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle, rgba(196,181,253,0.2), rgba(196,181,253,0));opacity:0.45;"></div>
+  <div style="position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;">
+    <div style="width:150px;height:150px;position:relative;display:flex;align-items:center;justify-content:center;">
+      <div style="position:absolute;width:128px;height:128px;border-radius:50%;background:radial-gradient(circle, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 75%);transform:scale(1.15);opacity:0.65;"></div>
+      <div style="position:relative;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #FFFFFF, #C4B5FD);box-shadow:0 0 40px 10px rgba(196,181,253,0.7);"></div>
+    </div>
+    <div style="margin-top:28px;height:36px;display:flex;align-items:flex-end;gap:5px;" dir="ltr">
+      <sc-for list="{{ bars }}" as="b" hint-placeholder-count="9"><div style="width:5px;height:{{ b.h }};border-radius:9999px;background:rgba(255,255,255,{{ b.o }});"></div></sc-for>
+    </div>
+    <div style="margin-top:28px;font-size:25.5px;font-weight:700;line-height:36px;letter-spacing:0.5px;color:#FFFFFF;text-align:center;">SPEAKING GENIE</div>
+    <div style="margin-top:8px;font-size:13.6px;line-height:24px;color:#DDD6FE;text-align:center;white-space:pre-line;">{{ t.tagline }}</div>
+  </div>
+  <div style="position:absolute;bottom:56px;left:0;right:0;display:flex;justify-content:center;" dir="ltr"><div style="width:320px;height:4px;border-radius:9999px;background:rgba(255,255,255,0.2);overflow:hidden;"><div style="width:64%;height:100%;border-radius:9999px;background:#FFFFFF;"></div></div></div>
+</sc-if>
+
+<!-- INTRO CAROUSEL -->
+<sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
+  <img src="{{ intro.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);"></div>
+  <div style="position:absolute;left:0;right:0;bottom:0;padding:0 24px 34px;background:linear-gradient(180deg, transparent, rgba(0,0,0,0.1), rgba(0,0,0,0.3));">
+    <div style="font-size:28px;font-weight:700;color:#FFFFFF;text-shadow:0 1px 3px rgba(0,0,0,0.5);">{{ intro.title }}</div>
+    <div style="margin-top:12px;font-size:16px;color:#979797;text-shadow:0 1px 2px rgba(0,0,0,0.3);">{{ intro.sub }}</div>
+    <div style="margin-top:16px;display:flex;">
+      <sc-for list="{{ ind }}" as="i" hint-placeholder-count="3"><div style="margin:0 4px;width:60px;height:4px;border-radius:12px;background:{{ i }};"></div></sc-for>
+    </div>
+    <div style="margin-top:24px;padding:12px 16px;border-radius:12px;border:1px solid #5B21B6;background:linear-gradient(90deg,#7C3AED,#5B21B6);text-align:center;font-size:14px;font-weight:500;color:#FFFFFF;">{{ intro.btn }}</div>
+    <div style="height:20px;"></div>
+  </div>
+</sc-if>
+
+<!-- USER ONBOARDING WIZARD -->
+<sc-if value="{{ isWizard }}" hint-placeholder-val="{{ false }}">
+  <div style="height:50px;flex-shrink:0;"></div>
+  <div style="padding:16px 24px;flex-shrink:0;">
+    <div style="display:flex;justify-content:space-between;font-size:14px;"><span style="font-weight:500;color:#6B7280;">{{ wz.step }}</span><span style="font-weight:600;color:#7C3AED;">{{ wz.pct }}</span></div>
+    <div style="margin-top:12px;height:4px;border-radius:10px;background:#E5E7EB;overflow:hidden;" dir="ltr"><div style="width:{{ wz.pct }};height:100%;background:#7C3AED;"></div></div>
+  </div>
+  <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 24px;">
+    <div style="height:40px;"></div>
+    <div style="margin:0 auto;width:64px;height:64px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;"><span style="font-family:'{{ wz.iconFont }}';font-size:30px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">{{ wz.icon }}</span></div>
+    <div style="margin-top:24px;font-size:22px;font-weight:700;color:#1F2937;text-align:center;">{{ wz.title }}</div>
+    <div style="margin-top:8px;font-size:14px;color:#6B7280;text-align:center;">{{ wz.sub }}</div>
+    <div style="height:32px;"></div>
+    <sc-if value="{{ isLangStep }}" hint-placeholder-val="{{ true }}">
+      <sc-for list="{{ dropdowns }}" as="d" hint-placeholder-count="2">
+        <div style="margin-bottom:24px;">
+          <div style="font-size:14px;font-weight:500;color:#374151;">{{ d.label }}</div>
+          <div style="margin-top:8px;padding:14px 12px;border-radius:8px;background:#F3F4F6;border:1px solid {{ d.border }};display:flex;align-items:center;gap:8px;">
+            <span style="font-size:18px;line-height:1;">{{ d.flag }}</span><span style="flex:1;font-size:16px;color:#1F2937;">{{ d.value }}</span>
+            <span style="font-family:'Material Icons';font-size:24px;line-height:1;color:#6B7280;font-feature-settings:'liga';">keyboard_arrow_down</span>
+          </div>
+        </div>
+      </sc-for>
+    </sc-if>
+    <sc-if value="{{ isLevelStep }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:18px;border-radius:12px;background:#FFFFFF;border:2px dashed #7C3AED;display:flex;align-items:flex-start;gap:12px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Material Icons';font-size:22px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">help_outline</span></div>
+        <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#1F2937;">{{ t.dontKnow }}</div><div style="margin-top:6px;font-size:12px;color:#4B5563;">{{ t.dontKnowSub }}</div></div>
+        <div style="width:20px;height:20px;box-sizing:border-box;border-radius:50%;border:2px solid #D1D5DB;flex-shrink:0;"></div>
+      </div>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:16px;padding-bottom:40px;">
+        <sc-for list="{{ levels }}" as="l" hint-placeholder-count="4">
+          <div style="padding:18px;border-radius:12px;background:{{ l.bg }};border:{{ l.border }};">
+            <div style="display:flex;align-items:flex-start;gap:8px;">
+              <span style="flex:1;font-size:14px;font-weight:600;color:#1F2937;">{{ l.title }}</span>
+              <div style="width:20px;height:20px;box-sizing:border-box;border-radius:50%;background:{{ l.dot }};border:2px solid {{ l.dotBorder }};display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons';font-size:14px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">{{ l.check }}</span></div>
+            </div>
+            <div style="margin-top:8px;font-size:12px;color:#4B5563;">{{ l.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+  <div style="padding:20px 24px 54px;flex-shrink:0;">
+    <div style="display:flex;justify-content:center;gap:8px;" dir="ltr">
+      <sc-for list="{{ wz.dots }}" as="d" hint-placeholder-count="2"><div style="width:{{ d.w }};height:8px;border-radius:9999px;background:{{ d.c }};"></div></sc-for>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:16px;">
+      <sc-if value="{{ wz.showBack }}" hint-placeholder-val="{{ false }}"><div style="flex:1;padding:12px 16px;border-radius:12px;border:1px solid #000000;text-align:center;font-size:14px;font-weight:500;color:#000000;">{{ t.back }}</div></sc-if>
+      <div style="flex:1;padding:12px 16px;border-radius:12px;border:1px solid #5B21B6;background:linear-gradient(90deg,#7C3AED,#5B21B6);text-align:center;font-size:14px;font-weight:500;color:#FFFFFF;">{{ wz.next }}</div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- TRIAL READY -->
+<sc-if value="{{ isTrial }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;overflow-y:auto;padding:74px 24px 58px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <div style="width:80px;height:80px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Material Icons';font-size:36px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">auto_awesome</span></div>
+    <div style="margin-top:24px;font-size:24px;font-weight:700;color:#1F2937;text-align:center;">{{ t.trialTitle }}</div>
+    <div style="margin-top:8px;font-size:16px;line-height:1.4;color:#4B5563;text-align:center;">{{ t.trialSub }}</div>
+    <div style="margin-top:32px;align-self:stretch;padding:24px;border-radius:24px;background:#FFFFFF;border:1px solid #EDE9FE;box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+      <div style="display:flex;align-items:center;gap:12px;"><div style="padding:8px;border-radius:8px;background:#7C3AED;display:flex;"><span style="font-family:'Material Icons';font-size:20px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">bolt</span></div><div style="flex:1;"><div style="font-size:16px;font-weight:700;color:#1F2937;">{{ t.badgeTitle }}</div><div style="margin-top:2px;font-size:14px;color:#6B7280;">{{ t.badgeSub }}</div></div></div>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px;">
+        <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="5"><div style="display:flex;align-items:flex-start;gap:12px;"><div style="margin-top:2px;width:20px;height:20px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Material Icons';font-size:12px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">check</span></div><span style="flex:1;font-size:14px;line-height:1.35;color:#374151;">{{ b }}</span></div></sc-for>
+      </div>
+    </div>
+    <div style="margin-top:24px;align-self:stretch;padding:14px 0;border-radius:16px;background:#7C3AED;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="font-size:16px;font-weight:600;color:#FFFFFF;">{{ t.cta }}</span><span style="font-family:'Material Icons';font-size:18px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';transform:{{ flip }};">arrow_forward</span></div>
+  </div>
+</sc-if>
+
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;dir&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ltr&quot;,&quot;rtl&quot;],&quot;default&quot;:&quot;ltr&quot;,&quot;tsType&quot;:&quot;'ltr'|'rtl'&quot;},&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;splash&quot;,&quot;intro1&quot;,&quot;intro2&quot;,&quot;intro3&quot;,&quot;language&quot;,&quot;level&quot;,&quot;trial&quot;],&quot;default&quot;:&quot;splash&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const dir = p.dir ?? 'ltr';
+    const ar = dir === 'rtl';
+    const screen = p.screen ?? 'splash';
+    const E = { tagline: 'Your AI-powered language learning\nassistant', next: 'next', explore: 'Explore Now', stepOf: 'Step {c} of {t}', langTitle: 'What do you want to learn?', langSub: 'Choose a language to start your journey',
+      levelTitle: 'Your Current Level', levelSub: 'How would you rate your current proficiency?', iSpeak: 'I speak (native language)', iWant: 'I want to learn', onbNext: 'Next', onbComplete: 'Complete', back: 'Back',
+      dontKnow: "I don't know my level", dontKnowSub: 'Take a free placement test to find it', trialTitle: 'Your English plan is ready', trialSub: 'Unlock everything with a free trial — or jump straight into your first task.',
+      badgeTitle: '15-minute free trial', badgeSub: 'Explore the core ways you can practice.', cta: 'Start free trial',
+      b: ['15 minutes of AI conversation practice', 'Micro-learning with flash cards', 'Pronunciation checks and feedback', 'Build your vocabulary and idioms', 'Practice with real-life scenarios'], native: 'Arabic', target: 'English' };
+    const A = { tagline: 'مساعدك الذكي لتعلم اللغات', next: 'التالي', explore: 'استكشف الآن', stepOf: 'الخطوة {c} من {t}', langTitle: 'ماذا تريد أن تتعلم؟', langSub: 'اختر لغة لتبدأ رحلتك',
+      levelTitle: 'مستواك الحالي', levelSub: 'كيف تقيّم مستوى إتقانك الحالي؟', iSpeak: 'أنا أتحدث (اللغة الأم)', iWant: 'أريد أن أتعلم', onbNext: 'التالي', onbComplete: 'إنهاء', back: 'رجوع',
+      dontKnow: 'لا أعرف مستواي', dontKnowSub: 'أجرِ اختبار تحديد المستوى المجاني لمعرفته', trialTitle: 'خطتك لتعلّم الإنجليزية جاهزة', trialSub: 'افتح كل المزايا بتجربة مجانية — أو ابدأ مهمتك الأولى مباشرة.',
+      badgeTitle: 'تجربة مجانية لمدة 15 دقيقة', badgeSub: 'استكشف أهم طرق التدريب المتاحة لك.', cta: 'ابدأ التجربة المجانية',
+      b: ['15 دقيقة من محادثات التدريب مع الذكاء الاصطناعي', 'تعلّم مصغّر بالبطاقات التعليمية', 'فحص النطق مع ملاحظات فورية', 'بناء مفرداتك وتعابيرك الاصطلاحية', 'تدرّب على مواقف من الحياة الواقعية'], native: 'العربية', target: 'الإنجليزية' };
+    const s = ar ? A : E;
+    const bases = [10, 22, 14, 28, 18, 30, 16, 24, 12];
+    const bars = bases.map((b, i) => { const sn = Math.sin(i * 0.9 + 0.6); return { h: (b * (0.75 + 0.25 * sn)).toFixed(1) + 'px', o: (0.8 + 0.2 * sn).toFixed(2) }; });
+    const intros = [
+      { img: 'assets/images/onboarding1.png', title: 'Natural Conversations', sub: 'Practice real-life scenarios with AI that adapts to your level and interests' },
+      { img: 'assets/images/onboarding2.png', title: '24/7 Availability', sub: 'Practice whenever you want, no scheduling needed. Learn at your own pace' },
+      { img: 'assets/images/onboarding3.png', title: 'Confidence Building', sub: 'Safe environment to make mistakes and build speaking confidence gradually' }
+    ];
+    const ii = screen === 'intro2' ? 1 : screen === 'intro3' ? 2 : 0;
+    const intro = Object.assign({}, intros[ii], { btn: ii === 2 ? s.explore : s.next });
+    const ind = [0, 1, 2].map(i => i === ii ? '#D9D9D9' : 'rgba(255,255,255,0.2)');
+    const isLevel = screen === 'level';
+    const wz = {
+      step: s.stepOf.replace('{c}', isLevel ? 2 : 1).replace('{t}', 2), pct: isLevel ? '100%' : '50%',
+      icon: isLevel ? 'bar_chart' : 'public', iconFont: isLevel ? 'Material Icons Round' : 'Material Icons',
+      title: isLevel ? s.levelTitle : s.langTitle, sub: isLevel ? s.levelSub : s.langSub,
+      dots: [0, 1].map(i => ({ w: (isLevel ? 1 : 0) === i ? '16px' : '8px', c: (isLevel ? 1 : 0) === i ? '#7C3AED' : '#D1D5DB' })),
+      showBack: isLevel, next: isLevel ? s.onbComplete : s.onbNext
+    };
+    const dropdowns = [{ label: s.iSpeak, value: s.native, flag: '🇸🇦', border: '#7C3AED' }, { label: s.iWant, value: s.target, flag: '🇬🇧', border: '#7C3AED' }];
+    const levels = [['Level A1: Beginner', 'Introduce yourself and use simple everyday phrases.', false], ['Level A2: Elementary', 'Talk about routines, shopping and your local area.', false],
+      ['Level B1: Intermediate', 'Handle most travel situations and describe experiences.', true], ['Level B2: Upper Intermediate', 'Discuss ideas clearly and argue a point of view.', false]]
+      .map(l => ({ title: l[0], desc: l[1], bg: l[2] ? '#F5F3FF' : '#FFFFFF', border: l[2] ? '2px solid #7C3AED' : '1px solid #E5E7EB', dot: l[2] ? '#7C3AED' : 'transparent', dotBorder: l[2] ? '#7C3AED' : '#D1D5DB', check: l[2] ? 'check' : '' }));
+    const dark = screen === 'splash' || screen.startsWith('intro');
+    return {
+      dir, t: s, bars, intro, ind, wz, dropdowns, levels, benefits: s.b,
+      tone: dark ? 'dark' : 'light', bg: screen === 'trial' ? '#F9FAFB' : dark ? '#4C1D95' : '#FFFFFF',
+      isSplash: screen === 'splash', isIntro: screen.startsWith('intro'), isWizard: screen === 'language' || isLevel,
+      isLangStep: screen === 'language', isLevelStep: isLevel, isTrial: screen === 'trial',
+      flip: ar ? 'scaleX(-1)' : 'none'
+    };
+  }
+}
+</script>
+</body>
+</html>

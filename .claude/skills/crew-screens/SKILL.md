@@ -1,15 +1,17 @@
 ---
 name: crew-screens
-description: Screen producer craft for the Speaking Genie video crew — choosing real product screens from the design system's web-platform kit for each beat, capturing them with `bin/sgv screen` in English or Arabic RTL, light or dark, any data state or flow, and specifying the one callout or zoom that makes each screen read on video. Used by the screen-producer agent.
+description: Screen producer craft for the Speaking Genie video crew — choosing real product screens from the design system kits (the learner mobile app and the teacher/admin web platform) for each beat, capturing them with `bin/sgv screen` in English or Arabic RTL, light or dark, any state, flow or call status, and specifying the one callout or zoom that makes each screen read on video. Used by the screen-producer agent.
 ---
 
 # Screen producer
 
-You show the real product. Every screen comes from the Speaking Genie design system's web-platform kit, a working click-through of the platform. You never mock up, redraw or retouch product UI. Read first: `crew/treatment.md`, `.claude/skills/video-crew/CREW.md`, and `brand/product-ui/ui_kits/web-platform/README.md`. If `brand/product-ui/` is missing, stop and tell the producer: the kit has to be installed from the design system first.
+You show the real product. Every screen comes from one of two working click-throughs: the **mobile app kit** (`brand/product-ui-mobile`, the learner app: home, the AI call while speaking or listening, session feedback, reports, certificates, placement test; native 9:16 in the kit's phone frame) and the **web platform kit** (`brand/product-ui`, teachers and admins). Which one fits which story is in `.claude/skills/video-crew/EDITING.md`. You never mock up, redraw or retouch product UI. Read first: `crew/treatment.md`, `.claude/skills/video-crew/CREW.md`, and `brand/product-ui/ui_kits/web-platform/README.md`. If `brand/product-ui/` is missing, stop and tell the producer: the kit has to be installed from the design system first.
 
 ## Find the screen
 
-`bin/sgv screen --list` prints every screen card in the kit with its id and options. The platform's areas:
+`bin/sgv screen --list` prints every screen card in both kits with its id and options (`--kit mobile` or `--kit web` to filter). Mobile cards: `01-home` … `36-signin`, Arabic `04-home-ar`, `22-call-ar`; options `--app-screen`, `--state`, `--status listening|speaking|thinking|paused`, `--dir rtl`. Mobile captures are 430×884 at 3× (the phone frame included); give them `"scale": 3` in ProductScreen props.
+
+Web platform: The platform's areas:
 
 | Story beat | Screens |
 | --- | --- |

@@ -182,13 +182,14 @@ def _rounded_rect(w: int, h: int, r: int) -> str:
             f"l {r} {h} b {k} {h} 0 {h - k} 0 {h - r} l 0 {r} b 0 {k} {k} 0 {r} 0")
 
 
-def write_ass(cues: list, out: Path, width: int, height: int, tokens: dict) -> Path:
+def write_ass(cues: list, out: Path, width: int, height: int, tokens: dict, words: bool = False) -> Path:
     cap = tokens["video"]["captions"]
     s = min(width, height) / 1080
     portrait = height > width * 1.2
     margin_v = round(height * 0.19) if portrait else round((120 if width == height else 96) * s)
     pad_x, pad_y, radius = round(24 * s), round(14 * s), round(cap["pillRadius"] * s)
     white = _ass_color(cap["text"])
+    hi = _ass_color(tokens["themes"]["dark"]["link"])  # purple text on the dark pill (#A78BFA)
     # encoding -1 makes libass detect the base direction, so RTL punctuation lands at the end of the line
     style = ("Style: {name},{font},{size},{color},{color},&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,{align},"
              "0,0,0,{encoding}")
@@ -230,7 +231,20 @@ def write_ass(cues: list, out: Path, width: int, height: int, tokens: dict) -> P
         t0, t1 = _ass_time(c["start"]), _ass_time(c["end"])
         events.append(f"Dialogue: 0,{t0},{t1},Pill,,0,0,0,,{{\\an7\\pos({x0},{y0})\\p1}}"
                       f"{_rounded_rect(pill_w, pill_h, radius)}{{\\p0}}")
-        events.append(f"Dialogue: 1,{t0},{t1},{name},,0,0,0,,{{\\an5\\pos({tx:.0f},{ty:.0f})}}{body}")
+        pos = f"{{\\an5\\pos({tx:.0f},{ty:.0f})}}"
+        if not words:
+            events.append(f"Dialogue: 1,{t0},{t1},{name},,0,0,0,,{pos}{body}")
+            continue
+        # word by word: the word being said lights up in the brand's text purple; its time is shared out by length
+        parts = [w for w in re.split(r"( |\\N)", body) if w]
+        spoken = [i for i, w in enumerate(parts) if w not in (" ", "\\N")]
+        weights = [max(2, len(parts[i])) for i in spoken]
+        t, span = c["start"], c["end"] - c["start"]
+        for n, i in enumerate(spoken):
+            d = span * weights[n] / sum(weights)
+            lit = "".join(f"{{\\c{hi}}}{w}{{\\c{white}}}" if j == i else w for j, w in enumerate(parts))
+            events.append(f"Dialogue: 1,{_ass_time(t)},{_ass_time(t + d)},{name},,0,0,0,,{pos}{lit}")
+            t += d
     out.write_text("\n".join(header + events + [""]), encoding="utf-8")
     return out
 

@@ -15,8 +15,8 @@ import sys
 import time
 from pathlib import Path
 
-from sgv import captions, ff, motion, paths, presets
-from sgv.project import TRANSITIONS, Project
+from sgv import captions, ff, motion, paths, presets, sfx
+from sgv.project import MOTION_BLUR, TRANSITIONS, Project
 
 AUDIO_FMT = "aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo"
 
@@ -165,6 +165,23 @@ def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, dra
 
 
 # -- 2. assemble -----------------------------------------------------------
+def _zoom_through() -> str:
+    """xfade custom expression: the outgoing shot pushes in 25% as it fades out while the incoming shot settles from
+    15% in to rest, both eased (smoothstep). P runs 1 → 0 across the transition; each plane samples its own image."""
+    e = "(P*P*(3-2*P))"  # eased progress, 1 → 0
+    sa = f"(1+0.25*(1-{e}))"  # outgoing scale grows
+    sb = f"(1+0.15*{e})"  # incoming scale shrinks to 1
+
+    def at(fn, s):
+        return f"{fn}(W/2+(X-W/2)/{s},H/2+(Y-H/2)/{s})"
+
+    def plane(n):
+        return f"{at(f'a{n}', sa)}*{e}+{at(f'b{n}', sb)}*(1-{e})"
+
+    return (f"if(eq(PLANE,0),{plane(0)},if(eq(PLANE,1),{plane(1)},if(eq(PLANE,2),{plane(2)},{plane(3)})))"
+            .replace(",", "\\,"))
+
+
 def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
     tl = project.edit["timeline"]
     if len(segments) == 1:
@@ -173,7 +190,10 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
     for s in segments:
         inputs += ["-i", s]
     # one shared timebase, otherwise xfade refuses inputs coming out of concat
-    parts = [f"[{i}:v]settb=AVTB,setpts=PTS-STARTPTS[s{i}]" for i in range(len(segments))]
+    # and one pixel format: motion graphics come out full range, footage limited, and mixing them tints the picture
+    parts = [f"[{i}:v]scale=in_range=auto:out_range=tv,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[s{i}]"
+             for i in range(len(segments))]
+    fps = project.fps
     v, a = "[s0]", "[0:a]"
     acc = project.clip_duration(tl[0])
     dip = "fadewhite" if project.theme == "light" else "fadeblack"
@@ -189,7 +209,24 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
             td = project.transition_duration(c)
             td = min(td, d / 2, acc / 2)
             name = dip if tr == "dip" else TRANSITIONS[tr]
-            parts.append(f"{v}[s{i}]xfade=transition={name}:duration={td:.3f}:offset={acc - td:.3f}{nv}")
+            if tr in MOTION_BLUR:
+                # Real motion blur: run the transition window at 4x the frame rate and average each group of 4
+                # frames back down (a 360° shutter), so the move smears smoothly instead of strobing. The window is
+                # cut out and spliced back because tmix with enable= scrambles the chroma in this ffmpeg.
+                a0, sub = acc - td, fps * 8
+                if tr == "zoom":  # a gentle zoom-through instead of xfade's zoomin, which dives into the frame centre
+                    name = f"custom:expr='{_zoom_through()}'"
+                parts.append(f"{v}split=2[pre{i}][win{i}]")
+                parts.append(f"[s{i}]split=2[inw{i}][post{i}]")
+                parts.append(f"[pre{i}]trim=end={a0:.3f},setpts=PTS-STARTPTS[pa{i}]")
+                parts.append(f"[win{i}]trim=start={a0:.3f},setpts=PTS-STARTPTS,fps={sub}[wa{i}]")
+                parts.append(f"[inw{i}]trim=end={td:.3f},setpts=PTS-STARTPTS,fps={sub}[wb{i}]")
+                parts.append(f"[wa{i}][wb{i}]xfade=transition={name}:duration={td:.3f}:offset=0,"
+                             f"tmix=frames=8,fps={fps},settb=AVTB[pb{i}]")
+                parts.append(f"[post{i}]trim=start={td:.3f},setpts=PTS-STARTPTS[pc{i}]")
+                parts.append(f"[pa{i}][pb{i}][pc{i}]concat=n=3:v=1:a=0,settb=AVTB{nv}")
+            else:
+                parts.append(f"{v}[s{i}]xfade=transition={name}:duration={td:.3f}:offset={acc - td:.3f}{nv}")
             parts.append(f"{a}[{i}:a]acrossfade=d={td:.3f}:c1=tri:c2=tri{na}")
             acc += d - td
         v, a = nv, na
@@ -225,6 +262,10 @@ def _audio_graph(project: Project, total: float, extra: dict) -> tuple:
             parts.append(f"{m}[mus]")
             parts.append(f"{prog}[mus]amix=inputs=2:normalize=0:duration=first[mixed]")
         prog = "[mixed]"
+    if "sfx" in extra:  # after the music, so effects never duck it
+        parts.append(f"[{extra['sfx']}:a]{AUDIO_FMT}[fx]")
+        parts.append(f"{prog}[fx]amix=inputs=2:normalize=0:duration=first[withfx]")
+        prog = "[withfx]"
     return parts, prog
 
 
@@ -237,6 +278,11 @@ def _audio_inputs(project: Project) -> tuple:
             args += (["-stream_loop", "-1"] if key == "music" else []) + ["-i", project.path(a["src"])]
             idx_of[key] = idx
             idx += 1
+    fx = sfx.build(project, project.total_duration())
+    if fx:
+        args += ["-i", fx]
+        idx_of["sfx"] = idx
+        idx += 1
     return args, idx_of, idx
 
 
@@ -301,7 +347,8 @@ def finish(project: Project, assembled: Path, preset: dict, master_w: int, maste
     if cap and cap.get("burn", True):
         cues = captions.parse_srt(project.path(cap["src"]))
         cues = captions.shift(cues, float(cap.get("offset", 0)))
-        ass = captions.write_ass(cues, project.build / f"captions-{preset['w']}x{preset['h']}.ass", preset["w"], preset["h"], paths.tokens())
+        ass = captions.write_ass(cues, project.build / f"captions-{preset['w']}x{preset['h']}.ass", preset["w"], preset["h"],
+                                 paths.tokens(), words=cap.get("style") == "words")
         post.append(captions.subtitles_filter(ass))
     post += ["format=yuv420p" if preset["codec"] != "prores" else "format=yuv422p10le", "setsar=1"]
     vparts.append(f"{v}{','.join(post)}[vout]")

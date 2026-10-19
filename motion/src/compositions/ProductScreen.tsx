@@ -39,14 +39,22 @@ export type ProductScreenProps = BaseProps &
   calloutFill?: number;
   /** Label text size in px at 1080 (default: brand body size, 30). */
   labelSize?: number;
+  /** Several highlights on one screen: the camera travels from one to the next at `at` seconds (the first replaces
+   * callout/label). Each travel takes ~0.7 s, eased; the ring redraws on arrival. */
+  steps?: { callout: Callout; label?: string; at?: number }[];
+  /** A finger tap on the screen (CSS px of the capture) at `at` seconds: the touch indicator glides in, presses and
+   * ripples. sgv adds a tap sound at the same moment when the edit has "sfx" on. */
+  tap?: Tap | Tap[];
 };
+
+export type Tap = { x: number; y: number; at: number };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /** A real product screen in a brand window: the camera eases in to one callout, which is outlined and labelled. */
 export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
   const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
+  const { durationInFrames, fps } = useVideoConfig();
   const s = scaleOf(p);
   const c = colors(p.theme);
   const portrait = isPortrait(p);
@@ -54,7 +62,8 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
   const H = p.height;
   const sw = p.srcW ?? 1440;
   const sh = p.srcH ?? 900;
-  const call = p.callout;
+  const steps = p.steps?.length ? p.steps : p.callout ? [{ callout: p.callout, label: p.label, at: 0 }] : [];
+  const call = steps[0]?.callout;
   const move = p.move ?? "push";
 
   // Base view: the whole screen fits the frame, above the bottom 20% in vertical formats.
@@ -62,11 +71,14 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
   const sideMargin = p.sideMargin !== undefined ? p.sideMargin * s : margin;
   const base = Math.min((W - 2 * sideMargin) / sw, (H * (portrait ? 0.55 : 0.76)) / sh);
   const cy0 = H * (portrait ? 0.42 : 0.5);
-
-  // Target view: the callout fills about half the width (78% in vertical), never more than 2.6x, so context stays.
-  const zoom = call ? Math.min(2.6, Math.max(1, (W * (p.calloutFill ?? (portrait ? 0.78 : 0.5))) / (call.w * base))) : 1;
   const coverS = Math.max(W / sw, H / sh);
-  const endS = call && p.cover && coverS > base * zoom && call.w * coverS <= W - 2 * margin ? coverS : base * zoom;
+
+  // Target view for a callout: it fills about half the width (78% in vertical), never more than 2.6x, so context stays.
+  const target = (cl: Callout) => {
+    const zoom = Math.min(2.6, Math.max(1, (W * (p.calloutFill ?? (portrait ? 0.78 : 0.5))) / (cl.w * base)));
+    const S = p.cover && coverS > base * zoom && cl.w * coverS <= W - 2 * margin ? coverS : base * zoom;
+    return { S, fx: cl.x + cl.w / 2, fy: cl.y + cl.h / 2, fyFrame: H * (portrait ? 0.4 : 0.44) };
+  };
   // Defaults (no startZoom, no pushFrames) are the original timing: push from frame 6, ring at frame 40.
   const custom = p.startZoom !== undefined || p.pushFrames !== undefined;
   const k0 = Math.min(1, Math.max(0, p.startZoom ?? 0));
@@ -75,21 +87,45 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
   const k = move === "push" && call ? lerp(k0, 1, progress(frame, pushDelay, pushFrames)) : 0;
   const panK = move === "pan" ? interpolate(frame, [0, durationInFrames], [0, 1]) : 0;
   const driftK = (p.drift ?? 0) * interpolate(frame, [0, durationInFrames], [0, 1]);
-  const S = lerp(base, endS, k) * (1 + 0.04 * panK) * (1 + driftK);
-  const focusX = lerp(sw / 2, call ? call.x + call.w / 2 : sw / 2, k) + (move === "pan" ? (panK - 0.5) * sw * 0.06 : 0);
-  const focusY = lerp(sh / 2, call ? call.y + call.h / 2 : sh / 2, k);
-  const frameY = lerp(cy0, H * (portrait ? 0.4 : 0.44), k);
+
+  // Camera: push from the whole screen to the first step, then travel to each later step in turn.
+  const t0 = call ? target(call) : { S: base, fx: sw / 2, fy: sh / 2, fyFrame: cy0 };
+  let camS = lerp(base, t0.S, k), camX = lerp(sw / 2, t0.fx, k), camY = lerp(sh / 2, t0.fy, k), camF = lerp(cy0, t0.fyFrame, k);
+  const travelFrames = 21;
+  const travel = steps.map((st, i) => (i === 0 ? 1 : progress(frame, Math.round((st.at ?? 0) * fps), travelFrames)));
+  steps.forEach((st, i) => {
+    if (i === 0) return;
+    const t = target(st.callout), q = travel[i];
+    camS = lerp(camS, t.S, q); camX = lerp(camX, t.fx, q); camY = lerp(camY, t.fy, q); camF = lerp(camF, t.fyFrame, q);
+  });
+  const S = camS * (1 + 0.04 * panK) * (1 + driftK);
+  const focusX = camX + (move === "pan" ? (panK - 0.5) * sw * 0.06 : 0);
+  const focusY = camY;
+  const frameY = camF;
   // Keep the camera inside the window: once the scaled window is bigger than the frame on an axis,
   // never let a window edge come inside the frame on that axis (no empty canvas beside the screen).
   const clampAxis = (t: number, size: number, frameSize: number) =>
     size >= frameSize - 0.5 ? Math.min(0, Math.max(frameSize - size, t)) : t;
   const tx = clampAxis(W / 2 - S * focusX, S * sw, W);
   const ty = clampAxis(frameY - S * focusY, S * sh, H);
+  const toFrame = (x: number, y: number) => ({ x: tx + S * x, y: ty + S * y });
+
+  // The active step is the last one whose travel has started; its ring and label come in once the camera arrives.
+  const active = steps.reduce((a, st, i) => (i > 0 && frame >= Math.round((st.at ?? 0) * fps) ? i : a), 0);
+  const activeStep = steps[active];
+  const nextAt = steps[active + 1] ? Math.round((steps[active + 1].at ?? 0) * fps) : Infinity;
 
   // Callout box in frame pixels, and its label below (or above when there's no room).
-  const box = call ? { x: tx + S * call.x, y: ty + S * call.y, w: S * call.w, h: S * call.h } : null;
-  const showFrom = p.ringAt ?? (move === "push" ? (custom ? Math.round(pushDelay + pushFrames * 0.5) : 40) : 14);
-  const mark = enterClip(frame, durationInFrames, showFrom, s, { enterFade: showFrom > 0 || p.ringAt === undefined, exitFade: p.exitFade });
+  const cl = activeStep?.callout;
+  const box = cl ? { x: tx + S * cl.x, y: ty + S * cl.y, w: S * cl.w, h: S * cl.h } : null;
+  const firstShow = p.ringAt ?? (move === "push" ? (custom ? Math.round(pushDelay + pushFrames * 0.5) : 40) : 14);
+  const showFrom = active === 0 ? firstShow : Math.round((activeStep.at ?? 0) * fps) + travelFrames - 4;
+  const markIn = enterClip(frame, durationInFrames, showFrom, s, { enterFade: showFrom > 0 || p.ringAt === undefined, exitFade: p.exitFade });
+  const leaving = nextAt === Infinity ? 1 : interpolate(frame, [nextAt - 2, nextAt + 6], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const mark = { ...markIn, opacity: markIn.opacity * leaving };
+  // The ring draws itself on around the element instead of fading in.
+  const draw = showFrom <= 0 && p.ringAt !== undefined ? 1 : progress(frame, showFrom, 16);
+  const label = active === 0 && !p.steps?.length ? p.label : activeStep?.label;
   const pad = 10 * s;
   const labelBelow = box ? box.y + box.h + 140 * s < H * (portrait ? 0.78 : 0.9) : true;
   const ar = p.lang === "ar";
@@ -119,7 +155,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
           {p.src ? <Img src={staticFile(p.src)} style={{ width: sw, height: sh, display: "block" }} /> : null}
         </div>
       </AbsoluteFill>
-      {box && p.ring !== false ? (
+      {box && p.ring !== false && p.dim !== false ? (
         <div
           style={{
             position: "absolute",
@@ -128,13 +164,48 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
             width: box.w + 2 * pad,
             height: box.h + 2 * pad,
             borderRadius: brand.video.cardRadius * s,
-            border: `${3 * s}px solid ${c.primary}`,
-            boxShadow: p.dim === false ? undefined : `0 0 0 ${4000 * s}px ${p.theme === "light" ? "rgba(15, 23, 41, 0.28)" : "rgba(2, 6, 16, 0.5)"}`,
+            boxShadow: `0 0 0 ${4000 * s}px ${p.theme === "light" ? "rgba(15, 23, 41, 0.28)" : "rgba(2, 6, 16, 0.5)"}`,
             opacity: mark.opacity,
           }}
         />
       ) : null}
-      {box && p.label ? (
+      {box && p.ring !== false ? (() => {
+        const rw = box.w + 2 * pad, rh = box.h + 2 * pad, r = brand.video.cardRadius * s, sw2 = 3 * s;
+        const perim = 2 * (rw + rh - 4 * r) + 2 * Math.PI * r;
+        return (
+          <svg style={{ position: "absolute", left: box.x - pad, top: box.y - pad, overflow: "visible", opacity: leaving }}
+            width={rw} height={rh}>
+            <rect x={sw2 / 2} y={sw2 / 2} width={rw - sw2} height={rh - sw2} rx={r} ry={r} fill="none" stroke={c.primary}
+              strokeWidth={sw2} strokeLinecap="round" strokeDasharray={perim} strokeDashoffset={perim * (1 - draw)} />
+          </svg>
+        );
+      })() : null}
+      {(Array.isArray(p.tap) ? p.tap : p.tap ? [p.tap] : []).map((t, i) => {
+        // a touch indicator glides in from below-right, presses at `at`, ripples once and leaves
+        const at = Math.round(t.at * fps);
+        const pt = toFrame(t.x, t.y);
+        const approach = progress(frame, at - 14, 14);
+        const away = interpolate(frame, [at + 12, at + 22], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+        const vis = interpolate(frame, [at - 16, at - 10], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) * away;
+        const press = frame >= at && frame < at + 6 ? 0.86 : 1;
+        const ripple = progress(frame, at, 16);
+        const d = 46 * s;
+        const x = lerp(pt.x + 130 * s, pt.x, approach), y = lerp(pt.y + 190 * s, pt.y, approach);
+        if (vis <= 0) return null;
+        return (
+          <React.Fragment key={i}>
+            {frame >= at ? (
+              <div style={{ position: "absolute", left: pt.x - (d / 2) * (1 + 1.6 * ripple), top: pt.y - (d / 2) * (1 + 1.6 * ripple),
+                width: d * (1 + 1.6 * ripple), height: d * (1 + 1.6 * ripple), borderRadius: "50%",
+                border: `${2.5 * s}px solid ${c.primary}`, opacity: (1 - ripple) * 0.9 }} />
+            ) : null}
+            <div style={{ position: "absolute", left: x - d / 2, top: y - d / 2, width: d, height: d, borderRadius: "50%",
+              background: "rgba(255, 255, 255, 0.55)", border: `${2 * s}px solid rgba(15, 23, 41, 0.35)`,
+              boxShadow: `0 ${6 * s}px ${18 * s}px rgba(15, 23, 41, 0.25)`, transform: `scale(${press})`, opacity: vis }} />
+          </React.Fragment>
+        );
+      })}
+      {box && label ? (
         <div
           style={{
             position: "absolute",
@@ -162,7 +233,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = (p) => {
               direction: ar ? "rtl" : "ltr",
             }}
           >
-            {p.label}
+            {label}
           </div>
         </div>
       ) : null}

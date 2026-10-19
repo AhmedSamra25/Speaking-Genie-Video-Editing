@@ -1,0 +1,61 @@
+:root{
+/* Text */
+--text-heading:var(--secondary-800);
+--text-body-color:var(--secondary-600);
+--text-muted:var(--secondary-500);
+--text-subtle:var(--secondary-400);
+--text-on-brand:var(--white);
+--text-on-brand-soft:var(--primary-100);
+--text-brand:var(--primary-600);
+--text-brand-strong:var(--primary-800);
+/* Surfaces */
+--surface-page:#f9fafb;
+--surface-card:var(--white);
+--surface-sunken:var(--secondary-50);
+--surface-field:var(--secondary-100);
+--surface-tint:var(--primary-50);
+--surface-tint-strong:var(--primary-100);
+--surface-paper:#fffdf9;          /* story reader only */
+--surface-scrim:rgba(15,23,42,0.55);
+--surface-glass:rgba(255,255,255,0.97);
+/* Borders */
+--border-subtle:var(--secondary-100);
+--border-default:var(--secondary-200);
+--border-strong:var(--secondary-300);
+--border-brand:var(--primary-200);
+--border-selected:var(--primary-500);
+/* Interactive */
+--action-primary:var(--primary-600);
+--action-primary-hover:var(--primary-700);
+--action-primary-pressed:var(--primary-800);
+--action-secondary:var(--secondary-200);
+--action-secondary-hover:var(--secondary-300);
+--focus-ring:0 0 0 2px var(--primary-500);
+--nav-active-bg:var(--primary-50);
+--nav-active-fg:var(--primary-600);
+--nav-idle-fg:var(--secondary-400);
+/* Status dots */
+--status-online:var(--success-500);
+--status-away:var(--warning-500);
+--status-busy:var(--danger-500);
+--status-offline:var(--secondary-400);
+/* Gradients */
+--gradient-brand:linear-gradient(135deg,#7c3aed,#d946ef); /* @kind other */
+--gradient-brand-flat:linear-gradient(90deg,#7c3aed,#d946ef); /* @kind other */
+--gradient-brand-deep:linear-gradient(90deg,#4c1d95,#7c3aed); /* @kind other */
+--gradient-avatar:linear-gradient(135deg,#7c3aed,#d946ef); /* @kind other */
+--gradient-avatar-soft:linear-gradient(135deg,#c4b5fd,#a78bfa); /* @kind other */
+--gradient-tint:linear-gradient(135deg,#f5f3ff,#fdf4ff); /* @kind other */
+--gradient-tint-warn:linear-gradient(90deg,#fef2f2,#fff7ed); /* @kind other */
+--gradient-splash:radial-gradient(circle at 50% 38%,#a78bfa,#7c3aed 55%,#4c1d95); /* @kind other */
+--gradient-call:linear-gradient(180deg,#2e1065,#4c1d95 45%,#0f172a); /* @kind other */
+--gradient-peer-call:linear-gradient(180deg,#0f172a,#1e293b 55%,#312e81); /* @kind other */
+--gradient-genie:linear-gradient(180deg,#312e81,#4c1d95 60%,#1e1b4b); /* @kind other */
+--gradient-orb:radial-gradient(circle at 35% 30%,#ffffff,#c4b5fd); /* @kind other */
+--gradient-streak:linear-gradient(135deg,#f97316,#ea580c); /* @kind other */
+--gradient-progress:linear-gradient(90deg,#7c3aed,#d946ef); /* @kind other */
+--gradient-cert:linear-gradient(90deg,#8b5cf6,#4f46e5); /* @kind other */
+/* Protection gradient under the floating tab bar / over the sticky app header */
+--fade-page-up:linear-gradient(180deg,rgba(249,250,251,0),rgba(249,250,251,0.95) 40%); /* @kind other */
+--fade-page-down:linear-gradient(180deg,#f9fafb 70%,rgba(249,250,251,0)) /* @kind other */
+}

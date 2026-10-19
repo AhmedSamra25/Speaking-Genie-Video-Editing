@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round|Material+Icons+Outlined">
+  <link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+  <script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+</helmet>
+<x-import component-from-global-scope="SpeakingGenieDesignSystem_ac4dbc.PhoneFrame" scrollable="{{ false }}" tone="dark" hint-size="390px,844px">
+<div dir="{{ dir }}" style="height:100%;position:relative;overflow-y:auto;overflow-x:hidden;font-family:Poppins, system-ui, sans-serif;background:{{ bg }};">
+
+  <!-- Auth header -->
+  <div style="position:relative;height:250px;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:#4C1D95;"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(circle 237px at 50% 35%, #A78BFA 0%, #7C3AED 55%, #4C1D95 100%);transform:scale(1.03);"></div>
+    <div style="position:absolute;inset:50px 0 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <div style="width:72px;height:72px;position:relative;display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.15);box-shadow:0 0 24px 4px rgba(196,181,253,0.6);transform:scale(1.15);"></div>
+        <div style="position:relative;width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #FFFFFF, #C4B5FD);box-shadow:0 0 20px 2px rgba(196,181,253,0.6);"></div>
+      </div>
+      <div style="margin-top:12px;font-size:20px;font-weight:700;letter-spacing:1.8px;color:#FFFFFF;">SPEAKING GENIE</div>
+    </div>
+    <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+      <img src="assets/icons/c/icon_back-FFFFFF.svg" alt="" style="position:absolute;top:60px;left:{{ backL }};right:{{ backR }};width:24px;height:24px;">
+    </sc-if>
+  </div>
+
+  <!-- Floating card (login, sign-up, forgot, otp, reset) -->
+  <sc-if value="{{ isCard }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:0 20px 16px;margin-top:-30px;position:relative;">
+      <div style="padding:24px;border-radius:24px;background:#FFFFFF;box-shadow:0 8px 24px rgba(0,0,0,0.08);display:flex;flex-direction:column;align-items:center;">
+        <div style="font-size:22px;font-weight:700;color:#1F2937;text-align:center;white-space:pre;">{{ c.title }}</div>
+        <div style="margin-top:8px;font-size:13.6px;color:#6B7280;text-align:center;">{{ c.sub }}</div>
+        <sc-if value="{{ c.hasEmailLine }}" hint-placeholder-val="{{ false }}"><div style="margin-top:4px;font-size:13.6px;font-weight:600;color:#1F2937;" dir="ltr">ahmed@example.com</div></sc-if>
+        <div style="height:24px;"></div>
+
+        <sc-if value="{{ socialTop }}" hint-placeholder-val="{{ false }}">
+          <div style="align-self:stretch;padding:12px 14px;border-radius:12px;border:1px solid #E5E7EB;background:#FFFFFF;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="padding:4px;border-radius:50%;background:#FFFFFF;display:flex;"><img src="assets/icons/google.svg" alt="" style="width:20px;height:20px;"></span><span style="font-size:14px;font-weight:500;color:#1F2937;">{{ t.google }}</span></div>
+          <div style="margin:24px 0;align-self:stretch;display:flex;align-items:center;gap:12px;"><div style="flex:1;height:1px;background:#E5E7EB;"></div><span style="font-size:11px;font-weight:700;letter-spacing:0.8px;color:#9CA3AF;">{{ t.orSignUpEmailUp }}</span><div style="flex:1;height:1px;background:#E5E7EB;"></div></div>
+        </sc-if>
+
+        <sc-if value="{{ isOtp }}" hint-placeholder-val="{{ false }}">
+          <div style="height:4px;"></div>
+          <div style="display:flex;justify-content:center;" dir="ltr">
+            <sc-for list="{{ pins }}" as="pn" hint-placeholder-count="4">
+              <div style="margin:0 4px;width:{{ pinW }};height:{{ pinH }};box-sizing:border-box;border-radius:12px;background:{{ pn.bg }};border:{{ pn.border }};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#1F2937;">{{ pn.v }}</div>
+            </sc-for>
+          </div>
+          <div style="height:28px;"></div>
+        </sc-if>
+
+        <div style="align-self:stretch;display:flex;flex-direction:column;gap:16px;">
+          <sc-for list="{{ fields }}" as="f" hint-placeholder-count="2">
+            <div>
+              <div style="padding:0 0 6px;padding-inline-start:2px;font-size:13px;font-weight:500;color:#374151;">{{ f.label }}</div>
+              <div style="height:56px;box-sizing:border-box;border-radius:12px;background:{{ f.fill }};border:1px solid {{ f.border }};display:flex;align-items:center;">
+                <div style="padding-left:12px;padding-right:8px;display:flex;"><div style="padding:6px;border-radius:8px;background:#EDE9FE;display:flex;"><span style="font-family:'Material Icons Outlined';font-size:18px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">{{ f.icon }}</span></div></div>
+                <span style="flex:1;min-width:0;font-size:{{ f.fs }};color:{{ f.fg }};letter-spacing:{{ f.ls }};white-space:nowrap;overflow:hidden;" dir="{{ f.tdir }}">{{ f.text }}</span>
+                <sc-if value="{{ f.password }}" hint-placeholder-val="{{ false }}"><span style="padding:0 16px;font-family:'Material Icons Outlined';font-size:24px;line-height:1;color:#D4DCE2;font-feature-settings:'liga';">visibility</span></sc-if>
+              </div>
+              <sc-if value="{{ f.strength }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:8px;display:flex;align-items:center;gap:8px;"><div style="flex:1;height:6px;border-radius:4px;background:#F3F4F6;overflow:hidden;" dir="ltr"><div style="width:66.7%;height:100%;background:#F59E0B;"></div></div><span style="font-size:11px;font-weight:700;letter-spacing:0.5px;color:#F59E0B;">{{ t.mediumUp }}</span></div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:12px;align-self:flex-end;padding:4px 2px;display:flex;align-items:center;"><span style="font-size:14px;font-weight:500;color:#7C3AED;">{{ t.forgot }}</span><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">{{ chevron }}</span></div>
+          <div style="height:20px;"></div>
+        </sc-if>
+        <sc-if value="{{ isSignup }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:20px;align-self:stretch;display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:18px;height:18px;box-sizing:border-box;border-radius:6px;border:2px solid rgba(0,0,0,0.87);"></div></div>
+            <div style="flex:1;padding-top:2px;font-size:13px;color:#6B7280;line-height:1.45;">{{ t.agree }}<span style="color:#7C3AED;font-weight:600;">{{ t.terms }}</span> {{ t.and }} <span style="color:#7C3AED;font-weight:600;">{{ t.privacy }}</span></div>
+          </div>
+          <div style="height:20px;"></div>
+        </sc-if>
+        <sc-if value="{{ isReset }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px;align-self:stretch;padding:12px;border-radius:12px;background:#EFF6FF;display:flex;align-items:flex-start;gap:8px;"><span style="font-family:'Material Icons Outlined';font-size:18px;line-height:1;color:#2563EB;font-feature-settings:'liga';">shield</span><span style="flex:1;font-size:12.5px;line-height:1.4;color:#1D4ED8;">{{ t.passwordTip }}</span></div>
+          <div style="height:20px;"></div>
+        </sc-if>
+        <sc-if value="{{ isForgot }}" hint-placeholder-val="{{ false }}"><div style="height:20px;"></div></sc-if>
+
+        <div style="align-self:stretch;max-height:51px;box-sizing:border-box;padding:12px 16px;border-radius:12px;border:1px solid #5B21B6;background:linear-gradient(90deg,#7C3AED,#5B21B6);display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span style="font-size:14px;font-weight:500;color:#FFFFFF;">{{ c.btn }}</span>
+          <img src="{{ c.btnIcon }}" alt="" style="width:20px;height:20px;transform:{{ flip }};">
+        </div>
+
+        <sc-if value="{{ isOtp }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px;display:flex;align-items:center;justify-content:center;font-size:13.5px;"><span style="color:#6B7280;">{{ t.didnt }}&nbsp;</span><span style="padding:2px;font-weight:600;color:#9CA3AF;" dir="{{ dir }}">{{ t.resendIn }} 0:24</span></div>
+        </sc-if>
+        <sc-if value="{{ showBackToSignIn }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;padding:8px 4px;display:flex;align-items:center;gap:6px;"><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">{{ backArrow }}</span><span style="font-size:14px;font-weight:600;color:#7C3AED;">{{ t.backToSignIn }}</span></div>
+        </sc-if>
+
+        <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+          <div style="margin:24px 0 20px;align-self:stretch;display:flex;align-items:center;gap:12px;"><div style="flex:1;height:1px;background:#E5E7EB;"></div><span style="font-size:11px;font-weight:700;letter-spacing:0.8px;color:#9CA3AF;">{{ t.orContinueUp }}</span><div style="flex:1;height:1px;background:#E5E7EB;"></div></div>
+          <div style="align-self:stretch;padding:12px 14px;border-radius:12px;border:1px solid #E5E7EB;background:#FFFFFF;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="padding:4px;border-radius:50%;background:#FFFFFF;display:flex;"><img src="assets/icons/google.svg" alt="" style="width:20px;height:20px;"></span><span style="font-size:14px;font-weight:500;color:#1F2937;">{{ t.google }}</span></div>
+          <div style="margin-top:16px;padding:8px 0;display:flex;justify-content:center;font-size:13.6px;"><span style="color:#6B7280;white-space:pre;">{{ t.noAccount }}</span><span style="color:#7C3AED;font-weight:600;">{{ t.signUp }}</span></div>
+        </sc-if>
+        <sc-if value="{{ isSignup }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;padding:8px 0;display:flex;justify-content:center;font-size:13.6px;"><span style="color:#6B7280;white-space:pre;">{{ t.haveAccount }}</span><span style="color:#7C3AED;font-weight:600;">{{ t.signIn }}</span></div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Sheet layout (change password, edit profile) -->
+  <sc-if value="{{ isSheet }}" hint-placeholder-val="{{ false }}">
+    <div style="background:#FFFFFF;border-radius:30px 30px 0 0;padding:24px;display:flex;flex-direction:column;align-items:center;min-height:calc(100% - 250px);box-sizing:border-box;">
+      <div style="height:20px;"></div>
+      <div style="font-size:24px;font-weight:600;color:rgba(0,0,0,0.87);text-align:center;">{{ c.title }}</div>
+      <div style="margin-top:3px;font-size:14px;color:#90909B;text-align:center;">{{ c.sub }}</div>
+      <div style="height:32px;"></div>
+      <div style="align-self:stretch;display:flex;flex-direction:column;gap:20px;">
+        <sc-for list="{{ sheetFields }}" as="f" hint-placeholder-count="2">
+          <div>
+            <sc-if value="{{ f.hasLabel }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:8px;font-size:14px;font-weight:500;color:#757575;">{{ f.label }}</div></sc-if>
+            <div style="height:56px;box-sizing:border-box;border-radius:12px;background:{{ f.fill }};border:1px solid {{ f.border }};display:flex;align-items:center;">
+              <span style="padding-left:16px;padding-right:8px;font-family:'Material Icons{{ f.fontSuffix }}';font-size:20px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">{{ f.icon }}</span>
+              <span style="flex:1;min-width:0;padding-inline-start:4px;font-size:{{ f.fs }};color:{{ f.fg }};letter-spacing:{{ f.ls }};white-space:nowrap;overflow:hidden;">{{ f.text }}</span>
+              <sc-if value="{{ f.password }}" hint-placeholder-val="{{ false }}"><span style="padding:0 16px;font-family:'Material Icons Outlined';font-size:24px;line-height:1;color:#D4DCE2;font-feature-settings:'liga';">visibility</span></sc-if>
+              <sc-if value="{{ f.dropdown }}" hint-placeholder-val="{{ false }}"><span style="padding:0 12px;font-family:'Material Icons';font-size:24px;line-height:1;color:#757575;font-feature-settings:'liga';">arrow_drop_down</span></sc-if>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:12px;">
+            <div style="flex:1;padding:16px 0;border-radius:12px;background:#EDE9FE;border:1px solid #0D0D26;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="font-family:'Material Icons';font-size:20px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">male</span><span style="font-size:14px;font-weight:600;color:#7C3AED;">{{ t.male }}</span></div>
+            <div style="flex:1;padding:16px 0;border-radius:12px;background:#F3F5F7;border:1px solid #D4DCE2;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="font-family:'Material Icons';font-size:20px;line-height:1;color:#9E9E9E;font-feature-settings:'liga';">female</span><span style="font-size:14px;color:rgba(0,0,0,0.87);">{{ t.female }}</span></div>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ false }}">
+        <div style="align-self:stretch;margin-top:24px;display:flex;flex-direction:column;gap:24px;">
+          <sc-for list="{{ dropdowns }}" as="d" hint-placeholder-count="3">
+            <div><div style="font-size:14px;font-weight:600;color:#424242;">{{ d.title }}</div><div style="margin-top:12px;height:56px;box-sizing:border-box;padding:0 12px 0 16px;border-radius:12px;background:#F3F5F7;border:1px solid #D4DCE2;display:flex;align-items:center;"><span style="flex:1;font-size:16px;color:rgba(0,0,0,0.87);">{{ d.value }}</span><span style="font-family:'Material Icons';font-size:24px;line-height:1;color:#757575;font-feature-settings:'liga';">arrow_drop_down</span></div></div>
+          </sc-for>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:#424242;">Learning Goals</div>
+            <div style="margin-top:12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;">
+              <sc-for list="{{ goalCards }}" as="g" hint-placeholder-count="4">
+                <div style="height:130px;box-sizing:border-box;padding:12px;border-radius:16px;background:{{ g.bg }};border:{{ g.border }};display:flex;flex-direction:column;justify-content:center;gap:4px;">
+                  <div style="font-size:14px;font-weight:600;color:#1F2937;">{{ g.title }}</div>
+                  <div style="font-size:12px;color:#6B7280;line-height:1.35;">{{ g.sub }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <div style="margin-top:32px;align-self:stretch;max-height:51px;box-sizing:border-box;padding:12px 16px;border-radius:12px;border:1px solid #5B21B6;background:linear-gradient(90deg,#7C3AED,#5B21B6);display:flex;align-items:center;justify-content:center;gap:8px;">
+        <span style="font-size:14px;font-weight:500;color:#FFFFFF;">{{ c.btn }}</span><img src="assets/icons/c/login_arrow-FFFFFF.svg" alt="" style="width:20px;height:20px;">
+      </div>
+      <img src="assets/icons/auth_fotter.svg" alt="" style="margin-top:40px;max-width:100%;">
+      <div style="height:34px;"></div>
+    </div>
+  </sc-if>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;dir&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ltr&quot;,&quot;rtl&quot;],&quot;default&quot;:&quot;ltr&quot;,&quot;tsType&quot;:&quot;'ltr'|'rtl'&quot;},&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;login&quot;,&quot;signup&quot;,&quot;forgot&quot;,&quot;otp&quot;,&quot;signupOtp&quot;,&quot;reset&quot;,&quot;changePassword&quot;,&quot;editProfile&quot;],&quot;default&quot;:&quot;login&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const dir = p.dir ?? 'ltr';
+    const ar = dir === 'rtl';
+    const screen = p.screen ?? 'login';
+    const E = { welcomeBack: 'Welcome Back  👋', continueJourney: 'Continue your language learning journey', email: 'E-mail', password: 'Password', enterEmail: 'Enter your email', enterPassword: 'Enter your password',
+      forgot: 'Forget password?', login: 'Log in', orContinue: 'Or continue with', google: 'Continue with Google', noAccount: "Don't have an account? ", signUp: 'Sign Up',
+      createAccount: 'Create Account', join: 'Join Speaking Genie to improve your language skills', orSignUpEmail: 'Or sign up with email', fullName: 'Full Name', enterFullName: 'Enter your full name', createPassword: 'Create a password',
+      agree: 'I agree to the ', terms: 'Terms', and: 'and', privacy: 'Privacy Policy', haveAccount: 'Have an account? ', signIn: 'Sign In', medium: 'Medium',
+      forgetTitle: 'Forget password', forgetText: 'Enter your email or phone number, we will send you verification code', sendCode: 'Send code', backToSignIn: 'Back to Sign In',
+      verifyCode: 'Verify Code', verifyText: 'Enter the verification code we sent to your email', verify: 'Verify', didnt: "Didn't receive the code?", resendIn: 'Resend in',
+      reset: 'Reset Password', resetText: 'Enter your new password and confirm the new password to reset password', newPassword: 'New password', confirmNew: 'Confirm new password',
+      passwordTip: 'Create a strong password with at least 8 characters, including letters, numbers and symbols.',
+      changePassword: 'Change Password', changeText: 'Enter data to change your password', editProfile: 'Edit Profile', updateInfo: 'Update your profile information', phone: 'Phone Number', birth: 'Select your birth date',
+      male: 'Male', female: 'Female', reportLanguage: 'Report Language', saveChanges: 'Save Changes' };
+    const A = { welcomeBack: 'مرحبًا بعودتك 👋', continueJourney: 'تابع رحلة تعلم اللغة', email: 'البريد الإلكتروني', password: 'كلمة المرور', enterEmail: 'أدخل بريدك الإلكتروني', enterPassword: 'أدخل كلمة المرور',
+      forgot: 'نسيت كلمة المرور؟', login: 'تسجيل الدخول', orContinue: 'أو تابع باستخدام', google: 'المتابعة باستخدام Google', noAccount: 'ليس لديك حساب؟ ', signUp: 'التسجيل',
+      createAccount: 'إنشاء حساب', join: 'انضم إلى Speaking Genie لتحسين مهاراتك اللغوية', orSignUpEmail: 'أو سجّل بالبريد الإلكتروني', fullName: 'الاسم الكامل', enterFullName: 'أدخل اسمك الكامل', createPassword: 'أنشئ كلمة مرور',
+      agree: 'أوافق على ', terms: 'الشروط', and: 'و', privacy: 'سياسة الخصوصية', haveAccount: 'لديك حساب؟ ', signIn: 'تسجيل الدخول', medium: 'متوسطة',
+      forgetTitle: 'نسيت كلمة المرور', forgetText: 'أدخل بريدك الإلكتروني أو رقم هاتفك، سنرسل لك رمز التحقق', sendCode: 'إرسال الرمز', backToSignIn: 'العودة إلى تسجيل الدخول',
+      verifyCode: 'التحقق من الرمز', verifyText: 'أدخل رمز التحقق الذي أرسلناه إلى بريدك الإلكتروني', verify: 'تحقق', didnt: 'لم تستلم الرمز؟', resendIn: 'إعادة الإرسال خلال',
+      reset: 'إعادة تعيين كلمة المرور', resetText: 'أدخل كلمة المرور الجديدة وقم بتأكيدها لإعادة تعيين كلمة المرور', newPassword: 'كلمة المرور الجديدة', confirmNew: 'تأكيد كلمة المرور الجديدة',
+      passwordTip: 'أنشئ كلمة مرور قوية لا تقل عن 8 أحرف وتتضمن حروفًا وأرقامًا ورموزًا.',
+      changePassword: 'تغيير كلمة المرور', changeText: 'أدخل البيانات لتغيير كلمة المرور', editProfile: 'تعديل الملف الشخصي', updateInfo: 'قم بتحديث معلومات ملفك الشخصي', phone: 'رقم الهاتف', birth: 'اختر تاريخ ميلادك',
+      male: 'ذكر', female: 'أنثى', reportLanguage: 'لغة التقرير', saveChanges: 'حفظ التغييرات' };
+    const s = ar ? A : E;
+    const t = Object.assign({}, s, { orContinueUp: s.orContinue.toUpperCase(), orSignUpEmailUp: s.orSignUpEmail.toUpperCase(), mediumUp: s.medium.toUpperCase() });
+    const hint = (label, icon, h, opts) => Object.assign({ label, icon, text: h, fg: '#B7B7B7', fs: '12px', ls: 'normal', fill: '#F9FAFB', border: '#D4DCE2', password: false, strength: false, tdir: dir }, opts || {});
+    const filled = (label, icon, v, opts) => Object.assign({ label, icon, text: v, fg: 'rgba(0,0,0,0.87)', fs: '16px', ls: 'normal', fill: '#F9FAFB', border: '#0D0D26', password: false, strength: false, tdir: 'ltr' }, opts || {});
+    const dots = (n) => '•'.repeat(n);
+    const cards = {
+      login: { title: s.welcomeBack, sub: s.continueJourney, btn: s.login, btnIcon: 'assets/icons/c/loginIcon-FFFFFF.svg', fields: [filled(s.email, 'email', 'ahmed@example.com'), hint(s.password, 'lock', s.enterPassword, { password: true })] },
+      signup: { title: s.createAccount, sub: s.join, btn: s.createAccount, btnIcon: 'assets/icons/c/user-FFFFFF.svg', fields: [filled(s.fullName, 'person', 'Ahmed Hassan', { tdir: dir }), filled(s.email, 'email', 'ahmed@example.com'), filled(s.password, 'lock', dots(8), { password: true, strength: true, ls: '2px' })] },
+      forgot: { title: s.forgetTitle, sub: s.forgetText, btn: s.sendCode, btnIcon: 'assets/icons/c/login_arrow-FFFFFF.svg', fields: [hint(s.email, 'email', s.enterEmail)] },
+      otp: { title: s.verifyCode, sub: s.verifyText, hasEmailLine: true, btn: s.verify, btnIcon: 'assets/icons/c/login_arrow-FFFFFF.svg', fields: [] },
+      signupOtp: { title: s.verifyCode, sub: s.verifyText, hasEmailLine: false, btn: s.verify, btnIcon: 'assets/icons/c/login_arrow-FFFFFF.svg', fields: [] },
+      reset: { title: s.reset, sub: s.resetText, btn: s.reset, btnIcon: 'assets/icons/c/login_arrow-FFFFFF.svg', fields: [filled(s.newPassword, 'lock', dots(9), { password: true, strength: true, ls: '2px' }), hint(s.confirmNew, 'lock', s.confirmNew, { password: true })] },
+      changePassword: { title: s.changePassword, sub: s.changeText, btn: s.changePassword },
+      editProfile: { title: s.editProfile, sub: s.updateInfo, btn: s.saveChanges }
+    };
+    const c = cards[screen] || cards.login;
+    const pinLen = screen === 'signupOtp' ? 6 : 4;
+    const avail = 302 - 2;
+    const fw = Math.max(36, Math.min(48, avail / pinLen - 8));
+    const vals = screen === 'signupOtp' ? ['4', '8', '2', '', '', ''] : ['7', '3', '', ''];
+    const pins = vals.map((v, i) => {
+      const sel = i === vals.findIndex(x => !x);
+      return { v, bg: sel ? '#FFFFFF' : '#F9FAFB', border: sel ? '1.4px solid #7C3AED' : v ? '1.4px solid #7C3AED' : '1.2px solid #E5E7EB' };
+    });
+    const sf = (icon, text, opts) => Object.assign({ icon, text, fontSuffix: '', fg: 'rgba(0,0,0,0.87)', fs: '16px', ls: 'normal', fill: '#F3F5F7', border: '#0D0D26', password: false, dropdown: false, hasLabel: false }, opts || {});
+    const sheetFields = screen === 'changePassword'
+      ? [sf('lock_outline', s.newPassword, { fg: '#B7B7B7', fs: '12px', border: '#D4DCE2', password: true }), sf('lock_outline', s.confirmNew, { fg: '#B7B7B7', fs: '12px', border: '#D4DCE2', password: true })]
+      : [sf('person_outline', 'Ahmed Hassan'), Object.assign(sf('email', 'ahmed@example.com', { fontSuffix: ' Outlined', fg: '#757575', fill: '#F5F5F5', border: '#E0E0E0', hasLabel: true }), { label: s.email }),
+        sf('phone', '🇪🇬 +20  1012345678', { fontSuffix: ' Outlined' }), sf('calendar_today', '12/05/1996', { fontSuffix: ' Outlined' })];
+    const dropdowns = [{ title: 'Native Language', value: 'Arabic' }, { title: s.reportLanguage, value: 'English' }, { title: 'Time Commitment', value: '15 minutes a day' }];
+    const goalCards = [['Travel', 'Speak confidently on trips', true], ['Career growth', 'Prepare for interviews and meetings', true], ['Daily conversation', 'Chat naturally with people', false], ['Exams', 'Prepare for IELTS or TOEFL', false]]
+      .map(g => ({ title: g[0], sub: g[1], bg: g[2] ? '#F5F3FF' : '#FFFFFF', border: g[2] ? '2px solid #7C3AED' : '1px solid #E5E7EB' }));
+    const isCard = !['changePassword', 'editProfile'].includes(screen);
+    return {
+      dir, t, c, fields: c.fields || [], pins, sheetFields, dropdowns, goalCards,
+      pinW: fw + 'px', pinH: (fw + 4) + 'px',
+      bg: isCard ? '#F9FAFB' : '#F8F9F9',
+      isCard, isSheet: !isCard, isEdit: screen === 'editProfile',
+      isLogin: screen === 'login', isSignup: screen === 'signup', socialTop: screen === 'signup', isForgot: screen === 'forgot', isReset: screen === 'reset',
+      isOtp: screen === 'otp' || screen === 'signupOtp',
+      showBack: screen !== 'login' && screen !== 'signupOtp',
+      showBackToSignIn: ['forgot', 'otp', 'reset'].includes(screen),
+      chevron: ar ? 'chevron_left' : 'chevron_right', backArrow: ar ? 'arrow_forward' : 'arrow_back', flip: 'none',
+      backL: ar ? 'auto' : '10px', backR: ar ? '10px' : 'auto'
+    };
+  }
+}
+</script>
+</body>
+</html>

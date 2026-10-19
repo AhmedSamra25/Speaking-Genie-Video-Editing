@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round|Material+Icons+Outlined">
+  <link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+  <script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+</helmet>
+<x-import component-from-global-scope="SpeakingGenieDesignSystem_ac4dbc.PhoneFrame" scrollable="{{ false }}" hint-size="390px,844px">
+<div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;font-family:Inter, system-ui, sans-serif;background:#F8F9F9;">
+
+<sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;overflow:hidden;background:#F9FAFB;padding-top:50px;">
+    <div style="padding:16px 20px 0;display:flex;gap:10px;justify-content:flex-end;">
+      <div style="width:40px;height:40px;border-radius:50%;background:#E0E0E0;"></div>
+      <div style="width:40px;height:40px;border-radius:50%;background:#E0E0E0;"></div>
+      <div style="width:40px;height:40px;border-radius:50%;background:#E0E0E0;"></div>
+    </div>
+    <div style="padding:16px 24px 0;display:flex;flex-direction:column;">
+      <div style="height:14px;width:170px;border-radius:7px;background:#E0E0E0;"></div>
+      <div style="height:20px;"></div>
+      <div style="display:flex;gap:6px;align-items:flex-start;">
+        <div style="margin-top:4px;width:16px;height:16px;border-radius:50%;background:#E0E0E0;flex-shrink:0;"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;justify-content:space-between;"><div style="height:16px;width:150px;border-radius:8px;background:#E0E0E0;"></div><div style="height:20px;width:60px;border-radius:9999px;background:#E0E0E0;"></div></div>
+          <div style="height:6px;border-radius:9999px;background:#E0E0E0;"></div>
+        </div>
+      </div>
+      <div style="height:20px;"></div>
+      <div style="height:16px;width:100px;border-radius:8px;background:#E0E0E0;"></div>
+      <div style="height:12px;"></div>
+      <div style="padding:20px;border-radius:16px;background:#EEEEEE;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;gap:12px;align-items:center;"><div style="width:40px;height:40px;border-radius:50%;background:#E0E0E0;"></div><div style="display:flex;flex-direction:column;gap:4px;"><div style="height:18px;width:100px;border-radius:9px;background:#E0E0E0;"></div><div style="height:14px;width:80px;border-radius:7px;background:#E0E0E0;"></div></div></div>
+          <div style="height:16px;width:60px;border-radius:8px;background:#E0E0E0;"></div>
+        </div>
+        <div style="height:10px;margin-top:16px;border-radius:9999px;background:#E0E0E0;"></div>
+        <div style="margin-top:12px;display:flex;justify-content:space-between;"><div style="height:14px;width:80px;border-radius:7px;background:#E0E0E0;"></div><div style="display:flex;gap:8px;"><div style="height:14px;width:80px;border-radius:7px;background:#E0E0E0;"></div><div style="height:20px;width:50px;border-radius:9999px;background:#E0E0E0;"></div></div></div>
+      </div>
+      <div style="height:16px;"></div>
+      <div style="padding:20px;border-radius:24px;background:#FFFFFF;box-shadow:0 10px 15px rgba(0,0,0,0.05);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div style="display:flex;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:#E0E0E0;"></div><div style="display:flex;flex-direction:column;gap:4px;"><div style="height:18px;width:110px;border-radius:9px;background:#E0E0E0;"></div><div style="height:14px;width:80px;border-radius:7px;background:#E0E0E0;"></div></div></div>
+          <div style="height:28px;width:80px;border-radius:9999px;background:#E0E0E0;"></div>
+        </div>
+        <div style="height:8px;margin-top:16px;border-radius:9999px;background:#E0E0E0;"></div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ three }}" as="x" hint-placeholder-count="3">
+            <div style="padding:12.55px;border-radius:8px;background:#F5F5F5;display:flex;gap:12px;align-items:center;"><div style="width:20px;height:20px;border-radius:50%;background:#E0E0E0;"></div><div style="flex:1;height:14px;border-radius:7px;background:#E0E0E0;"></div><div style="width:30px;height:14px;border-radius:7px;background:#E0E0E0;margin-inline-start:-4px;"></div></div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="height:16px;"></div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="flex:1;padding:16px;border-radius:16px;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+          <div style="display:flex;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:#E0E0E0;flex-shrink:0;"></div><div style="display:flex;flex-direction:column;"><div style="height:16px;width:50px;border-radius:8px;background:#E0E0E0;"></div><div style="height:16px;width:40px;border-radius:8px;background:#E0E0E0;margin-top:4px;"></div><div style="height:24px;width:60px;border-radius:12px;background:#E0E0E0;margin-top:8px;"></div></div></div>
+          <div style="margin-top:12px;display:flex;justify-content:space-between;">
+            <sc-for list="{{ seven }}" as="x" hint-placeholder-count="7"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:8px;height:8px;border-radius:50%;background:#E0E0E0;"></div><div style="width:10px;height:10px;border-radius:5px;background:#E0E0E0;"></div></div></sc-for>
+          </div>
+          <div style="margin:12px auto 0;height:24px;width:80px;border-radius:9999px;background:#EEEEEE;"></div>
+          <div style="margin-top:12px;display:flex;justify-content:space-between;"><div style="height:12px;width:70px;border-radius:6px;background:#E0E0E0;"></div><div style="height:12px;width:60px;border-radius:6px;background:#E0E0E0;"></div></div>
+          <div style="margin-top:6px;height:6px;border-radius:9999px;background:#E0E0E0;"></div>
+        </div>
+        <div style="flex:1;padding:20px;border-radius:24px;background:#FFFFFF;box-shadow:0 10px 15px rgba(0,0,0,0.05);">
+          <div style="display:flex;gap:12px;"><div style="width:33.34px;height:40px;border-radius:50%;background:#E0E0E0;flex-shrink:0;"></div><div style="display:flex;flex-direction:column;"><div style="height:16px;width:50px;border-radius:8px;background:#E0E0E0;"></div><div style="height:16px;width:30px;border-radius:8px;background:#E0E0E0;margin-top:4px;"></div><div style="height:14px;width:40px;border-radius:7px;background:#E0E0E0;margin-top:8px;"></div><div style="height:14px;width:55px;border-radius:7px;background:#E0E0E0;margin-top:2px;"></div></div></div>
+          <div style="margin:12px auto 0;width:96px;height:96px;box-sizing:border-box;border-radius:50%;background:#EEEEEE;border:6px solid #E0E0E0;"></div>
+          <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;"><div style="display:flex;flex-direction:column;gap:2px;"><div style="height:12px;width:50px;border-radius:6px;background:#E0E0E0;"></div><div style="height:12px;width:60px;border-radius:6px;background:#E0E0E0;"></div></div><div style="height:28px;width:70px;border-radius:9999px;background:#E0E0E0;"></div></div>
+        </div>
+      </div>
+      <div style="height:16px;"></div>
+      <div style="padding:20px;border-radius:24px;background:#FFFFFF;box-shadow:0 10px 15px rgba(0,0,0,0.05);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;"><div style="display:flex;gap:12px;"><div style="width:48px;height:48px;border-radius:50%;background:#E0E0E0;"></div><div style="display:flex;flex-direction:column;gap:4px;"><div style="height:20px;width:80px;border-radius:10px;background:#E0E0E0;"></div><div style="height:14px;width:100px;border-radius:7px;background:#E0E0E0;"></div></div></div><div style="height:28px;width:70px;border-radius:9999px;background:#E0E0E0;"></div></div>
+        <div style="height:24px;margin-top:16px;border-radius:9999px;background:#E0E0E0;"></div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isReady }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;min-height:0;position:relative;background:#F9FAFB;">
+  <div onScroll="{{ onScroll }}" style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;">
+    <div style="height:118px;"></div>
+    <div style="padding:0 20px 24px;display:flex;flex-direction:column;">
+
+      <!-- Greeting -->
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="min-width:0;font-size:14px;line-height:1.2;white-space:nowrap;"><span style="font-weight:500;color:#6B7280;">{{ t.hello }}, </span><span style="font-weight:700;color:#1F2937;">Ahmed 👋</span></div>
+        <div style="display:flex;align-items:center;padding-block:4px;padding-inline-start:7px;padding-inline-end:5px;background:#FFFFFF;border-radius:9999px;border:1px solid #E5E7EB;box-shadow:0 1px 4px rgba(0,0,0,0.05);flex-shrink:0;">
+          <span style="font-size:15px;line-height:18px;width:18px;text-align:center;">🇬🇧</span>
+          <span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:14px;color:#9CA3AF;">keyboard_arrow_down</span>
+        </div>
+      </div>
+      <div style="margin-top:8px;align-self:flex-start;display:flex;align-items:center;gap:4px;padding:4px 10px;background:#EDE9FE;border-radius:9999px;">
+        <span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:13px;color:#6D28D9;">access_time</span>
+        <span style="font-size:12px;font-weight:600;color:#6D28D9;">{{ hoursPill }}</span>
+      </div>
+      <div style="height:20px;"></div>
+
+      <sc-if value="{{ showSTH }}" hint-placeholder-val="{{ false }}">
+        <div style="position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(90deg,#4C1D95,#7C3AED);box-shadow:0 8px 18px rgba(124,58,237,0.3);margin-bottom:20px;">
+          <div style="position:absolute;top:-40px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,0.1);"></div>
+          <div style="position:relative;padding:20px;display:flex;align-items:center;gap:12px;">
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:18px;font-weight:700;color:#FFFFFF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ t.speakToHire }}</div>
+              <div style="margin-top:4px;font-size:13px;color:#DDD6FE;">{{ t.speakToHireSubtitle }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;padding:9px 14px;background:#FFFFFF;border-radius:10px;cursor:pointer;flex-shrink:0;">
+              <span style="font-size:13px;font-weight:600;color:#4C1D95;">{{ t.viewProgram }}</span>
+              <span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:16px;color:#4C1D95;transform:{{ flip }};">arrow_forward</span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- Up Next slider -->
+      <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-bottom:20px;">
+          <div style="height:216px;overflow:hidden;margin-inline-end:-20px;">
+            <div style="display:flex;height:100%;">
+              <div style="flex:0 0 322px;height:100%;box-sizing:border-box;padding-inline-end:6px;">
+                <div style="position:relative;height:100%;overflow:hidden;border-radius:20px;background:linear-gradient(135deg,#7C3AED,#D946EF);box-shadow:0 8px 18px rgba(217,70,239,0.3);">
+                  <div style="position:absolute;top:-40px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,0.1);"></div>
+                  <div style="position:relative;height:100%;box-sizing:border-box;padding:20px;display:flex;flex-direction:column;">
+                    <div style="font-size:11px;font-weight:600;letter-spacing:1.1px;color:#EDE9FE;">{{ t.resumePracticeUp }}</div>
+                    <div style="margin-top:6px;font-size:18px;font-weight:700;color:#FFFFFF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ d.taskName }}</div>
+                    <div style="margin-top:6px;font-size:13px;line-height:1.35;color:#EDE9FE;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ d.taskDesc }}</div>
+                    <div style="flex:1;"></div>
+                    <div style="display:flex;align-items:flex-end;gap:14px;">
+                      <div style="flex:1;">
+                        <div style="display:flex;justify-content:space-between;font-size:11px;color:#EDE9FE;"><span>{{ t.todaysGoal }}</span><span style="font-weight:600;">40%</span></div>
+                        <div style="margin-top:5px;height:6px;border-radius:9999px;background:rgba(255,255,255,0.25);overflow:hidden;"><div style="width:40%;height:100%;background:#FFFFFF;"></div></div>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:4px;padding:9px 14px;background:#FFFFFF;border-radius:10px;cursor:pointer;">
+                        <span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:18px;color:#7C3AED;">play_arrow</span>
+                        <span style="font-size:14px;font-weight:600;color:#7C3AED;">{{ t.start }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="flex:0 0 322px;height:100%;box-sizing:border-box;padding:0 6px;">
+                <div style="position:relative;height:100%;overflow:hidden;border-radius:20px;background:linear-gradient(135deg,#3B82F6,#2563EB);box-shadow:0 8px 18px rgba(37,99,235,0.3);">
+                  <div style="position:absolute;top:-40px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,0.1);"></div>
+                  <div style="position:relative;height:100%;box-sizing:border-box;padding:20px;display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:16px;color:#FFFFFF;">menu_book</span><span style="font-size:11px;font-weight:600;letter-spacing:1.1px;color:#FFFFFF;">{{ t.quickWinWord }}</span></div>
+                    <div style="margin-top:8px;font-size:22px;font-weight:700;color:#FFFFFF;">{{ d.term }}</div>
+                    <div style="margin-top:6px;font-size:13px;line-height:1.35;color:rgba(255,255,255,0.9);">{{ d.meaning }}</div>
+                    <div style="flex:1;"></div>
+                    <div style="display:flex;align-items:center;">
+                      <div style="display:flex;align-items:center;gap:4px;padding:9px 14px;background:#FFFFFF;border-radius:10px;cursor:pointer;">
+                        <span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:18px;color:#2563EB;transform:{{ flip }};">arrow_forward</span>
+                        <span style="font-size:14px;font-weight:600;color:#2563EB;">{{ t.practiceNow }}</span>
+                      </div>
+                      <div style="flex:1;"></div>
+                      <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:18px;color:#FFFFFF;">volume_up</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="flex:0 0 322px;height:100%;box-sizing:border-box;padding:0 6px;">
+                <div style="position:relative;height:100%;overflow:hidden;border-radius:20px;background:#2563EB;"></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px;display:flex;justify-content:center;gap:6px;">
+            <div style="width:24px;height:8px;border-radius:9999px;background:#7C3AED;"></div>
+            <div style="width:8px;height:8px;border-radius:9999px;background:#D1D5DB;"></div>
+            <div style="width:8px;height:8px;border-radius:9999px;background:#D1D5DB;"></div>
+            <div style="width:8px;height:8px;border-radius:9999px;background:#D1D5DB;"></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- Streak -->
+      <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ toggleStreak }}" style="padding:16px;background:#FFFFFF;border-radius:16px;border:1px solid #F3F4F6;box-shadow:0 1px 2px rgba(0,0,0,0.05);cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/c/flame_icon-FFFFFF.svg" alt="" style="display:block;width:22px;height:22px;"></div>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;align-items:baseline;gap:6px;"><span style="font-size:24px;font-weight:700;color:#F97316;line-height:1;">5</span><span style="font-size:15px;font-weight:700;color:#1F2937;">{{ t.dayStreak }}</span></div>
+              <div style="margin-top:2px;font-size:11.5px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ t.streakSub }}</div>
+            </div>
+            <span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:22px;color:#9CA3AF;transform:{{ chevron }};transition:transform 200ms;">keyboard_arrow_down</span>
+          </div>
+          <sc-if value="{{ streakOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:16px;display:flex;justify-content:space-between;">
+              <sc-for list="{{ week }}" as="w" hint-placeholder-count="7">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                  <div style="width:30px;height:30px;box-sizing:border-box;border-radius:50%;background:{{ w.bg }};border:{{ w.border }};display:flex;align-items:center;justify-content:center;"><div style="width:8px;height:8px;border-radius:50%;background:{{ w.dot }};"></div></div>
+                  <span style="font-size:10px;font-weight:500;color:#6B7280;">{{ w.l }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:16px;height:1px;background:#F3F4F6;"></div>
+            <div style="margin-top:12px;display:flex;justify-content:space-between;font-size:11.5px;"><span style="color:#4B5563;">{{ t.keepGoing }}</span><span style="font-weight:600;color:#7C3AED;">{{ t.twoDaysToGo }}</span></div>
+            <div style="margin-top:8px;height:6px;border-radius:9999px;background:#F3F4F6;overflow:hidden;"><div style="width:71.4%;height:100%;background:#F97316;border-radius:9999px;"></div></div>
+          </sc-if>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:16px;background:#FFFFFF;border-radius:16px;border:1px solid #F3F4F6;display:flex;align-items:center;gap:12px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#FED7AA;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/c/flame_icon-F97316.svg" alt="" style="display:block;width:22px;height:22px;"></div>
+          <div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#1F2937;">{{ t.loginStreak }}</div><div style="margin-top:2px;font-size:12px;color:#9CA3AF;">{{ t.noStreakData }}</div></div>
+        </div>
+      </sc-if>
+      <div style="height:16px;"></div>
+
+      <!-- Daily challenges -->
+      <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:20px;background:#FFFFFF;border-radius:24px;box-shadow:0 10px 15px rgba(0,0,0,0.05), 0 4px 6px rgba(0,0,0,0.02);">
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="flex:1;display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:40px;height:40px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/c/trend_up_icon-7C3AED.svg" alt="" style="display:block;width:20px;height:20px;"></div>
+              <div><div style="font-size:13.6px;font-weight:700;color:#1F2937;line-height:24px;">{{ t.dailyChallenges }}</div><div style="font-size:11.9px;color:#4B5563;line-height:20px;">1/3 {{ t.completedCount }}</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;padding:6px 12px;background:#F5F3FF;border-radius:9999px;"><img src="assets/icons/c/flash_xp_icon-8B5CF6.svg" alt="" style="display:block;width:16px;height:16px;"><span style="font-size:11.9px;font-weight:700;color:#6D28D9;line-height:20px;">0/35 XP</span></div>
+          </div>
+          <div style="margin-top:16px;height:8px;border-radius:9999px;background:#E5E7EB;overflow:hidden;"><div style="width:33.3%;height:100%;border-radius:9999px;background:#7C3AED;"></div></div>
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+            <sc-for list="{{ challenges }}" as="c" hint-placeholder-count="3">
+              <div style="padding:12.55px;border-radius:8px;background:{{ c.bg }};border:1px solid {{ c.border }};display:flex;align-items:center;gap:12px;">
+                <img src="{{ c.svg }}" alt="" style="display:block;width:20px;height:20px;flex-shrink:0;">
+                <span style="flex:1;font-size:11.9px;font-weight:500;line-height:20px;color:{{ c.text }};text-decoration:{{ c.deco }};">{{ c.title }}</span>
+                <sc-if value="{{ c.hasXp }}" hint-placeholder-val="{{ true }}">
+                  <span style="display:flex;align-items:center;gap:4px;"><img src="{{ c.xpsvg }}" alt="" style="display:block;width:14px;height:14px;"><span style="font-size:10.2px;font-weight:500;line-height:16px;color:{{ c.xpc }};">{{ c.xp }}</span></span>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:20px;background:#FFFFFF;border-radius:24px;box-shadow:0 4px 6px rgba(0,0,0,0.02), 0 10px 15px rgba(0,0,0,0.05);display:flex;align-items:center;gap:16px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/c/trend_up_icon-7C3AED.svg" alt="" style="display:block;width:28px;height:28px;"></div>
+          <div style="flex:1;"><div style="font-size:15.3px;font-weight:700;color:#1F2937;line-height:24px;">{{ t.dailyChallenges }}</div><div style="margin-top:4px;font-size:13.6px;color:#9CA3AF;line-height:20px;">{{ t.noChallengesAvailable }}</div></div>
+        </div>
+      </sc-if>
+      <div style="height:24px;"></div>
+
+      <!-- Your Progress header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:17px;font-weight:700;color:#1F2937;line-height:28px;">{{ t.yourProgress }}</span>
+        <span style="display:flex;align-items:center;gap:4px;cursor:pointer;"><span style="font-size:12px;font-weight:500;color:#7C3AED;">{{ t.fullReport }}</span><img src="assets/icons/c/arrow_right-7C3AED.svg" alt="" style="display:block;width:16px;height:16px;"></span>
+      </div>
+      <div style="height:16px;"></div>
+
+      <!-- Level -->
+      <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:20px;background:#FFFFFF;border-radius:24px;box-shadow:0 10px 15px rgba(0,0,0,0.05), 0 4px 6px rgba(0,0,0,0.02);">
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="flex:1;display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#8B5CF6,#6D28D9);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/c/level_trophy_icon-FFFFFF.svg" alt="" style="display:block;width:24px;height:24px;"></div>
+              <div><div style="font-size:15.3px;font-weight:700;color:#1F2937;line-height:28px;">Level B1</div><div style="font-size:11.9px;color:#4B5563;line-height:20px;">Intermediate</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;padding:6px 12px;background:#F5F3FF;border-radius:9999px;"><img src="assets/icons/c/flash_xp_icon-8B5CF6.svg" alt="" style="display:block;width:16px;height:16px;"><span style="font-size:11.9px;font-weight:700;color:#6D28D9;line-height:20px;">2350 XP</span></div>
+          </div>
+          <div style="position:relative;margin-top:16px;height:24px;border-radius:9999px;background:#F3F4F6;overflow:hidden;" dir="ltr">
+            <div style="width:78.3%;height:100%;border-radius:9999px;background:linear-gradient(90deg,#8B5CF6,#7C3AED);"></div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10.2px;font-weight:700;color:#374151;line-height:16px;">2350 / 3000 XP</div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:20px;background:#FFFFFF;border-radius:24px;box-shadow:0 4px 6px rgba(0,0,0,0.02), 0 10px 15px rgba(0,0,0,0.05);display:flex;align-items:center;gap:16px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/c/flash_xp_icon-16A34A.svg" alt="" style="display:block;width:28px;height:28px;"></div>
+          <div style="flex:1;"><div style="font-size:15.3px;font-weight:700;color:#1F2937;line-height:24px;">Your Level</div><div style="margin-top:4px;font-size:13.6px;color:#9CA3AF;line-height:20px;">No level data available. Start practicing to track your progress!</div></div>
+        </div>
+      </sc-if>
+      <div style="height:16px;"></div>
+
+      <!-- Learning highlights -->
+      <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:16px;background:#FFFFFF;border-radius:16px;border:1px solid #F3F4F6;box-shadow:0 4px 6px rgba(0,0,0,0.02), 0 10px 15px rgba(0,0,0,0.05);">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="flex:1;"><div style="font-size:16px;font-weight:700;color:#1F2937;">{{ t.lhTitle }}</div><div style="margin-top:2px;font-size:12px;color:#6B7280;">{{ t.lhSub }}</div></div>
+            <div style="width:36px;height:36px;border-radius:50%;background:#F5F3FF;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:18px;color:#7C3AED;">auto_awesome</span></div>
+          </div>
+          <div style="margin-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;">
+            <sc-for list="{{ tiles }}" as="h" hint-placeholder-count="5">
+              <div style="height:88px;box-sizing:border-box;padding:10px;background:#F9FAFB;border-radius:12px;border:1px solid #F3F4F6;display:flex;flex-direction:column;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:32px;height:32px;border-radius:8px;background:{{ h.bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:18px;color:{{ h.c }};">{{ h.icon }}</span></div>
+                  <span style="font-size:18px;font-weight:500;color:#111827;">{{ h.v }}</span>
+                </div>
+                <div style="flex:1;"></div>
+                <div style="font-size:10px;line-height:1.25;font-weight:500;color:#4B5563;">{{ h.l }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:14px;padding:8px 10px;background:#F5F3FF;border-radius:12px;display:flex;align-items:center;gap:8px;">
+            <span style="font-family:'Material Icons Round';font-weight:normal;font-style:normal;line-height:1;font-feature-settings:'liga';white-space:nowrap;direction:ltr;font-size:14px;color:#8B5CF6;">auto_awesome</span>
+            <span style="flex:1;font-size:12px;line-height:1.3;font-weight:500;color:#5B21B6;">{{ t.lhFooter }}</span>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:20px;background:#FFFFFF;border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,0.05);display:flex;flex-direction:column;align-items:center;text-align:center;">
+          <div style="width:48px;height:48px;border-radius:50%;background:#F3F4F6;display:flex;align-items:center;justify-content:center;"><img src="assets/icons/c/stats_clock_icon-9CA3AF.svg" alt="" style="display:block;width:24px;height:24px;"></div>
+          <div style="margin-top:12px;font-size:13.6px;font-weight:600;color:#4B5563;line-height:20px;">{{ t.noStatisticsYet }}</div>
+          <div style="margin-top:4px;font-size:11.9px;color:#9CA3AF;line-height:18px;">{{ t.completePracticeSessions }}</div>
+        </div>
+      </sc-if>
+      <div style="height:16px;"></div>
+
+      <!-- Next certificate -->
+      <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:20px;border-radius:16px;background:linear-gradient(135deg,#FAF5FF,#FDF2F8);box-shadow:0 1px 2px rgba(0,0,0,0.05);cursor:pointer;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:40px;height:40px;border-radius:9999px;background:linear-gradient(135deg,#A855F7,#EC4899);display:flex;align-items:center;justify-content:center;"><img src="assets/icons/c/certificate_icon-FFFFFF.svg" alt="" style="display:block;width:20px;height:20px;"></div>
+              <div><div style="font-size:13.6px;font-weight:700;color:#1F2937;line-height:24px;">{{ t.nextCertificate }}</div><div style="font-size:11.9px;color:#4B5563;line-height:20px;">Intermediate Speaker</div></div>
+            </div>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="font-size:11.9px;font-weight:500;color:#7C3AED;line-height:20px;">{{ t.practiceNow }}</span><img src="assets/icons/c/arrow_right_small-7C3AED.svg" alt="" style="display:block;width:14px;height:14px;"></span>
+          </div>
+          <div style="margin-top:16px;height:10px;border-radius:9999px;background:#FFFFFF;box-shadow:0 2px 4px rgba(0,0,0,0.05);overflow:hidden;" dir="ltr"><div style="width:75%;height:100%;background:linear-gradient(90deg,#A855F7,#4F46E5);"></div></div>
+          <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:11.9px;font-weight:500;color:#374151;line-height:20px;">15/20 {{ t.hours }}</span>
+            <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:11.9px;color:#4B5563;line-height:20px;">5 {{ t.hoursToGo }}</span><span style="padding:2px 8px;border-radius:9999px;background:#F3E8FF;font-size:10.2px;font-weight:500;color:#7E22CE;line-height:16px;">B1</span></span>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:20px;border-radius:24px;background:linear-gradient(135deg,#FAF5FF,#FDF2F8);box-shadow:0 4px 6px rgba(0,0,0,0.02), 0 10px 15px rgba(0,0,0,0.05);display:flex;align-items:center;gap:16px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/c/certificate_icon-9333EA.svg" alt="" style="display:block;width:28px;height:28px;"></div>
+          <div style="flex:1;"><div style="font-size:15.3px;font-weight:700;color:#1F2937;line-height:24px;">{{ t.nextCertificate }}</div><div style="margin-top:4px;font-size:13.6px;color:#9CA3AF;line-height:20px;">{{ t.noCertificateProgress }}</div></div>
+        </div>
+      </sc-if>
+      <div style="height:24px;"></div>
+
+      <!-- Latest monthly progress -->
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:17px;font-weight:700;color:#1F2937;line-height:28px;">{{ t.latestMonthlyProgress }}</span>
+        <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;align-items:center;gap:4px;cursor:pointer;"><span style="font-size:11.9px;font-weight:500;color:#7C3AED;line-height:20px;">{{ t.fullReport }}</span><img src="assets/icons/c/arrow_right_small-7C3AED.svg" alt="" style="display:block;width:16px;height:16px;"></span>
+        </sc-if>
+      </div>
+      <div style="height:12px;"></div>
+      <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:20px;background:#FFFFFF;border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:13.6px;font-weight:500;color:#000000;line-height:24px;">{{ t.overallProgress }}</span>
+            <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:13.6px;font-weight:700;color:#000000;line-height:24px;">68%</span><span style="padding:4px 8px;border-radius:9999px;background:#FEF9C3;font-size:10.2px;color:#854D0E;line-height:16px;">{{ t.good }}</span></span>
+          </div>
+          <div style="margin-top:12px;height:12px;border-radius:9999px;background:#E5E7EB;overflow:hidden;" dir="ltr"><div style="width:68%;height:100%;border-radius:9999px;background:#EAB308;"></div></div>
+          <div style="margin-top:24px;display:flex;flex-direction:column;gap:16px;">
+            <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:11.9px;font-weight:500;color:#374151;line-height:20px;">{{ m.l }}</span>
+                  <span style="display:flex;align-items:center;gap:6px;"><span style="font-size:11.9px;font-weight:500;color:#000000;line-height:20px;">{{ m.v }}%</span><span style="width:8px;height:8px;border-radius:50%;background:{{ m.c }};"></span></span>
+                </div>
+                <div style="margin-top:4px;height:8px;border-radius:9999px;background:#E5E7EB;overflow:hidden;" dir="ltr"><div style="width:{{ m.w }};height:100%;border-radius:9999px;background:{{ m.c }};"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:20px;background:#FFFFFF;border-radius:24px;box-shadow:0 4px 6px rgba(0,0,0,0.02), 0 10px 15px rgba(0,0,0,0.05);display:flex;align-items:center;gap:16px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:#DBEAFE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/c/calendar_icon-2563EB.svg" alt="" style="display:block;width:28px;height:28px;"></div>
+          <div style="flex:1;"><div style="font-size:15.3px;font-weight:700;color:#1F2937;line-height:24px;">Monthly Progress</div><div style="margin-top:4px;font-size:13.6px;color:#9CA3AF;line-height:20px;">No monthly progress available. Complete more sessions to see your report!</div></div>
+        </div>
+      </sc-if>
+      <div style="height:24px;"></div>
+
+      <!-- Last sessions -->
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:17px;font-weight:700;color:#1F2937;line-height:28px;">{{ t.lastSessions }}</span>
+        <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+          <span style="display:flex;align-items:center;gap:4px;cursor:pointer;"><span style="font-size:11.9px;font-weight:500;color:#7C3AED;line-height:20px;">{{ t.allSessions }}</span><img src="assets/icons/c/arrow_right-7C3AED.svg" alt="" style="display:block;width:16px;height:16px;"></span>
+        </sc-if>
+      </div>
+      <div style="height:16px;"></div>
+      <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:8px 0;background:#FFFFFF;border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+          <sc-for list="{{ sessions }}" as="s" hint-placeholder-count="4">
+            <div style="padding:12px 8px;display:flex;align-items:center;gap:12px;">
+              <div style="width:40px;height:40px;border-radius:8px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/c/nav_ai_practice_icon-7C3AED.svg" alt="" style="display:block;width:18px;height:18px;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:13.6px;font-weight:500;color:#1F2937;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ s.title }}</div>
+                <div style="margin-top:4px;display:flex;align-items:center;gap:8px;font-size:10.2px;color:#6B7280;line-height:1.4;">
+                  <span>{{ s.when }}</span><span>•</span>
+                  <span style="display:flex;align-items:center;gap:4px;"><img src="assets/icons/c/clock_outline-6B7280.svg" alt="" style="display:block;width:12px;height:12px;">{{ s.dur }}</span>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:24px 0;background:#FFFFFF;border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,0.05);text-align:center;font-size:14px;font-weight:500;color:#757575;">{{ t.noRecentSessions }}</div>
+      </sc-if>
+    </div>
+  </div>
+  <div style="position:absolute;top:0;left:0;right:0;z-index:5;">
+    <dc-import name="App Top Bar" dir="{{ dir }}" scroll-t="{{ scrollT }}" unread="{{ unread }}" hint-size="100%,110px"></dc-import>
+  </div>
+</div>
+<dc-import name="App Bottom Nav" dir="{{ dir }}" active="{{ 0 }}" hint-size="100%,112px"></dc-import>
+</sc-if>
+
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;dir&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ltr&quot;,&quot;rtl&quot;],&quot;default&quot;:&quot;ltr&quot;,&quot;tsType&quot;:&quot;'ltr'|'rtl'&quot;},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;default&quot;,&quot;empty&quot;,&quot;loading&quot;],&quot;default&quot;:&quot;default&quot;,&quot;tsType&quot;:&quot;'default'|'empty'|'loading'&quot;},&quot;speakToHire&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;streakExpanded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { scrollT: 0, open: null };
+  renderVals() {
+    const p = this.props;
+    const dir = p.dir ?? 'ltr';
+    const ar = dir === 'rtl';
+    const st = p.state ?? 'default';
+    const streakOpen = this.state.open ?? (p.streakExpanded ?? false);
+    const E = {
+      hello: 'Hello', used: 'used', resumePractice: 'Resume Practice', todaysGoal: "Today's Goal", start: 'Start',
+      quickWin: 'Quick Win', word: 'Word', practiceNow: 'Practice Now', dayStreak: 'Day Streak',
+      best: 'Best: {n} days', daysToGo: 'days to go', keepGoing: 'Keep Going!', loginStreak: 'Login Streak',
+      noStreakData: 'No streak data available. Log in daily to build your streak!',
+      dailyChallenges: 'Daily Challenges', completedCount: 'completed',
+      noChallengesAvailable: 'No challenges available. Check back soon for new challenges!',
+      practiceMinutes: 'Practice {n} minutes', learnWords: 'Learn {n} new words/Idioms', completeTask: 'Complete {n} Task',
+      yourProgress: 'Your Progress', fullReport: 'Full Report',
+      lhTitle: 'Learning highlights', lhSub: 'Your progress at a glance', totalHours: 'Total Hours',
+      lhWords: 'Words & Idioms', lhTasks: 'Completed Tasks', lhTips: 'Tips Gained', lhScen: 'Real Scenarios',
+      lhFooter: 'Every milestone is helping you speak with more confidence.',
+      noStatisticsYet: 'No Statistics Yet', completePracticeSessions: 'Complete practice sessions to see your stats',
+      nextCertificate: 'Next Certificate', hours: 'Hours', hoursToGo: 'hours to go',
+      noCertificateProgress: 'No certificate progress yet. Start practicing to earn your first certificate!',
+      latestMonthlyProgress: 'Latest Monthly Progress', overallProgress: 'Overall Progress', good: 'Good progress',
+      pronunciation: 'Pronunciation', vocabulary: 'Vocabulary', grammar: 'Grammar', practiceTime: 'Practice Time',
+      lastSessions: 'Last Sessions', allSessions: 'All Sessions', noRecentSessions: 'No recent sessions',
+      aiPracticeWith: 'AI Practice with', today: 'Today', yesterday: 'Yesterday', min: 'min',
+      speakToHire: 'Speak To Hire', speakToHireSubtitle: 'Your 30-hour BPO challenge', viewProgram: 'View Program'
+    };
+    const A = {
+      hello: 'مرحباً', used: 'مستخدم', resumePractice: 'متابعة التدريب', todaysGoal: 'هدف اليوم', start: 'ابدأ',
+      quickWin: 'إنجاز سريع', word: 'كلمة', practiceNow: 'تمرن الآن', dayStreak: 'سلسلة أيام',
+      best: 'الأفضل: {n} أيام', daysToGo: 'أيام متبقية', keepGoing: 'استمر!', loginStreak: 'سلسلة تسجيل الدخول',
+      noStreakData: 'لا توجد بيانات سلسلة. سجل الدخول يوميًا لبناء سلسلتك!',
+      dailyChallenges: 'التحديات اليومية', completedCount: 'مكتمل',
+      noChallengesAvailable: 'لا توجد تحديات متاحة. عد قريبًا للتحديات الجديدة!',
+      practiceMinutes: 'تدرب {n} دقيقة', learnWords: 'تعلم {n} كلمات/تعابير جديدة', completeTask: 'أكمل {n} مهمة',
+      yourProgress: 'تقدمك', fullReport: 'التقرير الكامل',
+      lhTitle: 'أبرز إنجازات التعلّم', lhSub: 'تقدّمك في لمحة', totalHours: 'إجمالي الساعات',
+      lhWords: 'كلمات وتعابير', lhTasks: 'مهام مكتملة', lhTips: 'نصائح مكتسبة', lhScen: 'مواقف واقعية',
+      lhFooter: 'كل إنجاز يساعدك على التحدّث بثقة أكبر.',
+      noStatisticsYet: 'لا توجد إحصائيات بعد', completePracticeSessions: 'أكمل جلسات التدريب لرؤية إحصائياتك',
+      nextCertificate: 'الشهادة التالية', hours: 'ساعات', hoursToGo: 'ساعات متبقية',
+      noCertificateProgress: 'لا يوجد تقدم في الشهادة بعد. ابدأ التدريب للحصول على شهادتك الأولى!',
+      latestMonthlyProgress: 'آخر تقدم شهري', overallProgress: 'التقدم العام', good: 'تقدم جيد',
+      pronunciation: 'النطق', vocabulary: 'المفردات', grammar: 'القواعد', practiceTime: 'وقت التدريب',
+      lastSessions: 'الجلسات الأخيرة', allSessions: 'جميع الجلسات', noRecentSessions: 'لا توجد جلسات حديثة',
+      aiPracticeWith: 'تمرين ذكاء اصطناعي مع', today: 'اليوم', yesterday: 'أمس', min: 'دقيقة',
+      speakToHire: 'تحدث لتُوظَّف', speakToHireSubtitle: 'تحدي 30 ساعة في خدمة العملاء', viewProgram: 'عرض البرنامج'
+    };
+    const s = ar ? A : E;
+    const t = Object.assign({}, s, {
+      resumePracticeUp: s.resumePractice.toUpperCase(),
+      quickWinWord: s.quickWin.toUpperCase() + ' · ' + s.word.toUpperCase(),
+      streakSub: s.best.replace('{n}', 12) + ' · 2 ' + s.daysToGo,
+      twoDaysToGo: '2 ' + s.daysToGo
+    });
+    const d = {
+      taskName: 'Describe your favourite room',
+      taskDesc: 'Talk about the room you spend the most time in and why you like it.',
+      term: 'Resilient', meaning: 'Able to recover quickly from difficult situations.'
+    };
+    const ok = { bg: '#ECFDF5', border: '#A7F3D0', text: '#047857', xpc: '#059669', svg: 'assets/icons/c/check_circle_filled-059669.svg', xpsvg: 'assets/icons/c/flash_xp_icon-059669.svg', deco: 'line-through' };
+    const no = { bg: '#F9FAFB', border: '#E5E7EB', text: '#374151', xpc: '#6B7280', svg: 'assets/icons/c/circle_unchecked-9CA3AF.svg', xpsvg: 'assets/icons/c/flash_xp_icon-6B7280.svg', deco: 'none' };
+    const challenges = [
+      Object.assign({}, ok, { title: s.practiceMinutes.replace('{n}', 10), hasXp: false }),
+      Object.assign({}, no, { title: s.learnWords.replace('{n}', 3), hasXp: true, xp: 25 }),
+      Object.assign({}, no, { title: s.completeTask.replace('{n}', 1), hasXp: true, xp: 10 })
+    ];
+    const tiles = [
+      { icon: 'schedule', bg: '#EDE9FE', c: '#6D28D9', v: '12.5h', l: s.totalHours },
+      { icon: 'menu_book', bg: '#DBEAFE', c: '#1D4ED8', v: '48', l: s.lhWords },
+      { icon: 'task_alt', bg: '#DCFCE7', c: '#15803D', v: '9', l: s.lhTasks },
+      { icon: 'lightbulb_outline', bg: '#FEF3C7', c: '#B45309', v: '14', l: s.lhTips },
+      { icon: 'record_voice_over', bg: '#FAE8FF', c: '#A21CAF', v: '6', l: s.lhScen }
+    ];
+    const metrics = [
+      { l: s.pronunciation, v: 72, c: '#EAB308' },
+      { l: s.vocabulary, v: 65, c: '#EAB308' },
+      { l: s.grammar, v: 48, c: '#F97316' },
+      { l: s.practiceTime, v: 80, c: '#EAB308' }
+    ].map(m => Object.assign(m, { w: m.v + '%' }));
+    const sessions = [
+      ['Emma', s.today + ', 2:30 PM', 15], ['Liam', s.yesterday + ', 6:10 PM', 12],
+      ['Sofia', (ar ? 'الإثنين' : 'Mon') + ', ' + (ar ? 'أكتوبر' : 'Oct') + ' 28, 9:05 AM', 20], ['Noah', (ar ? 'الأحد' : 'Sun') + ', ' + (ar ? 'أكتوبر' : 'Oct') + ' 27, 8:40 PM', 9]
+    ].map(r => ({ title: s.aiPracticeWith + ' ' + r[0], when: r[1], dur: r[2] + ' ' + s.min }));
+    const dl = ar ? ['M', 'T', 'W', 'T', 'F', 'S', 'S'] : ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+    const week = dl.map((l, i) => {
+      const on = i + 1 <= 5, today = i + 1 === 5;
+      return { l, bg: on ? '#F97316' : '#E5E7EB', dot: on ? '#FFFFFF' : 'transparent', border: today ? '2px solid #FED7AA' : 'none' };
+    });
+    return {
+      dir, t, d, challenges, tiles, metrics, sessions, week, streakOpen,
+      isLoading: st === 'loading', isReady: st !== 'loading',
+      hasData: st === 'default', isEmpty: st === 'empty',
+      showSTH: st === 'default' && (p.speakToHire ?? false),
+      hoursPill: '2h / 10h ' + s.used,
+      flip: ar ? 'scaleX(-1)' : 'none',
+      chevron: streakOpen ? 'rotate(180deg)' : 'none',
+      unread: st === 'empty' ? 0 : 3,
+      scrollT: this.state.scrollT,
+      three: [1, 2, 3], seven: [1, 2, 3, 4, 5, 6, 7],
+      toggleStreak: () => this.setState({ open: !streakOpen }),
+      onScroll: (e) => { const v = Math.min(1, e.currentTarget.scrollTop / 60); if (Math.abs(v - this.state.scrollT) > 0.02 || v === 0 || v === 1) this.setState({ scrollT: v }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -103,10 +103,18 @@ Voice-over options (the producer asks at the start, together with the video's la
 
 ### Product screens
 
-`brand/product-ui/` holds the design system's web-platform kit, a working click-through of the platform, captured
-with `bin/sgv screen` (headless Chrome, 2x). Install it once from the Speaking Genie Design System artifact
+Two kits from the design systems, both working click-throughs, captured with `bin/sgv screen` (headless Chrome over
+the DevTools protocol): the learner **mobile app** in `brand/product-ui-mobile/` (from the Enablement Design System,
+36 screens, 3x, in the kit's phone frame) and the teacher/admin **web platform** in `brand/product-ui/` (2x).
+`bin/sgv screen --list` shows every screen. The web kit: Install it once from the Speaking Genie Design System artifact
 (files under `project/`), keeping its folder structure, so that
 `brand/product-ui/ui_kits/web-platform/Speaking Genie Platform.dc.html` exists. Then `bin/sgv screen --list`.
+
+### Editing toolkit
+
+Motion-blurred `zoom` and `push` transitions, a living camera on every product screen (drift, travel between
+`steps`, a ring that draws itself on, a finger `tap`), word-by-word captions, and generated sound effects
+(`"sfx": true`). The rules for using them are in `.claude/skills/video-crew/EDITING.md`.
 
 ## Design system
 

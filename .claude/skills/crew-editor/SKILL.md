@@ -16,11 +16,12 @@ You own the cut. Read first: `crew/treatment.md`, `crew/vo.json` (with timings),
    - plain screen → `image` with `kenburns: "in"` (hold ≥ 3 s);
    - number, quote, chapter, CTA → the motion clip from `crew/motion.md`;
    - lower thirds → `overlays` at the speaker's first appearance (`bin/sgv timeline <p>` gives clip indexes).
-3. **Transitions:** cuts by default, dissolve between scenes, dip into the end card. No wipes or slides unless the treatment asks. A dissolve or dip starts the next clip `transitionDuration` (0.5 s) earlier, so add that to the previous clip's duration to keep each beat on its voice line, and make sure no line is still playing when the end card dips in.
+3. **Transitions and rhythm:** follow `.claude/skills/video-crew/EDITING.md`. Cuts on the voice by default; `zoom` to go deeper into the same thing, `push-left`/`push-right`/`push-up` to move on (Arabic pushes right), `dissolve` for time or place, `dip` into the end card. Motion transitions are 0.3–0.4 s (`"transitionDuration": 0.35` on the clip), get motion blur automatically, and at most one every ~6 s. Any non-cut transition starts the next clip that much earlier: add it to the previous clip's duration to keep beats on their lines, and make sure no line is still playing when the end card comes in. Clips joined by cuts or motion transitions have `"enterFade": false, "exitFade": false`.
 4. **Check the timeline:** `bin/sgv timeline <p>`, then compare each beat's start with its voice line's `start` (±0.2 s). Leave 0.2–0.4 s of picture before a line starts on a new shot.
 
 ## Captions
 
+- Social cuts use word-by-word captions: `"captions": {…, "style": "words"}`. Add `"sfx": true` for whooshes under motion transitions and taps on ProductScreen `tap`s.
 - With a script (`crew/vo.json`): `bin/sgv captions <p> --from-vo`. The captions come from the approved script text and the voice timings, so Egyptian Arabic and product names are exactly right.
 - Without a script (footage-led jobs): `bin/sgv captions <p>`, then proofread `captions/master.srt` against the transcript and fix product names.
 - Bilingual: each language's cut gets its own project or `exports` set and its own captions file. Never mix two languages in one caption track.

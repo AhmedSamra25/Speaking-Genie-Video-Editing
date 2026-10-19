@@ -43,7 +43,11 @@ Modern Standard Arabic for on-screen text; Egyptian Arabic is fine for voice-ove
   `cubic-bezier(0.22, 1, 0.36, 1)`. Exit: 12 frames fade. **Never bounce or overshoot.**
 - Stagger related elements by 4–6 frames. Hold readable text ≥ 1.5s + 0.06s per character.
 - Transitions between shots: hard cut by default; 0.4–0.6s cross-dissolve between scenes;
-  fade-through-canvas for chapter breaks. No wipes, spins or zooms.
+  fade-through-canvas for chapter breaks. Motion transitions, used sparingly to mark a turn in the story:
+  a gentle zoom-through (outgoing +25%, incoming settles from +15%) or a push, 0.3–0.4s, eased, with real motion
+  blur and an optional soft whoosh. No wipes, spins, flips, glitches or bounces.
+- Product screens never sit still: a slow drift (≤ 4% over the shot), eased camera travel between points, a ring
+  that draws itself on, and a touch indicator that taps the button the voice mentions.
 
 ## Captions **(video)**
 

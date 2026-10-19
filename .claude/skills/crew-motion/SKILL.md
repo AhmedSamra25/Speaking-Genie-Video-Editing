@@ -19,7 +19,18 @@ You make every graphic on screen. Read first: `crew/treatment.md`, `crew/onscree
 | `ProductScreen` | a real product screen in a window, slow push-in to one callout | `src`, `callout?`, `label?`, `move?` |
 | `EndCard` | CTA | `headline`, `subline?`, `url?` |
 
-`ProductScreen` takes `src` as a path relative to the project (`assets/screens/summary.png`); `sgv` stages it for Remotion. `callout` is `{x, y, w, h}` in the screen's CSS pixels (as written in `crew/screens.md`), `label` is the callout text, and `move` is `push` (default, eases into the callout), `still` or `pan`. The `lang` of the clip mirrors the label side for Arabic.
+`ProductScreen` takes `src` as a path relative to the project (`assets/screens/summary.png`; add `"scale": 3` for mobile captures and 3x crops); `sgv` stages it for Remotion. The props that make it feel edited (see `.claude/skills/video-crew/EDITING.md`):
+
+| Prop | Does |
+| --- | --- |
+| `callout` `{x,y,w,h}` + `label` | one point, in the screen's CSS pixels; the ring draws itself on, the label rises in |
+| `steps` `[{callout, label, at}]` | several points: the camera travels to each at `at` seconds (~0.7 s, eased), ring and label follow |
+| `tap` `{x,y,at}` (or a list) | a touch indicator glides in, presses and ripples on that button; with `"sfx": true` a tap sound plays |
+| `drift` 0.02–0.04 | slow living-camera push over the whole clip |
+| `startZoom`, `pushFrames` | start part-way in and land fast, for short beats |
+| `move` | `push` (default), `still`, `pan` |
+| `cover`, `calloutFill`, `sideMargin`, `ring`, `dim`, `ringAt`, `labelSize` | framing details |
+| `enterFade` / `exitFade` | `false` for clips joined by cuts or motion transitions |
 
 Write `crew/motion.md`: one row per graphic with beat, composition, duration, theme, lang and the exact props JSON, so the editor can paste it into `edit.json`.
 

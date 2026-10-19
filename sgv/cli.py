@@ -138,14 +138,17 @@ def cmd_voices(a):
 
 def cmd_screen(a):
     if a.list or not a.screen:
-        for c in screens.cards():
-            opts = " ".join(f"--{k} {v}" for k, v in c["options"].items())
-            print(f"  {c['id']:32} #{c['route']:16} {opts:28} {c['name']}")
+        for c in screens.cards(a.kit):
+            flag = lambda k: "--app-screen" if k == "screen" else f"--{k}"
+            opts = " ".join(f"{flag(k)} {v!r}" if " " in v else f"{flag(k)} {v}" for k, v in c["options"].items())
+            where = f"#{c['route']}" if c["route"] else ""
+            print(f"  {c['kit']:6} {c['id']:30} {where:16} {opts:44} {c['name']}")
         return
     p = project.find(a.project)
     out = p.root / "assets" / "screens" / f"{a.name or a.screen}.png"
-    opts = {k: getattr(a, k) for k in screens.OPTIONS}
-    screens.capture(a.screen, out, options=opts, size=a.size, scale=a.scale)
+    # the mobile kit's "screen" URL option is --app-screen here: the positional `screen` is the card id
+    opts = {k: getattr(a, "app_screen" if k == "screen" else k) for k in screens.OPTIONS}
+    screens.capture(a.screen, out, kit=a.kit, options=opts, size=a.size, scale=a.scale)
     info = ff.probe(str(out))["video"]
     print(f"{out.relative_to(paths.ROOT)}  {info['width']}x{info['height']}")
 
@@ -288,15 +291,16 @@ def main(argv=None) -> int:
     s.add_argument("-o", "--out", help="folder for --try samples (default build/voices)")
     s.set_defaults(fn=cmd_voices)
 
-    s = sub.add_parser("screen", help="capture a real product screen from the design system kit (or --list)")
+    s = sub.add_parser("screen", help="capture a real product screen from the web platform or mobile app kit (or --list)")
     s.add_argument("project", nargs="?")
     s.add_argument("screen", nargs="?", help="screen card id (sgv screen --list) or route, e.g. dashboard")
     s.add_argument("--list", action="store_true")
     s.add_argument("--name", help="output name in assets/screens/ (default: the screen id)")
     for k in screens.OPTIONS:
-        s.add_argument(f"--{k}")
-    s.add_argument("--size", default="1440x900", help="CSS viewport")
-    s.add_argument("--scale", type=float, default=2, help="device pixel ratio")
+        s.add_argument("--app-screen" if k == "screen" else f"--{k}", dest="app_screen" if k == "screen" else k)
+    s.add_argument("--kit", choices=list(screens.KITS), help="web platform or mobile app (default: from the card id)")
+    s.add_argument("--size", help="CSS viewport (default: web 1440x900, mobile 430x884)")
+    s.add_argument("--scale", type=float, help="device pixel ratio (default: web 2, mobile 3)")
     s.set_defaults(fn=cmd_screen)
 
     s = sub.add_parser("timeline", help="show clip start/end times on the assembled timeline")

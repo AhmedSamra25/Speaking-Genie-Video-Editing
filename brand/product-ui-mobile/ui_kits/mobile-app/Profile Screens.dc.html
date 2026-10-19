@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round|Material+Icons+Outlined">
+  <link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+  <script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+</helmet>
+<x-import component-from-global-scope="SpeakingGenieDesignSystem_ac4dbc.PhoneFrame" scrollable="{{ false }}" tone="{{ tone }}" hint-size="390px,844px">
+<div dir="{{ dir }}" style="height:100%;position:relative;display:flex;flex-direction:column;font-family:Poppins, system-ui, sans-serif;background:{{ bg }};">
+
+<!-- PROFILE TAB -->
+<sc-if value="{{ isProfile }}" hint-placeholder-val="{{ true }}">
+  <div style="height:50px;flex-shrink:0;"></div>
+  <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 16px;">
+    <div style="height:16px;"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div style="position:relative;width:80px;height:80px;">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0D0D26,rgba(13,13,38,0.8));box-shadow:0 6px 12px rgba(13,13,38,0.3);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons';font-size:40px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">person</span></div>
+        <div style="position:absolute;right:0;bottom:0;width:28px;height:28px;box-sizing:border-box;border-radius:50%;background:#0D0D26;border:2px solid #FFFFFF;box-shadow:0 2px 4px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons';font-size:14px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">camera_alt</span></div>
+      </div>
+      <div style="margin-top:12px;font-family:Inter, sans-serif;font-size:20.4px;font-weight:700;line-height:32px;color:#000000;">Ahmed Hassan</div>
+      <div style="margin-top:4px;font-family:Inter, sans-serif;font-size:13.6px;line-height:24px;color:#6B7280;">Level B1: Intermediate</div>
+      <div style="margin-top:16px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
+        <sc-for list="{{ goals }}" as="g" hint-placeholder-count="3"><span style="padding:6px 12px;border-radius:9999px;background:#F3F4F6;font-family:Inter, sans-serif;font-size:10.2px;line-height:16px;color:#4B5563;">{{ g }}</span></sc-for>
+      </div>
+      <div style="height:16px;"></div>
+    </div>
+    <div style="height:8px;"></div>
+    <div style="border-radius:16px;background:#FFFFFF;box-shadow:0 3px 16px rgba(0,0,0,0.08);">
+      <div style="padding:16px;border-radius:16px;background:linear-gradient(90deg,#F5F3FF,#EDE9FE);font-family:Inter, sans-serif;">
+        <div style="display:flex;align-items:center;gap:8px;"><img src="assets/icons/current_plan_icon.svg" alt="" style="width:20px;height:20px;"><span style="font-size:15.3px;font-weight:700;line-height:28px;color:#000000;">{{ t.currentPlan }}</span></div>
+        <div style="margin-top:8px;display:flex;align-items:center;">
+          <div style="flex:1;"><div style="font-size:13.6px;font-weight:700;line-height:24px;color:#7C3AED;">Premium Plan</div><div style="margin-top:4px;font-size:11.9px;line-height:20px;color:#6B7280;" dir="ltr">Renews on Nov 5, 2026</div><div style="margin-top:4px;font-size:11.9px;line-height:20px;color:#6B7280;" dir="ltr">$9.99/month</div></div>
+          <div style="padding:12px 8px;font-size:13.6px;font-weight:500;line-height:24px;color:#7C3AED;">{{ t.change }}</div>
+        </div>
+      </div>
+    </div>
+    <div style="height:8px;"></div>
+    <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="2">
+      <div style="margin-bottom:8px;border-radius:16px;background:#FFFFFF;box-shadow:0 3px 16px rgba(0,0,0,0.08);">
+        <div style="padding:16px 16px 12px;display:flex;align-items:center;gap:10px;"><div style="width:3px;height:16px;border-radius:2px;background:#0D0D26;"></div><span style="font-size:16px;font-weight:600;color:#0D0D26;">{{ sec.title }}</span></div>
+        <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+          <div>
+            <div style="padding:12px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(13,13,38,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'{{ it.font }}';font-size:20px;line-height:1;color:{{ it.c }};font-feature-settings:'liga';">{{ it.icon }}</span></div>
+              <span style="flex:1;font-size:15px;font-weight:500;color:{{ it.c }};">{{ it.title }}</span>
+              <span style="font-family:'Material Icons';font-size:14px;line-height:1;color:rgba(13,13,38,0.4);font-feature-settings:'liga';transform:{{ flip }};">arrow_forward_ios</span>
+            </div>
+            <sc-if value="{{ it.div }}" hint-placeholder-val="{{ true }}"><div style="margin-left:64px;height:1px;background:rgba(158,158,158,0.1);"></div></sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+    <div style="margin-bottom:8px;border-radius:16px;background:#FFFFFF;box-shadow:0 3px 16px rgba(0,0,0,0.08);">
+      <div style="padding:16px 16px 12px;display:flex;align-items:center;gap:10px;"><div style="width:3px;height:16px;border-radius:2px;background:#0D0D26;"></div><span style="font-size:16px;font-weight:600;color:#0D0D26;">{{ t.assistantTitle }}</span></div>
+      <div style="padding:0 16px 14px;display:flex;align-items:center;gap:8px;">
+        <span style="flex:1;font-size:13px;color:#90909B;">{{ t.assistantSub }}</span>
+        <div style="width:52px;height:32px;border-radius:16px;background:#7C3AED;position:relative;flex-shrink:0;" dir="ltr"><div style="position:absolute;right:4px;top:4px;width:24px;height:24px;border-radius:50%;background:#FFFFFF;"></div></div>
+      </div>
+    </div>
+    <div style="height:4px;"></div>
+    <div style="height:48px;border-radius:14px;background:linear-gradient(90deg,#E30000,rgba(227,0,0,0.8));box-shadow:0 4px 10px rgba(227,0,0,0.3);display:flex;align-items:center;justify-content:center;gap:10px;">
+      <span style="font-family:'Material Icons';font-size:20px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';transform:{{ flip }};">logout</span><span style="font-size:15px;font-weight:600;color:#FFFFFF;">{{ t.logout }}</span>
+    </div>
+    <div style="height:32px;"></div>
+  </div>
+  <dc-import name="App Bottom Nav" dir="{{ dir }}" active="{{ 4 }}" hint-size="100%,112px"></dc-import>
+  <sc-if value="{{ showDelete }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:20;background:rgba(0,0,0,0.54);display:flex;align-items:center;justify-content:center;padding:0 40px;">
+      <div style="width:100%;max-width:310px;box-sizing:border-box;padding:24px 24px 20px;border-radius:16px;background:#FFFFFF;">
+        <div style="font-size:18px;font-weight:700;color:#0D0D26;">{{ t.delTitle }}</div>
+        <div style="margin-top:16px;font-size:14px;line-height:1.5;color:#6B7280;">{{ t.delMsg }}</div>
+        <div style="margin-top:24px;display:flex;justify-content:flex-end;gap:8px;"><span style="padding:10px 12px;font-size:14px;font-weight:500;color:#0D0D26;">{{ t.cancel }}</span><span style="padding:10px 12px;font-size:14px;font-weight:600;color:#E30000;">{{ t.delete }}</span></div>
+      </div>
+    </div>
+  </sc-if>
+</sc-if>
+
+<!-- NOTIFICATIONS -->
+<sc-if value="{{ isNotif }}" hint-placeholder-val="{{ false }}">
+  <div style="height:50px;flex-shrink:0;"></div>
+  <div style="padding:16px 20px;display:flex;align-items:center;gap:16px;flex-shrink:0;font-family:Inter, sans-serif;">
+    <img src="assets/icons/icon_back.svg" alt="" style="width:24px;height:24px;transform:{{ backFlip }};">
+    <span style="flex:1;font-size:20px;font-weight:700;line-height:28px;color:#1F2937;">{{ t.notifications }}</span>
+  </div>
+  <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 20px 34px;font-family:Inter, sans-serif;">
+    <sc-if value="{{ notifOk }}" hint-placeholder-val="{{ true }}">
+      <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="5">
+        <div style="padding:16px 0;background:{{ n.bg }};border-bottom:1px solid #F3F4F6;display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:{{ n.ibg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Material Icons Outlined';font-size:22px;line-height:1;color:{{ n.ic }};font-feature-settings:'liga';">{{ n.icon }}</span></div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:14px;font-weight:{{ n.w }};line-height:20px;color:#1F2937;">{{ n.title }}</div>
+            <div style="margin-top:4px;font-size:12.5px;line-height:18px;color:#6B7280;">{{ n.body }}</div>
+            <div style="margin-top:6px;font-size:11px;line-height:16px;color:#9CA3AF;">{{ n.ago }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </sc-if>
+    <sc-if value="{{ notifLoading }}" hint-placeholder-val="{{ false }}">
+      <sc-for list="{{ six }}" as="x" hint-placeholder-count="6">
+        <div style="margin-bottom:16px;display:flex;gap:12px;"><div style="width:44px;height:44px;border-radius:50%;background:#EEEEEE;flex-shrink:0;"></div><div style="flex:1;"><div style="height:14px;width:180px;border-radius:6px;background:#EEEEEE;"></div><div style="margin-top:8px;height:12px;border-radius:6px;background:#EEEEEE;"></div><div style="margin-top:8px;height:10px;width:60px;border-radius:6px;background:#EEEEEE;"></div></div></div>
+      </sc-for>
+    </sc-if>
+    <sc-if value="{{ notifEmptyish }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 20px;box-sizing:border-box;">
+        <div style="width:104px;height:104px;border-radius:50%;background:{{ ne.halo }};display:flex;align-items:center;justify-content:center;"><div style="width:76px;height:76px;border-radius:50%;background:{{ ne.bg }};display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:38px;line-height:1;color:{{ ne.c }};font-feature-settings:'liga';">{{ ne.icon }}</span></div></div>
+        <div style="margin-top:24px;font-size:18px;font-weight:700;line-height:26px;color:#1F2937;">{{ ne.title }}</div>
+        <div style="margin-top:10px;font-size:14px;line-height:22px;color:#6B7280;">{{ ne.msg }}</div>
+        <sc-if value="{{ ne.retry }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;padding:13px 28px;border-radius:14px;background:#7C3AED;box-shadow:0 6px 16px rgba(124,58,237,0.25);display:flex;align-items:center;gap:8px;"><span style="font-family:'Material Icons Round';font-size:18px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">refresh</span><span style="font-size:14px;font-weight:600;color:#FFFFFF;">{{ t.retry }}</span></div></sc-if>
+      </div>
+    </sc-if>
+  </div>
+</sc-if>
+
+<!-- NOTIFICATION SETTINGS -->
+<sc-if value="{{ isNotifSettings }}" hint-placeholder-val="{{ false }}">
+  <div style="height:50px;flex-shrink:0;"></div>
+  <div style="display:flex;align-items:center;flex-shrink:0;min-height:40px;">
+    <div style="width:25px;"></div><img src="assets/icons/icon_back.svg" alt="" style="width:24px;height:24px;transform:{{ backFlip }};">
+    <div style="flex:1;text-align:center;font-size:20px;font-weight:800;color:#0D0D26;">{{ t.notifSettings }}</div><div style="width:24px;"></div>
+  </div>
+  <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:16px 20px 34px;display:flex;flex-direction:column;gap:16px;">
+    <div style="border-radius:16px;background:#FFFFFF;box-shadow:0 3px 16px rgba(0,0,0,0.06);">
+      <div style="padding:20px 16px 16px;display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:12px;background:rgba(124,58,237,0.1);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Outlined';font-size:22px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">notifications</span></div><span style="font-size:16px;font-weight:700;color:#0D0D26;">{{ t.channels }}</span></div>
+      <div style="height:1px;background:#E7E7E9;"></div>
+      <sc-for list="{{ toggles }}" as="g" hint-placeholder-count="2">
+        <div>
+          <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;">
+            <div style="flex:1;"><div style="font-size:15px;font-weight:500;color:#0D0D26;">{{ g.title }}</div><div style="margin-top:4px;font-size:12px;color:#90909B;">{{ g.sub }}</div></div>
+            <div style="width:52px;height:32px;border-radius:16px;background:{{ g.track }};position:relative;flex-shrink:0;" dir="ltr"><div style="position:absolute;left:{{ g.thumbL }};top:{{ g.thumbT }};width:{{ g.thumbS }};height:{{ g.thumbS }};border-radius:50%;background:#FFFFFF;"></div></div>
+          </div>
+          <sc-if value="{{ g.div }}" hint-placeholder-val="{{ true }}"><div style="margin:0 16px;height:1px;background:#E7E7E9;"></div></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border-radius:16px;background:#FFFFFF;box-shadow:0 3px 16px rgba(0,0,0,0.06);">
+      <div style="padding:20px 16px 16px;font-size:16px;font-weight:700;color:#0D0D26;">{{ t.types }}</div>
+      <div style="height:1px;background:#E7E7E9;"></div>
+      <sc-for list="{{ triggers }}" as="tr" hint-placeholder-count="4">
+        <div>
+          <div style="padding:12px 16px;">
+            <div style="font-size:15px;font-weight:600;color:#0D0D26;">{{ tr.title }}</div>
+            <div style="margin-top:8px;display:flex;gap:12px;">
+              <sc-for list="{{ tr.chips }}" as="ch" hint-placeholder-count="2">
+                <div style="flex:1;padding:8px 12px;border-radius:10px;background:{{ ch.bg }};border:1px solid {{ ch.border }};display:flex;align-items:center;gap:6px;">
+                  <span style="font-family:'Material Icons{{ ch.fontSuffix }}';font-size:16px;line-height:1;color:{{ ch.c }};font-feature-settings:'liga';">{{ ch.icon }}</span>
+                  <span style="font-size:13px;font-weight:{{ ch.w }};color:{{ ch.c }};">{{ ch.label }}</span>
+                  <div style="flex:1;"></div>
+                  <div style="width:36px;height:20px;display:flex;align-items:center;justify-content:center;" dir="ltr"><div style="width:30px;height:18.5px;border-radius:10px;background:{{ ch.track }};position:relative;opacity:{{ ch.op }};"><div style="position:absolute;left:{{ ch.thumbL }};top:{{ ch.thumbT }};width:{{ ch.thumbS }};height:{{ ch.thumbS }};border-radius:50%;background:#FFFFFF;"></div></div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <sc-if value="{{ tr.div }}" hint-placeholder-val="{{ true }}"><div style="margin:0 16px;height:1px;background:#E7E7E9;"></div></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border-radius:16px;background:#FFFFFF;box-shadow:0 3px 16px rgba(0,0,0,0.06);">
+      <div style="padding:20px 16px 16px;display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:12px;background:rgba(124,58,237,0.1);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:22px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">access_time</span></div><span style="font-size:16px;font-weight:700;color:#0D0D26;">{{ t.dnd }}</span></div>
+      <div style="height:1px;background:#E7E7E9;"></div>
+      <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;"><div style="flex:1;"><div style="font-size:15px;font-weight:500;color:#0D0D26;">{{ t.quiet }}</div><div style="margin-top:4px;font-size:12px;color:#90909B;">{{ t.quietSub }}</div></div><div style="width:52px;height:32px;border-radius:16px;background:#7C3AED;position:relative;flex-shrink:0;" dir="ltr"><div style="position:absolute;right:4px;top:4px;width:24px;height:24px;border-radius:50%;background:#FFFFFF;"></div></div></div>
+      <div style="padding:0 16px 16px;display:flex;gap:12px;">
+        <sc-for list="{{ times }}" as="tm" hint-placeholder-count="2">
+          <div style="flex:1;"><div style="font-size:12px;color:#90909B;">{{ tm.l }}</div><div style="margin-top:6px;padding:12px;border-radius:12px;background:#F3F4F6;display:flex;align-items:center;gap:8px;"><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:#90909B;font-feature-settings:'liga';">schedule</span><span style="font-size:14px;font-weight:500;color:#0D0D26;" dir="ltr">{{ tm.v }}</span></div></div>
+        </sc-for>
+      </div>
+      <div style="padding:4px 16px 16px;"><div style="height:48px;border-radius:12px;background:#7C3AED;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="font-family:'Material Icons Outlined';font-size:18px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">save</span><span style="font-size:15px;font-weight:600;color:#FFFFFF;">{{ t.save }}</span></div></div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- CHANGE LANGUAGE -->
+<sc-if value="{{ isLang }}" hint-placeholder-val="{{ false }}">
+  <div style="position:relative;height:250px;flex-shrink:0;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:#4C1D95;"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(circle 237px at 50% 35%, #A78BFA 0%, #7C3AED 55%, #4C1D95 100%);"></div>
+    <div style="position:absolute;inset:50px 0 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <div style="width:72px;height:72px;position:relative;display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.15);box-shadow:0 0 24px 4px rgba(196,181,253,0.6);transform:scale(1.15);"></div>
+        <div style="width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #FFFFFF, #C4B5FD);box-shadow:0 0 20px 2px rgba(196,181,253,0.6);position:relative;"></div>
+      </div>
+      <div style="margin-top:12px;font-size:20px;font-weight:700;letter-spacing:1.8px;color:#FFFFFF;">SPEAKING GENIE</div>
+    </div>
+    <img src="assets/icons/c/icon_back-FFFFFF.svg" alt="" style="position:absolute;top:60px;left:{{ backL }};right:{{ backR }};width:24px;height:24px;transform:{{ backFlip }};">
+  </div>
+  <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;background:#FFFFFF;border-radius:30px 30px 0 0;padding:24px;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:16px;flex-shrink:0;"></div>
+    <div style="font-size:28px;font-weight:700;color:#0D0D26;">{{ t.language }}</div>
+    <div style="margin-top:8px;font-size:16px;color:rgba(13,13,38,0.7);">{{ t.choosePreferred }}</div>
+    <div style="margin-top:24px;align-self:stretch;display:flex;flex-direction:column;gap:16px;">
+      <sc-for list="{{ langs }}" as="l" hint-placeholder-count="6">
+        <div style="padding:20px;border-radius:16px;background:#FFFFFF;border:{{ l.border }};box-shadow:{{ l.shadow }};display:flex;align-items:center;gap:16px;">
+          <div style="width:50px;height:50px;border-radius:12px;background:rgba(13,13,38,0.1);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">{{ l.flag }}</div>
+          <div style="flex:1;"><div style="font-size:18px;font-weight:600;color:#0D0D26;">{{ l.title }}</div><div style="margin-top:4px;font-size:14px;color:rgba(13,13,38,0.6);">{{ l.sub }}</div></div>
+          <div style="width:24px;height:24px;box-sizing:border-box;border-radius:50%;background:{{ l.dot }};border:2px solid {{ l.dotBorder }};display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">{{ l.check }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+    <img src="assets/icons/auth_fotter.svg" alt="" style="margin-top:40px;max-width:100%;">
+  </div>
+</sc-if>
+
+<!-- SUBSCRIPTION -->
+<sc-if value="{{ isSub }}" hint-placeholder-val="{{ false }}">
+  <div style="height:50px;flex-shrink:0;"></div>
+  <div style="padding:12px 16px;display:flex;align-items:center;flex-shrink:0;font-family:Inter, sans-serif;">
+    <div style="width:40px;height:40px;border-radius:10px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons';font-size:18px;line-height:1;color:#374151;font-feature-settings:'liga';transform:{{ flip }};">arrow_back_ios_new</span></div>
+    <div style="flex:1;text-align:center;font-size:18px;font-weight:600;color:#1F2937;">{{ t.changePlan }}</div><div style="width:40px;"></div>
+  </div>
+  <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 24px;font-family:Inter, sans-serif;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:16px;flex-shrink:0;"></div>
+    <div style="width:64px;height:64px;border-radius:50%;background:#FEF9C3;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="assets/icons/crown_icon.svg" alt="" style="width:32px;height:32px;"></div>
+    <div style="margin-top:16px;font-size:20.4px;font-weight:700;color:#1F2937;">{{ t.chooseYourPlan }}</div>
+    <div style="margin-top:12px;font-size:13.6px;line-height:1.5;color:#4B5563;text-align:center;">{{ t.selectPlanDesc }}</div>
+    <div style="margin-top:24px;align-self:stretch;">
+      <sc-for list="{{ packages }}" as="pk" hint-placeholder-count="3">
+        <div style="position:relative;">
+          <div style="margin-top:{{ pk.mt }};margin-bottom:16px;padding:16px;border-radius:16px;background:{{ pk.bg }};border:{{ pk.border }};display:flex;flex-direction:column;align-items:center;">
+            <div style="font-size:13.6px;font-weight:700;color:#1F2937;">{{ pk.name }}</div>
+            <div style="margin-top:8px;display:flex;align-items:baseline;gap:4px;" dir="ltr"><span style="font-size:20.4px;font-weight:700;color:#000000;">{{ pk.price }}</span><sc-if value="{{ pk.hasOld }}" hint-placeholder-val="{{ false }}"><span style="font-size:11.9px;color:#9CA3AF;text-decoration:line-through;">{{ pk.old }}</span></sc-if><span style="font-size:11.9px;color:#6B7280;">{{ pk.freq }}</span></div>
+            <sc-if value="{{ pk.trial }}" hint-placeholder-val="{{ false }}"><div style="margin-top:8px;padding:6px 12px;border-radius:20px;background:#DCFCE7;display:flex;align-items:center;gap:4px;" dir="ltr"><span style="font-family:'Material Icons';font-size:14px;line-height:1;color:#16A34A;font-feature-settings:'liga';">access_time</span><span style="font-size:11.9px;font-weight:600;color:#16A34A;">30 min free trial</span></div></sc-if>
+            <sc-if value="{{ pk.save }}" hint-placeholder-val="{{ false }}"><div style="margin-top:8px;font-size:11.9px;font-weight:500;color:#16A34A;" dir="ltr">Save 20%</div></sc-if>
+            <div style="margin-top:16px;align-self:stretch;height:1px;background:#E5E7EB;"></div>
+            <div style="margin-top:16px;align-self:stretch;display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ features }}" as="f" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">check</span><span style="flex:1;font-size:11.9px;color:#374151;">{{ f }}</span></div></sc-for>
+            </div>
+          </div>
+          <sc-if value="{{ pk.popular }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:center;"><span style="padding:6px 12px;border-radius:9999px;background:#7C3AED;font-size:10.2px;color:#FFFFFF;">Most Popular</span></div></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="height:24px;flex-shrink:0;"></div>
+  </div>
+  <div style="padding:24px 24px 58px;background:#FFFFFF;box-shadow:0 -4px 10px rgba(0,0,0,0.1);flex-shrink:0;font-family:Inter, sans-serif;">
+    <div style="height:44px;border-radius:8px;background:linear-gradient(90deg,#5B21B6,#7C3AED);display:flex;align-items:center;justify-content:center;gap:8px;"><span style="font-size:13.6px;font-weight:500;color:#FFFFFF;">{{ t.changePlan }}</span><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';transform:{{ flip }};">arrow_forward</span></div>
+    <div style="margin-top:16px;font-size:10.2px;line-height:1.5;color:#6B7280;text-align:center;white-space:pre-line;">{{ t.changeDisclaimer }}</div>
+  </div>
+  <sc-if value="{{ showPromo }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:20;background:rgba(0,0,0,0.54);display:flex;flex-direction:column;justify-content:flex-end;font-family:Inter, sans-serif;">
+      <div style="background:#FFFFFF;border-radius:24px 24px 0 0;padding:0 24px 34px;display:flex;flex-direction:column;">
+        <div style="margin:12px auto 0;width:40px;height:4px;border-radius:2px;background:#D1D5DB;"></div>
+        <div style="margin-top:20px;display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:10px;background:#F5F3FF;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Outlined';font-size:20px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">local_offer</span></div><span style="flex:1;font-size:16px;font-weight:600;color:#1F2937;">{{ t.havePromo }}</span></div>
+        <div style="margin-top:16px;height:1px;background:#E5E7EB;"></div>
+        <div style="margin-top:20px;display:flex;gap:8px;">
+          <div style="flex:1;height:48px;box-sizing:border-box;padding:0 16px;border-radius:12px;background:{{ promo.fieldBg }};border:1px solid {{ promo.fieldBorder }};display:flex;align-items:center;font-size:13.6px;color:{{ promo.fieldFg }};font-weight:{{ promo.fieldW }};">{{ promo.fieldText }}<span style="flex:1;"></span><sc-if value="{{ promo.applied }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Material Icons';font-size:20px;line-height:1;color:#16A34A;font-feature-settings:'liga';">check_circle</span></sc-if></div>
+          <div style="height:48px;padding:0 {{ promo.btnPad }};border-radius:12px;background:{{ promo.btnBg }};display:flex;align-items:center;font-size:13.6px;font-weight:500;color:{{ promo.btnFg }};">{{ promo.btn }}</div>
+        </div>
+        <sc-if value="{{ promo.applied }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px;padding:16px;border-radius:12px;background:#F0FDF4;border:1px solid #BBF7D0;">
+            <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:#16A34A;font-feature-settings:'liga';">check_circle</span><span style="font-size:12px;font-weight:600;color:#16A34A;">{{ t.promoApplied }}</span></div>
+            <div style="margin-top:12px;display:flex;justify-content:space-between;font-size:12px;"><span style="color:#374151;">{{ t.originalPrice }}</span><span style="font-weight:500;color:#1F2937;text-decoration:line-through;text-decoration-color:#9CA3AF;" dir="ltr">299 EGP</span></div>
+            <div style="margin-top:8px;display:flex;justify-content:space-between;font-size:12px;"><span style="color:#374151;">{{ t.discount }}</span><span style="font-weight:500;color:#16A34A;" dir="ltr">-60 EGP</span></div>
+            <div style="margin-top:8px;height:1px;background:#BBF7D0;"></div>
+            <div style="margin-top:8px;display:flex;justify-content:space-between;font-size:13.6px;"><span style="font-weight:600;color:#374151;">{{ t.finalPrice }}</span><span style="font-weight:700;color:#1F2937;" dir="ltr">239 EGP</span></div>
+          </div>
+        </sc-if>
+        <div style="margin-top:24px;display:flex;gap:12px;">
+          <div style="flex:1;height:44px;border-radius:8px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:13.6px;font-weight:500;color:#374151;">{{ t.skip }}</div>
+          <div style="flex:2;height:44px;border-radius:8px;background:linear-gradient(90deg,#5B21B6,#7C3AED);display:flex;align-items:center;justify-content:center;font-size:13.6px;font-weight:500;color:#FFFFFF;">{{ t.continue }}</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</sc-if>
+
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;dir&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ltr&quot;,&quot;rtl&quot;],&quot;default&quot;:&quot;ltr&quot;,&quot;tsType&quot;:&quot;'ltr'|'rtl'&quot;},&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;profile&quot;,&quot;deleteDialog&quot;,&quot;notifications&quot;,&quot;notifLoading&quot;,&quot;notifEmpty&quot;,&quot;notifError&quot;,&quot;notifSettings&quot;,&quot;changeLanguage&quot;,&quot;subscription&quot;,&quot;promoSheet&quot;,&quot;promoApplied&quot;],&quot;default&quot;:&quot;profile&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const dir = p.dir ?? 'ltr';
+    const ar = dir === 'rtl';
+    const screen = p.screen ?? 'profile';
+    const E = { currentPlan: 'Current Plan', change: 'Change', accountSettings: 'Account Settings', editProfile: 'Edit Profile', changePassword: 'Change Password', language: 'Language',
+      notifSettings: 'Notification Settings', deleteAccount: 'Delete Account', assistantTitle: 'Genie Assistant', assistantSub: 'Show the floating helper on every screen',
+      support: 'Support & Legal', terms: 'Terms and conditions', privacy: 'Privacy Policy', voices: 'Open-source voices', help: 'Help Center', chat: 'Live Chat', about: 'About', logout: 'Logout',
+      delTitle: 'Delete Account?', delMsg: 'Are you sure you want to delete your account? This action cannot be undone.', cancel: 'Cancel', delete: 'Delete',
+      notifications: 'Notifications', noNotifs: 'No notifications yet', noNotifsMsg: "You're all caught up! We'll notify you when something new arrives.", unableNotifs: 'Unable to load notifications', checkConn: 'Please check your connection and try again', retry: 'Retry',
+      channels: 'Notification Channels', push: 'Push Notifications', pushSub: 'Receive notifications on your device', email: 'Email Notifications', emailSub: 'Receive updates via email', types: 'Notification Types',
+      pushC: 'Push', emailC: 'Email', dnd: 'Do Not Disturb', quiet: 'Quiet Hours', quietSub: 'Silence notifications during specific hours', from: 'From', to: 'To', save: 'Save',
+      choosePreferred: 'Choose your preferred language', changePlan: 'Change Plan', chooseYourPlan: 'Choose Your Plan', selectPlanDesc: 'Select a subscription plan to continue your language learning journey',
+      changeDisclaimer: 'All plans include a 7-day money-back guarantee.\nYou can cancel anytime.', havePromo: 'Have a Promo Code?', enterPromo: 'Enter your promo code', apply: 'Apply', remove: 'Remove', skip: 'Skip', continue: 'Continue',
+      promoApplied: 'Promo code applied!', originalPrice: 'Original Price', discount: 'Discount', finalPrice: 'Final Price', ago: { m: 'minutes ago', h: 'hours ago', h1: 'hour ago', d: 'day ago', ds: 'days ago' } };
+    const A = { currentPlan: 'الخطة الحالية', change: 'تغيير', accountSettings: 'إعدادات الحساب', editProfile: 'تعديل الملف الشخصي', changePassword: 'تغيير كلمة المرور', language: 'اللغة',
+      notifSettings: 'إعدادات الإشعارات', deleteAccount: 'حذف الحساب', assistantTitle: 'مساعد جيني', assistantSub: 'إظهار المساعد العائم في كل الشاشات',
+      support: 'الدعم والقانونية', terms: 'الشروط والأحكام', privacy: 'سياسة الخصوصية', voices: 'الأصوات مفتوحة المصدر', help: 'مركز المساعدة', chat: 'الدردشة المباشرة', about: 'حول', logout: 'تسجيل الخروج',
+      delTitle: 'حذف الحساب؟', delMsg: 'هل أنت متأكد من أنك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء.', cancel: 'إلغاء', delete: 'حذف',
+      notifications: 'الإشعارات', noNotifs: 'لا توجد إشعارات بعد', noNotifsMsg: 'أنت على اطلاع بكل شيء! سنخبرك عند وصول شيء جديد.', unableNotifs: 'تعذر تحميل الإشعارات', checkConn: 'يرجى التحقق من الاتصال والمحاولة مرة أخرى', retry: 'إعادة المحاولة',
+      channels: 'قنوات الإشعارات', push: 'إشعارات الهاتف', pushSub: 'استلام الإشعارات على جهازك', email: 'إشعارات البريد الإلكتروني', emailSub: 'استلام التحديثات عبر البريد الإلكتروني', types: 'أنواع الإشعارات',
+      pushC: 'الهاتف', emailC: 'البريد', dnd: 'عدم الإزعاج', quiet: 'ساعات الهدوء', quietSub: 'كتم الإشعارات خلال ساعات محددة', from: 'من', to: 'إلى', save: 'حفظ',
+      choosePreferred: 'اختر لغتك المفضلة', changePlan: 'تغيير الخطة', chooseYourPlan: 'اختر خطتك', selectPlanDesc: 'اختر خطة اشتراك لمتابعة رحلة تعلم اللغة',
+      changeDisclaimer: 'جميع الخطط تشمل ضمان استرداد المال لمدة 7 أيام.\nيمكنك الإلغاء في أي وقت.', havePromo: 'هل لديك رمز ترويجي؟', enterPromo: 'أدخل الرمز الترويجي', apply: 'تطبيق', remove: 'إزالة', skip: 'تخطي', continue: 'متابعة',
+      promoApplied: 'تم تطبيق الرمز الترويجي!', originalPrice: 'السعر الأصلي', discount: 'الخصم', finalPrice: 'السعر النهائي', ago: { m: 'دقائق مضت', h: 'ساعات مضت', h1: 'ساعة مضت', d: 'يوم مضى', ds: 'أيام مضت' } };
+    const s = ar ? A : E;
+    const V = '#0D0D26', R = '#E30000';
+    const item = (icon, title, c, div, font) => ({ icon, title, c: c || V, div, font: font || 'Material Icons' });
+    const sections = [
+      { title: s.accountSettings, items: [item('edit', s.editProfile, V, true), item('lock_outline', s.changePassword, V, true), item('language', s.language, V, true), item('notifications', s.notifSettings, V, true, 'Material Icons Outlined'), item('delete_outline', s.deleteAccount, R, false)] },
+      { title: s.support, items: [item('description', s.terms, V, true, 'Material Icons Outlined'), item('privacy_tip', s.privacy, V, true, 'Material Icons Outlined'), item('record_voice_over', s.voices, V, true, 'Material Icons Outlined'), item('help_outline', s.help, V, true), item('chat', s.chat, V, false, 'Material Icons Outlined')] }
+    ];
+    const N = (icon, c, ibg, title, body, ago, unread) => ({ icon, ic: c, ibg, title, body, ago, w: unread ? 600 : 500, bg: unread ? 'rgba(250,245,255,0.5)' : 'transparent' });
+    const notifs = [
+      N('local_fire_department', '#F97316', '#FFEDD5', 'Keep your 5-day streak going', 'Practise for 10 minutes today to keep your streak.', '12 ' + s.ago.m, true),
+      N('emoji_events', '#F59E0B', '#FEF3C7', 'You are 5 hours from your next certificate', 'Intermediate Speaker unlocks at 20 hours of practice.', '2 ' + s.ago.h, true),
+      N('flag', '#10B981', '#D1FAE5', "Today's challenges are ready", 'Learn 3 new words and complete 1 task to earn 35 XP.', '5 ' + s.ago.h, false),
+      N('schedule', '#3B82F6', '#DBEAFE', 'Time for your daily practice', 'Emma is ready for a 15 minute conversation.', '1 ' + s.ago.d, false),
+      N('sentiment_dissatisfied', '#EF4444', '#FEE2E2', 'We missed you yesterday', 'Pick up where you left off with Describe your favourite room.', '2 ' + s.ago.ds, false)
+    ];
+    const isErr = screen === 'notifError';
+    const ne = isErr ? { halo: 'rgba(254,226,226,0.45)', bg: '#FEE2E2', c: '#DC2626', icon: 'error_outline', title: s.unableNotifs, msg: s.checkConn, retry: true }
+      : { halo: 'rgba(243,232,255,0.45)', bg: '#F3E8FF', c: '#9333EA', icon: 'notifications_none', title: s.noNotifs, msg: s.noNotifsMsg, retry: false };
+    const sw = (on, div) => ({ track: on ? '#7C3AED' : '#E7E7E9', thumbS: on ? '24px' : '16px', thumbL: on ? '24px' : '8px', thumbT: on ? '4px' : '8px', div });
+    const toggles = [Object.assign({ title: s.push, sub: s.pushSub }, sw(true, true)), Object.assign({ title: s.email, sub: s.emailSub }, sw(false, false))];
+    const chip = (label, icon, fontSuffix, on) => ({ label, icon, fontSuffix, c: on ? '#7C3AED' : '#90909B', w: on ? 600 : 400, bg: on ? 'rgba(124,58,237,0.1)' : 'rgba(231,231,233,0.5)', border: on ? 'rgba(124,58,237,0.3)' : '#E7E7E9',
+      track: on ? '#7C3AED' : '#E7E7E9', op: 0.62, thumbS: on ? '14px' : '9px', thumbL: on ? '14px' : '4.5px', thumbT: on ? '2.25px' : '4.75px' });
+    const triggers = [['Daily Practice Reminder', true, true], ['Daily Streak Reminder', true, false], ['Certificate Progress Reminder', false, true], ['Daily Challenge Reminder', true, false]]
+      .map((x, i, a) => ({ title: x[0], div: i < a.length - 1, chips: [chip(s.pushC, 'phone_android', '', x[1]), chip(s.emailC, 'email', ' Outlined', x[2])] }));
+    const times = [{ l: s.from, v: '22:00' }, { l: s.to, v: '07:00' }];
+    const langs = [['English', 'English', '🇺🇸', !ar], ['العربية', 'Arabic', '🇸🇦', ar], ['Deutsch', 'German', '🇩🇪'], ['Español', 'Spanish', '🇪🇸'], ['Français', 'French', '🇫🇷'], ['Italiano', 'Italian', '🇮🇹']]
+      .map(l => ({ title: l[0], sub: l[1], flag: l[2], border: l[3] ? '2px solid #0D0D26' : '1px solid rgba(158,158,158,0.1)', shadow: l[3] ? '0 4px 12px rgba(13,13,38,0.2)' : '0 4px 8px rgba(0,0,0,0.05)',
+        dot: l[3] ? '#0D0D26' : 'rgba(158,158,158,0.2)', dotBorder: l[3] ? '#0D0D26' : 'rgba(158,158,158,0.3)', check: l[3] ? 'check' : '' }));
+    const packages = [
+      { name: 'Basic', price: '149.00 EGP', freq: 'per month', popular: false, trial: true, save: false, hasOld: false, sel: false },
+      { name: 'Premium', price: '239.00 EGP', old: '299.00 EGP', hasOld: true, freq: 'per month', popular: true, trial: false, save: true, sel: true },
+      { name: 'Annual', price: '2,390.00 EGP', freq: 'per year', popular: false, trial: false, save: false, hasOld: false, sel: false }
+    ].map(k => Object.assign(k, { mt: k.popular ? '12px' : '0', bg: k.sel ? '#F5F3FF' : '#FFFFFF', border: k.sel ? '2px solid #8B5CF6' : '1px solid #E5E7EB' }));
+    const features = ['Unlimited conversation practice', 'Access to all AI partners', 'Personalized learning path', 'Progress tracking'];
+    const applied = screen === 'promoApplied';
+    const promo = applied ? { applied, fieldBg: '#F0FDF4', fieldBorder: '#16A34A', fieldFg: '#16A34A', fieldW: 500, fieldText: 'GENIE20', btn: s.remove, btnBg: '#FEE2E2', btnFg: '#DC2626', btnPad: '16px' }
+      : { applied, fieldBg: '#F3F5F7', fieldBorder: '#D4DCE2', fieldFg: '#9CA3AF', fieldW: 400, fieldText: s.enterPromo, btn: s.apply, btnBg: 'linear-gradient(90deg,#5B21B6,#7C3AED)', btnFg: '#FFFFFF', btnPad: '20px' };
+    return {
+      dir, t: s, sections, notifs, ne, toggles, triggers, times, langs, packages, features, promo,
+      goals: ['Travel', 'Career growth', 'Daily conversation'], six: [1, 2, 3, 4, 5, 6],
+      tone: 'light',
+      bg: screen === 'notifSettings' || screen.startsWith('profile') || screen === 'deleteDialog' ? '#F8F9FA' : screen === 'changeLanguage' ? '#F8F9F9' : '#FFFFFF',
+      isProfile: screen === 'profile' || screen === 'deleteDialog', showDelete: screen === 'deleteDialog',
+      isNotif: screen.startsWith('notif') && screen !== 'notifSettings', notifOk: screen === 'notifications', notifLoading: screen === 'notifLoading', notifEmptyish: screen === 'notifEmpty' || isErr,
+      isNotifSettings: screen === 'notifSettings', isLang: screen === 'changeLanguage',
+      isSub: screen === 'subscription' || screen === 'promoSheet' || applied, showPromo: screen === 'promoSheet' || applied,
+      flip: ar ? 'scaleX(-1)' : 'none', backFlip: 'none', backL: ar ? 'auto' : '10px', backR: ar ? '10px' : 'auto'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+  <script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+</helmet>
+<div dir="{{ dir }}" style="background:#F8F9F9;padding:8px 12px 42px 12px;font-family:Inter, system-ui, sans-serif;">
+  <div style="display:flex;padding:6px;background:#FFFFFF;border-radius:20px;border:1px solid #F3F4F6;box-shadow:0 8px 30px rgba(15,23,42,0.12);">
+    <sc-for list="{{ items }}" as="it" hint-placeholder-count="5">
+      <div style="flex:1;min-width:0;margin:0 2px;padding:6px 0;border-radius:12px;display:flex;flex-direction:column;align-items:center;background:{{ it.bg }};transition:background 200ms ease-out;cursor:pointer;">
+        <img src="{{ it.icon }}" alt="" style="display:block;width:22px;height:22px;transform:{{ it.lift }};">
+        <span style="margin-top:3px;font-size:10px;line-height:1.1;font-weight:{{ it.weight }};color:{{ it.color }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center;">{{ it.label }}</span>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:120},&quot;active&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:4,&quot;tsType&quot;:&quot;number&quot;},&quot;dir&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ltr&quot;,&quot;rtl&quot;],&quot;default&quot;:&quot;ltr&quot;,&quot;tsType&quot;:&quot;'ltr'|'rtl'&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const dir = this.props.dir ?? 'ltr';
+    const active = this.props.active ?? 0;
+    const L = dir === 'rtl'
+      ? ['الرئيسية', 'تدريب', 'شركاء الذكاء', 'التقارير', 'حسابي']
+      : ['Home', 'Practice', 'AI Partners', 'Reports', 'Profile'];
+    const icons = ['nav_home_icon', 'nav_practice_icon', 'nav_ai_partners_icon', 'nav_reports_icon', 'user'];
+    const items = icons.map((ic, i) => {
+      const on = i === active;
+      return {
+        icon: 'assets/icons/c/' + ic + '-' + (on ? '7C3AED' : '9CA3AF') + '.svg',
+        label: L[i],
+        color: on ? '#7C3AED' : '#9CA3AF',
+        bg: on ? '#F5F3FF' : 'transparent',
+        weight: on ? 700 : 500,
+        lift: on ? 'translateY(-1.3px)' : 'none'
+      };
+    });
+    return { dir, items };
+  }
+}
+</script>
+</body>
+</html>

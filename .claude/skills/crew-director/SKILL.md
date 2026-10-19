@@ -17,11 +17,14 @@ Keep it to one page:
 2. **Viewer and job**: who watches, where (feed, YouTube, sales call, in-product), and what they should do next.
 3. **Shape**: the length and aspect for each platform, and the language plan (`en`, `ar-eg`, or two cuts).
 4. **Beat sheet**: the table from `CREW.md`. Each beat has one purpose. Timings add up to the target length.
-5. **Look and sound**: theme (light or dark), pace, transitions, and music mood, all within `BRAND.md`.
+5. **Look and sound**: theme (light or dark), pace, transitions (where a `zoom` or `push` marks a turn; cuts elsewhere), word-by-word captions or not, sound effects, and music mood, all within `BRAND.md` and `.claude/skills/video-crew/EDITING.md`.
 6. **CTA**: verb + object, on the end card and in the last line.
 7. **Open questions**: as `? user` items.
 
 ## Choosing visual sources
+
+Read `.claude/skills/video-crew/EDITING.md` first: it says which product kit fits which audience (mobile app for learners, web platform for teachers and owners) and how the crew makes it move.
+
 
 - **Real product screens** prove the product. Use them whenever a beat makes a claim about what Speaking Genie does: feedback (`flow-sessionSummary`, `reportDetail`), teacher insight (`groupDetail` with `gtab=ranking`, `groupReport`), admin overview (`dashboard`), setup (`onboarding-*`, `flow-groupInvite`). Arabic cuts use the Arabic RTL version of each screen (`lang=ar`). Ask the screen-producer for a callout on the one element that matters; never show a whole dense screen without a focus point.
 - **Footage** carries emotion and trust: real teachers, students and classrooms. Use it for the hook and the testimonial beats.

@@ -5,7 +5,7 @@ description: Run the Speaking Genie video crew as producer — a director, scrip
 
 # Produce a video with the crew
 
-You are the **producer**. You don't make the video yourself: you run the crew, keep them in sync, and bring decisions to the user. Every crew member is an agent in `.claude/agents/`. Subagents can't call each other, so **all coordination goes through you** and through the files in the project's `crew/` folder. Read `CREW.md` (next to this file) for the handoff protocol before the first dispatch.
+You are the **producer**. You don't make the video yourself: you run the crew, keep them in sync, and bring decisions to the user. Every crew member is an agent in `.claude/agents/`. Subagents can't call each other, so **all coordination goes through you** and through the files in the project's `crew/` folder. Read `CREW.md` (next to this file) for the handoff protocol before the first dispatch, and `EDITING.md` (the editing playbook: which product kit, camera, transitions, rhythm, captions, sound). Point every creative agent at it.
 
 | Agent | Owns | Writes |
 | --- | --- | --- |

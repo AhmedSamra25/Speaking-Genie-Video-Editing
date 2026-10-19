@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round|Material+Icons+Outlined">
+  <link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+  <script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+</helmet>
+<x-import component-from-global-scope="SpeakingGenieDesignSystem_ac4dbc.PhoneFrame" scrollable="{{ false }}" hint-size="390px,844px">
+<div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;font-family:Poppins, system-ui, sans-serif;background:#FAFAFA;">
+
+<sc-if value="{{ isHub }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;min-height:0;position:relative;">
+    <div style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 20px 24px;">
+      <div style="height:118px;"></div>
+      <div style="font-family:Inter, sans-serif;font-size:14px;line-height:1.4;color:#4B5563;">{{ t.labPracticingSubtitle }}</div>
+      <div style="height:20px;"></div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-family:Inter, sans-serif;">
+        <div style="padding:20px;border-radius:16px;background:linear-gradient(135deg,#4F46E5,#7C3AED);box-shadow:0 6px 16px rgba(79,70,229,0.35);cursor:pointer;">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:24px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">style</span></div>
+          <div style="margin-top:16px;font-size:18px;font-weight:700;color:#FFFFFF;">{{ t.labFlashCardsCardTitle }}</div>
+          <div style="margin-top:4px;font-size:14px;line-height:1.35;color:rgba(255,255,255,0.85);">{{ t.labFlashCardsCardDesc }}</div>
+          <div style="margin-top:16px;display:flex;align-items:center;gap:4px;font-size:14px;font-weight:500;color:#FFFFFF;">{{ t.labOpenMode }}<span style="font-family:'Material Icons Round';font-size:16px;line-height:1;font-feature-settings:'liga';">{{ arrowFwd }}</span></div>
+        </div>
+        <sc-for list="{{ modes }}" as="m" hint-placeholder-count="3">
+          <div style="padding:20px;border-radius:16px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 4px 10px rgba(0,0,0,0.04);cursor:pointer;">
+            <div style="width:48px;height:48px;border-radius:12px;background:{{ m.bg }};display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:24px;line-height:1;color:{{ m.c }};font-feature-settings:'liga';">{{ m.icon }}</span></div>
+            <div style="margin-top:16px;font-size:18px;font-weight:700;color:#1F2937;">{{ m.title }}</div>
+            <div style="margin-top:4px;font-size:14px;line-height:1.35;color:#4B5563;">{{ m.desc }}</div>
+            <div style="margin-top:16px;display:flex;align-items:center;gap:4px;font-size:14px;font-weight:500;color:{{ m.c }};">{{ t.labOpenMode }}<span style="font-family:'Material Icons Round';font-size:16px;line-height:1;font-feature-settings:'liga';">{{ arrowFwd }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="position:absolute;top:0;left:0;right:0;z-index:5;">
+      <dc-import name="App Top Bar" dir="{{ dir }}" title="{{ t.labPracticingTitle }}" hint-size="100%,110px"></dc-import>
+    </div>
+  </div>
+  <dc-import name="App Bottom Nav" dir="{{ dir }}" active="{{ 1 }}" hint-size="100%,112px"></dc-import>
+</sc-if>
+
+<sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+  <div style="height:50px;background:#FAFAFA;flex-shrink:0;"></div>
+  <div style="background:#FFFFFF;padding:8px;display:flex;align-items:center;gap:4px;flex-shrink:0;font-family:Inter, sans-serif;">
+    <div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;"><span style="font-family:'Material Icons Round';font-size:24px;line-height:1;color:#374151;font-feature-settings:'liga';">{{ arrowBack }}</span></div>
+    <div style="font-size:20px;font-weight:700;color:#1F2937;">{{ detailTitle }}</div>
+  </div>
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:34px;background:{{ bodyBg }};">
+
+    <sc-if value="{{ showSpinner }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+        <div style="width:36px;height:36px;box-sizing:border-box;border-radius:50%;border:4px solid transparent;border-top-color:#7C3AED;border-right-color:#7C3AED;animation:sgSpin 1.1s linear infinite;"></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:{{ emptyGap }};text-align:center;padding:0 24px;">
+        <span style="font-family:'{{ emptyFont }}';font-size:{{ emptySize }};line-height:1;color:{{ emptyIconColor }};font-feature-settings:'liga';">{{ emptyIcon }}</span>
+        <div style="font-family:{{ emptyFamily }};font-size:16px;font-weight:{{ emptyWeight }};color:{{ emptyColor }};">{{ emptyText }}</div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showError }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Inter, sans-serif;">
+        <span style="font-family:'Material Icons Round';font-size:48px;line-height:1;color:#D1D5DB;font-feature-settings:'liga';">wifi_off</span>
+        <div style="margin-top:12px;font-size:14px;color:#4B5563;">{{ t.pleaseTryAgainLater }}</div>
+        <div style="margin-top:12px;padding:10px 12px;font-size:14px;font-weight:600;color:#7C3AED;cursor:pointer;">{{ t.retry }}</div>
+      </div>
+    </sc-if>
+
+    <!-- TASKS -->
+    <sc-if value="{{ showTasks }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#FFFFFF;padding:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:18px;font-weight:600;color:rgba(0,0,0,0.87);">{{ t.yourProgress }}</span><span style="font-size:16px;font-weight:600;color:#7C3AED;">3/12</span></div>
+        <div style="margin-top:12px;height:8px;border-radius:8px;background:#EEEEEE;overflow:hidden;"><div style="width:25%;height:100%;background:#7C3AED;"></div></div>
+      </div>
+      <div style="height:60px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding:10px 16px;box-sizing:border-box;overflow:hidden;">
+        <sc-for list="{{ taskCats }}" as="c" hint-placeholder-count="4">
+          <div style="flex-shrink:0;padding:10px 16px;border-radius:20px;background:{{ c.bg }};border:1px solid {{ c.border }};box-shadow:{{ c.shadow }};font-size:14px;line-height:1.2;font-weight:600;color:{{ c.fg }};">{{ c.label }}</div>
+        </sc-for>
+      </div>
+      <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;">
+        <sc-for list="{{ tasks }}" as="k" hint-placeholder-count="3">
+          <div style="margin-bottom:16px;display:flex;background:#FFFFFF;border-radius:16px;border:1px solid #EEEEEE;box-shadow:0 2px 8px rgba(0,0,0,0.04);overflow:hidden;" dir="ltr">
+            <div style="width:4px;flex-shrink:0;background:{{ k.bar }};"></div>
+            <div style="flex:1;min-width:0;padding:16px;" dir="{{ dir }}">
+              <div style="display:flex;align-items:flex-start;">
+                <div style="width:28px;height:28px;margin-top:2px;margin-right:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <div style="width:18px;height:18px;box-sizing:border-box;border-radius:6px;border:{{ k.cbBorder }};background:{{ k.cbBg }};display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons';font-size:14px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">{{ k.cbIcon }}</span></div>
+                </div>
+                <div style="flex:1;min-width:0;font-size:18px;font-weight:600;color:{{ k.titleColor }};text-decoration:{{ k.deco }};">{{ k.name }}</div>
+                <div style="margin-inline-start:12px;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:{{ k.badgeBg }};flex-shrink:0;"><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:{{ k.dc }};font-feature-settings:'liga';">info_outline</span><span style="font-size:13px;font-weight:600;color:{{ k.dc }};">{{ k.level }}</span></div>
+                <sc-if value="{{ k.hasReport }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-inline-start:8px;padding:6px;border-radius:50%;background:rgba(103,58,183,0.1);display:flex;flex-shrink:0;"><span style="font-family:'Material Icons Round';font-size:18px;line-height:1;color:#7E57C2;font-feature-settings:'liga';">summarize</span></div>
+                </sc-if>
+              </div>
+              <div style="margin-top:16px;padding-left:40px;font-size:15px;line-height:1.5;color:{{ k.descColor }};display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">{{ k.desc }}</div>
+              <div style="margin-top:20px;padding-left:40px;display:flex;align-items:center;">
+                <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:20px;background:#F5F5F5;"><span style="font-family:'Material Icons';font-size:18px;line-height:1;color:#616161;font-feature-settings:'liga';">access_time</span><span style="font-size:14px;font-weight:500;color:#616161;">{{ k.dur }}</span></div>
+                <div style="flex:1;"></div>
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 20px;cursor:pointer;"><span style="font-size:15px;font-weight:600;color:{{ k.cta }};">{{ k.ctaLabel }}</span><span style="font-family:'Material Icons';font-size:18px;line-height:1;color:{{ k.cta }};font-feature-settings:'liga';transform:{{ flip }};">arrow_forward</span></div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- VOCAB & IDIOMS -->
+    <sc-if value="{{ showVocab }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#FFFFFF;padding:16px;display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:14px;color:#9E9E9E;">{{ t.yourProgress }}</div><div style="margin-top:4px;font-size:18px;font-weight:700;color:rgba(0,0,0,0.87);">12 / 48 {{ t.learned }}</div></div>
+        <svg width="36" height="36" viewBox="0 0 36 36" style="transform:rotate(-90deg);"><circle cx="18" cy="18" r="16" fill="none" stroke="#EEEEEE" stroke-width="4"></circle><circle cx="18" cy="18" r="16" fill="none" stroke="#7C3AED" stroke-width="4" stroke-dasharray="25.13 100.53"></circle></svg>
+      </div>
+      <div style="padding:0 16px;"><div style="height:1px;background:#E0E0E0;"></div></div>
+      <div style="height:60px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding:10px 16px;box-sizing:border-box;overflow:hidden;">
+        <sc-for list="{{ vocabCats }}" as="c" hint-placeholder-count="4">
+          <div style="flex-shrink:0;padding:10px 16px;border-radius:20px;background:{{ c.bg }};border:1px solid {{ c.border }};box-shadow:{{ c.shadow }};font-size:14px;line-height:1.2;font-weight:600;color:{{ c.fg }};">{{ c.label }}</div>
+        </sc-for>
+      </div>
+      <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:8px 0;">
+        <sc-for list="{{ items }}" as="v" hint-placeholder-count="3">
+          <div style="margin:8px 16px;border-radius:12px;background:{{ v.bg }};border-left:{{ v.bl }};border-top:{{ v.bo }};border-right:{{ v.bo }};border-bottom:{{ v.bo }};box-shadow:{{ v.shadow }};padding:16px;cursor:pointer;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div style="flex:1;min-width:0;display:flex;align-items:center;gap:8px;"><span style="font-size:18px;font-weight:600;color:{{ v.titleColor }};">{{ v.term }}</span>
+                <sc-if value="{{ v.tr }}" hint-placeholder-val="{{ false }}"><span style="font-family:'Material Icons';font-size:16px;line-height:1;color:{{ v.accent }};font-feature-settings:'liga';">translate</span></sc-if>
+              </div>
+              <div style="width:40px;height:40px;border-radius:50%;background:#EEEEEE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Material Icons';font-size:22px;line-height:1;color:#616161;font-feature-settings:'liga';">volume_up</span></div>
+            </div>
+            <div style="margin-top:8px;font-size:14px;color:#757575;">{{ v.meaning }}</div>
+            <div style="margin-top:4px;font-size:13px;font-style:italic;line-height:1.35;color:#757575;">{{ v.example }}</div>
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid {{ v.divider }};display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div style="flex:1;display:flex;">
+                <sc-if value="{{ v.learned }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:14px;background:rgba(76,175,80,0.1);"><span style="font-family:'Material Icons';font-size:14px;line-height:1;color:#4CAF50;font-feature-settings:'liga';">check_circle</span><span style="font-size:12px;font-weight:600;color:#4CAF50;">{{ t.learned }}</span></div>
+                </sc-if>
+                <sc-if value="{{ v.notLearned }}" hint-placeholder-val="{{ true }}">
+                  <div style="padding:5px 10px;border-radius:14px;background:#EDE9FE;font-size:12px;font-weight:600;color:#6D28D9;">{{ v.uses }}</div>
+                </sc-if>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="display:flex;align-items:center;gap:4px;cursor:pointer;"><span style="font-family:'Material Icons';font-size:14px;line-height:1;color:#7C3AED;font-feature-settings:'liga';">{{ v.trIcon }}</span><span style="font-size:13px;font-weight:500;color:#7C3AED;">{{ v.trLabel }}</span></div>
+                <div style="display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;background:#F3E8FF;cursor:pointer;"><span style="font-family:'Material Icons Round';font-size:14px;line-height:1;color:#9333EA;font-feature-settings:'liga';">mic_none</span><span style="font-size:13px;font-weight:500;color:#9333EA;">{{ t.practice }}</span></div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- FLASH CARDS -->
+    <sc-if value="{{ showFlash }}" hint-placeholder-val="{{ false }}">
+      <div style="height:60px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding:10px 16px;box-sizing:border-box;overflow:hidden;">
+        <sc-for list="{{ flashCats }}" as="c" hint-placeholder-count="4">
+          <div style="flex-shrink:0;padding:10px 16px;border-radius:20px;background:{{ c.bg }};border:1px solid {{ c.border }};box-shadow:{{ c.shadow }};font-size:14px;line-height:1.2;font-weight:600;color:{{ c.fg }};">{{ c.label }}</div>
+        </sc-for>
+      </div>
+      <div style="margin-top:4px;align-self:center;padding:6px 14px;border-radius:999px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 2px 8px rgba(0,0,0,0.06);font-family:Inter, sans-serif;font-size:12px;font-weight:600;color:#374151;" dir="ltr">3 / 12</div>
+      <div style="flex:1;min-height:0;display:flex;overflow:hidden;padding:0 15.6px;gap:0;font-family:Inter, sans-serif;">
+        <div style="flex:0 0 358.8px;box-sizing:border-box;padding:8px 6px;margin-inline-start:-358.8px;"><div style="height:100%;border-radius:24px;background:#FFFFFF;border:1px solid #F3F4F6;"></div></div>
+        <div style="flex:0 0 358.8px;box-sizing:border-box;padding:8px 6px;">
+          <div style="height:100%;display:flex;flex-direction:column;border-radius:24px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 8px 20px rgba(0,0,0,0.08);overflow:hidden;">
+            <div style="background:#4F46E5;padding:20px;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Material Icons Round';font-size:20px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">menu_book</span></div>
+                <div style="flex:1;font-size:12px;font-weight:700;letter-spacing:1px;color:#FFFFFF;">{{ fc.cat }}</div>
+                <div style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:999px;background:#FEF3C7;"><span style="font-family:'Material Icons Round';font-size:12px;line-height:1;color:#B45309;font-feature-settings:'liga';">schedule</span><span style="font-size:11px;font-weight:600;color:#B45309;">{{ t.flashCardStatusPending }}</span></div>
+              </div>
+              <div style="margin-top:12px;font-size:18px;font-weight:700;line-height:1.25;color:#FFFFFF;">{{ fc.name }}</div>
+            </div>
+            <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:20px;display:flex;flex-direction:column;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;color:#6B7280;">{{ t.formationUp }}</div>
+              <div style="margin-top:6px;padding:12px;border-radius:12px;background:#F9FAFB;border:1px solid #F3F4F6;font-size:14px;line-height:1.5;color:#1F2937;">{{ fc.formation }}</div>
+              <div style="margin-top:16px;font-size:11px;font-weight:700;letter-spacing:0.8px;color:#6B7280;">{{ t.explanationUp }}</div>
+              <div style="margin-top:6px;font-size:16px;line-height:1.5;color:#1F2937;">{{ fc.desc }}</div>
+              <div style="margin-top:16px;font-size:11px;font-weight:700;letter-spacing:0.8px;color:#6B7280;">{{ t.howToUseUp }}</div>
+              <div style="margin-top:6px;font-size:14px;line-height:1.5;color:#1F2937;">{{ fc.how }}</div>
+              <div style="margin-top:16px;padding:16px;border-radius:12px;background:#F9FAFB;border:1px solid #F3F4F6;">
+                <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;color:#6B7280;">{{ t.exampleUp }}</div>
+                <div style="margin-top:8px;font-size:14px;line-height:1.6;color:#1F2937;white-space:pre-line;">{{ fc.examples }}</div>
+              </div>
+              <div style="margin-top:16px;padding:12px;background:#F5F3FF;border-inline-start:3px solid #7C3AED;border-start-end-radius:12px;border-end-end-radius:12px;">
+                <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;color:#6D28D9;">💡 {{ t.proTipUp }}</div>
+                <div style="margin-top:4px;font-size:13px;line-height:1.5;color:#4C1D95;">{{ fc.tip }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:0 0 358.8px;box-sizing:border-box;padding:8px 6px;"><div style="height:100%;border-radius:24px;background:#FFFFFF;border:1px solid #F3F4F6;overflow:hidden;"><div style="height:110px;background:#0D9488;"></div></div></div>
+      </div>
+      <div style="padding:2px 0 10px;text-align:center;font-family:Inter, sans-serif;font-size:11px;color:#9CA3AF;">{{ t.flashCardSwipeHint }}</div>
+      <div style="padding:0 20px 16px;display:flex;gap:10px;font-family:Inter, sans-serif;">
+        <div style="flex:3;min-height:46px;box-sizing:border-box;padding:10px 14px;border-radius:999px;background:#7C3AED;box-shadow:0 4px 10px rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;"><span style="font-family:'Material Icons Round';font-size:18px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">check</span><span style="font-size:14px;font-weight:700;color:#FFFFFF;">{{ t.flashCardUnderstand }}</span></div>
+        <div style="flex:2;min-height:46px;box-sizing:border-box;padding:10px 12px;border-radius:999px;background:#FFFFFF;border:1px solid #DDD6FE;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;"><span style="font-family:'Material Icons Round';font-size:16px;line-height:1;color:#6D28D9;font-feature-settings:'liga';">info_outline</span><span style="font-size:13px;font-weight:600;color:#6D28D9;">{{ t.flashCardShowDetails }}</span></div>
+      </div>
+    </sc-if>
+
+    <!-- SCENARIOS -->
+    <sc-if value="{{ showScen }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 20px 24px;font-family:Inter, sans-serif;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:48px;height:48px;border-radius:16px;background:#F3E8FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Material Icons Round';font-size:24px;line-height:1;color:#9333EA;font-feature-settings:'liga';">mic</span></div>
+          <div><div style="font-size:22px;font-weight:700;color:#1F2937;">{{ t.scenariosRoomTitle }}</div><div style="font-size:14px;color:#6B7280;">{{ t.scenariosRoomSubtitle }}</div></div>
+        </div>
+        <div style="margin-top:24px;display:flex;align-items:center;gap:8px;"><span style="font-family:'Material Icons';font-size:18px;line-height:1;color:#A855F7;font-feature-settings:'liga';">auto_awesome</span><span style="font-size:18px;font-weight:700;color:#1F2937;">{{ t.scenariosUpNext }}</span></div>
+        <div style="margin-top:12px;padding:20px;border-radius:16px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 2px 10px rgba(0,0,0,0.04);cursor:pointer;">
+          <div style="display:flex;"><span style="padding:4px 8px;border-radius:6px;background:#FAF5FF;font-size:12px;font-weight:500;color:#9333EA;">{{ t.scenariosRecommended }}</span></div>
+          <div style="margin-top:12px;font-size:20px;font-weight:700;color:#1F2937;">{{ sc.title }}</div>
+          <div style="margin-top:4px;font-size:14px;color:#6B7280;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ sc.ctx }}</div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid #F9FAFB;display:flex;align-items:center;gap:4px;">
+            <span style="font-family:'Material Icons Round';font-size:14px;line-height:1;color:#9CA3AF;font-feature-settings:'liga';">chat_bubble_outline</span><span style="font-size:12px;font-weight:500;color:#9CA3AF;">{{ sc.count }}</span>
+            <div style="flex:1;"></div>
+            <div style="width:40px;height:40px;border-radius:50%;background:#9333EA;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:22px;line-height:1;color:#FFFFFF;font-feature-settings:'liga';">play_arrow</span></div>
+          </div>
+        </div>
+        <div style="margin-top:28px;display:flex;flex-direction:column;gap:12px;">
+          <sc-for list="{{ scens }}" as="s" hint-placeholder-count="3">
+            <div style="padding:16px;border-radius:16px;background:#FFFFFF;border:1px solid #F3F4F6;box-shadow:0 2px 10px rgba(0,0,0,0.04);cursor:pointer;">
+              <sc-if value="{{ s.done }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;justify-content:flex-end;margin-bottom:12px;"><span style="font-family:'Material Icons Round';font-size:22px;line-height:1;color:#16A34A;font-feature-settings:'liga';">check_circle</span></div>
+              </sc-if>
+              <div style="font-size:18px;font-weight:700;color:#1F2937;">{{ s.title }}</div>
+              <div style="margin-top:4px;font-size:12px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ s.ctx }}</div>
+              <div style="margin-top:12px;padding-top:12px;border-top:1px solid #F9FAFB;display:flex;align-items:center;gap:4px;">
+                <span style="font-family:'Material Icons Round';font-size:14px;line-height:1;color:#9CA3AF;font-feature-settings:'liga';">chat_bubble_outline</span><span style="font-size:12px;font-weight:500;color:#9CA3AF;">{{ s.count }}</span>
+                <div style="flex:1;"></div>
+                <div style="width:32px;height:32px;border-radius:50%;background:#FAF5FF;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Material Icons Round';font-size:18px;line-height:1;color:#9333EA;font-feature-settings:'liga';">play_arrow</span></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</sc-if>
+
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;dir&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ltr&quot;,&quot;rtl&quot;],&quot;default&quot;:&quot;ltr&quot;,&quot;tsType&quot;:&quot;'ltr'|'rtl'&quot;},&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;hub&quot;,&quot;tasks&quot;,&quot;vocab&quot;,&quot;flash&quot;,&quot;scenarios&quot;],&quot;default&quot;:&quot;hub&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;default&quot;,&quot;loading&quot;,&quot;empty&quot;,&quot;error&quot;],&quot;default&quot;:&quot;default&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const dir = p.dir ?? 'ltr';
+    const ar = dir === 'rtl';
+    const screen = p.screen ?? 'hub';
+    const st = p.state ?? 'default';
+    const E = {
+      labPracticingTitle: 'Practicing Lab', labPracticingSubtitle: 'Your hub for guided speaking, pronunciation, and vocabulary.',
+      labTasksCardTitle: 'Conversation Tasks', labTasksCardDesc: 'Guided speaking challenges by topic',
+      labVocabIdiomsCardTitle: 'Vocabulary & Idioms', labVocabIdiomsCardDesc: 'Master the words and expressions you need',
+      labOpenMode: 'Open', labFlashCardsCardTitle: 'Rule Breaker', labFlashCardsCardDesc: 'Bite-sized rules, tips, and tricks to review',
+      labScenariosCardTitle: 'Real-life Scenarios', labScenariosCardDesc: 'Shadow real conversations and speak like a native',
+      yourProgress: 'Your Progress', noTasksAvailable: 'No tasks available', startPractice: 'Start Practice', retake: 'Retake', all: 'All',
+      learned: 'Learned', usesLeft: '{n} uses left', translate: 'Translate', original: 'Original', practice: 'Practice', noLearningItemsFound: 'No learning items found',
+      flashCardsEmpty: 'No cards here yet', formation: 'Formation', explanation: 'Explanation', howToUse: 'How to use it', example: 'Example', proTip: 'Pro Tip',
+      flashCardStatusPending: 'Pending', flashCardUnderstand: 'Got it', flashCardShowDetails: 'Details', flashCardSwipeHint: 'Swipe left for next · right for previous',
+      scenariosRoomTitle: 'Real-life Scenarios', scenariosRoomSubtitle: 'Speak naturally like a native', scenariosUpNext: 'Up Next For You', scenariosRecommended: 'Recommended',
+      sentences: '{n} sentences', scenariosEmpty: 'No scenarios here yet', pleaseTryAgainLater: 'Please try again later', retry: 'Retry'
+    };
+    const A = {
+      labPracticingTitle: 'مختبر التدريب', labPracticingSubtitle: 'مركزك للتحدّث الموجّه والنطق والمفردات.',
+      labTasksCardTitle: 'مهام المحادثة', labTasksCardDesc: 'تحدّيات تحدّث موجّهة حسب الموضوع',
+      labVocabIdiomsCardTitle: 'المفردات والتعابير', labVocabIdiomsCardDesc: 'أتقن الكلمات والتعابير التي تحتاجها',
+      labOpenMode: 'فتح', labFlashCardsCardTitle: 'كاسر القواعد', labFlashCardsCardDesc: 'قواعد ونصائح وحيل مختصرة للمراجعة',
+      labScenariosCardTitle: 'مواقف من الحياة الواقعية', labScenariosCardDesc: 'حاكِ محادثات واقعية وتحدث كمتحدث أصلي',
+      yourProgress: 'تقدمك', noTasksAvailable: 'لا توجد مهام متاحة', startPractice: 'ابدأ التمرين', retake: 'إعادة التمرين', all: 'الكل',
+      learned: 'تم التعلم', usesLeft: '{n} استخدامات متبقية', translate: 'ترجمة', original: 'الأصل', practice: 'تمرن', noLearningItemsFound: 'لا توجد عناصر تعلّم',
+      flashCardsEmpty: 'لا توجد بطاقات هنا بعد', formation: 'الصيغة', explanation: 'الشرح', howToUse: 'كيفية استخدامها', example: 'مثال', proTip: 'نصيحة احترافية',
+      flashCardStatusPending: 'قيد الانتظار', flashCardUnderstand: 'فهمت', flashCardShowDetails: 'التفاصيل', flashCardSwipeHint: 'اسحب للتنقّل بين البطاقات',
+      scenariosRoomTitle: 'مواقف من الحياة الواقعية', scenariosRoomSubtitle: 'تحدث بطلاقة كمتحدث أصلي', scenariosUpNext: 'التالي لك', scenariosRecommended: 'موصى به',
+      sentences: '{n} جمل', scenariosEmpty: 'لا توجد مواقف هنا بعد', pleaseTryAgainLater: 'يرجى المحاولة مرة أخرى لاحقًا', retry: 'إعادة المحاولة'
+    };
+    const s = ar ? A : E;
+    const t = Object.assign({}, s, {
+      formationUp: s.formation.toUpperCase(), explanationUp: s.explanation.toUpperCase(), howToUseUp: s.howToUse.toUpperCase(),
+      exampleUp: s.example.toUpperCase(), proTipUp: s.proTip.toUpperCase()
+    });
+    const modes = [
+      { title: s.labTasksCardTitle, desc: s.labTasksCardDesc, icon: 'task_alt', c: '#7C3AED', bg: '#EDE9FE' },
+      { title: s.labVocabIdiomsCardTitle, desc: s.labVocabIdiomsCardDesc, icon: 'menu_book', c: '#2563EB', bg: '#DBEAFE' },
+      { title: s.labScenariosCardTitle, desc: s.labScenariosCardDesc, icon: 'mic', c: '#9333EA', bg: '#F3E8FF' }
+    ];
+    const pill = (label, on, color) => ({ label, bg: on ? color : '#FFFFFF', border: on ? color : '#E5E7EB', fg: on ? '#FFFFFF' : '#4B5563', shadow: on ? '0 2px 6px ' + color + '40' : 'none' });
+    const taskCats = [pill(s.all, true, '#7C3AED'), pill('Daily life', false), pill('Work', false), pill('Travel', false)];
+    const vocabCats = [pill(s.all, true, '#7C3AED'), pill('Business', false), pill('Emotions', false), pill('Travel', false)];
+    const flashCats = [pill(s.all, true, '#7C3AED'), pill('Grammar', false), pill('Pronunciation', false), pill('Culture', false)];
+    const diff = { 1: ['Low', '#4CAF50', 'rgba(76,175,80,0.1)'], 2: ['Medium', '#FF9800', 'rgba(255,152,0,0.1)'], 3: ['High', '#F44336', 'rgba(244,67,54,0.1)'] };
+    const tasks = [
+      { name: 'Order at a restaurant', desc: 'Ask about the menu, order a main course and a drink, and ask for the bill.', d: 1, dur: '10 min', done: false, report: false },
+      { name: 'Describe your favourite room', desc: 'Talk about the room you spend the most time in and why you like it.', d: 2, dur: '15 min', done: true, report: true },
+      { name: 'Job interview introduction', desc: 'Introduce yourself, describe your last role and explain why you want this job.', d: 3, dur: '20 min', done: false, report: false }
+    ].map(k => {
+      const df = diff[k.d];
+      return {
+        name: k.name, desc: k.desc, dur: k.dur, level: df[0], dc: df[1], badgeBg: df[2], hasReport: k.report,
+        bar: k.done ? '#E0E0E0' : df[1],
+        titleColor: k.done ? '#9E9E9E' : 'rgba(0,0,0,0.87)', deco: k.done ? 'line-through' : 'none',
+        descColor: k.done ? '#BDBDBD' : '#616161',
+        cbBorder: k.done ? 'none' : '2px solid rgba(0,0,0,0.87)', cbBg: k.done ? '#7C3AED' : 'transparent', cbIcon: k.done ? 'check' : '',
+        cta: k.done ? '#BDBDBD' : '#7C3AED', ctaLabel: k.report ? s.retake : s.startPractice
+      };
+    });
+    const mk = (term, meaning, example, idiom, opts) => {
+      const accent = idiom ? '#FFA726' : '#8B5CF6';
+      const tr = !!opts.tr;
+      return {
+        term: tr ? opts.trTerm : term, meaning: tr ? opts.trMeaning : meaning, example: '"' + example + '"', accent, tr,
+        bg: tr ? (idiom ? 'linear-gradient(135deg,#FFF6E9,#FFEDD4)' : 'linear-gradient(135deg,#F3EFFE,#E8DEFD)') : '#FFFFFF',
+        bl: tr ? '1.5px solid ' + accent + '73' : '4px solid ' + accent,
+        bo: tr ? '1.5px solid ' + accent + '73' : 'none',
+        shadow: tr ? '0 6px 18px ' + accent + '47' : '0 2px 10px rgba(0,0,0,0.05)',
+        titleColor: tr ? accent : 'rgba(0,0,0,0.87)', divider: tr ? accent + '40' : '#EEEEEE',
+        learned: !!opts.learned, notLearned: !opts.learned, uses: s.usesLeft.replace('{n}', opts.left ?? 3),
+        trIcon: tr ? 'visibility_off' : 'translate', trLabel: tr ? s.original : s.translate
+      };
+    };
+    const items = [
+      mk('Resilient', 'Able to recover quickly from difficult situations.', 'She stayed resilient after losing the match.', false, { left: 3 }),
+      mk('Break the ice', 'To start a conversation in a social situation.', 'He told a joke to break the ice.', true, { tr: true, trTerm: 'كسر الجليد', trMeaning: 'بدء محادثة في موقف اجتماعي.', left: 2 }),
+      mk('Deadline', 'The latest time by which something must be done.', 'The deadline for the report is Friday.', false, { learned: true }),
+      mk('On the same page', 'To agree or understand something in the same way.', 'Let’s make sure we are on the same page.', true, { left: 5 })
+    ];
+    const fc = {
+      cat: 'GRAMMAR', name: 'Present perfect vs. past simple',
+      formation: 'have / has + past participle',
+      desc: 'Use the present perfect for experiences or actions connected to now. Use the past simple for finished actions at a specific time.',
+      how: 'If you say when it happened, use the past simple.',
+      examples: 'I have visited London twice.\nI visited London in 2023.',
+      tip: 'Words like "yesterday" and "last year" always take the past simple.'
+    };
+    const sc = { title: 'Checking in at a hotel', ctx: 'You arrive at the front desk and give your booking details to the receptionist.', count: s.sentences.replace('{n}', 12) };
+    const scens = [
+      { title: 'Ordering coffee', ctx: 'Order a drink and a snack at a busy café.', count: s.sentences.replace('{n}', 8), done: true },
+      { title: 'Asking for directions', ctx: 'Ask a stranger how to reach the train station.', count: s.sentences.replace('{n}', 10), done: false },
+      { title: 'Returning an item', ctx: 'Explain the problem with a jacket you bought and ask for a refund.', count: s.sentences.replace('{n}', 14), done: false }
+    ];
+    const titles = { tasks: s.labTasksCardTitle, vocab: s.labVocabIdiomsCardTitle, flash: s.labFlashCardsCardTitle, scenarios: s.labScenariosCardTitle };
+    const isDetail = screen !== 'hub';
+    const ok = st === 'default';
+    const empties = {
+      tasks: { icon: 'task_alt', font: 'Material Icons', size: '48px', ic: '#9E9E9E', text: s.noTasksAvailable, color: '#9E9E9E', w: 400, fam: 'Poppins, sans-serif', gap: '16px' },
+      vocab: { icon: 'menu_book', font: 'Material Icons Outlined', size: '64px', ic: '#9E9E9E', text: s.noLearningItemsFound, color: '#9E9E9E', w: 400, fam: 'Poppins, sans-serif', gap: '16px' },
+      flash: { icon: 'style', font: 'Material Icons Outlined', size: '48px', ic: '#D1D5DB', text: s.flashCardsEmpty, color: '#4B5563', w: 600, fam: 'Inter, sans-serif', gap: '12px' },
+      scenarios: { icon: 'mic_off', font: 'Material Icons Round', size: '48px', ic: '#D1D5DB', text: s.scenariosEmpty, color: '#4B5563', w: 600, fam: 'Inter, sans-serif', gap: '12px' }
+    };
+    const em = empties[screen] || empties.tasks;
+    return {
+      dir, t, modes, taskCats, vocabCats, flashCats, tasks, items, fc, sc, scens,
+      isHub: screen === 'hub', isDetail, detailTitle: titles[screen] || '',
+      bodyBg: (screen === 'flash' || screen === 'scenarios') ? '#F9FAFB' : '#FAFAFA',
+      showSpinner: isDetail && st === 'loading',
+      showEmpty: isDetail && st === 'empty',
+      showError: isDetail && st === 'error' && (screen === 'flash' || screen === 'scenarios'),
+      emptyIcon: em.icon, emptyFont: em.font, emptySize: em.size, emptyIconColor: em.ic, emptyText: em.text, emptyColor: em.color, emptyWeight: em.w, emptyFamily: em.fam, emptyGap: em.gap,
+      showTasks: screen === 'tasks' && ok, showVocab: screen === 'vocab' && ok, showFlash: screen === 'flash' && ok, showScen: screen === 'scenarios' && ok,
+      arrowFwd: ar ? 'arrow_back' : 'arrow_forward', arrowBack: ar ? 'arrow_forward' : 'arrow_back', flip: ar ? 'scaleX(-1)' : 'none'
+    };
+  }
+}
+</script>
+</body>
+</html>

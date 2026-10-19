@@ -1,0 +1,14 @@
+:root{
+--radius-sm:6px;    /* direction toggles, micro buttons */
+--radius-md:8px;    /* buttons, inputs, inline code */
+--radius-lg:10px;   /* search fields, sidebar nav items, icon tiles */
+--radius-xl:12px;   /* chips, icon squares, sunken rows */
+--radius-2xl:14px;  /* compact cards, task cards */
+--radius-3xl:16px;  /* the default card and the tab bar */
+--radius-4xl:20px;  /* large cards, transcript panel */
+--radius-5xl:24px;  /* hero cards */
+--radius-sheet:32px;/* gradient auth header sheet (bottom corners only) */
+--radius-phone-outer:56px;--radius-phone-inner:46px;
+--radius-modal:26px;
+--radius-full:999px
+}

@@ -1,0 +1,16 @@
+:root{
+/* 4px base grid */
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-12:48px;
+/* Off-grid values the source uses verbatim — do not snap these to the 4px grid */
+--space-3-5:14px;--space-4-5:18px;--space-5-5:22px;--space-6-5:26px;
+/* Layout rules */
+--screen-padding-x:20px;      /* every scrolling app screen */
+--screen-padding-bottom:110px;/* clears the floating tab bar */
+--block-gap:24px;             /* between major blocks on a screen */
+--card-gap:12px;              /* between cards in a group */
+--card-padding:18px;          /* app card */
+--card-padding-lg:22px;       /* documentation card / profile header */
+--status-bar-height:50px;
+--tab-bar-height:76px;
+--hit-target-min:44px
+}

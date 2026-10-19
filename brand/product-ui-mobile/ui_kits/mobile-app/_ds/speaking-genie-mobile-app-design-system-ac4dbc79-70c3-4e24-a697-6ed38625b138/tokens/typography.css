@@ -1,0 +1,25 @@
+:root{
+/* Families */
+--font-display:Poppins,sans-serif;--font-sans:Inter,sans-serif;
+/* Tailwind-named web ladder (the design-system documentation surface) */
+--text-3xl:30px;--text-2xl:24px;--text-xl:20px;--text-lg:18px;--text-base:16px;--text-sm:14px;--text-xs:12px;
+/* In-app mobile ladder — the sizes the student app actually ships */
+--text-screen-title:26px;   /* full-screen hub titles: "Practicing Lab" */
+--text-page-title:22px;     /* standard screen title: "Connect", "Profile" */
+--text-greeting:24px;       /* Home greeting: "Hi, Ahmed" */
+--text-section:18px;        /* section heading inside a screen */
+--text-hero:19px;           /* hero / carousel card title */
+--text-card-title:16px;     /* card title */
+--text-row-title:15px;      /* list-row and small card title */
+--text-body:14px;           /* body copy, inputs, buttons */
+--text-body-sm:13px;        /* dense app body — the app's most common size */
+--text-meta:12px;           /* metadata, pills, helper text */
+--text-overline:11px;       /* eyebrows, chips, badge counts */
+--text-micro:10px;          /* tab-bar labels, stat captions */
+/* Weights */
+--weight-regular:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;
+/* Line heights */
+--leading-tight:1.2;--leading-snug:1.35;--leading-normal:1.5;--leading-relaxed:1.65;
+/* Tracking */
+--tracking-overline:0.08em;--tracking-caps:0.1em;--tracking-wordmark:0.04em
+}

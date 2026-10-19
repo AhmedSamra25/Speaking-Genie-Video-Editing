@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="stylesheet" href="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/styles.css">
+  <script src="_ds/speaking-genie-mobile-app-design-system-ac4dbc79-70c3-4e24-a697-6ed38625b138/_ds_bundle.js"></script>
+  <style>body{margin:0;background:#EEF0F4;} a{color:#7C3AED;} a:hover{color:#6D28D9;}</style>
+</helmet>
+<section id="home" data-screen-label="Home" style="padding:64px;font-family:Inter, system-ui, sans-serif;">
+  <div style="font-family:Poppins, sans-serif;font-size:32px;font-weight:700;color:#1F2937;">Home</div>
+  <div style="margin-top:6px;font-size:15px;color:#6B7280;">Built from stg-env: features/home, main_home, widgets/app_top_bar.dart</div>
+  <div style="margin-top:28px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">LTR · ENGLISH</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Default</div><dc-import name="Home Screen" dir="ltr" state="default" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Streak expanded</div><dc-import name="Home Screen" dir="ltr" state="default" streak-expanded="{{ true }}" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Speak To Hire package</div><dc-import name="Home Screen" dir="ltr" state="default" speak-to-hire="{{ true }}" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Empty</div><dc-import name="Home Screen" dir="ltr" state="empty" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Loading</div><dc-import name="Home Screen" dir="ltr" state="loading" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">RTL · ARABIC</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Default</div><dc-import name="Home Screen" dir="rtl" state="default" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Streak expanded</div><dc-import name="Home Screen" dir="rtl" state="default" streak-expanded="{{ true }}" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Speak To Hire package</div><dc-import name="Home Screen" dir="rtl" state="default" speak-to-hire="{{ true }}" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Empty</div><dc-import name="Home Screen" dir="rtl" state="empty" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Loading</div><dc-import name="Home Screen" dir="rtl" state="loading" hint-size="390px,844px"></dc-import></div>
+  </div>
+</section>
+<section id="lab" data-screen-label="Practicing Lab" style="padding:64px;font-family:Inter, system-ui, sans-serif;">
+  <div style="font-family:Poppins, sans-serif;font-size:32px;font-weight:700;color:#1F2937;">Practicing Lab</div>
+  <div style="margin-top:6px;font-size:15px;color:#6B7280;">features/learning_tasks: hub, tasks, learning_items, flash_cards, scenarios</div>
+  <div style="margin-top:28px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">LTR · ENGLISH</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Hub</div><dc-import name="Lab Screens" dir="ltr" screen="hub" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Conversation Tasks</div><dc-import name="Lab Screens" dir="ltr" screen="tasks" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Vocabulary &amp; Idioms</div><dc-import name="Lab Screens" dir="ltr" screen="vocab" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Rule Breaker (flash cards)</div><dc-import name="Lab Screens" dir="ltr" screen="flash" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Real-life Scenarios</div><dc-import name="Lab Screens" dir="ltr" screen="scenarios" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">PRACTICE FLOWS</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Pronunciation drill</div><dc-import name="Lab Practice Screens" dir="ltr" screen="drill" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Drill · passed</div><dc-import name="Lab Practice Screens" dir="ltr" screen="drillPassed" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Scenario · 1 Listen (recording)</div><dc-import name="Lab Practice Screens" dir="ltr" screen="listen" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Scenario · 2 Drill (failed attempt)</div><dc-import name="Lab Practice Screens" dir="ltr" screen="readSay" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Scenario · 3 Free speech</div><dc-import name="Lab Practice Screens" dir="ltr" screen="free" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Scenario report</div><dc-import name="Lab Practice Screens" dir="ltr" screen="report" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:24px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Drill · RTL</div><dc-import name="Lab Practice Screens" dir="rtl" screen="drillPassed" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Scenario drill · RTL</div><dc-import name="Lab Practice Screens" dir="rtl" screen="readSay" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Free speech · RTL</div><dc-import name="Lab Practice Screens" dir="rtl" screen="free" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Report · RTL</div><dc-import name="Lab Practice Screens" dir="rtl" screen="report" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">STATES</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Tasks · loading</div><dc-import name="Lab Screens" dir="ltr" screen="tasks" state="loading" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Tasks · empty</div><dc-import name="Lab Screens" dir="ltr" screen="tasks" state="empty" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Vocabulary · empty</div><dc-import name="Lab Screens" dir="ltr" screen="vocab" state="empty" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Flash cards · error</div><dc-import name="Lab Screens" dir="ltr" screen="flash" state="error" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Scenarios · empty</div><dc-import name="Lab Screens" dir="ltr" screen="scenarios" state="empty" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">RTL · ARABIC</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Hub</div><dc-import name="Lab Screens" dir="rtl" screen="hub" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Conversation Tasks</div><dc-import name="Lab Screens" dir="rtl" screen="tasks" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Vocabulary &amp; Idioms</div><dc-import name="Lab Screens" dir="rtl" screen="vocab" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Rule Breaker (flash cards)</div><dc-import name="Lab Screens" dir="rtl" screen="flash" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Real-life Scenarios</div><dc-import name="Lab Screens" dir="rtl" screen="scenarios" hint-size="390px,844px"></dc-import></div>
+  </div>
+</section>
+<section id="ai" data-screen-label="AI Partners" style="padding:64px;font-family:Inter, system-ui, sans-serif;">
+  <div style="font-family:Poppins, sans-serif;font-size:32px;font-weight:700;color:#1F2937;">AI Partners &amp; calls</div>
+  <div style="margin-top:6px;font-size:15px;color:#6B7280;">features/partners, character_profile, call (call, report loading, chat summary, incoming)</div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">LTR · ENGLISH</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Partners</div><dc-import name="AI Partners Screens" dir="ltr" screen="list" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Character profile</div><dc-import name="AI Partners Screens" dir="ltr" screen="profile" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Call · listening</div><dc-import name="AI Partners Screens" dir="ltr" screen="call" status="listening" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Call · speaking (report eligible)</div><dc-import name="AI Partners Screens" dir="ltr" screen="call" status="speaking" eligible="{{ true }}" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Task call · thinking</div><dc-import name="AI Partners Screens" dir="ltr" screen="call" status="thinking" task="{{ true }}" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Call · paused</div><dc-import name="AI Partners Screens" dir="ltr" screen="call" status="paused" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Analyzing report</div><dc-import name="AI Partners Screens" dir="ltr" screen="reportLoading" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Session feedback</div><dc-import name="AI Partners Screens" dir="ltr" screen="summary" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Incoming call</div><dc-import name="AI Partners Screens" dir="ltr" screen="incoming" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">STATES, MODALS &amp; SHEETS</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Partners · loading</div><dc-import name="AI Partners Screens" dir="ltr" screen="listLoading" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Partners · empty</div><dc-import name="AI Partners Screens" dir="ltr" screen="listEmpty" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">End without report dialog</div><dc-import name="AI Partners Screens" dir="ltr" screen="endDialog" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Audio output sheet</div><dc-import name="AI Partners Screens" dir="ltr" screen="audioSheet" status="speaking" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Voice speed sheet</div><dc-import name="AI Partners Screens" dir="ltr" screen="speedSheet" status="speaking" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Report · error</div><dc-import name="AI Partners Screens" dir="ltr" screen="reportError" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Incoming · connecting</div><dc-import name="AI Partners Screens" dir="ltr" screen="incomingConnecting" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">RTL · ARABIC</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Partners</div><dc-import name="AI Partners Screens" dir="rtl" screen="list" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Character profile</div><dc-import name="AI Partners Screens" dir="rtl" screen="profile" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Call · listening</div><dc-import name="AI Partners Screens" dir="rtl" screen="call" status="listening" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Call · speaking (report eligible)</div><dc-import name="AI Partners Screens" dir="rtl" screen="call" status="speaking" eligible="{{ true }}" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Task call · thinking</div><dc-import name="AI Partners Screens" dir="rtl" screen="call" status="thinking" task="{{ true }}" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Call · paused</div><dc-import name="AI Partners Screens" dir="rtl" screen="call" status="paused" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Analyzing report</div><dc-import name="AI Partners Screens" dir="rtl" screen="reportLoading" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Session feedback</div><dc-import name="AI Partners Screens" dir="rtl" screen="summary" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Incoming call</div><dc-import name="AI Partners Screens" dir="rtl" screen="incoming" hint-size="390px,844px"></dc-import></div>
+  </div>
+</section>
+<section id="reports" data-screen-label="Reports" style="padding:64px;font-family:Inter, system-ui, sans-serif;">
+  <div style="font-family:Poppins, sans-serif;font-size:32px;font-weight:700;color:#1F2937;">Reports &amp; certificates</div>
+  <div style="margin-top:6px;font-size:15px;color:#6B7280;">features/reports, certificates</div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">LTR · ENGLISH</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Learning Reports</div><dc-import name="Reports Screens" dir="ltr" screen="list" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Report detail</div><dc-import name="Reports Screens" dir="ltr" screen="preview" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">My Certificates</div><dc-import name="Reports Screens" dir="ltr" screen="certs" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Certificate view</div><dc-import name="Reports Screens" dir="ltr" screen="certDialog" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">STATES</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Reports · loading</div><dc-import name="Reports Screens" dir="ltr" screen="listLoading" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Reports · empty</div><dc-import name="Reports Screens" dir="ltr" screen="listEmpty" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Reports · error</div><dc-import name="Reports Screens" dir="ltr" screen="listError" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Certificates · loading</div><dc-import name="Reports Screens" dir="ltr" screen="certLoading" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Certificates · empty</div><dc-import name="Reports Screens" dir="ltr" screen="certEmpty" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">RTL · ARABIC</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Learning Reports</div><dc-import name="Reports Screens" dir="rtl" screen="list" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Report detail</div><dc-import name="Reports Screens" dir="rtl" screen="preview" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">My Certificates</div><dc-import name="Reports Screens" dir="rtl" screen="certs" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Certificate view</div><dc-import name="Reports Screens" dir="rtl" screen="certDialog" hint-size="390px,844px"></dc-import></div>
+  </div>
+</section>
+<section id="profile" data-screen-label="Profile" style="padding:64px;font-family:Inter, system-ui, sans-serif;">
+  <div style="font-family:Poppins, sans-serif;font-size:32px;font-weight:700;color:#1F2937;">Profile &amp; settings</div>
+  <div style="margin-top:6px;font-size:15px;color:#6B7280;">features/profile, notifications, notification_settings, subscription</div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">LTR · ENGLISH</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Profile</div><dc-import name="Profile Screens" dir="ltr" screen="profile" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Notifications</div><dc-import name="Profile Screens" dir="ltr" screen="notifications" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Notification settings</div><dc-import name="Profile Screens" dir="ltr" screen="notifSettings" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Change language</div><dc-import name="Profile Screens" dir="ltr" screen="changeLanguage" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Change plan</div><dc-import name="Profile Screens" dir="ltr" screen="subscription" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">STATES, DIALOGS &amp; SHEETS</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Delete account dialog</div><dc-import name="Profile Screens" dir="ltr" screen="deleteDialog" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Promo code sheet</div><dc-import name="Profile Screens" dir="ltr" screen="promoSheet" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Promo code applied</div><dc-import name="Profile Screens" dir="ltr" screen="promoApplied" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Notifications · loading</div><dc-import name="Profile Screens" dir="ltr" screen="notifLoading" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Notifications · empty</div><dc-import name="Profile Screens" dir="ltr" screen="notifEmpty" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Notifications · error</div><dc-import name="Profile Screens" dir="ltr" screen="notifError" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">RTL · ARABIC</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Profile</div><dc-import name="Profile Screens" dir="rtl" screen="profile" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Notifications</div><dc-import name="Profile Screens" dir="rtl" screen="notifications" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Notification settings</div><dc-import name="Profile Screens" dir="rtl" screen="notifSettings" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Change language</div><dc-import name="Profile Screens" dir="rtl" screen="changeLanguage" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Change plan</div><dc-import name="Profile Screens" dir="rtl" screen="subscription" hint-size="390px,844px"></dc-import></div>
+  </div>
+</section>
+<section id="auth" data-screen-label="Auth" style="padding:64px;font-family:Inter, system-ui, sans-serif;">
+  <div style="font-family:Poppins, sans-serif;font-size:32px;font-weight:700;color:#1F2937;">Authentication &amp; account forms</div>
+  <div style="margin-top:6px;font-size:15px;color:#6B7280;">features/login, sign_up (v2), forget_password, profile/change_password, profile/edit_profile · widgets/auth</div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">LTR · ENGLISH</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Sign in</div><dc-import name="Auth Screens" dir="ltr" screen="login" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Sign up</div><dc-import name="Auth Screens" dir="ltr" screen="signup" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Verify email (sign-up)</div><dc-import name="Auth Screens" dir="ltr" screen="signupOtp" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Forgot password</div><dc-import name="Auth Screens" dir="ltr" screen="forgot" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Verify code</div><dc-import name="Auth Screens" dir="ltr" screen="otp" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Reset password</div><dc-import name="Auth Screens" dir="ltr" screen="reset" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Change password</div><dc-import name="Auth Screens" dir="ltr" screen="changePassword" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Edit profile</div><dc-import name="Auth Screens" dir="ltr" screen="editProfile" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">RTL · ARABIC</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Sign in</div><dc-import name="Auth Screens" dir="rtl" screen="login" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Sign up</div><dc-import name="Auth Screens" dir="rtl" screen="signup" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Verify email (sign-up)</div><dc-import name="Auth Screens" dir="rtl" screen="signupOtp" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Forgot password</div><dc-import name="Auth Screens" dir="rtl" screen="forgot" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Verify code</div><dc-import name="Auth Screens" dir="rtl" screen="otp" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Reset password</div><dc-import name="Auth Screens" dir="rtl" screen="reset" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Change password</div><dc-import name="Auth Screens" dir="rtl" screen="changePassword" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Edit profile</div><dc-import name="Auth Screens" dir="rtl" screen="editProfile" hint-size="390px,844px"></dc-import></div>
+  </div>
+</section>
+<section id="onboarding" data-screen-label="Onboarding" style="padding:64px;font-family:Inter, system-ui, sans-serif;">
+  <div style="font-family:Poppins, sans-serif;font-size:32px;font-weight:700;color:#1F2937;">Splash &amp; onboarding</div>
+  <div style="margin-top:6px;font-size:15px;color:#6B7280;">features/app (splash), onboarding, user_onboarding</div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">LTR · ENGLISH</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Splash</div><dc-import name="Onboarding Screens" dir="ltr" screen="splash" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Intro 1</div><dc-import name="Onboarding Screens" dir="ltr" screen="intro1" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Intro 2</div><dc-import name="Onboarding Screens" dir="ltr" screen="intro2" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Intro 3</div><dc-import name="Onboarding Screens" dir="ltr" screen="intro3" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Choose languages</div><dc-import name="Onboarding Screens" dir="ltr" screen="language" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Choose level</div><dc-import name="Onboarding Screens" dir="ltr" screen="level" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Free trial offer</div><dc-import name="Onboarding Screens" dir="ltr" screen="trial" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">RTL · ARABIC</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Splash</div><dc-import name="Onboarding Screens" dir="rtl" screen="splash" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Intro 1</div><dc-import name="Onboarding Screens" dir="rtl" screen="intro1" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Intro 2</div><dc-import name="Onboarding Screens" dir="rtl" screen="intro2" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Intro 3</div><dc-import name="Onboarding Screens" dir="rtl" screen="intro3" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Choose languages</div><dc-import name="Onboarding Screens" dir="rtl" screen="language" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Choose level</div><dc-import name="Onboarding Screens" dir="rtl" screen="level" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Free trial offer</div><dc-import name="Onboarding Screens" dir="rtl" screen="trial" hint-size="390px,844px"></dc-import></div>
+  </div>
+</section>
+<section id="placement" data-screen-label="Placement test" style="padding:64px;font-family:Inter, system-ui, sans-serif;">
+  <div style="font-family:Poppins, sans-serif;font-size:32px;font-weight:700;color:#1F2937;">Placement test</div>
+  <div style="margin-top:6px;font-size:15px;color:#6B7280;">features/placement_test (landing, section intro, question, pause overlay, result)</div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">LTR · ENGLISH</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Landing</div><dc-import name="Placement Test Screens" dir="ltr" screen="landing" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Section intro</div><dc-import name="Placement Test Screens" dir="ltr" screen="sectionIntro" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Question</div><dc-import name="Placement Test Screens" dir="ltr" screen="question" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Question with context</div><dc-import name="Placement Test Screens" dir="ltr" screen="questionContext" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Paused</div><dc-import name="Placement Test Screens" dir="ltr" screen="paused" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Result</div><dc-import name="Placement Test Screens" dir="ltr" screen="result" hint-size="390px,844px"></dc-import></div>
+  </div>
+  <div style="margin-top:48px;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#6B7280;">RTL · ARABIC</div>
+  <div style="margin-top:16px;display:flex;gap:48px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Landing</div><dc-import name="Placement Test Screens" dir="rtl" screen="landing" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Section intro</div><dc-import name="Placement Test Screens" dir="rtl" screen="sectionIntro" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Question</div><dc-import name="Placement Test Screens" dir="rtl" screen="question" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Question with context</div><dc-import name="Placement Test Screens" dir="rtl" screen="questionContext" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Paused</div><dc-import name="Placement Test Screens" dir="rtl" screen="paused" hint-size="390px,844px"></dc-import></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div style="font-size:14px;font-weight:600;color:#374151;">Result</div><dc-import name="Placement Test Screens" dir="rtl" screen="result" hint-size="390px,844px"></dc-import></div>
+  </div>
+</section>
+</x-dc>
+</body>
+</html>
