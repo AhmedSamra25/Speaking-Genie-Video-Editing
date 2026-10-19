@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import sys
 import time
 from pathlib import Path
@@ -247,6 +248,12 @@ def _loudness(project: Project, assembled: Path, extra_inputs: list, extra: dict
     return json.loads(blob)
 
 
+def _silent(measured: dict) -> bool:
+    # a silent mix measures -inf LUFS, which loudnorm rejects (measured_I must be in [-99, 0])
+    i = float(measured["input_i"])
+    return not math.isfinite(i) or i <= -99
+
+
 def finish(project: Project, assembled: Path, preset: dict, master_w: int, master_h: int, aspect: str,
            out: Path, draft: bool, measured: dict | None) -> Path:
     total = ff.probe(str(assembled))["duration"]
@@ -299,7 +306,9 @@ def finish(project: Project, assembled: Path, preset: dict, master_w: int, maste
 
     aparts, alabel = _audio_graph(project, total, extra)
     lufs = preset["lufs"]
-    if measured and not draft:
+    if measured and not draft and _silent(measured):
+        ln = "anull"  # nothing to normalise
+    elif measured and not draft:
         # keep the mix's own dynamics: a target LRA below the measured one forces dynamic (pumping) mode
         lra = max(11, min(50, int(float(measured["input_lra"])) + 2))
         ln = (f"loudnorm=I={lufs}:TP=-1:LRA={lra}:measured_I={measured['input_i']}:measured_TP={measured['input_tp']}"
@@ -349,7 +358,10 @@ def render(project: Project, preset_names: list | None = None, draft: bool = Fal
                 extra_inputs, extra, _ = _audio_inputs(project)
                 measured[p["lufs"]] = _loudness(project, assembled, extra_inputs, extra,
                                                 ff.probe(str(assembled))["duration"], p["lufs"])
-                log(f"  loudness measured {measured[p['lufs']]['input_i']} LUFS → target {p['lufs']} LUFS")
+                if _silent(measured[p["lufs"]]):
+                    log("  loudness: no audio, skipping normalisation")
+                else:
+                    log(f"  loudness measured {measured[p['lufs']]['input_i']} LUFS → target {p['lufs']} LUFS")
             out = exports_dir / (f"{project.name}-draft.mp4" if draft else f"{project.name}-{p['name']}.{p['ext']}")
             log(f"  export  {out.name}")
             finish(project, assembled, p, w, h, aspect, out, draft, measured.get(p["lufs"]))
