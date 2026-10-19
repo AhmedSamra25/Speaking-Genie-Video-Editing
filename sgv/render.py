@@ -56,6 +56,28 @@ def _fit_filter(mode: str, w: int, h: int, focus, theme: str) -> str:
             f"crop={w}:{h}:(iw-{w})*{float(fx)}:(ih-{h})*{float(fy)}")
 
 
+# named looks for a video clip's "grade" (any other string is used as an ffmpeg filter chain)
+GRADES = {
+    # about one stop of lift for backlit faces, keeping the blacks
+    "lift": "curves=all='0/0 0.25/0.33 0.5/0.6 0.8/0.86 1/1'",
+}
+
+
+def _punch_in(scale: float, w: int, h: int, focus) -> str:
+    """Scale a filled w×h frame up by `scale` and crop back to w×h around `focus` (a punch-in to cover a jump cut)."""
+    fx, fy = focus if isinstance(focus, (list, tuple)) else (focus, 0.5)
+    sw, sh = round(w * scale / 2) * 2, round(h * scale / 2) * 2
+    return f"scale={sw}:{sh}:flags=lanczos,crop={w}:{h}:({sw}-{w})*{float(fx)}:({sh}-{h})*{float(fy)}"
+
+
+def _caption_accent(project: Project) -> str | None:
+    """Enablement look: the caption highlight takes the track's phrase colour (green, or orange on purple)."""
+    d = project.motion_defaults()
+    if d.get("look") != "enablement":
+        return None
+    return paths.tokens()["enablement"]["tracks"][d.get("track", "individual")]["phrase"]
+
+
 def _fit_mode(project: Project, clip: dict, aspect: str) -> str:
     fit = clip.get("fit", project.edit.get("fit", "fill"))
     if isinstance(fit, dict):
@@ -113,7 +135,11 @@ def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, dra
             vf.append(_hdr_filter().rstrip(","))
         if speed != 1:
             vf.append(f"setpts=PTS/{speed}")
+        if clip.get("grade"):
+            vf.append(GRADES.get(clip["grade"], clip["grade"]))
         vf.append(_fit_filter(_fit_mode(project, clip, aspect), w, h, clip.get("focus", 0.5), theme))
+        if float(clip.get("scale", 1)) > 1:
+            vf.append(_punch_in(float(clip["scale"]), w, h, clip.get("focus", 0.5)))
     elif t == "image":
         sp = project.path(clip["src"])
         inputs += ["-loop", "1", "-framerate", str(fps), "-t", f"{dur:.3f}", "-i", sp]
@@ -296,7 +322,7 @@ def _audio_inputs(project: Project) -> tuple:
 
 def _loudness(project: Project, assembled: Path, extra_inputs: list, extra: dict, total: float, lufs: float) -> dict:
     parts, label = _audio_graph(project, total, extra)
-    parts.append(f"{label}loudnorm=I={lufs}:TP=-1:LRA=11:print_format=json[out]")
+    parts.append(f"{label}loudnorm=I={lufs}:TP=-1.5:LRA=11:print_format=json[out]")
     proc = ff.run(["ffmpeg", "-loglevel", "info", "-i", assembled, *extra_inputs, "-filter_complex", ";".join(parts),
                    "-map", "[out]", "-f", "null", "-"], capture=True)
     text = proc.stderr
@@ -357,7 +383,7 @@ def finish(project: Project, assembled: Path, preset: dict, master_w: int, maste
         cues = captions.parse_srt(project.path(cap["src"]))
         cues = captions.shift(cues, float(cap.get("offset", 0)))
         ass = captions.write_ass(cues, project.build / f"captions-{preset['w']}x{preset['h']}.ass", preset["w"], preset["h"],
-                                 paths.tokens(), words=cap.get("style") == "words")
+                                 paths.tokens(), words=cap.get("style") == "words", accent=_caption_accent(project))
         post.append(captions.subtitles_filter(ass))
     post += ["format=yuv420p" if preset["codec"] != "prores" else "format=yuv422p10le", "setsar=1"]
     vparts.append(f"{v}{','.join(post)}[vout]")
@@ -369,11 +395,11 @@ def finish(project: Project, assembled: Path, preset: dict, master_w: int, maste
     elif measured and not draft:
         # keep the mix's own dynamics: a target LRA below the measured one forces dynamic (pumping) mode
         lra = max(11, min(50, int(float(measured["input_lra"])) + 2))
-        ln = (f"loudnorm=I={lufs}:TP=-1:LRA={lra}:measured_I={measured['input_i']}:measured_TP={measured['input_tp']}"
+        ln = (f"loudnorm=I={lufs}:TP=-1.5:LRA={lra}:measured_I={measured['input_i']}:measured_TP={measured['input_tp']}"
               f":measured_LRA={measured['input_lra']}:measured_thresh={measured['input_thresh']}"
               f":offset={measured['target_offset']}:linear=true")
     else:
-        ln = f"loudnorm=I={lufs}:TP=-1:LRA=11"
+        ln = f"loudnorm=I={lufs}:TP=-1.5:LRA=11"
     aparts.append(f"{alabel}{ln},{AUDIO_FMT}[aout]")
 
     acodec = ["-c:a", "pcm_s24le"] if preset["audio"] == "pcm" else ["-c:a", "aac", "-b:a", preset["audio"]]

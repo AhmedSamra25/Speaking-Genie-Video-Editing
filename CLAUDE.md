@@ -61,7 +61,9 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
     { "type": "video", "src": "footage/a.mov", "in": 12.4, "out": 19.0,
       "focus": [0.5, 0.4],             // crop centre (x,y 0–1) when filling another aspect
       "fit": { "9:16": "fill", "16:9": "fit" },
-      "speed": 1, "volume": 1, "mute": false, "fadeIn": 0, "fadeOut": 0, "label": "Mona intro" },
+      "speed": 1, "volume": 1, "mute": false, "fadeIn": 0, "fadeOut": 0, "label": "Mona intro",
+      "scale": 1.15,                   // punch-in toward `focus` to cover a jump cut (keep ≤ 1.2 on 1080p sources)
+      "grade": "lift" },               // "lift" (backlit faces, about one stop) or any ffmpeg filter chain
     { "type": "image", "src": "assets/dashboard.png", "duration": 4, "kenburns": "in" },  // in|out|left|right
     { "type": "color", "duration": 1 },                                                  // brand canvas hold
     { "type": "motion", "composition": "StatCard", "duration": 4,

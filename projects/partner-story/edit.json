@@ -1,0 +1,325 @@
+{
+  "title": "Partner Story",
+  "aspect": "9:16",
+  "fps": 24,
+  "theme": "dark",
+  "lang": "ar",
+  "fit": "fill",
+  "transitionDuration": 0.5,
+  "look": "enablement",
+  "track": "business",
+  "exports": [
+    "reels-1080x1920"
+  ],
+  "timeline": [
+    {
+      "type": "video",
+      "label": "B1+B2 clip 11 wide",
+      "src": "footage/DJI_20260831150848_0011_D.MP4",
+      "in": 3.18,
+      "out": 12.43,
+      "focus": [
+        0.52,
+        0.38
+      ],
+      "fit": "fill",
+      "grade": "lift"
+    },
+    {
+      "type": "video",
+      "label": "B3 clip 11 close",
+      "src": "footage/DJI_20260831150848_0011_D.MP4",
+      "in": 19.9,
+      "out": 34.65,
+      "focus": [
+        0.52,
+        0.38
+      ],
+      "fit": "fill",
+      "scale": 1.15,
+      "grade": "lift"
+    },
+    {
+      "type": "video",
+      "label": "B4 clip 11 wide",
+      "src": "footage/DJI_20260831150848_0011_D.MP4",
+      "in": 35.16,
+      "out": 49.7017,
+      "focus": [
+        0.52,
+        0.38
+      ],
+      "fit": "fill",
+      "grade": "lift"
+    },
+    {
+      "type": "video",
+      "label": "B5 clip 11 close",
+      "src": "footage/DJI_20260831150848_0011_D.MP4",
+      "in": 49.96,
+      "out": 58.7933,
+      "focus": [
+        0.55,
+        0.4
+      ],
+      "fit": "fill",
+      "scale": 1.15,
+      "grade": "lift"
+    },
+    {
+      "type": "motion",
+      "composition": "TitleCard",
+      "label": "B6 title",
+      "duration": 4.5,
+      "transition": "dip",
+      "transitionDuration": 0.375,
+      "props": {
+        "title": "المشكلة ليست في الإتقان، بل في الثقة.",
+        "highlight": "الثقة"
+      }
+    },
+    {
+      "type": "video",
+      "label": "B7 clip 2",
+      "src": "footage/DJI_20260831144545_0002_D.MP4",
+      "in": 16.62,
+      "out": 23.5367,
+      "focus": [
+        0.55,
+        0.4
+      ],
+      "fit": "fill"
+    },
+    {
+      "type": "video",
+      "label": "B8 clip 12 wide",
+      "src": "footage/DJI_20260831151425_0012_D.MP4",
+      "in": 66.84,
+      "out": 85.84,
+      "focus": [
+        0.53,
+        0.44
+      ],
+      "fit": "fill",
+      "grade": "lift"
+    },
+    {
+      "type": "video",
+      "label": "B9 clip 9",
+      "src": "footage/DJI_20260831150326_0009_D.MP4",
+      "in": 30.75,
+      "out": 45.5833,
+      "focus": [
+        0.49,
+        0.38
+      ],
+      "fit": "fill"
+    },
+    {
+      "type": "video",
+      "label": "B10 clip 7",
+      "src": "footage/DJI_20260831145921_0007_D.MP4",
+      "in": 6.25,
+      "out": 20.4167,
+      "focus": [
+        0.57,
+        0.36
+      ],
+      "fit": "fill"
+    },
+    {
+      "type": "video",
+      "label": "B11 clip 4",
+      "src": "footage/DJI_20260831144920_0004_D.MP4",
+      "in": 30.22,
+      "out": 35.22,
+      "focus": [
+        0.52,
+        0.37
+      ],
+      "fit": "fill"
+    },
+    {
+      "type": "video",
+      "label": "B12 clip 11 close",
+      "src": "footage/DJI_20260831150848_0011_D.MP4",
+      "in": 69.78,
+      "out": 75.6967,
+      "focus": [
+        0.52,
+        0.38
+      ],
+      "fit": "fill",
+      "scale": 1.15,
+      "grade": "lift"
+    },
+    {
+      "type": "motion",
+      "composition": "EndCard",
+      "label": "B14 end card",
+      "duration": 7.0,
+      "transition": "dip",
+      "transitionDuration": 0.5,
+      "props": {
+        "headline": "هل تعرف مركز لغات أو شركة؟",
+        "highlight": "مركز لغات أو شركة",
+        "subline": "رشّحهم لنا، ولنتحدث معًا عن الخطوة التالية.",
+        "cta": "تحدّث معنا",
+        "url": "speakingenie.com"
+      }
+    }
+  ],
+  "overlays": [
+    {
+      "composition": "LowerThird",
+      "at": {
+        "clip": 0,
+        "offset": 2.4
+      },
+      "duration": 4.0,
+      "props": {
+        "name": "أحمد أبوسمرة",
+        "role": "Co-founder, Speaking Genie"
+      }
+    },
+    {
+      "composition": "ProductScreen",
+      "at": {
+        "clip": 5,
+        "offset": 3.33
+      },
+      "duration": 3.587,
+      "props": {
+        "src": "assets/screens/flow-aiPlan-ar.png",
+        "callout": {
+          "x": 59,
+          "y": 185,
+          "w": 566,
+          "h": 136
+        },
+        "label": "بناء المنهج بالذكاء الاصطناعي",
+        "startZoom": 0.75,
+        "pushFrames": 14,
+        "calloutFill": 0.9,
+        "drift": 0.03,
+        "enterFade": false,
+        "exitFade": false
+      }
+    },
+    {
+      "composition": "ProductScreen",
+      "at": {
+        "clip": 6,
+        "offset": 8.41
+      },
+      "duration": 4.7,
+      "props": {
+        "src": "assets/screens/06-lab-tasks-ar.png",
+        "scale": 3,
+        "callout": {
+          "x": 37,
+          "y": 300,
+          "w": 356,
+          "h": 211
+        },
+        "label": "مهام محادثة من المنهج",
+        "tap": {
+          "x": 170,
+          "y": 474,
+          "at": 4.1
+        },
+        "drift": 0.03,
+        "enterFade": false,
+        "exitFade": false,
+        "move": "still"
+      }
+    },
+    {
+      "composition": "ProductScreen",
+      "at": {
+        "clip": 6,
+        "offset": 13.11
+      },
+      "duration": 5.89,
+      "props": {
+        "src": "assets/screens/22-call-ar.png",
+        "scale": 3,
+        "callout": {
+          "x": 135,
+          "y": 293,
+          "w": 160,
+          "h": 350
+        },
+        "label": "مكالمة صوتية مع الشريك الذكي",
+        "startZoom": 0.6,
+        "pushFrames": 16,
+        "calloutFill": 0.19,
+        "drift": 0.03,
+        "enterFade": false,
+        "exitFade": false
+      }
+    },
+    {
+      "composition": "ProductScreen",
+      "at": {
+        "clip": 8,
+        "offset": 6.05
+      },
+      "duration": 4.75,
+      "props": {
+        "src": "assets/screens/21-session-feedback-ar.png",
+        "scale": 3,
+        "callout": {
+          "x": 52,
+          "y": 488,
+          "w": 326,
+          "h": 139
+        },
+        "label": "ملاحظات ما بعد الجلسة",
+        "startZoom": 0.6,
+        "pushFrames": 16,
+        "drift": 0.03,
+        "enterFade": false,
+        "exitFade": false,
+        "calloutFill": 0.5
+      }
+    },
+    {
+      "composition": "ProductScreen",
+      "at": {
+        "clip": 8,
+        "offset": 10.8
+      },
+      "duration": 3.367,
+      "props": {
+        "src": "assets/screens/23-reports-ar.png",
+        "scale": 3,
+        "callout": {
+          "x": 40,
+          "y": 149,
+          "w": 350,
+          "h": 298
+        },
+        "label": "تقارير أسبوعية وشهرية",
+        "drift": 0.03,
+        "enterFade": false,
+        "exitFade": false,
+        "move": "still"
+      }
+    }
+  ],
+  "logo": {
+    "enabled": false,
+    "corner": "top-right",
+    "variant": "light-on-dark"
+  },
+  "sfx": {
+    "volume": 0.3
+  },
+  "captions": {
+    "src": "captions/master.srt",
+    "burn": true,
+    "offset": 0,
+    "style": "words"
+  }
+}

@@ -1,0 +1,65 @@
+[
+  { "id": "T1", "beat": "B1", "kind": "lower-third", "composition": "LowerThird",
+    "en": "Ahmed Abosamra · Co-founder, Speaking Genie",
+    "ar": "أحمد أبوسمرة · Co-founder, Speaking Genie",
+    "props": { "lang": "ar", "name": "أحمد أبوسمرة", "role": "Co-founder, Speaking Genie" },
+    "alt_ar_role": "شريك مؤسس، Speaking Genie",
+    "note": "Role as the producer gave it. The company brief says 'Co-founder, Product'; the Arabic alternative is in alt_ar_role. User to confirm at Gate 2." },
+
+  { "id": "T2", "beat": "B6", "kind": "title", "composition": "TitleCard",
+    "en": "Proficiency isn't the problem. Confidence is.",
+    "ar": "المشكلة ليست في الإتقان، بل في الثقة.",
+    "props": { "lang": "ar", "title": "المشكلة ليست في الإتقان، بل في الثقة.", "highlight": "الثقة" },
+    "alt_props": { "lang": "ar", "title": "المشكلة ليست في الإتقان،", "capsule": "بل في الثقة." },
+    "note": "Approved at Gate 1. TitleCard's capsule is a separate phrase drawn under the title, so it cannot wrap a word inside it. Primary: the whole line as title, «الثقة» in the orange accent. Alternative: split the line so the capsule carries «بل في الثقة.». Do not repeat «الثقة» in a capsule under a title that already says it." },
+
+  { "id": "T3", "beat": "B7", "kind": "callout", "composition": "ProductScreen", "screen": "assets/screens/flow-aiPlan-ar.png",
+    "en": "Curriculum builder",
+    "ar": "بناء المنهج بالذكاء الاصطناعي",
+    "props": { "lang": "ar", "label": "بناء المنهج بالذكاء الاصطناعي" },
+    "note": "Feature: Curriculum builder. The modal is 'Set up with AI' (الإعداد بالذكاء الاصطناعي), so 'with AI' is what the screen shows." },
+
+  { "id": "T4", "beat": "B8", "kind": "callout", "composition": "ProductScreen", "screen": "assets/screens/06-lab-tasks-ar.png",
+    "en": "Goal-oriented curriculum call tasks",
+    "ar": "مهام محادثة من المنهج",
+    "props": { "lang": "ar", "label": "مهام محادثة من المنهج" },
+    "note": "Replaces the screen-producer's «لكل مكالمة هدف محدد», which repeats Samra's caption («كل مكالمة ليها goal محدد»). This adds what he doesn't say: the tasks come from the curriculum. «مهمة محادثة» is the glossary term, and the screen's own header is «مهام المحادثة»." },
+
+  { "id": "T5", "beat": "B8", "kind": "callout", "composition": "ProductScreen", "screen": "assets/screens/22-call-ar.png",
+    "en": "Voice call with AI agents",
+    "ar": "مكالمة صوتية مع الشريك الذكي",
+    "props": { "lang": "ar", "label": "مكالمة صوتية مع الشريك الذكي" },
+    "note": "Feature: Voice call with AI agents. «الشريك الذكي» is the platform glossary term for the AI partner. Replaces «محادثة صوتية مع AI», which echoes «فهو AI» in the caption. The label is the only text over the call screen; nothing is transcribed on it." },
+
+  { "id": "T6", "beat": "B10", "kind": "callout", "composition": "ProductScreen", "screen": "assets/screens/21-session-feedback-ar.png",
+    "en": "Post-session feedback",
+    "ar": "ملاحظات ما بعد الجلسة",
+    "props": { "lang": "ar", "label": "ملاحظات ما بعد الجلسة" },
+    "note": "Verbatim feature name. Matches the screen header «ملاحظات الجلسة» (glossary: Session = الجلسة). Replaces «ملاحظات بعد كل جلسة», which echoes «بعد كل session»." },
+
+  { "id": "T7", "beat": "B10", "kind": "callout", "composition": "ProductScreen", "screen": "assets/screens/23-reports-ar.png",
+    "en": "Weekly and monthly reports",
+    "ar": "تقارير أسبوعية وشهرية",
+    "props": { "lang": "ar", "label": "تقارير أسبوعية وشهرية" },
+    "note": "Verbatim feature name; kept as the screen-producer proposed it." },
+
+  { "id": "T8", "beat": "B14", "kind": "endcard", "composition": "EndCard",
+    "en": "Know a language centre or a company? · Refer them to us, and let's talk about the next step. · Talk to us · speakingenie.com",
+    "ar": "هل تعرف مركز لغات أو شركة؟ · رشّحهم لنا، ولنتحدث معًا عن الخطوة التالية. · تحدّث معنا · speakingenie.com",
+    "props": {
+      "lang": "ar",
+      "headline": "هل تعرف مركز لغات أو شركة؟",
+      "highlight": "مركز لغات أو شركة",
+      "subline": "رشّحهم لنا، ولنتحدث معًا عن الخطوة التالية.",
+      "cta": "تحدّث معنا",
+      "url": "speakingenie.com"
+    },
+    "en_props": {
+      "headline": "Know a language centre or a company?",
+      "highlight": "a language centre or a company",
+      "subline": "Refer them to us, and let's talk about the next step.",
+      "cta": "Talk to us",
+      "url": "speakingenie.com"
+    },
+    "note": "Business track: closes on a conversation, with the website only (Gate 1). No store badges, terms, rewards or numbers. The cta overrides the default «اتكلم معنا» with the MSA «تحدّث معنا»." }
+]

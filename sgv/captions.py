@@ -182,14 +182,16 @@ def _rounded_rect(w: int, h: int, r: int) -> str:
             f"l {r} {h} b {k} {h} 0 {h - k} 0 {h - r} l 0 {r} b 0 {k} {k} 0 {r} 0")
 
 
-def write_ass(cues: list, out: Path, width: int, height: int, tokens: dict, words: bool = False) -> Path:
+def write_ass(cues: list, out: Path, width: int, height: int, tokens: dict, words: bool = False,
+              accent: str | None = None) -> Path:
     cap = tokens["video"]["captions"]
     s = min(width, height) / 1080
     portrait = height > width * 1.2
-    margin_v = round(height * 0.19) if portrait else round((120 if width == height else 96) * s)
+    margin_v = round(height * 0.215) if portrait else round((120 if width == height else 96) * s)
     pad_x, pad_y, radius = round(24 * s), round(14 * s), round(cap["pillRadius"] * s)
     white = _ass_color(cap["text"])
-    hi = _ass_color(tokens["themes"]["dark"]["link"])  # purple text on the dark pill (#A78BFA)
+    # the spoken word's highlight: purple on the dark pill (#A78BFA), or the Enablement track accent
+    hi = _ass_color(accent or tokens["themes"]["dark"]["link"])
     # encoding -1 makes libass detect the base direction, so RTL punctuation lands at the end of the line
     style = ("Style: {name},{font},{size},{color},{color},&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,{align},"
              "0,0,0,{encoding}")
@@ -211,8 +213,12 @@ def write_ass(cues: list, out: Path, width: int, height: int, tokens: dict, word
                 if len(balanced) == 2:
                     lines = balanced
                     break
-        body = r"\N".join(l.replace("{", "(").replace("}", ")") for l in lines)
-        items.append(("AR" if ARABIC.search(text) else "EN", body, len(lines), c))
+        arabic = bool(ARABIC.search(text))
+        # an Arabic line that opens on a Latin word ("Speaking Genie بدأت") must still read right to left:
+        # a leading right-to-left mark sets each line's direction
+        rlm = "\u200f" if arabic else ""
+        body = r"\N".join(rlm + l.replace("{", "(").replace("}", ")") for l in lines)
+        items.append(("AR" if arabic else "EN", body, len(lines), c))
     refs = [(k, ref) for k, ref in REFERENCE.items()] + [(k, f"{ref}\\N{ref}") for k, ref in REFERENCE.items()]
     boxes = _measure(refs + [(k, body) for k, body, _, _ in items], header, out.with_suffix(".measure.ass"), width, height)
     one = {k: boxes[i] for i, k in enumerate(REFERENCE)}
