@@ -1,0 +1,99 @@
+{
+  "lang": "ar-eg",
+  "voice": {
+    "engine": "files",
+    "voice_id": null,
+    "notes": "the user records it (one take, 2 s pauses)"
+  },
+  "lines": [
+    {
+      "id": "L1",
+      "beat": "B1",
+      "text": "تعرف طلابك بيغلطوا في إيه؟",
+      "max_seconds": 2.0,
+      "direction": "a real question, curious not accusing; lift on 'إيه'",
+      "duration": 1.91,
+      "file": "audio/vo/L1.wav",
+      "at": 0.15,
+      "start": 0.15
+    },
+    {
+      "id": "L2",
+      "beat": "B2",
+      "text": "أكتر من نص الـgroup عنده نفس الغلطة.",
+      "max_seconds": 2.9,
+      "direction": "short pause after 'الـgroup', then land 'نفس الغلطة' flat and sure",
+      "duration": 2.61,
+      "file": "audio/vo/L2.wav",
+      "at": 2.7,
+      "start": 2.7
+    },
+    {
+      "id": "L3",
+      "beat": "B3",
+      "text": "ده الـgroup report: الفصل كله بيبقى في صورة واحدة.",
+      "max_seconds": 3.9,
+      "direction": "introducing something you're proud of; stress 'كله'",
+      "duration": 3.06,
+      "file": "audio/vo/L3.wav",
+      "at": 5.8,
+      "start": 5.8
+    },
+    {
+      "id": "L4",
+      "beat": "B4",
+      "text": "مين اتمرّن وقد إيه، مترتبين في نفس الأسبوع.",
+      "max_seconds": 3.4,
+      "direction": "matter-of-fact, even pace; small pause at the comma",
+      "duration": 3.91,
+      "file": "audio/vo/L4.wav",
+      "at": 9.45,
+      "start": 9.45
+    },
+    {
+      "id": "L5",
+      "beat": "B5",
+      "text": "جمل حقيقية قالها الطلاب، ومعاها ترتيب الحصة الجاية.",
+      "max_seconds": 4.4,
+      "direction": "warmer here; stress 'حقيقية', say 'tip' the Egyptian way, light",
+      "duration": 4.81,
+      "file": "audio/vo/L5.wav",
+      "at": 13.65,
+      "start": 13.65
+    },
+    {
+      "id": "L6",
+      "beat": "B6",
+      "text": "بيوصلك لوحده، PDF تقدر تبعته للأهالي مباشرة.",
+      "max_seconds": 3.4,
+      "direction": "the owner's payoff; stress 'لوحده', say 'بي دي إف' naturally",
+      "duration": 4.01,
+      "file": "audio/vo/L6.wav",
+      "at": 18.65,
+      "start": 18.65
+    },
+    {
+      "id": "L7",
+      "beat": "B7",
+      "text": "وجودة التدريس، تشوفها كل أسبوع.",
+      "max_seconds": 2.6,
+      "direction": "quiet and certain, slower; stress 'تشوفها'",
+      "duration": 2.622,
+      "file": "audio/vo/L7.wav",
+      "at": 23.2,
+      "start": 23.2
+    },
+    {
+      "id": "L8",
+      "beat": "B8",
+      "text": "ابدأ تجربة مجانية النهارده.",
+      "max_seconds": 2.9,
+      "direction": "an invitation, not a push; smile on 'مجانية', let it end down",
+      "duration": 2.06,
+      "file": "audio/vo/L8.wav",
+      "at": 26.0,
+      "start": 26.0
+    }
+  ],
+  "engine": "files"
+}

@@ -1,0 +1,226 @@
+{
+  "title": "Group Report Reel",
+  "aspect": "9:16",
+  "fps": 30,
+  "theme": "light",
+  "lang": "ar",
+  "fit": "fill",
+  "transitionDuration": 0.5,
+  "exports": [
+    "reels-1080x1920"
+  ],
+  "timeline": [
+    {
+      "type": "motion",
+      "composition": "ProductScreen",
+      "duration": 2.85,
+      "label": "B1 hook: AI call, student speaking (L1 0.15; +0.35 s for the zoom into B2)",
+      "props": {
+        "src": "assets/screens/b1-call-ar.png",
+        "scale": 3,
+        "callout": {
+          "x": 155,
+          "y": 149,
+          "w": 120,
+          "h": 32
+        },
+        "startZoom": 0.85,
+        "pushFrames": 12,
+        "drift": 0.03,
+        "ringAt": 27,
+        "dim": false,
+        "enterFade": false,
+        "exitFade": false
+      }
+    },
+    {
+      "type": "motion",
+      "composition": "StatCard",
+      "duration": 3.1,
+      "label": "B2 58% (L2 2.70)",
+      "props": {
+        "label": "من طلاب المجموعة",
+        "value": 58,
+        "suffix": "%",
+        "caption": "الماضي البسيط · الأفعال الشاذة",
+        "labelBelow": true,
+        "enterFade": false,
+        "exitFade": false,
+        "countDelay": 14
+      },
+      "transition": "zoom",
+      "transitionDuration": 0.35
+    },
+    {
+      "type": "motion",
+      "composition": "ProductScreen",
+      "duration": 3.7,
+      "label": "B3 group report title (L3 5.80)",
+      "props": {
+        "src": "assets/screens/report-ar-b3-title.png",
+        "scale": 3,
+        "callout": {
+          "x": 4,
+          "y": 44,
+          "w": 316,
+          "h": 44
+        },
+        "label": "صورة كاملة للمجموعة",
+        "startZoom": 1,
+        "sideMargin": 40,
+        "labelSize": 42,
+        "ringAt": 6,
+        "dim": false,
+        "drift": 0.03,
+        "enterFade": false,
+        "exitFade": false
+      }
+    },
+    {
+      "type": "motion",
+      "composition": "ProductScreen",
+      "duration": 4.2,
+      "label": "B4 ranking (L4 9.45)",
+      "props": {
+        "src": "assets/screens/report-ar-b4.png",
+        "scale": 3,
+        "callout": {
+          "x": 0,
+          "y": 0,
+          "w": 540,
+          "h": 311
+        },
+        "label": "من تدرّب، وكم تدرّب",
+        "ring": false,
+        "sideMargin": 0,
+        "labelSize": 42,
+        "startZoom": 1,
+        "ringAt": 6,
+        "drift": 0.03,
+        "enterFade": false,
+        "exitFade": false
+      }
+    },
+    {
+      "type": "motion",
+      "composition": "ProductScreen",
+      "duration": 5.35,
+      "label": "B5 excerpts in two steps (L5 13.65; step 2 at 1.8 s; +0.35 s for the push into B6)",
+      "props": {
+        "src": "assets/screens/report-ar-b5-steps.png",
+        "scale": 3,
+        "steps": [
+          {
+            "callout": {
+              "x": 14,
+              "y": 6,
+              "w": 320,
+              "h": 98
+            },
+            "at": 0
+          },
+          {
+            "callout": {
+              "x": 14,
+              "y": 155,
+              "w": 320,
+              "h": 140
+            },
+            "label": "أمثلة حقيقية جاهزة للدرس",
+            "at": 1.8
+          }
+        ],
+        "startZoom": 1,
+        "sideMargin": 24,
+        "labelSize": 42,
+        "ringAt": 6,
+        "dim": false,
+        "drift": 0.03,
+        "enterFade": false,
+        "exitFade": false
+      }
+    },
+    {
+      "type": "motion",
+      "composition": "ProductScreen",
+      "duration": 4.4,
+      "label": "B6 PDF button, tap at «PDF» (L6 18.65)",
+      "props": {
+        "src": "assets/screens/report-ar-b6.png",
+        "scale": 3,
+        "callout": {
+          "x": 28,
+          "y": 129,
+          "w": 102,
+          "h": 48
+        },
+        "label": "تقرير أسبوعي PDF للأهالي",
+        "startZoom": 1,
+        "sideMargin": 0,
+        "calloutFill": 0.45,
+        "dim": false,
+        "ringAt": 0,
+        "labelSize": 42,
+        "drift": 0.02,
+        "tap": {
+          "x": 79,
+          "y": 153,
+          "at": 1.2
+        },
+        "enterFade": false,
+        "exitFade": false
+      },
+      "transition": "push-right",
+      "transitionDuration": 0.35
+    },
+    {
+      "type": "motion",
+      "composition": "TitleCard",
+      "duration": 3.4,
+      "label": "B7 promise (L7 23.20; +0.5 s for the dip into B8)",
+      "props": {
+        "title": "جودة التدريس، تراها كل أسبوع",
+        "enterFade": false,
+        "exitFade": false
+      }
+    },
+    {
+      "type": "motion",
+      "composition": "EndCard",
+      "duration": 4.0,
+      "transition": "dip",
+      "label": "B8 CTA (L8 26.00)",
+      "props": {
+        "headline": "ابدأ تجربة مجانية",
+        "url": "speakingenie.com",
+        "enterFade": false
+      }
+    }
+  ],
+  "overlays": [],
+  "logo": {
+    "enabled": false,
+    "corner": "top-right",
+    "variant": "light-on-dark"
+  },
+  "voiceover": {
+    "src": "audio/vo.wav",
+    "at": 0,
+    "volume": 1
+  },
+  "captions": {
+    "src": "captions/master.srt",
+    "burn": true,
+    "style": "words"
+  },
+  "music": {
+    "src": "audio/bed-generated.wav",
+    "volume": 0.35,
+    "duckUnderVoice": true,
+    "fadeIn": 1,
+    "fadeOut": 2.5
+  },
+  "sfx": {
+    "volume": 0.4
+  }
+}

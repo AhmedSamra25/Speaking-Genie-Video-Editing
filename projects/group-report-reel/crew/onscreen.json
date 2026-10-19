@@ -1,0 +1,62 @@
+[
+  {
+    "id": "T2",
+    "beat": "B2",
+    "kind": "stat",
+    "value": 58,
+    "suffix": "%",
+    "label": {
+      "en": "of the group",
+      "ar": "من طلاب المجموعة"
+    },
+    "caption": {
+      "en": "Past simple · irregular verbs",
+      "ar": "الماضي البسيط · الأفعال الشاذة"
+    },
+    "en": "of the group",
+    "ar": "من طلاب المجموعة"
+  },
+  {
+    "id": "T3",
+    "beat": "B3",
+    "kind": "callout",
+    "en": "The whole group at a glance",
+    "ar": "صورة كاملة للمجموعة"
+  },
+  {
+    "id": "T4",
+    "beat": "B4",
+    "kind": "callout",
+    "en": "Who practised, and how much",
+    "ar": "من تدرّب، وكم تدرّب"
+  },
+  {
+    "id": "T5",
+    "beat": "B5",
+    "kind": "callout",
+    "en": "Real examples, ready for class",
+    "ar": "أمثلة حقيقية جاهزة للدرس"
+  },
+  {
+    "id": "T6",
+    "beat": "B6",
+    "kind": "callout",
+    "en": "Weekly PDF report for parents",
+    "ar": "تقرير أسبوعي PDF للأهالي"
+  },
+  {
+    "id": "T7",
+    "beat": "B7",
+    "kind": "title",
+    "en": "Teaching quality you can see, every week",
+    "ar": "جودة التدريس، تراها كل أسبوع"
+  },
+  {
+    "id": "T8",
+    "beat": "B8",
+    "kind": "endcard",
+    "en": "Start a free pilot",
+    "ar": "ابدأ تجربة مجانية",
+    "url": "speakingenie.com"
+  }
+]
