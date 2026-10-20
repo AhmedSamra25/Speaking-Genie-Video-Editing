@@ -18,7 +18,7 @@
     {
       "beat": "B3",
       "key": "label",
-      "text": "مكالمة صوتية مع شريك ذكي"
+      "text": "متاح على مدار الساعة"
     },
     {
       "beat": "B3a",
@@ -43,17 +43,12 @@
     {
       "beat": "B6",
       "key": "step label",
-      "text": "الأخطاء المشتركة في المجموعة"
-    },
-    {
-      "beat": "B6",
-      "key": "step label",
-      "text": "جاهز للدرس التالي"
+      "text": "الأخطاء المشتركة"
     },
     {
       "beat": "B7",
       "key": "label",
-      "text": "متعلم نخدمهم اليوم"
+      "text": "متعلم نشط على المنصة"
     },
     {
       "beat": "B7",
@@ -93,7 +88,7 @@
     {
       "beat": "B1",
       "key": "lower third",
-      "text": "أحمد أبوسمرة · Co-founder, Speaking Genie"
+      "text": "أحمد أبوسمرة · شريك مؤسس · المنتج"
     }
   ],
   "en": [
@@ -128,24 +123,9 @@
       "text": "Post-session feedback"
     },
     {
-      "beat": "B5",
-      "key": "mobileLabel",
-      "text": "The student practises"
-    },
-    {
-      "beat": "B5",
-      "key": "webLabel",
-      "text": "The centre sees progress"
-    },
-    {
       "beat": "B6",
       "key": "step label",
-      "text": "Shared mistakes across the group"
-    },
-    {
-      "beat": "B6",
-      "key": "step label",
-      "text": "Ready for the next lesson"
+      "text": "Shared mistakes"
     },
     {
       "beat": "B7",
@@ -160,12 +140,12 @@
     {
       "beat": "B8",
       "key": "title",
-      "text": "The gym membership for your voice."
+      "text": "The only curriculum-integrated solution."
     },
     {
       "beat": "B8",
       "key": "marker",
-      "text": "for your voice"
+      "text": "curriculum-integrated"
     },
     {
       "beat": "B9",
@@ -190,7 +170,7 @@
     {
       "beat": "B1",
       "key": "lower third",
-      "text": "Ahmed Abousamra · Co-founder, Speaking Genie"
+      "text": "Ahmed Abosamra · Co-founder · Product"
     }
   ]
 }
