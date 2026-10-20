@@ -1,6 +1,6 @@
 # Plan: lighter renders, modern camera, transitions, motion and brand sound
 
-Status: approved 20 Oct 2026. Phase 1 done (results below); phases 2–6 to do.
+Status: approved 20 Oct 2026. Phases 1 and 2 done (results below); phases 3–6 to do.
 
 Decisions (user, 20 Oct 2026): the dome reveal and capsule wipe are allowed as brand devices; small SFX files are
 committed together with their licence ledger; the Remotion company licence is in place.
@@ -91,6 +91,19 @@ Not done: capping ffmpeg threads while Remotion runs (no longer needed, since jo
 4. **edit.json.** Placed cues `"sfx": [{"sound": "call-connect", "at": {"clip": 3, "offset": 0.2}, "volume": 0.6}]` plus automatic
    ones (motion transitions → whoosh, `tap` → tap, ProductScreen on a call card → ring then connect), and an `ambience` bed that
    ducks like music. Sound-designer skill updated with when to use each sound (sparingly: about one cue per beat at most).
+
+### Phase 2 results (20 Oct 2026)
+
+Done: 13 synthesised brand sounds in `sgv/sfx.py` (whoosh and tap kept; ringback, incoming-ring, call-connect, hang-up,
+mic-on, message-sent, notification, success, streak/level-up, riser, impact), balanced to -22 to -26 LUFS at their loudest
+moment and checked by spectrogram; `"sfx"` takes `true`, a list of cues or `{auto, volume, cues}`; cues land on their
+`at` (a riser ends there), ringing sounds repeat for `duration`, and a cue may name a `brand/sound/` file; an `ambience`
+bed loops and ducks under the voice like music; `bin/sgv sounds --list | --try <name> [--spectrum] [--play]`;
+`brand/sound/LICENSES.json` and the git rules (sfx/ and ambience/ committed, music/ ignored); crew-sound, crew-editor,
+EDITING.md, CLAUDE.md and README. Checked on a scratch copy of `group-report-reel` with four cues and a room tone:
+draft -14.2 LUFS, -1.4 dBTP. Not done: the recorded set and the music beds (waiting for the user's go-ahead on the
+downloads), and the automatic "ring then connect" on a call-card ProductScreen (nothing in a clip marks a call card yet;
+cue it by hand).
 
 ## Phase 3: camera moves (Remotion, cheap to render)
 

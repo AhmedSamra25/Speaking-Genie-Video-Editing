@@ -332,7 +332,7 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
 
 # -- 3. finish -------------------------------------------------------------
 def _audio_graph(project: Project, total: float, extra: dict) -> tuple:
-    """Programme audio + voice-over + ducked music. Returns (filter parts, output label)."""
+    """Programme audio + voice-over + ducked music and ambience + effects. Returns (filter parts, output label)."""
     parts = [f"[0:a]{AUDIO_FMT}[prog0]"]
     prog = "[prog0]"
     vo = project.edit.get("voiceover")
@@ -342,22 +342,22 @@ def _audio_graph(project: Project, total: float, extra: dict) -> tuple:
         parts.append(f"[{i}:a]{AUDIO_FMT},volume={vo.get('volume', 1)},adelay={delay}:all=1[vo]")
         parts.append(f"{prog}[vo]amix=inputs=2:normalize=0:duration=first[prog1]")
         prog = "[prog1]"
-    music = project.edit.get("music")
-    if music:
-        i = extra["music"]
-        fi, fo = float(music.get("fadeIn", 1)), float(music.get("fadeOut", 3))
-        m = (f"[{i}:a]{AUDIO_FMT},atrim=0:{total:.3f},asetpts=PTS-STARTPTS,volume={music.get('volume', 0.5)},"
-             f"afade=t=in:d={fi},afade=t=out:st={max(0, total - fo):.3f}:d={fo}")
-        if music.get("duckUnderVoice", True):
-            parts.append(f"{prog}asplit=2[progm][key]")
-            parts.append(f"{m}[mus]")
-            parts.append("[mus][key]sidechaincompress=threshold=0.02:ratio=12:attack=15:release=400:makeup=1[musd]")
-            parts.append("[progm][musd]amix=inputs=2:normalize=0:duration=first[mixed]")
-        else:
-            parts.append(f"{m}[mus]")
-            parts.append(f"{prog}[mus]amix=inputs=2:normalize=0:duration=first[mixed]")
-        prog = "[mixed]"
-    if "sfx" in extra:  # after the music, so effects never duck it
+    # music and ambience are beds: looped, faded, and ducked under the voice (keyed on programme + voice-over only)
+    beds = [(k, project.edit[k]) for k in ("music", "ambience") if project.edit.get(k)]
+    ducked = [k for k, b in beds if b.get("duckUnderVoice", True)]
+    if ducked:
+        parts.append(f"{prog}asplit={len(ducked) + 1}[progm]" + "".join(f"[key{k}]" for k in ducked))
+        prog = "[progm]"
+    for k, bed in beds:
+        fi, fo = float(bed.get("fadeIn", 1)), float(bed.get("fadeOut", 3))
+        default = 0.5 if k == "music" else 0.3
+        parts.append(f"[{extra[k]}:a]{AUDIO_FMT},atrim=0:{total:.3f},asetpts=PTS-STARTPTS,volume={bed.get('volume', default)},"
+                     f"afade=t=in:d={fi},afade=t=out:st={max(0, total - fo):.3f}:d={fo}[{k}]")
+        if k in ducked:
+            parts.append(f"[{k}][key{k}]sidechaincompress=threshold=0.02:ratio=12:attack=15:release=400:makeup=1[{k}d]")
+        parts.append(f"{prog}[{k}{'d' if k in ducked else ''}]amix=inputs=2:normalize=0:duration=first[with{k}]")
+        prog = f"[with{k}]"
+    if "sfx" in extra:  # after the beds, so effects never duck them
         parts.append(f"[{extra['sfx']}:a]{AUDIO_FMT}[fx]")
         parts.append(f"{prog}[fx]amix=inputs=2:normalize=0:duration=first[withfx]")
         prog = "[withfx]"
@@ -365,12 +365,12 @@ def _audio_graph(project: Project, total: float, extra: dict) -> tuple:
 
 
 def _audio_inputs(project: Project) -> tuple:
-    """Extra ffmpeg inputs for voice-over and music. Returns (args, {name: input index}, next index)."""
+    """Extra ffmpeg inputs for voice-over, music, ambience and effects. Returns (args, {name: input index}, next index)."""
     args, idx_of, idx = [], {}, 1
-    for key in ("voiceover", "music"):
+    for key in ("voiceover", "music", "ambience"):
         a = project.edit.get(key)
         if a:
-            args += (["-stream_loop", "-1"] if key == "music" else []) + ["-i", project.path(a["src"])]
+            args += (["-stream_loop", "-1"] if key != "voiceover" else []) + ["-i", project.media(a["src"])]
             idx_of[key] = idx
             idx += 1
     fx = sfx.build(project, project.total_duration())

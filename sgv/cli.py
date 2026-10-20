@@ -6,7 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from sgv import analyze, captions, doctor, ff, lock, motion, paths, presets, project, render, screens, voice
+from sgv import analyze, captions, doctor, ff, lock, motion, paths, presets, project, render, screens, sfx, voice
 
 
 def cmd_new(a):
@@ -187,6 +187,35 @@ def cmd_motion(a):
     print(out)
 
 
+def cmd_sounds(a):
+    if a.try_name:
+        names = list(sfx.SOUNDS) if a.try_name == "all" else [a.try_name]
+        out_dir = paths.ROOT / "build" / "sounds"
+        for n in names:
+            if not sfx.name_of(n) and not (paths.ROOT / n).is_file():
+                raise SystemExit(f"unknown sound {n!r} (bin/sgv sounds --list)")
+            out = sfx.render_one(n, out_dir / f"{Path(n).stem}{f'-{a.duration:g}s' if a.duration else ''}.wav", a.duration)
+            m = sfx.measure(out)
+            line = (f"  {Path(n).stem:14} peak {m.get('peak', float('nan')):6.1f} dBFS · rms {m.get('rms', float('nan')):6.1f} dBFS"
+                    f" · loudest {m.get('momentary', float('nan')):6.1f} LUFS  {out.relative_to(paths.ROOT)}")
+            if a.spectrum:
+                line += f"  {sfx.spectrum(out, out.with_suffix('.png')).relative_to(paths.ROOT)}"
+            print(line)
+            if a.play:
+                subprocess.run(["afplay", str(out)])
+        return
+    print("  synthesised (sgv/sfx.py, owned):")
+    for n, s in sfx.SOUNDS.items():
+        alias = [k for k, v in sfx.ALIASES.items() if v == n]
+        loops = " · repeats for `duration`" if s.get("period") else ""
+        print(f"  {n:14} {s['dur']:4.1f}s  {s['about']}{loops}" + (f"  (alias: {', '.join(alias)})" if alias else ""))
+    lib = sfx.library()
+    print(f"  library (brand/sound/, licences in brand/sound/LICENSES.json): {len(lib) or 'empty'}")
+    for f in lib:
+        e = f["entry"]
+        print(f"  {f['file']:56} {e['licence'] + ' · ' + (e.get('tags') or e.get('notes', '')) if e else 'NOT IN LEDGER: do not use'}")
+
+
 def cmd_studio(_a):
     subprocess.run(["npm", "run", "studio"], cwd=paths.MOTION)
 
@@ -331,6 +360,14 @@ def main(argv=None) -> int:
     s.add_argument("--still", type=float, metavar="T", help="render only the frame at T seconds, as a PNG")
     s.add_argument("-o", "--out")
     s.set_defaults(fn=cmd_motion)
+
+    s = sub.add_parser("sounds", help="list the brand sounds, or --try one to audition it (build/sounds/)")
+    s.add_argument("--list", action="store_true", help="list synthesised sounds and library files (default)")
+    s.add_argument("--try", dest="try_name", metavar="NAME", help="render NAME (or a brand/sound/ file, or all) and measure it")
+    s.add_argument("--duration", type=float, help="seconds (ringing sounds repeat; files are cut)")
+    s.add_argument("--spectrum", action="store_true", help="also write a spectrogram PNG next to each WAV")
+    s.add_argument("--play", action="store_true", help="play it (afplay)")
+    s.set_defaults(fn=cmd_sounds)
 
     s = sub.add_parser("studio", help="open Remotion Studio to preview motion graphics")
     s.set_defaults(fn=cmd_studio)

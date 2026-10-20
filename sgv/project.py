@@ -62,6 +62,13 @@ class Project:
         p = Path(rel)
         return p if p.is_absolute() else (self.root / p)
 
+    def media(self, rel: str) -> Path:
+        """A sound or bed: relative to the project, else to the repository (brand/sound/...)."""
+        p = self.path(rel)
+        if not p.exists() and (paths.ROOT / rel).exists():
+            return paths.ROOT / rel
+        return p
+
     @property
     def build(self) -> Path:
         d = self.root / "build"
@@ -112,9 +119,9 @@ class Project:
                 missing = [k for k in REQUIRED_PROPS.get(o["composition"], []) if k not in o.get("props", {})]
                 if missing:
                     errors.append(f"overlays[{i}]: {o['composition']} needs {', '.join(missing)}")
-        for key in ("music", "voiceover"):
+        for key in ("music", "voiceover", "ambience"):
             a = self.edit.get(key)
-            if a and not self.path(a.get("src", "")).exists():
+            if a and not self.media(a.get("src", "")).is_file():
                 errors.append(f"{key}: file not found: {a.get('src')}")
         cap = self.edit.get("captions")
         if cap and cap.get("burn", True) and not self.path(cap.get("src", "")).exists():

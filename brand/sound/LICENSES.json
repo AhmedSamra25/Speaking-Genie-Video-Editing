@@ -1,0 +1,264 @@
+{
+  "about": "Ledger for every recorded sound and music bed in brand/sound/. A file not listed here must not be used. `file` is relative to brand/sound/. Allowed sources: CC0 (Kenney Interface Sounds, BigSoundBank), the Pixabay Content License and the Mixkit Free License (not items marked Restricted). Pixabay items can never be part of a sonic logo or trademark. Keep the Pixabay licence certificate (PDF) for each music bed, for YouTube Content ID claims. Synthesised sounds live in sgv/sfx.py, are owned outright and need no entry. SFX files in sfx/ and ambience/ are committed; music/ stays git-ignored (this ledger is the record; re-download from `source`). BPM values are estimates from onset analysis, ~ means approximate (half or double time possible).",
+  "fields": {
+    "file": "path under brand/sound/",
+    "source": "page URL the file came from",
+    "author": "creator, when the source names one",
+    "licence": "CC0 | Pixabay Content License | Mixkit Free License",
+    "date": "download date, YYYY-MM-DD",
+    "certificate": "Pixabay licence certificate file or URL (music), else omit",
+    "tags": "mood, tempo (BPM) and use, e.g. calm corporate, 92 BPM",
+    "notes": "edits made, what it is for"
+  },
+  "files": [
+    {
+      "file": "sfx/typing-laptop.wav",
+      "source": "https://bigsoundbank.com/slow-macbook-keyboard-2-s1727.html",
+      "author": "Joseph SARDIN (BigSoundBank)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "typing, laptop, soft",
+      "notes": "Slow MacBook keyboard #2 (#1727). Trimmed 0.3–6.3 s, fades, mono 48 kHz, -26 LUFS."
+    },
+    {
+      "file": "sfx/camera-shutter.wav",
+      "source": "https://bigsoundbank.com/triggering-camera-s0307.html",
+      "author": "Joseph SARDIN (BigSoundBank)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "camera, shutter, SLR",
+      "notes": "Triggering camera (#0307). The original peaked at +0.2 dBFS; now -8 dB, 48 kHz."
+    },
+    {
+      "file": "sfx/phone-ring-landline.wav",
+      "source": "https://bigsoundbank.com/landline-ringtone-s0063.html",
+      "author": "Joseph SARDIN (BigSoundBank)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "phone, ring, real",
+      "notes": "Landline ringtone (#0063). The first two rings (0–8.4 s), fade-out, mono, -24 LUFS."
+    },
+    {
+      "file": "ambience/classroom-chatter.m4a",
+      "source": "https://pixabay.com/sound-effects/people-classroom-background-54177/",
+      "author": "gregwilldun via freesound_community",
+      "licence": "Pixabay Content License",
+      "date": "2026-10-20",
+      "tags": "classroom, students murmuring, loopable",
+      "notes": "Pixabay re-upload of a Freesound recording (freesound_community). Source 2–62 s, 2 s crossfade loop, -28 LUFS, AAC 160k. A quiet lull in the first second."
+    },
+    {
+      "file": "ambience/office-quiet.m4a",
+      "source": "https://pixabay.com/sound-effects/technology-office-ambience-24734/",
+      "author": "Chelly01 via freesound_community",
+      "licence": "Pixabay Content License",
+      "date": "2026-10-20",
+      "tags": "office, distant chatter, loopable",
+      "notes": "Pixabay re-upload of a Freesound recording (freesound_community). Only source 50–70 s (the rest has loud bumps); 2 s crossfade loop, -32 LUFS."
+    },
+    {
+      "file": "ambience/office-room-tone.m4a",
+      "source": "https://pixabay.com/sound-effects/technology-room-tone-office-12-59350/",
+      "author": "freesound_community",
+      "licence": "Pixabay Content License",
+      "date": "2026-10-20",
+      "tags": "office, room tone, steady, loopable",
+      "notes": "Pixabay re-upload of a Freesound recording (freesound_community). Source 5–65 s, 2 s crossfade loop, -34 LUFS. Has a faint steady hum; keep it low."
+    },
+    {
+      "file": "sfx/ui/kenney-click-001.wav",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "author": "Kenney (kenney.nl)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "ui",
+      "notes": "Interface Sounds 1.0, click_001.ogg: short soft click. -16 dB, mono 48 kHz (the pack is mastered near 0 dBFS)."
+    },
+    {
+      "file": "sfx/ui/kenney-select-002.wav",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "author": "Kenney (kenney.nl)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "ui",
+      "notes": "Interface Sounds 1.0, select_002.ogg: short select. -16 dB, mono 48 kHz (the pack is mastered near 0 dBFS)."
+    },
+    {
+      "file": "sfx/ui/kenney-select-004.wav",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "author": "Kenney (kenney.nl)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "ui",
+      "notes": "Interface Sounds 1.0, select_004.ogg: rounded select, 0.4 s. -16 dB, mono 48 kHz (the pack is mastered near 0 dBFS)."
+    },
+    {
+      "file": "sfx/ui/kenney-select-005.wav",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "author": "Kenney (kenney.nl)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "ui",
+      "notes": "Interface Sounds 1.0, select_005.ogg: low select, 0.4 s. -16 dB, mono 48 kHz (the pack is mastered near 0 dBFS)."
+    },
+    {
+      "file": "sfx/ui/kenney-confirmation-001.wav",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "author": "Kenney (kenney.nl)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "ui",
+      "notes": "Interface Sounds 1.0, confirmation_001.ogg: low two-note confirm. -16 dB, mono 48 kHz (the pack is mastered near 0 dBFS)."
+    },
+    {
+      "file": "sfx/ui/kenney-confirmation-004.wav",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "author": "Kenney (kenney.nl)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "ui",
+      "notes": "Interface Sounds 1.0, confirmation_004.ogg: soft confirm, 0.5 s. -16 dB, mono 48 kHz (the pack is mastered near 0 dBFS)."
+    },
+    {
+      "file": "sfx/ui/kenney-drop-002.wav",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "author": "Kenney (kenney.nl)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "ui",
+      "notes": "Interface Sounds 1.0, drop_002.ogg: low soft drop. -16 dB, mono 48 kHz (the pack is mastered near 0 dBFS)."
+    },
+    {
+      "file": "sfx/ui/kenney-drop-003.wav",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "author": "Kenney (kenney.nl)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "ui",
+      "notes": "Interface Sounds 1.0, drop_003.ogg: low soft drop. -16 dB, mono 48 kHz (the pack is mastered near 0 dBFS)."
+    },
+    {
+      "file": "sfx/ui/kenney-drop-004.wav",
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "author": "Kenney (kenney.nl)",
+      "licence": "CC0",
+      "date": "2026-10-20",
+      "tags": "ui",
+      "notes": "Interface Sounds 1.0, drop_004.ogg: soft drop, 0.3 s. -16 dB, mono 48 kHz (the pack is mastered near 0 dBFS)."
+    },
+    {
+      "file": "music/corporate-calm-leberch.mp3",
+      "source": "https://pixabay.com/music/corporate-corporate-calm-603150/",
+      "author": "leberch",
+      "licence": "Pixabay Content License",
+      "date": "2026-10-20",
+      "tags": "business, calm corporate, ambient, ~118 BPM (light pulse), 2:44, -15.5 LUFS",
+      "notes": "Pixabay page says Content ID Registered: YouTube may auto-claim; dispute with the licence certificate. Never use in a sonic logo or trademark.",
+      "certificate": "not yet saved: download it from the track page while signed in to Pixabay, store it next to the file"
+    },
+    {
+      "file": "music/corporate-soft-nastelbom.mp3",
+      "source": "https://pixabay.com/music/corporate-corporate-soft-488321/",
+      "author": "NastelBom",
+      "licence": "Pixabay Content License",
+      "date": "2026-10-20",
+      "tags": "business, soft corporate, ~99 BPM, 2:31, -18.1 LUFS",
+      "notes": "Pixabay page says Content ID Registered: YouTube may auto-claim; dispute with the licence certificate. Never use in a sonic logo or trademark.",
+      "certificate": "not yet saved: download it from the track page while signed in to Pixabay, store it next to the file"
+    },
+    {
+      "file": "music/infinity-arulo.mp3",
+      "source": "https://mixkit.co/free-stock-music/tag/corporate/",
+      "author": "Arulo",
+      "licence": "Mixkit Stock Music Free License",
+      "date": "2026-10-20",
+      "tags": "business, electronic, atmospheric, steady low pulse, ~112 BPM, 1:43, -12.2 LUFS",
+      "notes": "Mixkit track 440. Allowed: social, YouTube, online ads, podcasts, education. Not allowed: TV or radio broadcast, CDs/DVDs, video games, remixing into a music-only track, registering with a rights-management service. Claims: forward to team@mixkit.co."
+    },
+    {
+      "file": "music/inspiring-travel-acoustic-loka.mp3",
+      "source": "https://pixabay.com/music/folk-inspiring-travel-acoustic-621191/",
+      "author": "Loka_music",
+      "licence": "Pixabay Content License",
+      "date": "2026-10-20",
+      "tags": "learners, warm acoustic guitar, bright, ~99 BPM, 2:38, -8.9 LUFS (mastered hot)",
+      "notes": "Pixabay page says Content ID Registered: YouTube may auto-claim; dispute with the licence certificate. Never use in a sonic logo or trademark.",
+      "certificate": "not yet saved: download it from the track page while signed in to Pixabay, store it next to the file"
+    },
+    {
+      "file": "music/my-life-good-b-music.mp3",
+      "source": "https://pixabay.com/music/acoustic-group-my-life-main-6670/",
+      "author": "Good_B_Music",
+      "licence": "Pixabay Content License",
+      "date": "2026-10-20",
+      "tags": "learners, piano, acoustic guitar, strings, peaceful, ~72 BPM, 1:59, -12.4 LUFS",
+      "notes": "Pixabay page says Content ID Registered: YouTube may auto-claim; dispute with the licence certificate. Never use in a sonic logo or trademark.",
+      "certificate": "not yet saved: download it from the track page while signed in to Pixabay, store it next to the file"
+    },
+    {
+      "file": "music/wind-leaves-eugenio-mininni.mp3",
+      "source": "https://mixkit.co/free-stock-music/tag/acoustic-guitar/",
+      "author": "Eugenio Mininni",
+      "licence": "Mixkit Stock Music Free License",
+      "date": "2026-10-20",
+      "tags": "learners, relaxed acoustic guitar, friendly, ~65 BPM, 3:25, -9.3 LUFS",
+      "notes": "Mixkit track 617. Allowed: social, YouTube, online ads, podcasts, education. Not allowed: TV or radio broadcast, CDs/DVDs, video games, remixing into a music-only track, registering with a rights-management service. Claims: forward to team@mixkit.co."
+    },
+    {
+      "file": "music/ambient-piano-strings-good-b-music.mp3",
+      "source": "https://pixabay.com/music/beautiful-plays-ambient-piano-and-strings-10711/",
+      "author": "Good_B_Music",
+      "licence": "Pixabay Content License",
+      "date": "2026-10-20",
+      "tags": "testimonial, soft piano, strings, reflective, ~81 BPM, 3:37, -12.1 LUFS",
+      "notes": "Pixabay page says Content ID Registered: YouTube may auto-claim; dispute with the licence certificate. Never use in a sonic logo or trademark.",
+      "certificate": "not yet saved: download it from the track page while signed in to Pixabay, store it next to the file"
+    },
+    {
+      "file": "music/motivational-piano-leberch.mp3",
+      "source": "https://pixabay.com/music/modern-classical-motivational-inspiring-piano-251921/",
+      "author": "leberch",
+      "licence": "Pixabay Content License",
+      "date": "2026-10-20",
+      "tags": "testimonial, piano, soft strings, hopeful, ~92 BPM, 2:12, -12.4 LUFS",
+      "notes": "Pixabay page says Content ID Registered: YouTube may auto-claim; dispute with the licence certificate. Never use in a sonic logo or trademark. Tagged epic: check the swell before using it under a key line.",
+      "certificate": "not yet saved: download it from the track page while signed in to Pixabay, store it next to the file"
+    },
+    {
+      "file": "music/classical-vibes-3-grigoriy-nuzhny.mp3",
+      "source": "https://mixkit.co/free-stock-music/mood/calm/",
+      "author": "Grigoriy Nuzhny",
+      "licence": "Mixkit Stock Music Free License",
+      "date": "2026-10-20",
+      "tags": "testimonial, piano ostinato, strings, hopeful, ~76 BPM, 2:05, -12.7 LUFS",
+      "notes": "Mixkit track 683. Allowed: social, YouTube, online ads, podcasts, education. Not allowed: TV or radio broadcast, CDs/DVDs, video games, remixing into a music-only track, registering with a rights-management service. Claims: forward to team@mixkit.co."
+    }
+  ],
+  "rejected": [
+    {
+      "source": "https://bigsoundbank.com/phone-ring-5-s0375.html",
+      "date": "2026-10-20",
+      "why": "harsh electronic ring mastered near 0 dBFS (-7 LUFS)"
+    },
+    {
+      "source": "https://pixabay.com/music/corporate-calm-corporate-business-153895/",
+      "date": "2026-10-20",
+      "why": "about 123 BPM with the busiest hi-hats of the set: too driving"
+    },
+    {
+      "source": "https://pixabay.com/music/corporate-ambient-corporate-ambient-corporate-music-593999/",
+      "date": "2026-10-20",
+      "why": "about 118 BPM, crash-like section hits, mastered at -7.6 LUFS"
+    },
+    {
+      "source": "https://mixkit.co/free-stock-music/mood/calm/ (A New Life, Eugenio Mininni, track 543)",
+      "date": "2026-10-20",
+      "why": "17.7 LU range with orchestral stabs: too dramatic under voice"
+    },
+    {
+      "source": "https://kenney.nl/assets/interface-sounds",
+      "date": "2026-10-20",
+      "why": "the other 91 files of the pack (glitch, error, scratch, bong, glass, maximise and similar): game-like or harsh; not kept"
+    }
+  ]
+}
