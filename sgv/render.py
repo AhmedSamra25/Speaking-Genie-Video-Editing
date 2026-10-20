@@ -610,6 +610,7 @@ def _stage(name: str):
 
 def render(project: Project, preset_names: list | None = None, draft: bool = False) -> list:
     t0 = time.time()
+    project.check_generated()
     if draft:
         chosen = [_draft_preset(project)]
     else:

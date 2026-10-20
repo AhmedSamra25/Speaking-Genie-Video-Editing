@@ -148,10 +148,20 @@ class Project:
                 missing = [k for k in REQUIRED_PROPS.get(o["composition"], []) if k not in o.get("props", {})]
                 if missing:
                     errors.append(f"overlays[{i}]: {o['composition']} needs {', '.join(missing)}")
-        for key in ("music", "voiceover", "ambience"):
+        for key in ("music", "ambience"):
             a = self.edit.get(key)
             if a and not self.media(a.get("src", "")).is_file():
                 errors.append(f"{key}: file not found: {a.get('src')}")
+        if errors:
+            raise SystemExit("edit.json has problems:\n  - " + "\n  - ".join(errors))
+
+    def check_generated(self) -> None:
+        """Files sgv itself makes (the voice-over, the captions) are needed only to render, so the commands that make
+        them can run on a project whose edit.json already points at them."""
+        errors = []
+        vo = self.edit.get("voiceover")
+        if vo and not self.media(vo.get("src", "")).is_file():
+            errors.append(f"voiceover: file not found: {vo.get('src')} (run `sgv voice {self.root.name}` first)")
         cap = self.edit.get("captions")
         if cap and cap.get("burn", True) and not self.path(cap.get("src", "")).exists():
             errors.append(f"captions: file not found: {cap.get('src')} (run `sgv captions {self.root.name}` first, or set burn: false)")
