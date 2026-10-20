@@ -129,7 +129,9 @@ shows free memory, a running VM and the queue.
 
 ### Editing toolkit
 
-Motion-blurred `zoom` and `push` transitions, a living camera on every product screen (drift, travel between
+Motion-blurred `zoom`, `push`, `slide-scale` and Enablement `dome` transitions, a `blur` dissolve, match cuts
+(`bin/sgv match` checks the geometry), one egSweep light sweep per video, consecutive graphics joined in a single
+Remotion `TransitionSeries` render, a living camera on every product screen (drift, travel between
 `steps`, a ring that draws itself on, a finger `tap`), word-by-word captions, and generated sound effects
 (`"sfx": true`). The rules for using them are in `.claude/skills/video-crew/EDITING.md`.
 

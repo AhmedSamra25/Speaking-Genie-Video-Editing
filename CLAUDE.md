@@ -38,6 +38,7 @@ Design System.
 | `bin/sgv voices [--lang ar,en] [--try "text"]` | Lists the installed premium/enhanced system voices (gender, usable by `say`); `--try` renders a sample per voice |
 | `bin/sgv screen <p> <card> [--lang ar] [--theme dark] [--flow k] [--status speaking]` · `--list [--kit mobile\|web]` | Captures a real product screen from the mobile app or web platform kit |
 | `bin/sgv timeline <p>` | Shows each clip's start and end on the assembled timeline (use it to place overlays) |
+| `bin/sgv match <p> <clip> [--size WxH]` | Saves the frames either side of a match cut and the two overlaid, to check shared geometry |
 | `bin/sgv render <p> [--draft] [--preset a,b]` | Renders the exports |
 | `bin/sgv motion <Comp> --props '{…}' [--size 1080x1920] [--still T]` | Renders a single motion graphic, or with `--still` one frame as a PNG (the quick check) |
 | `bin/sgv loudness <file>` · `bin/sgv presets` · `bin/sgv studio` · `bin/sgv clean <p>` | |
@@ -72,8 +73,12 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
     { "type": "motion", "composition": "EndCard", "duration": 4, "transition": "dip",
       "props": { "headline": "Start a free pilot", "subline": "…", "url": "speakingenie.com" } }
   ],
-  // transition = how a clip comes IN: cut (default) | dissolve | dip (through white on light theme, black on dark)
-  //   | zoom | push-left | push-right | push-up (0.3–0.4 s, motion-blurred; set "transitionDuration" on the clip)
+  // transition = how a clip comes IN: cut (default) | dissolve | blur (dissolve through a soft blur)
+  //   | dip (through white on light theme, black on dark) | zoom | push-left | push-right | push-up | slide-scale
+  //   | dome (Enablement: grows from the dome) — motion ones 0.3–0.6 s, motion-blurred; set "transitionDuration".
+  //   Consecutive motion clips joined by these render as one Remotion TransitionSeries (SGV_NO_RUNS=1 to opt out).
+  //   "match": true on a clip = match cut (hard cut, no fades at the join; check with `sgv match <p> <clip>`).
+  //   "sweep": true | {"box": [x,y,w,h], "at": s} on one motion clip = the egSweep light sweep, once per video.
   "overlays": [
     { "composition": "LowerThird", "at": { "clip": 2, "offset": 0.5 }, "duration": 4,
       "props": { "name": "Mona Adel", "role": "Head of Academics · Cairo Language Center" } }
@@ -125,7 +130,9 @@ motion compositions draw the Platform look by default and the Enablement look wi
 - **Pacing.** Talking heads: cut out silences (`sgv silence`) and cover jump cuts with B-roll or a
   slight `focus` reframe. Montage: cut on the beat or the action, with shots 1.5–3 s long. Hold text
   for at least 1.5 s plus 0.06 s per character.
-- **Transitions** are mostly cuts. Dissolve between scenes; dip for chapter breaks and into the end card.
+- **Transitions** are mostly cuts. Dissolve (or blur) between scenes; dip for chapter breaks and into the end card;
+  the dome into Enablement cards. No wipes, slides, spins or flips (`wipe-left`/`slide-left` in old edits render as
+  `push-left`). The table in `.claude/skills/video-crew/EDITING.md` says when to use each.
 - **Vertical (9:16).** Set `focus` on every wide shot so faces stay in frame. Keep text out of the
   bottom 20% (platform UI). Burned-in captions are on by default, because most people watch muted.
 - **Audio.** Exports are loudness-normalised (-14 LUFS for social and YouTube). Music ducks under speech
