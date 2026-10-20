@@ -65,7 +65,9 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
       "fit": { "9:16": "fill", "16:9": "fit" },
       "speed": 1, "volume": 1, "mute": false, "fadeIn": 0, "fadeOut": 0, "label": "Mona intro",
       "scale": 1.15,                   // punch-in toward `focus` to cover a jump cut (keep ≤ 1.2 on 1080p sources)
-      "grade": "lift" },               // "lift" (backlit faces, about one stop) or any ffmpeg filter chain
+      "grade": "lift",                 // "lift" (backlit faces, about one stop) or any ffmpeg filter chain
+      "focusPull": "in",               // rack focus: in | out | {from, to, at, duration}, blur ≤ 8 px, eased
+      "ramp": [{ "at": 1.5, "speed": 2.5 }, { "at": 4, "speed": 1 }] },  // eased speed ramp; montage only (sound dropped)
     { "type": "image", "src": "assets/dashboard.png", "duration": 4, "kenburns": "in" },  // in|out|left|right
     { "type": "color", "duration": 1 },                                                  // brand canvas hold
     { "type": "motion", "composition": "StatCard", "duration": 4,
@@ -105,8 +107,8 @@ between several points or `{x,y,zoom}` element tracking, `tap` `{x,y,at}`, `curs
 noise wander), `intoDevice` out|in (screen-to-device zoom), `device`, `tilt` ≤10, `wave` (voice bars synced to the
 voice-over), `scale` 3 for mobile captures) · `DualScreen` (`mobileSrc`, `webSrc`; phone and web platform together,
 `mobileLabel`, `webLabel`, callouts). Every composition supports Arabic RTL (`lang: "ar"` per clip
-or per project) and both themes; the Enablement look adds 2.5D `parallax` between its layers. When to use each move:
-`.claude/skills/video-crew/EDITING.md`.
+or per project) and both themes; the Enablement look adds 2.5D `parallax` between its layers. When to use each camera
+move, transition, motion device and sound, and how often: the tables in `.claude/skills/video-crew/EDITING.md`.
 
 ## The video crew
 
@@ -138,7 +140,8 @@ motion compositions draw the Platform look by default and the Enablement look wi
 - **Hook in the first 2 seconds.** For social cuts, open on the strongest line or result, not the logo.
   Keep the intro at 1.5 s or less, or drop it.
 - **Pacing.** Talking heads: cut out silences (`sgv silence`) and cover jump cuts with B-roll or a
-  slight `focus` reframe. Montage: cut on the beat or the action, with shots 1.5–3 s long. Hold text
+  slight punch-in (`scale`). Montage: cut on the beat or the action, with shots 1.5–3 s long; a speed `ramp` on an
+  action at most twice, never on someone speaking. Hold text
   for at least 1.5 s plus 0.06 s per character.
 - **Transitions** are mostly cuts. Dissolve (or blur) between scenes; dip for chapter breaks and into the end card;
   the dome into Enablement cards. No wipes, slides, spins or flips (`wipe-left`/`slide-left` in old edits render as

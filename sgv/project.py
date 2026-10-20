@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 import shutil
 from pathlib import Path
@@ -31,6 +32,52 @@ RUN_JOINS = {"dissolve": {"type": "fade"}, "blur": {"type": "blur"}, "zoom": {"t
              "slide-scale": {"type": "blur-slide", "direction": "left", "shrink": 0.92}, "dome": {"type": "dome"}}
 # design-system look of the motion graphics (project-wide in edit.json, or per clip in props)
 LOOKS = {"look": ("platform", "enablement"), "track": ("individual", "business"), "ground": ("dome", "flat", "deep")}
+FOCUS_PULL_MAX = 8  # px of gaussian blur at 1080p: a soft rack focus, never a smear
+RAMP_SPEEDS = (0.25, 4.0)
+RAMP_STEPS = 8  # an eased change of speed is cut into this many constant-speed sections
+
+
+def ease(x: float) -> float:
+    """Ease in and out (cosine) on 0–1, for footage moves (rack focus, speed ramp)."""
+    x = min(max(x, 0.0), 1.0)
+    return 0.5 - 0.5 * math.cos(math.pi * x)
+
+
+def focus_pull(c: dict, dur: float) -> dict | None:
+    """A video clip's `focusPull` as {from, to, at, duration} (px of blur at 1080p, seconds on the clip).
+    "in" racks from soft to sharp over the first 0.8 s, "out" from sharp to soft over the last 0.8 s."""
+    fp = c.get("focusPull")
+    if not fp:
+        return None
+    if fp == "in":
+        fp = {"from": FOCUS_PULL_MAX, "to": 0, "at": 0}
+    elif fp == "out":
+        fp = {"from": 0, "to": FOCUS_PULL_MAX, "at": max(0.0, dur - 0.8)}
+    d = float(fp.get("duration", 0.8))
+    return {"from": float(fp.get("from", FOCUS_PULL_MAX)), "to": float(fp.get("to", 0)),
+            "at": float(fp.get("at", 0)), "duration": max(d, 0.04)}
+
+
+def ramp_sections(c: dict, span: float) -> list:
+    """A video clip's `ramp` as constant-speed sections [(src_start, src_end, speed)] over `span` seconds of source
+    from `in`. Each key {at, speed} eases the speed from the one before (the clip's `speed` at first) to its own over
+    `ease` seconds (key, else clip, default 0.4) starting at `at` (source seconds after `in`)."""
+    keys = sorted(c.get("ramp") or [], key=lambda k: float(k["at"]))
+    out, t, s = [], 0.0, float(c.get("speed", 1))
+    for k in keys:
+        at = min(max(float(k["at"]), t), span)
+        e = min(float(k.get("ease", c.get("rampEase", 0.4))), span - at)
+        if at > t:
+            out.append((t, at, s))
+        new = float(k["speed"])
+        if e > 0:
+            n = RAMP_STEPS
+            for j in range(n):
+                out.append((at + e * j / n, at + e * (j + 1) / n, s + (new - s) * ease((j + 0.5) / n)))
+        t, s = at + max(e, 0.0), new
+    if t < span:
+        out.append((t, span, s))
+    return [x for x in out if x[1] - x[0] > 1e-4]
 
 
 class Project:
@@ -134,6 +181,19 @@ class Project:
                 errors.append(f"{where}: {t} clip needs a duration in seconds")
             if t == "video" and "out" in c and float(c["out"]) <= float(c.get("in", 0)):
                 errors.append(f"{where}: out must be greater than in")
+            if (c.get("focusPull") or c.get("ramp")) and t != "video":
+                errors.append(f"{where}: focusPull and ramp work on video clips")
+            fp = c.get("focusPull")
+            if fp and not (fp in ("in", "out") or isinstance(fp, dict)):
+                errors.append(f"{where}: focusPull is \"in\", \"out\" or {{from, to, at, duration}}")
+            elif isinstance(fp, dict) and max(float(fp.get("from", 0)), float(fp.get("to", 0))) > FOCUS_PULL_MAX:
+                errors.append(f"{where}: focusPull blur is at most {FOCUS_PULL_MAX} px (a rack focus, not a smear)")
+            rp = c.get("ramp")
+            if rp is not None:
+                if not isinstance(rp, list) or not all(isinstance(k, dict) and "at" in k and "speed" in k for k in rp):
+                    errors.append(f"{where}: ramp is a list of {{at, speed}} keys (source seconds after `in`)")
+                elif any(not RAMP_SPEEDS[0] <= float(k["speed"]) <= RAMP_SPEEDS[1] for k in rp):
+                    errors.append(f"{where}: ramp speeds stay between {RAMP_SPEEDS[0]} and {RAMP_SPEEDS[1]}")
             if c.get("sweep") and t not in ("motion", "title"):
                 errors.append(f"{where}: sweep works on motion clips (the EndCard, or a card with the logo)")
             tr = c.get("transition", "cut")
@@ -166,6 +226,8 @@ class Project:
             start = float(c.get("in", 0))
             end = float(c.get("out", src_dur))
             end = min(end, src_dur) if src_dur else end
+            if c.get("ramp"):
+                return max(0.04, sum((b - a) / sp for a, b, sp in ramp_sections(c, end - start)))
             return max(0.04, (end - start) / float(c.get("speed", 1)))
         return float(c["duration"])
 

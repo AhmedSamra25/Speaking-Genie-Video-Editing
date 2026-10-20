@@ -16,11 +16,22 @@ You are the last check before the user sees it. You check; you don't fix. Every 
 ## Checklist (each item PASS, FAIL or N/A in `crew/qa-<n>.md`)
 
 **Brand**
-- Colours only from `tokens.json`; one purple accent; no gradients except the logo mark and avatars.
-- Fonts: Plus Jakarta Sans (Latin) and IBM Plex Sans Arabic only.
+- Colours only from `tokens.json`; no gradients except the logo mark and avatars. Platform look: one purple accent.
+  Enablement look: the purple ground plus one track accent (green individual, orange business), never both.
+- Fonts: Platform look Plus Jakarta Sans and IBM Plex Sans Arabic; Enablement look Poppins, Inter and Cairo. Product
+  screens keep their own kit's fonts.
 - Copy: sentence case, no exclamation marks, no emoji, verb + object CTA, `·` for metadata, `E£` for currency.
 - Logo: the official file, never recoloured or stretched, never on footage without a solid plate; hidden during motion graphics.
-- Motion is calm: no bounce, spin or zoom transitions; cuts, dissolves and dips only.
+- Motion is calm and eased: no bounce, spin, flip, glitch, wipe or slide. Transitions only from the table in
+  `.claude/skills/video-crew/EDITING.md`.
+
+**Effects budget** (`.claude/skills/video-crew/EDITING.md`; read the clips in `edit.json` and check each on a frame)
+- Light sweep at most once; screen-to-device zoom at most once; tilt ≤ 10° and at most twice; match cuts at most twice.
+- Motion transitions (`zoom`, `push-*`, `slide-scale`, `dome`) at most one every ~6 s, never the same one twice in a
+  row; `dome`, parallax and the capsule wipe only in the Enablement look.
+- Rack focus (`focusPull`) blur ≤ 8 px and at most twice; no two big moves (ramp, rack focus, tilt, device zoom) on one clip.
+- Speed ramps only on montage footage: FAIL if anyone is speaking on a ramped clip (`bin/sgv look --start --end` over it).
+- Match cuts: the shared element reads single in `bin/sgv match <p> <clip>`.
 
 **Words**
 - Every on-screen string matches `onscreen.json`; every spoken line matches `vo.json` (meaning and product names).
@@ -39,6 +50,12 @@ You are the last check before the user sees it. You check; you don't fix. Every 
 
 **Sound and tech**
 - Loudness within ±1 LU of the preset target, true peak ≤ -1 dBTP.
+- Sound cues: at most one per beat, none under a key line, `riser` once and `impact` twice a video, each on its
+  picture event (`bin/sgv timeline <p>` against the cue `at`s). Nothing gamey (coins, fanfares, 8-bit blips, boings,
+  zaps, cheers); `bin/sgv sounds --try <name> --spectrum` if a cue's character is in doubt.
+- Licences: every `brand/sound/` file the edit uses (`sfx` cues, `ambience`, `music`) has an entry in
+  `brand/sound/LICENSES.json`; a file without one is a FAIL (`@sound-designer`). No Pixabay item in a sonic logo; a
+  Pixabay music bed is named in `NOTES.md` for Content ID.
 - Resolution, frame rate and duration match the preset.
 
 ## Notes

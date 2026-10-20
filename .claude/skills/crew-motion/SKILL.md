@@ -27,6 +27,8 @@ frame: use `capsule` on one element only.
 
 ### Motion devices (all calm, eased, never bouncing)
 
+When to use each, and how often: the tables in `.claude/skills/video-crew/EDITING.md`. This table is how.
+
 | Device | Where | How |
 | --- | --- | --- |
 | **Line-mask titles** | TitleCard (both looks); Enablement EndCard and QuoteCard | default `reveal: "lines"`: each line rises from behind its own mask, 5 frames apart; Arabic and mixed Arabic/Latin stay correct. `"fade"` restores the plain fade |
@@ -38,7 +40,7 @@ frame: use `capsule` on one element only.
 | **Cursor** | ProductScreen on web screens | `cursor: [{x,y,at,click?}]`: a pointer glides along a gentle arc to each point by `at` and clicks with one ring. Mobile screens use `tap` instead |
 | **Lottie icons** | not installed | add `@remotion/lottie@4.0.530` only when a beat needs a moving icon, recoloured to tokens |
 
-`ProductScreen` takes `src` as a path relative to the project (`assets/screens/summary.png`; add `"scale": 3` for mobile captures and 3x crops); `sgv` stages it for Remotion. The props that make it feel edited (see `.claude/skills/video-crew/EDITING.md`):
+`ProductScreen` takes `src` as a path relative to the project (`assets/screens/summary.png`; add `"scale": 3` for mobile captures and 3x crops); `sgv` stages it for Remotion. The props behind the camera moves (when and how often: the camera table in `.claude/skills/video-crew/EDITING.md`):
 
 | Prop | Does |
 | --- | --- |
@@ -49,7 +51,7 @@ frame: use `capsule` on one element only.
 | `steps` with `{x, y, zoom, at}` | element tracking: the camera follows a point (a button through a flow) at `zoom` × the whole-screen view, no ring; `travel` sets the move's seconds |
 | `intoDevice` `"out"` \| `"in"` | mobile captures: the UI fills the frame and pulls back into the phone (`out`, the hook into a demo), or the phone pushes into its screen (`in`). `deviceAt`, `deviceDuration` (0.9 s) time it. Best in 9:16 |
 | `device: true` | a mobile capture shown as the bare phone (its own shell and shadow, no window card) |
-| `tilt` ≤ 10 | 3D perspective float: starts turned, settles to a third over the clip. Product reveals and app closes only, once or twice a video |
+| `tilt` ≤ 10 | 3D perspective float: starts turned, settles to a third over the clip |
 | `wave`, `cursor` | see the table above |
 | `startZoom`, `pushFrames` | start part-way in and land fast, for short beats |
 | `move` | `push` (default), `still`, `pan` |
@@ -66,7 +68,7 @@ Render a still of the late frame for each new or changed graphic, at every aspec
 bin/sgv motion ProductScreen --size 1080x1920 --duration 4 --lang ar --props '{"src":"…"}' --still 3.5 -o build/look/ps.png
 ```
 
-Read the frame: text inside the safe area (out of the bottom 20% in 9:16), the label readable, Arabic shaped and right-aligned, no colour outside `tokens.json`, and motion calm (fade + 24 px rise, no bounce, no spin).
+Read the frame: text inside the safe area (out of the bottom 20% in 9:16), the label readable, Arabic shaped and right-aligned, no colour outside `tokens.json`, and motion calm (eased rises and masks, no bounce, no spin).
 
 ## When nothing fits
 

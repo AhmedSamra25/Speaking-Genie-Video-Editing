@@ -18,7 +18,7 @@ from contextlib import contextmanager
 from pathlib import Path
 
 from sgv import captions, ff, motion, paths, presets, sfx
-from sgv.project import MOTION_BLUR, RUN_JOINS, TRANSITIONS, Project
+from sgv.project import MOTION_BLUR, RUN_JOINS, TRANSITIONS, Project, ease, focus_pull, ramp_sections
 
 AUDIO_FMT = "aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo"
 
@@ -70,6 +70,37 @@ def _punch_in(scale: float, w: int, h: int, focus) -> str:
     fx, fy = focus if isinstance(focus, (list, tuple)) else (focus, 0.5)
     sw, sh = round(w * scale / 2) * 2, round(h * scale / 2) * 2
     return f"scale={sw}:{sh}:flags=lanczos,crop={w}:{h}:({sw}-{w})*{float(fx)}:({sh}-{h})*{float(fy)}"
+
+
+def _ramp_pts(sections: list) -> str:
+    """setpts for a speed ramp: source time T maps to output time section by section (each at its own speed)."""
+    expr, out = None, 0.0
+    pieces = []
+    for a, b, sp in sections:
+        pieces.append((a, b, out, sp))
+        out += (b - a) / sp
+    for a, b, o, sp in reversed(pieces):
+        piece = f"{o:.5f}+(T-{a:.5f})/{sp:.5f}"
+        expr = piece if expr is None else f"if(lt(T,{b:.5f}),{piece},{expr})"
+    return f"setpts=PTS-STARTPTS,setpts='({expr})/TB'"
+
+
+def _focus_pull(fp: dict, w: int, h: int, fps: int) -> str:
+    """Rack focus: a gaussian blur eased between two radii, switched on only where it is above zero (so the sharp part
+    of the clip costs nothing). Radii are px at 1080p, scaled to the frame; sendcmd sets the radius every frame."""
+    k = min(w, h) / 1080
+    a, d = fp["at"], fp["duration"]
+    def sigma(t):
+        return max(0.0, (fp["from"] + (fp["to"] - fp["from"]) * ease((t - a) / d)) * k)
+    n = max(1, round(d * fps))
+    cmds = ";".join(f"{a + d * j / n:.4f} gblur@fp sigma {sigma(a + d * j / n):.3f}" for j in range(n + 1))
+    if fp["to"] <= 0 < fp["from"]:
+        on = f"lt(t,{a + d:.4f})"
+    elif fp["from"] <= 0 < fp["to"]:
+        on = f"gte(t,{a:.4f})"
+    else:
+        on = "1"
+    return f"sendcmd=c='{cmds}',gblur@fp=sigma={sigma(0):.3f}:steps=2:enable='{on}'"
 
 
 def _caption_accent(project: Project) -> str | None:
@@ -241,11 +272,19 @@ def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, dra
         info = ff.probe(str(sp))
         start = float(clip.get("in", 0))
         speed = float(clip.get("speed", 1))
-        inputs += ff.decode_args(sp) + ["-ss", f"{start:.3f}", "-t", f"{dur * speed:.3f}", "-i", sp]
-        has_audio = info["audio"] is not None and not clip.get("mute")
+        ramp = None
+        if clip.get("ramp"):
+            # a speed ramp reads the whole in→out range; its sound is dropped (montage beats sit on music)
+            end = float(clip.get("out", info["duration"]))
+            ramp = ramp_sections(clip, min(end, info["duration"] or end) - start)
+            span = ramp[-1][1] if ramp else dur
+        inputs += ff.decode_args(sp) + ["-ss", f"{start:.3f}", "-t", f"{span if ramp else dur * speed:.3f}", "-i", sp]
+        has_audio = info["audio"] is not None and not clip.get("mute") and not ramp
         if info["video"] and info["video"]["hdr"]:
             vf.append(_hdr_filter().rstrip(","))
-        if speed != 1:
+        if ramp:
+            vf.append(_ramp_pts(ramp))
+        elif speed != 1:
             vf.append(f"setpts=PTS/{speed}")
         if clip.get("grade"):
             vf.append(GRADES.get(clip["grade"], clip["grade"]))
@@ -274,6 +313,9 @@ def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, dra
 
     vf += [f"fps={fps}", "setsar=1", "format=yuv420p", f"tpad=stop_mode=clone:stop_duration=2", f"trim=duration={dur:.4f}",
            "setpts=PTS-STARTPTS"]
+    fp = focus_pull(clip, dur) if t == "video" else None
+    if fp:
+        vf.append(_focus_pull(fp, w, h, fps))
     fade_in, fade_out = clip.get("fadeIn"), clip.get("fadeOut")
     if fade_in:
         vf.append(f"fade=t=in:d={fade_in}")
