@@ -17,7 +17,8 @@ const words = (text: string, phrase?: string, marker?: string): Word[] => {
   const [p0, p1] = span(phrase);
   const [m0, m1] = span(marker);
   const out: Word[] = [];
-  const re = /\S+/g;
+  // split on ordinary spaces only: a non-breaking space (U+00A0) keeps two words on one line
+  const re = /[^ \t\n\r]+/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(text))) {
     const a = m.index, b = a + m[0].length;

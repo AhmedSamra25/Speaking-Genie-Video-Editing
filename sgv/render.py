@@ -31,8 +31,12 @@ def _hash(*parts) -> str:
     return hashlib.sha256(json.dumps(parts, sort_keys=True, default=str).encode()).hexdigest()[:16]
 
 
-def _canvas_color(theme: str) -> str:
-    return paths.tokens()["themes"][theme]["canvas"].replace("#", "0x")
+def _canvas_color(project: Project) -> str:
+    """The pad colour behind footage that is fit into another aspect: the theme canvas, or the flat purple ground
+    in the Enablement look."""
+    if project.motion_defaults().get("look") == "enablement":
+        return paths.tokens()["enablement"]["grounds"]["flat"].replace("#", "0x")
+    return paths.tokens()["themes"][project.theme]["canvas"].replace("#", "0x")
 
 
 def _master_size(group: list, aspect: str) -> tuple:
@@ -49,10 +53,10 @@ def _draft_preset(project: Project) -> dict:
 
 
 # -- 1. segments -----------------------------------------------------------
-def _fit_filter(mode: str, w: int, h: int, focus, theme: str) -> str:
+def _fit_filter(mode: str, w: int, h: int, focus, canvas: str) -> str:
     if mode == "fit":
         return (f"scale={w}:{h}:force_original_aspect_ratio=decrease:flags=lanczos,"
-                f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2:color={_canvas_color(theme)}")
+                f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2:color={canvas}")
     fx, fy = focus if isinstance(focus, (list, tuple)) else (focus, 0.5)
     return (f"scale={w}:{h}:force_original_aspect_ratio=increase:flags=lanczos,"
             f"crop={w}:{h}:(iw-{w})*{float(fx)}:(ih-{h})*{float(fy)}")
@@ -131,7 +135,7 @@ def _segment_path(project: Project, clip: dict, w: int, h: int, aspect: str, dra
         start = project.schedule()[i]["start"] if i is not None and clip["props"].get("wave") else None
         clip = {**clip, "props": motion.stage_assets(clip["props"], project.root, project.edit.get("voiceover"), start)}
     key = _hash(clip, w, h, project.fps, project.theme, project.lang, draft, aspect, _fit_mode(project, clip, aspect),
-                src_stamp, ff.hw(), 3)
+                src_stamp, ff.hw(), 3, _canvas_color(project))
     return cache / f"{key}.mov", clip
 
 
@@ -249,7 +253,7 @@ def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, dra
             vf.append(f"setpts=PTS/{speed}")
         if clip.get("grade"):
             vf.append(GRADES.get(clip["grade"], clip["grade"]))
-        vf.append(_fit_filter(_fit_mode(project, clip, aspect), w, h, clip.get("focus", 0.5), theme))
+        vf.append(_fit_filter(_fit_mode(project, clip, aspect), w, h, clip.get("focus", 0.5), _canvas_color(project)))
         if float(clip.get("scale", 1)) > 1:
             vf.append(_punch_in(float(clip["scale"]), w, h, clip.get("focus", 0.5)))
     elif t == "image":
@@ -260,14 +264,14 @@ def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, dra
         if kb in ("in", "out"):
             frames = max(1, round(dur * fps))
             z = f"1+0.08*on/{frames}" if kb == "in" else f"1.08-0.08*on/{frames}"
-            vf.append(_fit_filter(fit, w * 2, h * 2, clip.get("focus", 0.5), theme))
+            vf.append(_fit_filter(fit, w * 2, h * 2, clip.get("focus", 0.5), _canvas_color(project)))
             vf.append(f"zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s={w}x{h}:fps={fps}")
         elif kb in ("left", "right"):
-            vf.append(_fit_filter("fill", round(w * 1.08 / 2) * 2, round(h * 1.08 / 2) * 2, 0.5, theme))
+            vf.append(_fit_filter("fill", round(w * 1.08 / 2) * 2, round(h * 1.08 / 2) * 2, 0.5, _canvas_color(project)))
             x = f"(iw-{w})*t/{dur}" if kb == "left" else f"(iw-{w})*(1-t/{dur})"
             vf.append(f"crop={w}:{h}:'{x}':(ih-{h})/2")
         else:
-            vf.append(_fit_filter(fit, w, h, clip.get("focus", 0.5), theme))
+            vf.append(_fit_filter(fit, w, h, clip.get("focus", 0.5), _canvas_color(project)))
     elif t == "color":
         color = clip.get("color") or paths.tokens()["themes"][theme]["canvas"]
         inputs += ["-f", "lavfi", "-t", f"{dur:.3f}", "-i", f"color=c={color.replace('#', '0x')}:s={w}x{h}:r={fps}"]

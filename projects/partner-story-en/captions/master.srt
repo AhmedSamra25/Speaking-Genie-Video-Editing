@@ -1,0 +1,163 @@
+1
+00:00:00,050 --> 00:00:02,900
+Speaking Genie started with a personal problem.
+
+2
+00:00:03,020 --> 00:00:05,652
+For years I kept taking
+
+3
+00:00:05,652 --> 00:00:09,200
+courses to improve my English.
+
+4
+00:00:09,380 --> 00:00:13,940
+My grammar is good. I can write.
+
+5
+00:00:13,960 --> 00:00:16,750
+But when it comes to speaking… I'm lost.
+
+6
+00:00:16,960 --> 00:00:19,800
+I'm just not comfortable speaking.
+
+7
+00:00:19,850 --> 00:00:22,087
+It's not that I can't recall the words;
+
+8
+00:00:22,087 --> 00:00:23,980
+I'm just not comfortable at all.
+
+9
+00:00:24,040 --> 00:00:30,000
+Then, when tools like LLMs and ChatGPT came out,
+
+10
+00:00:30,060 --> 00:00:32,416
+I started trying things myself,
+
+11
+00:00:32,416 --> 00:00:33,860
+on my own devices,
+
+12
+00:00:33,880 --> 00:00:36,060
+trying out different ways to practise,
+
+13
+00:00:36,360 --> 00:00:38,500
+and I felt this could be an opportunity.
+
+14
+00:00:38,580 --> 00:00:40,580
+I showed the idea to my partner,
+
+15
+00:00:41,020 --> 00:00:43,032
+and together we thought about
+
+16
+00:00:43,032 --> 00:00:45,460
+how it could help a lot of people.
+
+17
+00:00:45,480 --> 00:00:47,100
+And Speaking Genie was born.
+
+18
+00:00:51,895 --> 00:00:53,355
+We're not a fixed course.
+
+19
+00:00:53,425 --> 00:00:55,132
+We follow curricula,
+
+20
+00:00:55,132 --> 00:00:58,375
+based on the framework you work with.
+
+21
+00:00:58,495 --> 00:01:01,151
+We came up with the idea that you don't
+
+22
+00:01:01,151 --> 00:01:03,875
+need to clear an hour in your schedule.
+
+23
+00:01:03,975 --> 00:01:06,475
+Instead, you take short calls,
+
+24
+00:01:06,955 --> 00:01:11,275
+each with a clear goal you practise on.
+
+25
+00:01:11,695 --> 00:01:14,675
+And the other person isn't a real person.
+
+26
+00:01:14,935 --> 00:01:17,375
+It's AI, so it's there 24 hours a day.
+
+27
+00:01:17,515 --> 00:01:19,806
+We help you get comfortable:
+
+28
+00:01:19,806 --> 00:01:21,675
+at first, you don't talk to real people.
+
+29
+00:01:22,175 --> 00:01:23,425
+You talk to AI.
+
+30
+00:01:23,455 --> 00:01:26,575
+And the AI doesn't judge you.
+
+31
+00:01:26,875 --> 00:01:29,395
+It doesn't stop you mid-sentence,
+
+32
+00:01:29,425 --> 00:01:32,215
+or say, "No, it's pronounced like this."
+
+33
+00:01:32,415 --> 00:01:35,975
+After every session, every call,
+
+34
+00:01:36,115 --> 00:01:39,215
+you get detailed feedback on that call:
+
+35
+00:01:39,235 --> 00:01:40,941
+what happened, what went well,
+
+36
+00:01:40,941 --> 00:01:42,875
+what didn't, and what to improve.
+
+37
+00:01:43,135 --> 00:01:45,975
+And you get feedback weekly and monthly.
+
+38
+00:01:46,535 --> 00:01:49,322
+It's like the gym: the more you train,
+
+39
+00:01:49,322 --> 00:01:51,375
+the better your level gets.
+
+40
+00:01:51,495 --> 00:01:54,215
+Then it kept growing until it became a product,
+
+41
+00:01:54,235 --> 00:01:56,775
+and now people come in and practise on it.
