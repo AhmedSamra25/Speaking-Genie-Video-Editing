@@ -213,7 +213,7 @@ def cmd_sounds(a):
     print(f"  library (brand/sound/, licences in brand/sound/LICENSES.json): {len(lib) or 'empty'}")
     for f in lib:
         e = f["entry"]
-        print(f"  {f['file']:48} {e['licence'] + ' · ' + e.get('notes', '') if e else 'NOT IN LEDGER: do not use'}")
+        print(f"  {f['file']:56} {e['licence'] + ' · ' + (e.get('tags') or e.get('notes', '')) if e else 'NOT IN LEDGER: do not use'}")
 
 
 def cmd_studio(_a):

@@ -64,8 +64,19 @@ loudest-moment LUFS, and draws a spectrogram you can Read.
   rather than raising the global one. Call sounds (ring, connect) can sit a little higher in a silent hook.
 - Ambience (room tone, classroom, office) only where the picture is a real place; keep it at 0.15–0.3 and let it duck.
   It loops if shorter than the video.
-- Recorded library files (`brand/sound/sfx/`, `ambience/`) need a `LICENSES.json` entry; a file without one is not usable.
-  Pixabay items never go into a sonic logo.
+- Recorded library (`bin/sgv sounds --list` shows each file's licence and tags):
+  - `sfx/typing-laptop.wav` (soft laptop typing, 6 s; give `duration`), `sfx/camera-shutter.wav`, `sfx/phone-ring-landline.wav`
+    (a real two-ring landline, for a real-world call; use `ringback`/`incoming-ring` for the app's own call);
+    `sfx/ui/kenney-*.wav` (nine soft clicks, selects, confirms and drops, CC0) when a synthesised `tap` is too plain.
+  - `ambience/classroom-chatter.m4a` (students murmuring), `ambience/office-quiet.m4a` (distant office voices),
+    `ambience/office-room-tone.m4a` (steady room tone, a faint hum): all loop cleanly; use `volume` 0.15–0.3.
+  - `music/` (git-ignored; re-download from the ledger's `source` if missing): business: `corporate-calm-leberch`,
+    `corporate-soft-nastelbom`, `infinity-arulo`; learners: `inspiring-travel-acoustic-loka`, `my-life-good-b-music`,
+    `wind-leaves-eugenio-mininni`; testimonials: `ambient-piano-strings-good-b-music`, `motivational-piano-leberch`,
+    `classical-vibes-3-grigoriy-nuzhny`. Their loudness differs by up to 10 dB (see the ledger tags): set `volume` on the draft.
+  - Every file needs a `LICENSES.json` entry; a file without one is not usable. Pixabay items never go into a sonic logo.
+    Pixabay music is registered with Content ID: note the track in `NOTES.md` so a YouTube claim can be disputed with
+    its licence certificate. Mixkit music may not be used in TV or radio broadcast.
 
 ## Check on the draft
 
