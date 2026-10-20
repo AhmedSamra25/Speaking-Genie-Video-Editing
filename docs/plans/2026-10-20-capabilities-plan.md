@@ -1,6 +1,6 @@
 # Plan: lighter renders, modern camera, transitions, motion and brand sound
 
-Status: approved 20 Oct 2026. Phases 1, 2, 3 and 5 done (results and notes below); phases 4 and 6 to do.
+Status: approved 20 Oct 2026. Phases 1–5 done and merged (results and notes below); phase 6 (crew docs pass and showcase reel) to do. Rack focus, speed ramp and Lottie from phases 3 and 5 are still open.
 
 Decisions (user, 20 Oct 2026): the dome reveal and capsule wipe are allowed as brand devices; small SFX files are
 committed together with their licence ledger; the Remotion company licence is in place.
