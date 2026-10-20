@@ -1,0 +1,103 @@
+{
+  "lang": "ar",
+  "voice": {
+    "engine": "say",
+    "voice_id": "Majed (Premium)",
+    "notes": "SCRATCH VOICE, timing placeholder only (MSA, Gulf accent). Replace with a recorded or cleared voice before any release."
+  },
+  "lines": [
+    {
+      "id": "L1",
+      "beat": "B2",
+      "text": "طلابك يعرفون القواعد، لكن الكلام يحتاج إلى ممارسة.",
+      "max_seconds": 3.6,
+      "duration": 4.243,
+      "file": "audio/vo/L1.wav",
+      "start": 2.97,
+      "at": 2.97
+    },
+    {
+      "id": "L2",
+      "beat": "B3",
+      "text": "مع Speaking Genie، يتدرب كل طالب في مكالمة صوتية مع شريك ذكي، في أي وقت.",
+      "max_seconds": 5.2,
+      "say_as": "مَعَ سْبِيكِنْج جِينِي، يَتَدَرَّبُ كُلُّ طَالِبٍ فِي مُكَالَمَةٍ صَوْتِيَّةٍ مَعَ شَرِيكٍ ذَكِيّ، فِي أَيِّ وَقْت.",
+      "duration": 6.363,
+      "file": "audio/vo/L2.wav",
+      "start": 7.813,
+      "at": 7.813
+    },
+    {
+      "id": "L3",
+      "beat": "B3a",
+      "text": "ومهام المحادثة مبنية على منهج مركزك.",
+      "max_seconds": 3.2,
+      "duration": 3.136,
+      "file": "audio/vo/L3.wav",
+      "start": 14.776,
+      "at": 14.776
+    },
+    {
+      "id": "L4",
+      "beat": "B4",
+      "text": "وبعد كل جلسة، تصله ملاحظات واضحة على ما قاله.",
+      "max_seconds": 3.8,
+      "duration": 3.833,
+      "file": "audio/vo/L4.wav",
+      "start": 18.122,
+      "at": 18.122
+    },
+    {
+      "id": "L5",
+      "beat": "B5",
+      "text": "وأنت ترى تقدم كل طالب، وكل مجموعة.",
+      "max_seconds": 3.2,
+      "duration": 3.043,
+      "file": "audio/vo/L5.wav",
+      "start": 22.555,
+      "at": 22.555
+    },
+    {
+      "id": "L6",
+      "beat": "B6",
+      "text": "تقارير جماعية تبيّن الأخطاء المشتركة، جاهزة للدرس التالي.",
+      "max_seconds": 4.4,
+      "duration": 4.486,
+      "file": "audio/vo/L6.wav",
+      "start": 25.808,
+      "at": 25.808
+    },
+    {
+      "id": "L7",
+      "beat": "B7",
+      "text": "خمسمئة متعلم نشط على Speaking Genie.",
+      "max_seconds": 3.4,
+      "say_as": "خَمْسُمِئَةِ مُتَعَلِّمٍ نَشِطٍ عَلَى سْبِيكِنْج جِينِي.",
+      "duration": 2.948,
+      "file": "audio/vo/L7.wav",
+      "start": 30.444,
+      "at": 30.444
+    },
+    {
+      "id": "L8",
+      "beat": "B8",
+      "text": "ساعات ممارسة إضافية لطلابك، دون عبء تصحيح على المعلمين.",
+      "max_seconds": 4.4,
+      "duration": 4.831,
+      "file": "audio/vo/L8.wav",
+      "start": 33.582,
+      "at": 33.582
+    },
+    {
+      "id": "L9",
+      "beat": "B9",
+      "text": "تحدّث معنا، ولنبدأ تجربة مع طلاب مركزك.",
+      "max_seconds": 3.4,
+      "duration": 3.558,
+      "file": "audio/vo/L9.wav",
+      "start": 38.563,
+      "at": 38.563
+    }
+  ],
+  "engine": "say"
+}

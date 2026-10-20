@@ -1,0 +1,196 @@
+{
+  "ar": [
+    {
+      "beat": "B2",
+      "key": "overline",
+      "text": "Speaking Genie"
+    },
+    {
+      "beat": "B2",
+      "key": "title",
+      "text": "المشكلة ليست في الإتقان، بل في الثقة."
+    },
+    {
+      "beat": "B2",
+      "key": "highlight",
+      "text": "الثقة"
+    },
+    {
+      "beat": "B3",
+      "key": "label",
+      "text": "مكالمة صوتية مع شريك ذكي"
+    },
+    {
+      "beat": "B3a",
+      "key": "label",
+      "text": "مهام محادثة من المنهج"
+    },
+    {
+      "beat": "B4",
+      "key": "label",
+      "text": "ملاحظات ما بعد الجلسة"
+    },
+    {
+      "beat": "B5",
+      "key": "mobileLabel",
+      "text": "الطالب يتدرّب"
+    },
+    {
+      "beat": "B5",
+      "key": "webLabel",
+      "text": "المركز يرى التقدّم"
+    },
+    {
+      "beat": "B6",
+      "key": "step label",
+      "text": "الأخطاء المشتركة في المجموعة"
+    },
+    {
+      "beat": "B6",
+      "key": "step label",
+      "text": "جاهز للدرس التالي"
+    },
+    {
+      "beat": "B7",
+      "key": "label",
+      "text": "متعلم نخدمهم اليوم"
+    },
+    {
+      "beat": "B7",
+      "key": "caption",
+      "text": "المصدر: عرض المستثمرين · يونيو ٢٠٢٦"
+    },
+    {
+      "beat": "B8",
+      "key": "title",
+      "text": "ممارسة الكلام كل يوم، ضمن منهجك."
+    },
+    {
+      "beat": "B8",
+      "key": "marker",
+      "text": "كل يوم"
+    },
+    {
+      "beat": "B9",
+      "key": "subline",
+      "text": "تجربة مع مجموعة من طلابك"
+    },
+    {
+      "beat": "B9",
+      "key": "headline",
+      "text": "لنتحدث عن طلاب مركزك"
+    },
+    {
+      "beat": "B9",
+      "key": "cta",
+      "text": "تحدّث معنا"
+    },
+    {
+      "beat": "B9",
+      "key": "highlight",
+      "text": "طلاب مركزك"
+    },
+    {
+      "beat": "B1",
+      "key": "lower third",
+      "text": "أحمد أبوسمرة · Co-founder, Speaking Genie"
+    }
+  ],
+  "en": [
+    {
+      "beat": "B2",
+      "key": "overline",
+      "text": "Speaking Genie"
+    },
+    {
+      "beat": "B2",
+      "key": "title",
+      "text": "Proficiency isn't the problem. Confidence is."
+    },
+    {
+      "beat": "B2",
+      "key": "highlight",
+      "text": "Confidence"
+    },
+    {
+      "beat": "B3",
+      "key": "label",
+      "text": "Voice call with AI agents"
+    },
+    {
+      "beat": "B3a",
+      "key": "label",
+      "text": "Goal-oriented curriculum call tasks"
+    },
+    {
+      "beat": "B4",
+      "key": "label",
+      "text": "Post-session feedback"
+    },
+    {
+      "beat": "B5",
+      "key": "mobileLabel",
+      "text": "The student practises"
+    },
+    {
+      "beat": "B5",
+      "key": "webLabel",
+      "text": "The centre sees progress"
+    },
+    {
+      "beat": "B6",
+      "key": "step label",
+      "text": "Shared mistakes across the group"
+    },
+    {
+      "beat": "B6",
+      "key": "step label",
+      "text": "Ready for the next lesson"
+    },
+    {
+      "beat": "B7",
+      "key": "label",
+      "text": "learners actively served"
+    },
+    {
+      "beat": "B7",
+      "key": "caption",
+      "text": "Source: Investor Deck · June 2026"
+    },
+    {
+      "beat": "B8",
+      "key": "title",
+      "text": "The gym membership for your voice."
+    },
+    {
+      "beat": "B8",
+      "key": "marker",
+      "text": "for your voice"
+    },
+    {
+      "beat": "B9",
+      "key": "subline",
+      "text": "A pilot with one of your groups"
+    },
+    {
+      "beat": "B9",
+      "key": "headline",
+      "text": "Let's talk about your students"
+    },
+    {
+      "beat": "B9",
+      "key": "cta",
+      "text": "Book a walkthrough"
+    },
+    {
+      "beat": "B9",
+      "key": "highlight",
+      "text": "your students"
+    },
+    {
+      "beat": "B1",
+      "key": "lower third",
+      "text": "Ahmed Abousamra · Co-founder, Speaking Genie"
+    }
+  ]
+}
