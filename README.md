@@ -119,6 +119,14 @@ install) or the business track (centres and corporates, LinkedIn and website, si
 orange, a conversation). In-product videos follow the **Platform DS**. Product screens come from the web and mobile
 kits and are never restyled. The producer asks who the video is for and where it runs at intake.
 
+### Resources on an 8 GB Mac
+
+Renders, graphics, captures and transcription run one at a time (a machine-wide lock; a second job waits). All of a
+render's graphics go through one Remotion worker with a cached bundle and one browser, rendering as many frames at once
+as free memory allows (`SGV_CONCURRENCY` overrides). Motion-blurred transitions are computed at half size above 720p (`SGV_FULL_BLUR=1` for full size). Drafts use lighter motion blur and cached 1080p SDR proxies of 4K or
+HDR footage (`SGV_NO_PROXY=1` turns them off). `bin/sgv motion … --still T` checks a graphic in about 2 s. `bin/sgv doctor`
+shows free memory, a running VM and the queue.
+
 ### Editing toolkit
 
 Motion-blurred `zoom` and `push` transitions, a living camera on every product screen (drift, travel between

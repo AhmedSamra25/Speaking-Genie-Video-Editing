@@ -39,7 +39,7 @@ Design System.
 | `bin/sgv screen <p> <card> [--lang ar] [--theme dark] [--flow k] [--status speaking]` · `--list [--kit mobile\|web]` | Captures a real product screen from the mobile app or web platform kit |
 | `bin/sgv timeline <p>` | Shows each clip's start and end on the assembled timeline (use it to place overlays) |
 | `bin/sgv render <p> [--draft] [--preset a,b]` | Renders the exports |
-| `bin/sgv motion <Comp> --props '{…}' [--size 1080x1920]` | Renders a single motion graphic |
+| `bin/sgv motion <Comp> --props '{…}' [--size 1080x1920] [--still T]` | Renders a single motion graphic, or with `--still` one frame as a PNG (the quick check) |
 | `bin/sgv loudness <file>` · `bin/sgv presets` · `bin/sgv studio` · `bin/sgv clean <p>` | |
 
 Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call.
@@ -149,6 +149,17 @@ Node + Remotion (Chrome renders frames on the GPU), and the brand fonts. With `-
 downloads the Whisper model. `sgv` falls back to software x264/x265 on machines without
 VideoToolbox. On a Mac, Remotion downloads its own headless Chrome on the first render. Set
 `SGV_BROWSER` to use a different Chrome binary.
+
+**Resources.** This Mac has 8 GB of memory, so `sgv` is built to share it:
+- Heavy commands (`render`, `motion`, `captions`, `transcribe`, `screen`) queue behind one machine-wide lock
+  (`sgv/lock.py`), so parallel agents and sessions wait their turn instead of swapping. A queued job prints `waiting: …`.
+- A render's motion graphics go to one Remotion worker (`motion/scripts/render-worker.mjs`). It bundles the code once per
+  source version (`build/motion-bundle/`), opens one browser and renders a number of frames at once chosen from free memory.
+  `SGV_CONCURRENCY` overrides that number.
+- Motion-blurred transitions are blurred at half size above 720p and scaled back (no visible difference, a quarter of
+  the cost; `SGV_FULL_BLUR=1` for archival masters). Drafts use 8 sub-frames instead of 16, and a cached 1080p SDR proxy
+  of 4K or HDR footage (`SGV_NO_PROXY=1` turns the proxies off).
+- `bin/sgv doctor` reports free memory, a running VM (Docker) and whether the queue is busy.
 
 ## Motion graphics code
 

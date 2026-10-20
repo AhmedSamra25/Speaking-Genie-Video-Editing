@@ -11,8 +11,10 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import sys
 import time
+from contextlib import contextmanager
 from pathlib import Path
 
 from sgv import captions, ff, motion, paths, presets, sfx
@@ -92,9 +94,28 @@ def _hdr_filter() -> str:
     return "colorspace=all=bt709:iall=bt2020:fast=1,"
 
 
-def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, draft: bool) -> Path:
-    fps, theme = project.fps, project.theme
-    dur = project.clip_duration(clip)
+def _draft_source(project: Project, sp: Path) -> Path:
+    """For drafts, a cached 1080p SDR copy of 4K or HDR footage (iPhone HEVC/Dolby Vision): tone-mapping and scaling
+    4K frames is the slow part of a draft, so it happens once per file instead of on every draft render.
+    Timing is kept as recorded, so clip in/out points are unchanged. SDR footage at 1080p or less is used directly."""
+    v = ff.probe(str(sp))["video"]
+    if os.environ.get("SGV_NO_PROXY") or not v or not (v["hdr"] or max(v["width"], v["height"]) > 1920):
+        return sp
+    out = project.build / "cache" / "proxies" / f"{_hash(str(sp), sp.stat().st_mtime, sp.stat().st_size)}.mp4"
+    if not out.exists():
+        out.parent.mkdir(parents=True, exist_ok=True)
+        log(f"  proxy   {sp.name} (first draft only)")
+        scale = "scale='if(gt(iw,ih),1920,-2)':'if(gt(iw,ih),-2,1920)'"
+        tmp = out.with_name(out.stem + ".part.mp4")
+        ff.run(["ffmpeg", *ff.decode_args(sp), "-i", sp, "-map", "0:v:0", "-map", "0:a?",
+                "-vf", (_hdr_filter() if v["hdr"] else "") + scale + ",format=yuv420p",
+                "-fps_mode", "passthrough", *ff.intermediate_args(draft=True), "-c:a", "aac", "-b:a", "160k", tmp])
+        tmp.replace(out)
+    return out
+
+
+def _segment_path(project: Project, clip: dict, w: int, h: int, aspect: str, draft: bool) -> tuple:
+    """The cached segment's path for this clip, and the clip with motion defaults and staged images applied."""
     cache = project.build / "cache" / "segments"
     cache.mkdir(parents=True, exist_ok=True)
     src_stamp = None
@@ -106,19 +127,51 @@ def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, dra
         clip = {**clip, "props": {**project.motion_defaults(), **clip.get("props", {})}}
         if clip.get("props", {}).get("src"):
             clip = {**clip, "props": motion.stage_assets(clip["props"], project.root)}
-    key = _hash(clip, w, h, fps, theme, project.lang, draft, aspect, _fit_mode(project, clip, aspect), src_stamp, ff.hw(), 3)
-    out = cache / f"{key}.mov"
+    key = _hash(clip, w, h, project.fps, project.theme, project.lang, draft, aspect, _fit_mode(project, clip, aspect),
+                src_stamp, ff.hw(), 3)
+    return cache / f"{key}.mov", clip
+
+
+def _motion_spec(project: Project, clip: dict, w: int, h: int, draft: bool) -> dict:
+    """motion.render arguments for a motion or title clip (already passed through _segment_path)."""
+    props = dict(clip.get("props", {}))
+    if clip["type"] == "title":
+        props.update({k: clip[k] for k in ("overline", "title", "subtitle") if k in clip})
+    return dict(composition=clip.get("composition", "TitleCard"), props=props, width=w, height=h, fps=project.fps,
+                duration=project.clip_duration(clip), theme=project.theme, lang=clip.get("lang", project.lang),
+                cache_dir=project.build / "cache" / "motion", draft=draft)
+
+
+def _overlay_spec(project: Project, o: dict, w: int, h: int, draft: bool) -> dict:
+    o_props = {**project.motion_defaults(), **o.get("props", {})}
+    return dict(composition=o["composition"], props=motion.stage_assets(o_props, project.root), width=w, height=h,
+                fps=project.fps, duration=float(o.get("duration", 4)), theme=o.get("theme", project.theme),
+                lang=o.get("lang", project.lang), cache_dir=project.build / "cache" / "motion", draft=draft)
+
+
+def prerender_motion(project: Project, w: int, h: int, aspect: str, draft: bool) -> None:
+    """Render every graphic this aspect still needs in one batch (one bundle, one browser), before the segments."""
+    specs = []
+    for c in project.edit["timeline"]:
+        if c["type"] in ("motion", "title"):
+            out, clip = _segment_path(project, c, w, h, aspect, draft)
+            if not out.exists():
+                specs.append(_motion_spec(project, clip, w, h, draft))
+    specs += [_overlay_spec(project, o, w, h, draft) for o in project.edit.get("overlays", []) if aspect not in o.get("skip", [])]
+    if specs:
+        motion.render_many(specs)
+
+
+def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, draft: bool) -> Path:
+    fps, theme = project.fps, project.theme
+    dur = project.clip_duration(clip)
+    out, clip = _segment_path(project, clip, w, h, aspect, draft)
     if out.exists():
         return out
 
     t = clip["type"]
     if t in ("motion", "title"):
-        comp = clip.get("composition", "TitleCard")
-        props = dict(clip.get("props", {}))
-        if t == "title":
-            props.update({k: clip[k] for k in ("overline", "title", "subtitle") if k in clip})
-        src = motion.render(comp, props, width=w, height=h, fps=fps, duration=dur, theme=theme,
-                            lang=clip.get("lang", project.lang), cache_dir=project.build / "cache" / "motion", draft=draft)
+        src = motion.render(**_motion_spec(project, clip, w, h, draft))
         clip = {"type": "video", "src": str(src), "in": 0, "fit": "fill"}
         t = "video"
 
@@ -126,6 +179,8 @@ def build_segment(project: Project, clip: dict, w: int, h: int, aspect: str, dra
     has_audio = False
     if t == "video":
         sp = project.path(clip["src"])
+        if draft:
+            sp = _draft_source(project, sp)
         info = ff.probe(str(sp))
         start = float(clip.get("in", 0))
         speed = float(clip.get("speed", 1))
@@ -239,12 +294,18 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
             td = min(td, d / 2, acc / 2)
             name = dip if tr == "dip" else TRANSITIONS[tr]
             if tr in MOTION_BLUR:
-                # Real motion blur: run the transition window at 16x the frame rate and average each group of 16
+                # Real motion blur: run the transition window at 16x the frame rate (8x in drafts) and average each group
                 # frames back down (a 360° shutter), then soften what's left of the sub-frame steps along the direction
                 # of travel, so a push smears into a streak instead of showing combs of copies. The window is cut out
                 # and spliced back because tmix with enable= scrambles the chroma in this ffmpeg.
-                a0, sub = acc - td, fps * 16
-                step_x, step_y = vw / (td * sub), vh / (td * sub)  # px the picture moves per sub-frame
+                n_sub = 8 if draft else 16  # drafts: half the sub-frames, still smooth enough to judge the move
+                a0, sub = acc - td, fps * n_sub
+                # Above 720p the window is blurred at half size and scaled back: its frames are smeared anyway and the
+                # nearly still ones at either end lose nothing visible, while the cost drops to about a quarter.
+                ds = 2 if vw * vh > 1280 * 720 and not os.environ.get("SGV_FULL_BLUR") else 1
+                down = f",scale={vw // ds}:{vh // ds}:flags=area" if ds > 1 else ""
+                up = f",scale={vw}:{vh}:flags=bicubic" if ds > 1 else ""
+                step_x, step_y = vw / ds / (td * sub), vh / ds / (td * sub)  # px the picture moves per sub-frame
                 streak = {"push-left": f",gblur=sigma={step_x * 0.7:.2f}:sigmaV=0.01",
                           "push-right": f",gblur=sigma={step_x * 0.7:.2f}:sigmaV=0.01",
                           "push-up": f",gblur=sigma=0.01:sigmaV={step_y * 0.7:.2f}"}.get(tr, "")
@@ -253,10 +314,10 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
                 parts.append(f"{v}split=2[pre{i}][win{i}]")
                 parts.append(f"[s{i}]split=2[inw{i}][post{i}]")
                 parts.append(f"[pre{i}]trim=end={a0:.3f},setpts=PTS-STARTPTS[pa{i}]")
-                parts.append(f"[win{i}]trim=start={a0:.3f},setpts=PTS-STARTPTS,fps={sub}[wa{i}]")
-                parts.append(f"[inw{i}]trim=end={td:.3f},setpts=PTS-STARTPTS,fps={sub}[wb{i}]")
+                parts.append(f"[win{i}]trim=start={a0:.3f},setpts=PTS-STARTPTS,fps={sub}{down}[wa{i}]")
+                parts.append(f"[inw{i}]trim=end={td:.3f},setpts=PTS-STARTPTS,fps={sub}{down}[wb{i}]")
                 parts.append(f"[wa{i}][wb{i}]xfade=transition={name}:duration={td:.3f}:offset=0,"
-                             f"tmix=frames=16{streak},fps={fps},settb=AVTB[pb{i}]")
+                             f"tmix=frames={n_sub}{streak},fps={fps}{up},settb=AVTB[pb{i}]")
                 parts.append(f"[post{i}]trim=start={td:.3f},setpts=PTS-STARTPTS[pc{i}]")
                 parts.append(f"[pa{i}][pb{i}][pc{i}]concat=n=3:v=1:a=0,settb=AVTB{nv}")
             else:
@@ -347,11 +408,7 @@ def finish(project: Project, assembled: Path, preset: dict, master_w: int, maste
         if aspect in o.get("skip", []):
             continue
         at = project.resolve_at(o.get("at", 0))
-        d = float(o.get("duration", 4))
-        o_props = {**project.motion_defaults(), **o.get("props", {})}
-        src = motion.render(o["composition"], motion.stage_assets(o_props, project.root), width=master_w, height=master_h, fps=project.fps,
-                            duration=d, theme=o.get("theme", project.theme), lang=o.get("lang", project.lang),
-                            cache_dir=project.build / "cache" / "motion", draft=draft)
+        src = motion.render(**_overlay_spec(project, o, master_w, master_h, draft))
         extra_inputs += ["-i", src]
         vparts.append(f"[{idx}:v]setpts=PTS-STARTPTS+{at:.3f}/TB[ov{n}]")
         vparts.append(f"{v}[ov{n}]overlay=0:0:eof_action=pass:format=auto[vo{n}]")
@@ -414,6 +471,19 @@ def finish(project: Project, assembled: Path, preset: dict, master_w: int, maste
 
 
 # -- driver ----------------------------------------------------------------
+_STAGES: dict = {}
+
+
+@contextmanager
+def _stage(name: str):
+    """Time a pipeline stage; the totals are printed when the render finishes."""
+    t = time.time()
+    try:
+        yield
+    finally:
+        _STAGES[name] = _STAGES.get(name, 0) + time.time() - t
+
+
 def render(project: Project, preset_names: list | None = None, draft: bool = False) -> list:
     t0 = time.time()
     if draft:
@@ -433,9 +503,13 @@ def render(project: Project, preset_names: list | None = None, draft: bool = Fal
     for aspect, group in groups.items():
         w, h = _master_size(group, aspect)
         log(f"  segments @ {w}x{h}")
-        segs = [build_segment(project, c, w, h, aspect, draft) for c in project.edit["timeline"]]
+        with _stage("motion"):
+            prerender_motion(project, w, h, aspect, draft)
+        with _stage("segments"):
+            segs = [build_segment(project, c, w, h, aspect, draft) for c in project.edit["timeline"]]
         tag = aspect.replace(":", "x")
-        assembled = assemble(project, segs, project.build / f"assembled-{tag}{'-draft' if draft else ''}.mov", draft)
+        with _stage("assemble"):
+            assembled = assemble(project, segs, project.build / f"assembled-{tag}{'-draft' if draft else ''}.mov", draft)
         for p in group:
             # the mixed audio is identical for every aspect, so each loudness target is measured once
             if not draft and p["lufs"] not in measured:
@@ -448,7 +522,9 @@ def render(project: Project, preset_names: list | None = None, draft: bool = Fal
                     log(f"  loudness measured {measured[p['lufs']]['input_i']} LUFS → target {p['lufs']} LUFS")
             out = exports_dir / (f"{project.name}-draft.mp4" if draft else f"{project.name}-{p['name']}.{p['ext']}")
             log(f"  export  {out.name}")
-            finish(project, assembled, p, w, h, aspect, out, draft, measured.get(p["lufs"]))
+            with _stage("finish"):
+                finish(project, assembled, p, w, h, aspect, out, draft, measured.get(p["lufs"]))
             outputs.append(out)
-    log(f"✓ done in {time.time() - t0:.1f}s")
+    log(f"✓ done in {time.time() - t0:.1f}s  ({', '.join(f'{k} {v:.1f}s' for k, v in _STAGES.items())})")
+    _STAGES.clear()
     return outputs

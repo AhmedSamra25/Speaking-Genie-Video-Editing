@@ -39,11 +39,10 @@ Write `crew/motion.md`: one row per graphic with beat, composition, duration, th
 
 ## Check every graphic
 
-Render a still of the late frame for each new or changed graphic, at every aspect the project exports:
+Render a still of the late frame for each new or changed graphic, at every aspect the project exports. `--still T` renders that one frame as a PNG in about 2 s; render the whole clip only when you need to judge the movement:
 
 ```bash
-bin/sgv motion ProductScreen --size 1080x1920 --duration 4 --lang ar --props '{"src":"…"}' -o /tmp/ps.mp4
-bin/sgv look /tmp/ps.mp4 --at 3.5
+bin/sgv motion ProductScreen --size 1080x1920 --duration 4 --lang ar --props '{"src":"…"}' --still 3.5 -o build/look/ps.png
 ```
 
 Read the frame: text inside the safe area (out of the bottom 20% in 9:16), the label readable, Arabic shaped and right-aligned, no colour outside `tokens.json`, and motion calm (fade + 24 px rise, no bounce, no spin).

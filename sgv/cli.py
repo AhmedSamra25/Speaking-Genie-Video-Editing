@@ -6,7 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from sgv import analyze, captions, doctor, ff, motion, paths, presets, project, render, screens, voice
+from sgv import analyze, captions, doctor, ff, lock, motion, paths, presets, project, render, screens, voice
 
 
 def cmd_new(a):
@@ -175,8 +175,12 @@ def cmd_render(a):
 def cmd_motion(a):
     w, h = (int(x) for x in a.size.split("x"))
     props = motion.stage_assets(json.loads(a.props) if a.props else {}, Path.cwd())
-    out = motion.render(a.composition, props, width=w, height=h, fps=a.fps, duration=a.duration, theme=a.theme,
-                        lang=a.lang, cache_dir=paths.ROOT / "build" / "motion")
+    spec = dict(composition=a.composition, props=props, width=w, height=h, fps=a.fps, duration=a.duration, theme=a.theme,
+                lang=a.lang, cache_dir=paths.ROOT / "build" / "motion")
+    if a.still is not None:  # one frame as a PNG: the quick way to check a graphic
+        out = motion.render_still(spec, a.still)
+    else:
+        out = motion.render(**spec)
     if a.out:
         Path(a.out).write_bytes(out.read_bytes())
         out = Path(a.out)
@@ -197,6 +201,9 @@ def cmd_clean(a):
     import shutil
     shutil.rmtree(p.root / "build", ignore_errors=True)
     print(f"Removed {p.root.name}/build")
+
+
+HEAVY = {"render", "motion", "captions", "transcribe", "screen"}  # commands that queue behind sgv.lock
 
 
 def main(argv=None) -> int:
@@ -321,6 +328,7 @@ def main(argv=None) -> int:
     s.add_argument("--duration", type=float, default=4)
     s.add_argument("--theme", default="light", choices=["light", "dark"])
     s.add_argument("--lang", default="en", choices=["en", "ar"])
+    s.add_argument("--still", type=float, metavar="T", help="render only the frame at T seconds, as a PNG")
     s.add_argument("-o", "--out")
     s.set_defaults(fn=cmd_motion)
 
@@ -337,7 +345,11 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     ff.VERBOSE = a.verbose
     try:
-        a.fn(a)
+        if a.cmd in HEAVY and not (a.cmd == "screen" and a.list):
+            with lock.heavy(a.cmd):
+                a.fn(a)
+        else:
+            a.fn(a)
     except ff.FFError as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
