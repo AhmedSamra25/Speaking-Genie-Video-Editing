@@ -12,15 +12,31 @@ You make every graphic on screen. Read first: `crew/treatment.md`, `crew/onscree
 | Composition | For | Props | Enablement-look props |
 | --- | --- | --- | --- |
 | `Intro` | logo open (≤ 1.5 s on social, or none) | `tagline?` | white lockup on the ground |
-| `TitleCard` | chapter or hook line | `title`, `overline?`, `subtitle?` | `highlight?`, `capsule?`, `capsuleInk?` (`accent` \| `white`) |
-| `StatCard` | one number | `label`, `value`, `suffix?`, `delta?`, `caption?` | `capsule?`; glass panel, delta in the accent |
-| `QuoteCard` | a real person's words | `quote`, `name`, `role?` | `highlight?` |
+| `TitleCard` | chapter or hook line | `title`, `overline?`, `subtitle?`, `marker?`, `reveal?` | `highlight?`, `capsule?`, `capsuleInk?` (`accent` \| `white`) |
+| `StatCard` | one number | `label`, `value`, `suffix?`, `delta?`, `caption?`, `chart?`, `series?`, `max?`, `digits?` | `capsule?`; glass panel, delta in the accent |
+| `QuoteCard` | a real person's words | `quote`, `name`, `role?` | `highlight?`, `marker?`, `reveal?` |
 | `LowerThird` | name and role over footage (overlay) | `name`, `role?` | solid purple plate |
 | `ProductScreen` | a real product screen in a window, slow push-in to one callout | `src`, `callout?`, `label?`, `move?` | accent ring, label as a solid capsule |
-| `EndCard` | CTA | `headline`, `subline?`, `url?` | `highlight?`, `cta?`; individual: capsule + store badges; business: button + URL, no badges |
+| `DualScreen` | "students practise, the centre sees it": the phone and the web platform together | `mobileSrc`, `webSrc`, `mobileLabel?`, `webLabel?`, `mobileCallout?`, `webCallout?`, `webAt?`, `link?` | phone near, web far (parallax), labels as capsules |
+| `EndCard` | CTA | `headline`, `subline?`, `url?` | `highlight?`, `marker?`, `reveal?`, `cta?`; individual: capsule + store badges; business: button + URL, no badges |
 
 Every composition also takes `look` (`platform` default \| `enablement`), `track` (`individual` default \|
-`business`) and `ground` (`dome` default \| `flat` \| `deep`). One capsule per frame: use `capsule` on one element only.
+`business`), `ground` (`dome` default \| `flat` \| `deep`) and `parallax` (2.5D depth between the dome, the screen or
+card, and the capsule: 1 by default in the Enablement look, 0 in the Platform look; 0 turns it off). One capsule per
+frame: use `capsule` on one element only.
+
+### Motion devices (all calm, eased, never bouncing)
+
+| Device | Where | How |
+| --- | --- | --- |
+| **Line-mask titles** | TitleCard (both looks); Enablement EndCard and QuoteCard | default `reveal: "lines"`: each line rises from behind its own mask, 5 frames apart; Arabic and mixed Arabic/Latin stay correct. `"fade"` restores the plain fade |
+| **Highlight marker** | same cards | `marker: "twenty minutes"`: a bar draws on under those words from the start side after the lines land. One short phrase. Use `marker` or `highlight`, rarely both |
+| **Capsule wipe** | Enablement kicker (`overline`) and every `capsule` | automatic: a capsule-ended window opens from the start side (right in Arabic) |
+| **Draw-on charts** | StatCard | `chart: "ring"` (number inside a ring filled to `value / max`, default max 100), `"line"` or `"bars"` with `series: [..]` (time order, last = the result); they draw with the count |
+| **Arabic-Indic digits** | StatCard, `lang: "ar"` | `digits: "arabic"` counts ٠–٩ with ٪ (`Intl.NumberFormat('ar-EG')`). Default Latin digits; pick one per video and keep it |
+| **Voice bars** | ProductScreen on the AI call | `wave: true`: the call screen's bars follow the voice-over heard under the clip (sgv syncs it to the timeline). Use on the *speaking* call card (`17-call-speaking`), with `{x,y,w,h,bars,color,bg}` to fit another screen |
+| **Cursor** | ProductScreen on web screens | `cursor: [{x,y,at,click?}]`: a pointer glides along a gentle arc to each point by `at` and clicks with one ring. Mobile screens use `tap` instead |
+| **Lottie icons** | not installed | add `@remotion/lottie@4.0.530` only when a beat needs a moving icon, recoloured to tokens |
 
 `ProductScreen` takes `src` as a path relative to the project (`assets/screens/summary.png`; add `"scale": 3` for mobile captures and 3x crops); `sgv` stages it for Remotion. The props that make it feel edited (see `.claude/skills/video-crew/EDITING.md`):
 
@@ -29,7 +45,12 @@ Every composition also takes `look` (`platform` default \| `enablement`), `track
 | `callout` `{x,y,w,h}` + `label` | one point, in the screen's CSS pixels; the ring draws itself on, the label rises in |
 | `steps` `[{callout, label, at}]` | several points: the camera travels to each at `at` seconds (~0.7 s, eased), ring and label follow |
 | `tap` `{x,y,at}` (or a list) | a touch indicator glides in, presses and ripples on that button; with `"sfx": true` a tap sound plays |
-| `drift` 0.02–0.04 | slow living-camera push over the whole clip |
+| `drift` 0.02–0.04 | slow living-camera push over the whole clip, plus an organic noise wander (no jitter); `{push, wander}` sets them apart (`wander: 0` for a locked camera) |
+| `steps` with `{x, y, zoom, at}` | element tracking: the camera follows a point (a button through a flow) at `zoom` × the whole-screen view, no ring; `travel` sets the move's seconds |
+| `intoDevice` `"out"` \| `"in"` | mobile captures: the UI fills the frame and pulls back into the phone (`out`, the hook into a demo), or the phone pushes into its screen (`in`). `deviceAt`, `deviceDuration` (0.9 s) time it. Best in 9:16 |
+| `device: true` | a mobile capture shown as the bare phone (its own shell and shadow, no window card) |
+| `tilt` ≤ 10 | 3D perspective float: starts turned, settles to a third over the clip. Product reveals and app closes only, once or twice a video |
+| `wave`, `cursor` | see the table above |
 | `startZoom`, `pushFrames` | start part-way in and land fast, for short beats |
 | `move` | `push` (default), `still`, `pan` |
 | `cover`, `calloutFill`, `sideMargin`, `ring`, `dim`, `ringAt`, `labelSize` | framing details |

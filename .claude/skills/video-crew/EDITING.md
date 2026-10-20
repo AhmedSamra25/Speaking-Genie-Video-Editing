@@ -19,15 +19,29 @@ The design system and track (which decide the copy, accent, close and the look a
 - Web screens in 9:16 are crops of one component (the screen producer cuts them); never squeeze a whole desktop page
   into a phone frame.
 - Story about both sides ("students practise → teachers see it"): open on the mobile call, then cut to the web report.
-  The change of device is itself the turn in the story.
+  The change of device is itself the turn in the story. To say it in one shot, use `DualScreen` (the phone first, the
+  web window answers 0.6 s later; in 16:9 a line and a dot travel from the phone to the web).
 
 ## Camera: nothing sits still
 
-- Every product screen gets a living camera: `"drift": 0.02–0.04` (a slow push over the whole clip).
+- Every product screen gets a living camera: `"drift": 0.02–0.04` (a slow push over the whole clip plus an organic
+  noise wander; never jitter).
 - Several points on one screen: use `steps` (the camera travels to each, the ring redraws, the label changes) instead
   of cutting to the same screen twice. One step per 2–3 s.
 - Short beats start pre-zoomed: `"startZoom": 0.6–0.85, "pushFrames": 12–16`, so the point lands in the first half second.
-- Show actions as actions: when the voice says "send", "start", "download", add a `tap` on that button, timed to the word.
+- Show actions as actions: when the voice says "send", "start", "download", add a `tap` on that button (mobile) or a
+  `cursor` click (web), timed to the word.
+- Follow one element through a flow with `steps` of `{x, y, zoom, at}`: the camera stays locked on it while the
+  screen changes around it. Across several screens, give each clip the same `x, y, zoom`.
+
+### Camera moves for the turns (one or two a video, never stacked)
+
+| Move | Use for | How |
+| --- | --- | --- |
+| Screen-to-device zoom | the hook into the demo, or leaving the app at the close | ProductScreen `"intoDevice": "out"` (UI pulls back into the phone) or `"in"`; best as the first shot of a 9:16 reel |
+| 3D tilt float | a product reveal, the app close | ProductScreen `"tilt": 6–8` (max 10); settles flat-ish, no spin |
+| Parallax 2.5D | Enablement cards and screens feel shot, not slid | on by default in the Enablement look (dome far, screen middle, capsule near); `"parallax": 0` for a still card |
+| Voice bars | the AI call while the voice-over speaks for the learner or the AI | ProductScreen `"wave": true` on the speaking call card |
 
 ## Transitions: cuts carry the rhythm, motion carries the turns
 
@@ -57,6 +71,10 @@ The design system and track (which decide the copy, accent, close and the look a
 - Social cuts: word-by-word captions, `"captions": {"src": "captions/master.srt", "burn": true, "style": "words"}`. The
   spoken word lights up in the brand's text purple on the dark pill.
 - On-screen labels add what the voice doesn't say; they never repeat the caption.
+- Titles come in line by line from behind a mask (the default). A highlight `marker` under the two or three words that
+  carry the line, once per card; the capsule wipe opens kickers and capsules on its own.
+- Numbers: a `ring` when the number is a share (58% of students), a `line` or `bars` when it is a trend. In Arabic
+  videos choose Latin or Arabic-Indic digits (`"digits": "arabic"`) once and use them in every card and caption.
 
 ## Sound
 

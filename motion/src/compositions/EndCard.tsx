@@ -1,8 +1,9 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
-import { BaseProps, colors, fonts, isEnablement, isPortrait, scaleOf } from "../brand";
-import { FadeProps, enterClip } from "../anim";
-import { Capsule, Lockup, Phrase, StoreBadges, display, en, trackOf } from "../components/Enablement";
+import { BaseProps, colors, fonts, isEnablement, isPortrait, markerColor, scaleOf } from "../brand";
+import { FadeProps, enterClip, wipe } from "../anim";
+import { Capsule, DEPTH, Lockup, Phrase, StoreBadges, display, en, trackOf, useDepth } from "../components/Enablement";
+import { MaskedLines, Reveal } from "../components/Kinetic";
 import { Logo } from "../components/Logo";
 import { Stage } from "../components/Stage";
 
@@ -17,6 +18,10 @@ export type EndCardProps = BaseProps &
    * (default "حمل التطبيق دلوقتي" / "Download the app"). Business track: the conversation button
    * (default "اتكلم معنا" / "Book a walkthrough"). */
   cta?: string;
+  /** Enablement look: "lines" (default) brings the headline in line by line from behind a mask; "fade" fades it. */
+  reveal?: Reveal;
+  /** Enablement look: the key words of `headline` that get a highlight marker drawn on under them. */
+  marker?: string;
 };
 
 // The verbatim closes from brand/enablement/README.md ("The close depends on the audience").
@@ -95,6 +100,9 @@ const EndCardEnablement: React.FC<EndCardProps> = (p) => {
   const business = p.track === "business";
   const cta = p.cta ?? CTA[business ? "business" : "individual"][p.lang];
   const at = (d: number) => enterClip(frame, durationInFrames, d, s, p, false);
+  const depth = useDepth(p);
+  const pad = 96 * s;
+  const capsuleIn = p.enterFade === false ? {} : wipe(frame, 24, ar);
   return (
     <Stage p={p}>
       <AbsoluteFill
@@ -111,14 +119,21 @@ const EndCardEnablement: React.FC<EndCardProps> = (p) => {
         </div>
         <div
           style={{
-            ...at(10),
+            ...(p.reveal === "fade" ? at(10) : {}),
             ...display(p.lang),
             fontSize: (portrait ? 80 : 84) * s,
             marginTop: 64 * s,
             maxWidth: portrait ? "100%" : 1400 * s,
+            transform: [p.reveal === "fade" ? at(10).transform : "", depth(DEPTH.text) ?? ""].join(" "),
           }}
         >
-          <Phrase text={p.headline} phrase={p.highlight} color={t.phrase} />
+          {p.reveal === "fade" ? (
+            <Phrase text={p.headline} phrase={p.highlight} color={t.phrase} />
+          ) : (
+            <MaskedLines text={p.headline} width={portrait ? p.width - 2 * pad : Math.min(1400 * s, p.width - 2 * pad)} delay={10}
+              rtl={ar} phrase={p.highlight} phraseColor={t.phrase} marker={p.marker} markerColor={markerColor(p)}
+              animate={p.enterFade !== false} exit={false} />
+          )}
         </div>
         {p.subline ? (
           <div
@@ -169,8 +184,8 @@ const EndCardEnablement: React.FC<EndCardProps> = (p) => {
           </div>
         ) : (
           <>
-            <div style={{ ...at(22), marginTop: 56 * s }}>
-              <Capsule s={s} size={portrait ? 46 : 40} lang={p.lang} ink={t.phrase}>
+            <div style={{ ...at(22), marginTop: 56 * s, transform: [at(22).transform, depth(DEPTH.capsule) ?? ""].join(" ") }}>
+              <Capsule s={s} size={portrait ? 46 : 40} lang={p.lang} ink={t.phrase} style={capsuleIn}>
                 {cta}
               </Capsule>
             </div>

@@ -1,9 +1,10 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
-import { BaseProps, colors, fonts, isEnablement, isPortrait, scaleOf } from "../brand";
+import { BaseProps, colors, fonts, isEnablement, isPortrait, markerColor, scaleOf } from "../brand";
 import { enter } from "../anim";
 import { Avatar } from "../components/Avatar";
-import { Phrase, trackOf } from "../components/Enablement";
+import { DEPTH, Phrase, trackOf, useDepth } from "../components/Enablement";
+import { MaskedLines, Reveal } from "../components/Kinetic";
 import { Stage } from "../components/Stage";
 
 export type QuoteCardProps = BaseProps & {
@@ -12,6 +13,10 @@ export type QuoteCardProps = BaseProps & {
   role?: string;
   /** Enablement look: the words of `quote` set in the track accent. */
   highlight?: string;
+  /** Enablement look: "lines" (default) brings the quote in line by line from behind a mask; "fade" fades it. */
+  reveal?: Reveal;
+  /** Enablement look: the key words of `quote` that get a highlight marker drawn on under them. */
+  marker?: string;
 };
 
 /** Testimonial: the quote set large, then who said it. */
@@ -26,6 +31,9 @@ export const QuoteCard: React.FC<QuoteCardProps> = (p) => {
   const enab = isEnablement(p);
   const t = trackOf(p);
   const mark = enab ? t.phrase : c.link;
+  const lines = enab && p.reveal !== "fade";
+  const depth = useDepth(p);
+  const side = (portrait ? 96 : 200) * s;
   return (
     <Stage p={p} lockup>
       <AbsoluteFill
@@ -38,7 +46,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = (p) => {
       >
         <div
           style={{
-            ...enter(frame, durationInFrames, 2, s),
+            ...(lines ? { transform: depth(DEPTH.text) } : enter(frame, durationInFrames, 2, s)),
             fontSize: (portrait ? 58 : 56) * s,
             fontWeight: ar ? 600 : enab ? 600 : 700,
             letterSpacing: ar ? 0 : "-0.015em",
@@ -47,13 +55,22 @@ export const QuoteCard: React.FC<QuoteCardProps> = (p) => {
             ...(enab ? { fontFamily: fonts.display } : {}),
           }}
         >
-          <span style={{ color: mark }}>{ar ? "«" : "“"}</span>
-          {enab ? <Phrase text={p.quote} phrase={p.highlight} color={t.phrase} /> : p.quote}
-          <span style={{ color: mark }}>{ar ? "»" : "”"}</span>
+          {lines ? (
+            <MaskedLines text={p.quote} width={portrait ? p.width - 2 * side : Math.min(1400 * s, p.width - 2 * side)} delay={2}
+              rtl={ar} phrase={p.highlight} phraseColor={t.phrase} marker={p.marker} markerColor={markerColor(p)}
+              marks={ar ? ["«", "»"] : ["“", "”"]} marksColor={mark} />
+          ) : (
+            <>
+              <span style={{ color: mark }}>{ar ? "«" : "“"}</span>
+              {enab ? <Phrase text={p.quote} phrase={p.highlight} color={t.phrase} /> : p.quote}
+              <span style={{ color: mark }}>{ar ? "»" : "”"}</span>
+            </>
+          )}
         </div>
         <div
           style={{
             ...enter(frame, durationInFrames, 14, s),
+            ...(enab ? { transform: [enter(frame, durationInFrames, 14, s).transform, depth(DEPTH.capsule) ?? ""].join(" ") } : {}),
             display: "flex",
             alignItems: "center",
             gap: 20 * s,

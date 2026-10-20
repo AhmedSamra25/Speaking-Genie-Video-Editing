@@ -67,7 +67,8 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
     { "type": "image", "src": "assets/dashboard.png", "duration": 4, "kenburns": "in" },  // in|out|left|right
     { "type": "color", "duration": 1 },                                                  // brand canvas hold
     { "type": "motion", "composition": "StatCard", "duration": 4,
-      "props": { "label": "Average fluency", "value": 74, "suffix": "%", "delta": "↑ 12 pts in 6 weeks", "caption": "…" } },
+      "props": { "label": "Average fluency", "value": 74, "suffix": "%", "delta": "↑ 12 pts in 6 weeks", "caption": "…",
+                 "chart": "ring" } },          // ring | line | bars (+ "series": [..]); "digits": "arabic" for ٥٨٪
     { "type": "motion", "composition": "QuoteCard", "duration": 5, "props": { "quote": "…", "name": "…", "role": "…" } },
     { "type": "motion", "composition": "EndCard", "duration": 4, "transition": "dip",
       "props": { "headline": "Start a free pilot", "subline": "…", "url": "speakingenie.com" } }
@@ -86,12 +87,17 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
 }
 ```
 
-Compositions and their required props: `Intro` (none; optional `tagline`) · `TitleCard` (`title`)
+Compositions and their required props: `Intro` (none; optional `tagline`) · `TitleCard` (`title`; titles rise line by
+line from a mask, `marker` draws a highlight under key words)
 · `StatCard` (`label`, `value`) · `QuoteCard` (`quote`, `name`) · `EndCard` (`headline`) ·
 `LowerThird` (`name`, overlay only) · `ProductScreen` (`src`: a project image, usually `assets/screens/*.png`;
 optional `callout` `{x,y,w,h}` in the screen's CSS pixels, `label`, `move`: push|still|pan, `steps` for camera travel
-between several points, `tap` `{x,y,at}`, `drift`, `scale` 3 for mobile captures). Every composition supports Arabic RTL (`lang: "ar"` per clip
-or per project) and both themes.
+between several points or `{x,y,zoom}` element tracking, `tap` `{x,y,at}`, `cursor` `[{x,y,at,click}]`, `drift` (push plus
+noise wander), `intoDevice` out|in (screen-to-device zoom), `device`, `tilt` ≤10, `wave` (voice bars synced to the
+voice-over), `scale` 3 for mobile captures) · `DualScreen` (`mobileSrc`, `webSrc`; phone and web platform together,
+`mobileLabel`, `webLabel`, callouts). Every composition supports Arabic RTL (`lang: "ar"` per clip
+or per project) and both themes; the Enablement look adds 2.5D `parallax` between its layers. When to use each move:
+`.claude/skills/video-crew/EDITING.md`.
 
 ## The video crew
 

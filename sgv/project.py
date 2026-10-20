@@ -12,7 +12,8 @@ from sgv import ff, paths
 LAYOUT = ["footage", "audio", "assets", "captions", "exports", "build"]
 CLIP_TYPES = {"video", "image", "title", "motion", "color"}
 REQUIRED_PROPS = {"TitleCard": ["title"], "StatCard": ["label", "value"], "QuoteCard": ["quote", "name"],
-                  "EndCard": ["headline"], "LowerThird": ["name"], "Intro": [], "ProductScreen": ["src"]}
+                  "EndCard": ["headline"], "LowerThird": ["name"], "Intro": [], "ProductScreen": ["src"],
+                  "DualScreen": ["mobileSrc", "webSrc"]}
 TRANSITIONS = {"cut": None, "dissolve": "fade", "dip": None, "wipe-left": "wipeleft", "slide-left": "slideleft",
                # motion transitions: short, with motion blur and an optional whoosh (sfx)
                "zoom": "zoomin", "push-left": "slideleft", "push-right": "slideright", "push-up": "slideup"}

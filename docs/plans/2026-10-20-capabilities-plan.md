@@ -1,6 +1,6 @@
 # Plan: lighter renders, modern camera, transitions, motion and brand sound
 
-Status: approved 20 Oct 2026. Phase 1 done (results below); phases 2–6 to do.
+Status: approved 20 Oct 2026. Phase 1 done (results below); Phases 3 and 5 done in Remotion (notes under each); the rest to do.
 
 Decisions (user, 20 Oct 2026): the dome reveal and capsule wipe are allowed as brand devices; small SFX files are
 committed together with their licence ledger; the Remotion company licence is in place.
@@ -107,6 +107,12 @@ Not done: capping ffmpeg threads while Remotion runs (no longer needed, since jo
 
 Not adopted: orbit and dolly zoom (dramatic, 3D, heavy).
 
+Done (20 Oct 2026): ProductScreen `intoDevice` out|in (with `deviceAt`, `deviceDuration`, and `device` for the bare phone,
+geometry from the mobile kit's PhoneFrame), `tilt` (≤10°, settles to a third), `steps` with `{x, y, zoom, travel}`,
+`drift` as push plus a `@remotion/noise` wander, the `DualScreen` composition, and parallax depth in the Enablement look
+(dome 0.25, screen 0.55, text 0.7, capsule 1; `parallax` prop). Not done: rack focus and speed ramp (ffmpeg footage props
+in `sgv/render.py`, which the transitions stream owns).
+
 ## Phase 4: transitions
 
 | Transition | Use | Where |
@@ -126,6 +132,11 @@ Line-mask kinetic titles (RTL-safe), chart and ring draw-on (`@remotion/paths`),
 (`Intl.NumberFormat('ar-EG')`), a waveform that follows the voice-over on the AI call (`@remotion/media-utils`), an eased
 cursor path, a highlight marker under a key word, the capsule wipe for kickers, and brand-recoloured Lottie icons (LottieFiles
 Simple License) only where an icon needs to move. Not adopted: particles, 3D, glitch.
+
+Done (20 Oct 2026): `MaskedLines` line-mask titles (default in TitleCard and the Enablement EndCard and QuoteCard;
+`reveal: "fade"` for the old look), `marker`, the capsule wipe on Enablement kickers and capsules, StatCard `chart`
+ring|line|bars (`@remotion/paths`) and `digits: "arabic"`, ProductScreen `wave` (`@remotion/media-utils`, synced by sgv to
+the clip's timeline position) and `cursor`. Lottie not added: no beat needs a moving icon yet.
 
 ## Phase 6: crew and proof
 
