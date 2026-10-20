@@ -129,12 +129,14 @@ shows free memory, a running VM and the queue.
 
 ### Editing toolkit
 
-Motion-blurred `zoom` and `push` transitions, a living camera on every product screen (drift with a noise wander,
-travel between `steps` and element tracking, a ring that draws itself on, a finger `tap` or a desktop `cursor`, the
-screen-to-device zoom `intoDevice`, a 3D `tilt` float, voice bars that follow the voice-over on the AI call), the
-`DualScreen` phone-plus-web shot, 2.5D parallax in the Enablement look, line-mask titles with a highlight `marker`, the
-capsule wipe, draw-on ring, line and bar charts, counters in Arabic-Indic digits, word-by-word captions, generated
-sound effects (`"sfx": true`) and a brand sound library. The rules for using them are in `.claude/skills/video-crew/EDITING.md`.
+Motion-blurred `zoom`, `push`, `slide-scale` and Enablement `dome` transitions, a `blur` dissolve, match cuts
+(`bin/sgv match` checks the geometry), one egSweep light sweep per video, consecutive graphics joined in a single
+Remotion `TransitionSeries` render, a living camera on every product screen (drift with a noise wander, travel between
+`steps` and element tracking, a ring that draws itself on, a finger `tap` or a desktop `cursor`, the screen-to-device
+zoom `intoDevice`, a 3D `tilt` float, voice bars that follow the voice-over on the AI call), the `DualScreen`
+phone-plus-web shot, 2.5D parallax in the Enablement look, line-mask titles with a highlight `marker`, the capsule
+wipe, draw-on ring, line and bar charts, counters in Arabic-Indic digits, word-by-word captions, generated sound
+effects (`"sfx": true`) and a brand sound library. The rules for using them are in `.claude/skills/video-crew/EDITING.md`.
 
 ### Brand sound
 

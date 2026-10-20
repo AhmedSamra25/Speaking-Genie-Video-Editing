@@ -10,7 +10,8 @@ from pathlib import Path
 
 from sgv import ff, paths
 
-COMPOSITIONS = ["Intro", "TitleCard", "StatCard", "QuoteCard", "EndCard", "LowerThird", "ProductScreen", "DualScreen"]
+COMPOSITIONS = ["Intro", "TitleCard", "StatCard", "QuoteCard", "EndCard", "LowerThird", "ProductScreen", "DualScreen",
+                "Run"]  # Run: several graphics joined by TransitionSeries (sgv builds it from a run of motion clips)
 ALPHA = {"LowerThird"}  # rendered with transparency, composited over footage
 
 

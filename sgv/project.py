@@ -14,10 +14,21 @@ CLIP_TYPES = {"video", "image", "title", "motion", "color"}
 REQUIRED_PROPS = {"TitleCard": ["title"], "StatCard": ["label", "value"], "QuoteCard": ["quote", "name"],
                   "EndCard": ["headline"], "LowerThird": ["name"], "Intro": [], "ProductScreen": ["src"],
                   "DualScreen": ["mobileSrc", "webSrc"]}
-TRANSITIONS = {"cut": None, "dissolve": "fade", "dip": None, "wipe-left": "wipeleft", "slide-left": "slideleft",
+TRANSITIONS = {"cut": None, "dissolve": "fade", "dip": None,
+               # a dissolve through a soft gaussian blur (scene change)
+               "blur": "fade",
                # motion transitions: short, with motion blur and an optional whoosh (sfx)
-               "zoom": "zoomin", "push-left": "slideleft", "push-right": "slideright", "push-up": "slideup"}
-MOTION_BLUR = {"zoom", "push-left", "push-right", "push-up"}
+               "zoom": "zoomin", "push-left": "slideleft", "push-right": "slideright", "push-up": "slideup",
+               "slide-scale": None,  # card to card: a push where the outgoing card shrinks to 92%
+               "dome": None}  # Enablement: the incoming scene grows from the dome, a circle hung off the top edge
+MOTION_BLUR = {"zoom", "push-left", "push-right", "push-up", "slide-scale"}  # (dome blurs its own edge)
+# retired names (wipes and slides are off-brand), still accepted so older edits render
+LEGACY_TRANSITIONS = {"wipe-left": "push-left", "slide-left": "push-left"}
+# transitions that join consecutive motion clips inside one Remotion render (TransitionSeries) instead of xfade
+RUN_JOINS = {"dissolve": {"type": "fade"}, "blur": {"type": "blur"}, "zoom": {"type": "zoom-blur"},
+             "push-left": {"type": "blur-slide", "direction": "left"}, "push-right": {"type": "blur-slide", "direction": "right"},
+             "push-up": {"type": "blur-slide", "direction": "up"},
+             "slide-scale": {"type": "blur-slide", "direction": "left", "shrink": 0.92}, "dome": {"type": "dome"}}
 # design-system look of the motion graphics (project-wide in edit.json, or per clip in props)
 LOOKS = {"look": ("platform", "enablement"), "track": ("individual", "business"), "ground": ("dome", "flat", "deep")}
 
@@ -32,6 +43,19 @@ class Project:
             self.edit = json.loads(self.edit_path.read_text())
         except json.JSONDecodeError as e:
             raise SystemExit(f"{self.edit_path}: invalid JSON — {e}")
+        tl = self.edit.get("timeline") if isinstance(self.edit.get("timeline"), list) else []
+        for i, c in enumerate(tl):
+            if not isinstance(c, dict):
+                continue
+            if c.get("transition") in LEGACY_TRANSITIONS:
+                c["transition"] = LEGACY_TRANSITIONS[c["transition"]]
+            if c.get("match") and i:
+                # match cut: a hard cut between two frames of identical geometry, so neither graphic may fade there
+                c["transition"] = "cut"
+                if c.get("type") in ("motion", "title"):
+                    c["props"] = {"enterFade": False, **c.get("props", {})}
+                if tl[i - 1].get("type") in ("motion", "title"):
+                    tl[i - 1]["props"] = {"exitFade": False, **tl[i - 1].get("props", {})}
         self.validate()
 
     # -- basic properties -------------------------------------------------
@@ -110,9 +134,13 @@ class Project:
                 errors.append(f"{where}: {t} clip needs a duration in seconds")
             if t == "video" and "out" in c and float(c["out"]) <= float(c.get("in", 0)):
                 errors.append(f"{where}: out must be greater than in")
+            if c.get("sweep") and t not in ("motion", "title"):
+                errors.append(f"{where}: sweep works on motion clips (the EndCard, or a card with the logo)")
             tr = c.get("transition", "cut")
             if tr not in TRANSITIONS:
                 errors.append(f"{where}: transition must be one of {list(TRANSITIONS)}")
+        if sum(1 for c in tl if isinstance(c, dict) and c.get("sweep")) > 1:
+            errors.append("sweep: the light sweep is used once per video (on the EndCard or the logo)")
         for i, o in enumerate(self.edit.get("overlays", [])):
             if not o.get("composition"):
                 errors.append(f"overlays[{i}]: needs a composition (e.g. LowerThird)")

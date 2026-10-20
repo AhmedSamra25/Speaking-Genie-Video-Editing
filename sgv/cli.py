@@ -172,6 +172,29 @@ def cmd_render(a):
               f"{out.stat().st_size / 1e6:.1f} MB")
 
 
+def cmd_match(a):
+    """Check a match cut: the last frame before clip N, the first frame of clip N, and the two laid over each other.
+    Shared geometry (a ring, a card, a number) should sit still in the overlay; anything that doubles is off."""
+    p = project.find(a.project)
+    i = a.clip
+    tl = p.edit["timeline"]
+    if not 0 < i < len(tl):
+        raise SystemExit(f"clip must be between 1 and {len(tl) - 1}")
+    w, h = (int(x) for x in a.size.split("x")) if a.size else (lambda d: (d["w"], d["h"]))(render._draft_preset(p))
+    aspect = p.aspect if not a.size else ("9:16" if h > w else "16:9" if w > h else "1:1")
+    before = render.build_segment(p, tl[i - 1], w, h, aspect, True)
+    after = render.build_segment(p, tl[i], w, h, aspect, True)
+    out = p.build / "look" / f"match-{i}-{w}x{h}.jpg"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    last = max(0, p.clip_duration(tl[i - 1]) - 1.5 / p.fps)
+    ff.run(["ffmpeg", "-ss", f"{last:.3f}", "-i", before, "-i", after, "-filter_complex",
+            "[0:v]trim=end_frame=1,setpts=PTS-STARTPTS,format=yuv420p,split=2[a1][a2];"
+            "[1:v]trim=end_frame=1,setpts=PTS-STARTPTS,format=yuv420p,split=2[b1][b2];"
+            "[a2][b2]blend=all_mode=average[mix];[a1][b1][mix]hstack=inputs=3[v]",
+            "-map", "[v]", "-frames:v", "1", "-q:v", "3", out])
+    print(f"{out}  (before | after | overlaid)")
+
+
 def cmd_motion(a):
     w, h = (int(x) for x in a.size.split("x"))
     props = motion.stage_assets(json.loads(a.props) if a.props else {}, Path.cwd())
@@ -232,7 +255,7 @@ def cmd_clean(a):
     print(f"Removed {p.root.name}/build")
 
 
-HEAVY = {"render", "motion", "captions", "transcribe", "screen"}  # commands that queue behind sgv.lock
+HEAVY = {"render", "motion", "captions", "transcribe", "screen", "match"}  # commands that queue behind sgv.lock
 
 
 def main(argv=None) -> int:
@@ -348,6 +371,12 @@ def main(argv=None) -> int:
     s.add_argument("--preset", help="comma-separated presets (default: edit.json exports)")
     s.add_argument("--draft", action="store_true")
     s.set_defaults(fn=cmd_render)
+
+    s = sub.add_parser("match", help="check a match cut: last frame before clip N, first of N, and both overlaid")
+    s.add_argument("project")
+    s.add_argument("clip", type=int)
+    s.add_argument("--size", help="WxH (default: the draft size of the project's aspect)")
+    s.set_defaults(fn=cmd_match)
 
     s = sub.add_parser("motion", help="render one branded motion graphic")
     s.add_argument("composition", choices=motion.COMPOSITIONS)

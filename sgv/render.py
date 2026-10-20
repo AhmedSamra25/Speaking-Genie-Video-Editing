@@ -18,7 +18,7 @@ from contextlib import contextmanager
 from pathlib import Path
 
 from sgv import captions, ff, motion, paths, presets, sfx
-from sgv.project import MOTION_BLUR, TRANSITIONS, Project
+from sgv.project import MOTION_BLUR, RUN_JOINS, TRANSITIONS, Project
 
 AUDIO_FMT = "aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo"
 
@@ -153,10 +153,63 @@ def _overlay_spec(project: Project, o: dict, w: int, h: int, draft: bool) -> dic
                 lang=o.get("lang", project.lang), cache_dir=project.build / "cache" / "motion", draft=draft)
 
 
+def _graphic(c: dict) -> bool:
+    return c["type"] in ("motion", "title") and c.get("composition") not in motion.ALPHA
+
+
+def units(project: Project) -> list:
+    """The timeline as render units: lists of clip indices. Consecutive graphics joined by a transition Remotion can
+    draw (RUN_JOINS) form one run, rendered as a single composition with TransitionSeries: no xfade seam and no extra
+    encode between them. Everything else is a unit of one. SGV_NO_RUNS=1 renders every graphic on its own."""
+    tl, out = project.edit["timeline"], []
+    for i, c in enumerate(tl):
+        joins = (out and _graphic(c) and _graphic(tl[out[-1][-1]]) and c.get("transition", "cut") in RUN_JOINS
+                 and not os.environ.get("SGV_NO_RUNS"))
+        if joins:
+            out[-1].append(i)
+        else:
+            out.append([i])
+    return out
+
+
+def unit_clip(project: Project, idx: list, w: int, h: int, aspect: str, draft: bool) -> dict:
+    """The clip that renders a unit: the timeline clip itself, or a `Run` motion clip holding the run's graphics and
+    joins (also used for a single graphic with a light `sweep`). It comes in with the first clip's transition."""
+    tl = project.edit["timeline"]
+    if len(idx) == 1 and not tl[idx[0]].get("sweep"):
+        return tl[idx[0]]
+    fps, clips, joins, frames = project.fps, [], [], 0
+    for k, i in enumerate(idx):
+        _, c = _segment_path(project, tl[i], w, h, aspect, draft)
+        spec = _motion_spec(project, c, w, h, draft)
+        item = {"composition": spec["composition"], "props": {**spec["props"], "lang": spec["lang"]},
+                "duration": spec["duration"]}
+        if c.get("sweep"):
+            item["sweep"] = {} if c["sweep"] is True else c["sweep"]
+        if k:
+            # the same clamp as assemble(): a transition never takes more than half of either clip
+            td = min(project.transition_duration(c), spec["duration"] / 2, clips[-1]["duration"] / 2)
+            join = {**RUN_JOINS[c["transition"]], "duration": td}
+            joins.append(join)
+            # the join carries the cards themselves: the outgoing card keeps its content to the last frame, and one
+            # that is pushed or zoomed in arrives already drawn (a fade or dome still lets it animate in)
+            clips[-1]["props"] = {"exitFade": False, **clips[-1]["props"]}
+            if join["type"] in ("blur-slide", "zoom-blur"):
+                item["props"] = {"enterFade": False, **item["props"]}
+            frames -= round(td * fps)
+        frames += round(spec["duration"] * fps)
+        clips.append(item)
+    first = tl[idx[0]]
+    return {"type": "motion", "composition": "Run", "duration": frames / fps, "props": {"clips": clips, "joins": joins},
+            "label": " + ".join(c["composition"] for c in clips),
+            **{k: first[k] for k in ("transition", "transitionDuration") if k in first}}
+
+
 def prerender_motion(project: Project, w: int, h: int, aspect: str, draft: bool) -> None:
     """Render every graphic this aspect still needs in one batch (one bundle, one browser), before the segments."""
     specs = []
-    for c in project.edit["timeline"]:
+    for idx in units(project):
+        c = unit_clip(project, idx, w, h, aspect, draft)
         if c["type"] in ("motion", "title"):
             out, clip = _segment_path(project, c, w, h, aspect, draft)
             if not out.exists():
@@ -268,8 +321,48 @@ def _zoom_through() -> str:
             .replace(",", "\\,"))
 
 
-def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
-    tl = project.edit["timeline"]
+def _yuv(hex_color: str) -> tuple:
+    """A brand colour as limited-range BT.709 Y, U, V (what the assembled picture is in)."""
+    r, g, b = (int(hex_color.lstrip("#")[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    y = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    return round(16 + 219 * y), round(128 + 224 * (b - y) / 1.8556), round(128 + 224 * (r - y) / 1.5748)
+
+
+def _slide_scale(canvas: str) -> str:
+    """xfade custom expression: a push to the left in which the outgoing card shrinks to 92% about its own centre as
+    it leaves, eased (smoothstep). The sliver it uncovers is the brand canvas. P runs 1 → 0 across the transition."""
+    m = "(1-P*P*(3-2*P))"  # eased progress, 0 → 1
+    k = f"(1-0.08*{m})"
+    ax, ay = f"((X-W/2+W*{m})/{k}+W/2)", f"((Y-H/2)/{k}+H/2)"
+    yuv = (*_yuv(canvas), 255)
+
+    def plane(n):
+        return (f"if(gte(X,W*(1-{m})),b{n}(X-W*(1-{m}),Y),"
+                f"if(between({ax},0,W-1)*between({ay},0,H-1),a{n}({ax},{ay}),{yuv[n]}))")
+
+    return (f"if(eq(PLANE,0),{plane(0)},if(eq(PLANE,1),{plane(1)},if(eq(PLANE,2),{plane(2)},{plane(3)})))"
+            .replace(",", "\\,"))
+
+
+def _dome_mask(w: int, h: int, td: float, fps: int) -> str:
+    """geq expression (grey, 0–255) for the Enablement dome reveal: the incoming scene grows inside a circle hung off
+    the top edge, centred, the same circle as the dome on the purple ground (tokens enablement.dome), so its arc
+    passes the dome's own arc on the way to covering the frame. Ease-out (cubic) over `td` seconds. Motion blur is
+    built in rather than made from sub-frames: the edge is a ramp as wide as the distance it travels in one frame
+    (a 360° shutter on a moving edge), at least 1.5 px at 1080p. Constants are baked in, so the mask stays cheap."""
+    dome = paths.tokens()["enablement"]["dome"]
+    o = "portrait" if h >= w else "landscape"
+    cy = h * dome["depth"][o] - w * dome["diameter"][o] / 2
+    r0, r1 = max(0.0, -cy), math.hypot(w / 2, h - cy) + 2
+    span, frames, soft = r1 - r0, td * fps, 1.5 * min(w, h) / 1080
+    # st(0) = time left, 1 → 0; radius = r0 + span·(1 − left³); edge = speed·one frame
+    return (f"st(0,1-min(T/{td:.4f},1));clip(({r0:.1f}+{span:.1f}*(1-ld(0)*ld(0)*ld(0))-hypot(X-{w / 2},Y-{cy:.1f}))"
+            f"/max({soft:.2f},{span:.1f}*3*ld(0)*ld(0)/{frames:.1f})+0.5,0,1)*255").replace(",", "\\,")
+
+
+def assemble(project: Project, segments: list, out: Path, draft: bool, clips: list | None = None) -> Path:
+    """Join the segments. `clips` are the clips the segments were made from (render units); default the timeline."""
+    tl = clips or project.edit["timeline"]
     if len(segments) == 1:
         return segments[0]
     inputs = []
@@ -297,7 +390,28 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
             td = project.transition_duration(c)
             td = min(td, d / 2, acc / 2)
             name = dip if tr == "dip" else TRANSITIONS[tr]
-            if tr in MOTION_BLUR:
+            if tr in ("blur", "dome"):
+                # blur: a dissolve through a soft gaussian blur, 8 px at 1080 at the midpoint, sharp at both ends.
+                # dome: the Enablement dome reveal (see _dome_mask). The transition window is cut out, processed and
+                # spliced back, like the motion-blurred transitions below.
+                a0, sigma = acc - td, 8 * min(vw, vh) / 1080
+                parts.append(f"{v}split=2[pre{i}][win{i}]")
+                parts.append(f"[s{i}]split=2[inw{i}][post{i}]")
+                parts.append(f"[pre{i}]trim=end={a0:.3f},setpts=PTS-STARTPTS[pa{i}]")
+                parts.append(f"[win{i}]trim=start={a0:.3f},setpts=PTS-STARTPTS[wa{i}]")
+                parts.append(f"[inw{i}]trim=end={td:.3f},setpts=PTS-STARTPTS[wb{i}]")
+                if tr == "blur":
+                    parts.append(f"[wa{i}][wb{i}]xfade=transition=fade:duration={td:.3f}:offset=0,split=2[ws{i}][wg{i}]")
+                    parts.append(f"[wg{i}]gblur=sigma={sigma:.2f}[wbl{i}]")
+                    parts.append(f"[ws{i}][wbl{i}]blend=all_expr='A+(B-A)*sin(PI*min(T/{td:.3f}\\,1))',settb=AVTB[pb{i}]")
+                else:  # dome: the incoming window, keyed by the growing circle, over the outgoing one
+                    parts.append(f"color=black:s={vw}x{vh}:r={fps}:d={td:.3f},format=gray,"
+                                 f"geq=lum='{_dome_mask(vw, vh, td, fps)}'[dm{i}]")
+                    parts.append(f"[wb{i}][dm{i}]alphamerge[wbm{i}]")
+                    parts.append(f"[wa{i}][wbm{i}]overlay=0:0:format=auto,format=yuv420p,settb=AVTB[pb{i}]")
+                parts.append(f"[post{i}]trim=start={td:.3f},setpts=PTS-STARTPTS[pc{i}]")
+                parts.append(f"[pa{i}][pb{i}][pc{i}]concat=n=3:v=1:a=0,settb=AVTB{nv}")
+            elif tr in MOTION_BLUR:
                 # Real motion blur: run the transition window at 16x the frame rate (8x in drafts) and average each group
                 # frames back down (a 360° shutter), then soften what's left of the sub-frame steps along the direction
                 # of travel, so a push smears into a streak instead of showing combs of copies. The window is cut out
@@ -311,10 +425,16 @@ def assemble(project: Project, segments: list, out: Path, draft: bool) -> Path:
                 up = f",scale={vw}:{vh}:flags=bicubic" if ds > 1 else ""
                 step_x, step_y = vw / ds / (td * sub), vh / ds / (td * sub)  # px the picture moves per sub-frame
                 streak = {"push-left": f",gblur=sigma={step_x * 0.7:.2f}:sigmaV=0.01",
+                          "slide-scale": f",gblur=sigma={step_x * 0.7:.2f}:sigmaV=0.01",
                           "push-right": f",gblur=sigma={step_x * 0.7:.2f}:sigmaV=0.01",
                           "push-up": f",gblur=sigma=0.01:sigmaV={step_y * 0.7:.2f}"}.get(tr, "")
                 if tr == "zoom":  # a gentle zoom-through instead of xfade's zoomin, which dives into the frame centre
                     name = f"custom:expr='{_zoom_through()}'"
+                elif tr == "slide-scale":
+                    canvas = paths.tokens()["themes"][project.theme]["canvas"]
+                    if project.motion_defaults().get("look") == "enablement":
+                        canvas = paths.tokens()["enablement"]["grounds"]["flat"]
+                    name = f"custom:expr='{_slide_scale(canvas)}'"
                 parts.append(f"{v}split=2[pre{i}][win{i}]")
                 parts.append(f"[s{i}]split=2[inw{i}][post{i}]")
                 parts.append(f"[pre{i}]trim=end={a0:.3f},setpts=PTS-STARTPTS[pa{i}]")
@@ -510,10 +630,12 @@ def render(project: Project, preset_names: list | None = None, draft: bool = Fal
         with _stage("motion"):
             prerender_motion(project, w, h, aspect, draft)
         with _stage("segments"):
-            segs = [build_segment(project, c, w, h, aspect, draft) for c in project.edit["timeline"]]
+            clips = [unit_clip(project, idx, w, h, aspect, draft) for idx in units(project)]
+            segs = [build_segment(project, c, w, h, aspect, draft) for c in clips]
         tag = aspect.replace(":", "x")
         with _stage("assemble"):
-            assembled = assemble(project, segs, project.build / f"assembled-{tag}{'-draft' if draft else ''}.mov", draft)
+            assembled = assemble(project, segs, project.build / f"assembled-{tag}{'-draft' if draft else ''}.mov", draft,
+                                 clips)
         for p in group:
             # the mixed audio is identical for every aspect, so each loudness target is measured once
             if not draft and p["lufs"] not in measured:

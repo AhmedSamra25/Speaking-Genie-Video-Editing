@@ -7,6 +7,7 @@ import { Intro } from "./compositions/Intro";
 import { LowerThird } from "./compositions/LowerThird";
 import { ProductScreen } from "./compositions/ProductScreen";
 import { QuoteCard } from "./compositions/QuoteCard";
+import { Run } from "./compositions/Run";
 import { StatCard } from "./compositions/StatCard";
 import { TitleCard } from "./compositions/TitleCard";
 
@@ -46,5 +47,6 @@ export const Root: React.FC = () => (
     {comp("LowerThird", LowerThird, { name: "Mona Adel" })}
     {comp("ProductScreen", ProductScreen, { src: "" })}
     {comp("DualScreen", DualScreen, { mobileSrc: "", webSrc: "" })}
+    {comp("Run", Run, { clips: [], joins: [] })}
   </>
 );
