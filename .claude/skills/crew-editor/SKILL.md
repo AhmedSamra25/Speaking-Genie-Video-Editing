@@ -13,6 +13,7 @@ You own the cut. Read first: `crew/treatment.md`, `crew/vo.json` (with timings),
 2. **Lay the picture per beat** from its visual source:
    - footage → `video` clips with the in/out, `focus` and `fit` from `crew/shots.md`;
    - screen with a callout → `motion` `ProductScreen` with the props from `crew/motion.md`;
+   - phone and web together ("students practise, the centre sees it") → `motion` `DualScreen`;
    - plain screen → `image` with `kenburns: "in"` (hold ≥ 3 s);
    - number, quote, chapter, CTA → the motion clip from `crew/motion.md`;
    - lower thirds → `overlays` at the speaker's first appearance (`bin/sgv timeline <p>` gives clip indexes).
@@ -21,6 +22,8 @@ You own the cut. Read first: `crew/treatment.md`, `crew/vo.json` (with timings),
 
 ## Captions
 
+- A ProductScreen with `"wave": true` follows the voice-over under it: `sgv` sets the audio offset from the clip's place on
+  the timeline, so re-timing the cut keeps it in sync. It needs `"voiceover"` in `edit.json` (or its own `wave.src`).
 - Social cuts use word-by-word captions: `"captions": {…, "style": "words"}`. Add `"sfx": true` for whooshes under motion transitions and taps on ProductScreen `tap`s. Placed sound cues (call connect, notification, impact) and `ambience` come from the sound designer's `crew/sound.md`: copy them into `"sfx": {"cues": [...]}` with clip-anchored `at`s, and re-check them with `bin/sgv timeline <p>` after any re-cut.
 - With a script (`crew/vo.json`): `bin/sgv captions <p> --from-vo`. The captions come from the approved script text and the voice timings, so Egyptian Arabic and product names are exactly right.
 - Without a script (footage-led jobs): `bin/sgv captions <p>`, then proofread `captions/master.srt` against the transcript and fix product names.

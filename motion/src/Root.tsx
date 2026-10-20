@@ -1,6 +1,7 @@
 import React from "react";
 import { CalculateMetadataFunction, Composition } from "remotion";
 import { BaseProps, baseDefaults } from "./brand";
+import { DualScreen } from "./compositions/DualScreen";
 import { EndCard } from "./compositions/EndCard";
 import { Intro } from "./compositions/Intro";
 import { LowerThird } from "./compositions/LowerThird";
@@ -44,5 +45,6 @@ export const Root: React.FC = () => (
     {comp("EndCard", EndCard, { headline: "Start a free pilot" })}
     {comp("LowerThird", LowerThird, { name: "Mona Adel" })}
     {comp("ProductScreen", ProductScreen, { src: "" })}
+    {comp("DualScreen", DualScreen, { mobileSrc: "", webSrc: "" })}
   </>
 );

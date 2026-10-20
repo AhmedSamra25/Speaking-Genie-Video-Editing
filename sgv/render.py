@@ -119,14 +119,17 @@ def _segment_path(project: Project, clip: dict, w: int, h: int, aspect: str, dra
     cache = project.build / "cache" / "segments"
     cache.mkdir(parents=True, exist_ok=True)
     src_stamp = None
+    clip0 = clip
     if clip["type"] in ("video", "image"):
         sp = project.path(clip["src"])
         src_stamp = [str(sp), sp.stat().st_mtime, sp.stat().st_size]
     if clip["type"] in ("motion", "title"):
         src_stamp = motion._source_hash()
         clip = {**clip, "props": {**project.motion_defaults(), **clip.get("props", {})}}
-        if clip.get("props", {}).get("src"):
-            clip = {**clip, "props": motion.stage_assets(clip["props"], project.root)}
+        # the clip's place on the timeline lets a `wave` follow the voice-over heard under it
+        i = next((n for n, c in enumerate(project.edit["timeline"]) if c is clip0), None)
+        start = project.schedule()[i]["start"] if i is not None and clip["props"].get("wave") else None
+        clip = {**clip, "props": motion.stage_assets(clip["props"], project.root, project.edit.get("voiceover"), start)}
     key = _hash(clip, w, h, project.fps, project.theme, project.lang, draft, aspect, _fit_mode(project, clip, aspect),
                 src_stamp, ff.hw(), 3)
     return cache / f"{key}.mov", clip
@@ -144,7 +147,8 @@ def _motion_spec(project: Project, clip: dict, w: int, h: int, draft: bool) -> d
 
 def _overlay_spec(project: Project, o: dict, w: int, h: int, draft: bool) -> dict:
     o_props = {**project.motion_defaults(), **o.get("props", {})}
-    return dict(composition=o["composition"], props=motion.stage_assets(o_props, project.root), width=w, height=h,
+    return dict(composition=o["composition"], props=motion.stage_assets(o_props, project.root, project.edit.get("voiceover")),
+                width=w, height=h,
                 fps=project.fps, duration=float(o.get("duration", 4)), theme=o.get("theme", project.theme),
                 lang=o.get("lang", project.lang), cache_dir=project.build / "cache" / "motion", draft=draft)
 

@@ -10,30 +10,56 @@ from pathlib import Path
 
 from sgv import ff, paths
 
-COMPOSITIONS = ["Intro", "TitleCard", "StatCard", "QuoteCard", "EndCard", "LowerThird", "ProductScreen"]
+COMPOSITIONS = ["Intro", "TitleCard", "StatCard", "QuoteCard", "EndCard", "LowerThird", "ProductScreen", "DualScreen"]
 ALPHA = {"LowerThird"}  # rendered with transparency, composited over footage
 
 
-def stage_assets(props: dict, base: Path) -> dict:
-    """Copy an image prop (`src`, relative to `base`) into motion/public/stage/ so staticFile() can load it.
-    The staged name is the file's content hash, so a recaptured screen invalidates cached renders."""
-    src = props.get("src")
-    if not src or str(src).startswith("stage/"):
-        return props
-    f = Path(src) if Path(src).is_absolute() else base / src
+# image props a composition loads with staticFile(), and the prop holding each one's capture scale (default)
+IMAGES = {"src": ("scale", 2), "mobileSrc": ("mobileScale", 3), "webSrc": ("webScale", 2)}
+
+
+def _stage(f: Path) -> str:
+    """Copy a file into motion/public/stage/ under its content hash (a re-captured screen invalidates caches)."""
     if not f.exists():
-        raise SystemExit(f"Image not found: {f}")
+        raise SystemExit(f"File not found: {f}")
     data = f.read_bytes()
     name = hashlib.sha256(data).hexdigest()[:16] + f.suffix.lower()
     dest = paths.MOTION / "public" / "stage" / name
     if not dest.exists():
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(data)
-    out = {**props, "src": f"stage/{name}"}
-    if "srcW" not in props:  # the screen's size in CSS pixels: captures are taken at `scale` device pixels per CSS pixel
-        v = ff.probe(str(f))["video"] or {}
-        scale = float(props.get("scale", 2))
-        out.update(srcW=round(v.get("width", 2880) / scale), srcH=round(v.get("height", 1800) / scale))
+    return f"stage/{name}"
+
+
+def stage_assets(props: dict, base: Path, voiceover: dict | None = None, start: float | None = None) -> dict:
+    """Copy the image props (`src`, and DualScreen's `mobileSrc`/`webSrc`, relative to `base`) into motion/public/stage/
+    so staticFile() can load them, and fill in each one's size in CSS pixels (`srcW`/`srcH`, `mobileSrcW`/…).
+    A ProductScreen `wave` gets its audio staged too: its own `src`, else the edit's voice-over; with the clip's
+    timeline `start`, `from` is set so the bars follow the words heard at that moment."""
+    out = dict(props)
+    for key, (scale_key, default_scale) in IMAGES.items():
+        src = props.get(key)
+        if not src or str(src).startswith("stage/"):
+            continue
+        f = Path(src) if Path(src).is_absolute() else base / src
+        if not f.exists():
+            raise SystemExit(f"Image not found: {f}")
+        out[key] = _stage(f)
+        if f"{key}W" not in props:  # captures are taken at `scale` device pixels per CSS pixel
+            v = ff.probe(str(f))["video"] or {}
+            scale = float(props.get(scale_key, default_scale))
+            out.update({f"{key}W": round(v.get("width", 2880) / scale), f"{key}H": round(v.get("height", 1800) / scale)})
+    wave = props.get("wave")
+    if wave:
+        wave = {} if wave is True else dict(wave)
+        src = wave.get("src") or (voiceover or {}).get("src")
+        if not src:
+            raise SystemExit("wave needs audio: set wave.src, or a voiceover in edit.json")
+        if not str(src).startswith("stage/"):
+            wave["src"] = _stage(Path(src) if Path(src).is_absolute() else base / src)
+        if "from" not in wave and start is not None:
+            wave["from"] = round(max(0.0, start - float((voiceover or {}).get("at", 0))), 3)
+        out["wave"] = wave
     return out
 
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { BaseProps, Lang, Track, brand, fonts, isPortrait } from "../brand";
+import { BaseProps, Lang, Track, brand, fonts, isEnablement, isPortrait, scaleOf } from "../brand";
+import { parallax } from "../anim";
 
 /** The Enablement Design System (marketing) look: purple grounds, one dome, one capsule, one track accent. */
 export const en = brand.enablement;
@@ -26,11 +27,26 @@ export const kicker = (lang: Lang, s: number, size: number, color: string): Reac
   color,
 });
 
+/** 2.5D depth for a layer: the Enablement look slides its layers at different depths (dome far, screen and
+ * headline in the middle, capsule nearest), so a still card reads as a slow camera move. `parallax` 0 turns it
+ * off; the Platform look is flat unless `parallax` is set. Returns depth (0–1) → CSS transform. */
+export const useDepth = (p: BaseProps) => {
+  const frame = useCurrentFrame();
+  const { durationInFrames, fps } = useVideoConfig();
+  const amount = p.parallax ?? (isEnablement(p) ? 1 : 0);
+  if (!amount) return (_depth: number) => undefined;
+  return parallax(frame, durationInFrames, fps, scaleOf(p), amount, p.lang === "ar");
+};
+
+/** Depths of the Enablement layers. */
+export const DEPTH = { dome: 0.25, screen: 0.55, text: 0.7, capsule: 1 };
+
 /** The dome: a white circle at 8% hung off the top edge, centred on the lockup. It drifts a few pixels so no
- * frame reads as a freeze. One per frame, never tinted, never bordered. */
+ * frame reads as a freeze, and sits at the far depth of the parallax. One per frame, never tinted, never bordered. */
 export const Dome: React.FC<{ p: BaseProps }> = ({ p }) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
+  const depth = useDepth(p)(DEPTH.dome);
   const s = Math.min(p.width, p.height) / 1080;
   const o = isPortrait(p) || p.height >= p.width ? "portrait" : "landscape";
   const d = p.width * en.dome.diameter[o];
@@ -47,7 +63,7 @@ export const Dome: React.FC<{ p: BaseProps }> = ({ p }) => {
         borderRadius: "50%",
         background: en.dome.color,
         opacity: en.dome.opacity,
-        transform: `translate(${t * en.dome.drift * s}px, ${-t * en.dome.drift * 0.7 * s}px)`,
+        transform: `translate(${t * en.dome.drift * s}px, ${-t * en.dome.drift * 0.7 * s}px) ${depth ?? ""}`,
       }}
     />
   );
