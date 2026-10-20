@@ -131,7 +131,16 @@ shows free memory, a running VM and the queue.
 
 Motion-blurred `zoom` and `push` transitions, a living camera on every product screen (drift, travel between
 `steps`, a ring that draws itself on, a finger `tap`), word-by-word captions, and generated sound effects
-(`"sfx": true`). The rules for using them are in `.claude/skills/video-crew/EDITING.md`.
+(`"sfx": true`), and a brand sound library. The rules for using them are in `.claude/skills/video-crew/EDITING.md`.
+
+### Brand sound
+
+`bin/sgv sounds --list` shows the brand sounds: ringback (Egyptian 425 Hz), incoming ring, call connect and hang-up,
+mic on, message sent, notification, success, streak, riser, impact, whoosh and tap. They are synthesised in
+`sgv/sfx.py`, so they are owned outright (the only safe source for a future sonic logo). `bin/sgv sounds --try <name>
+--spectrum` renders one to `build/sounds/` and measures it. Place them with `"sfx": {"cues": [...]}` and add a room tone
+with `"ambience"`. Recorded effects, ambience and music beds go in `brand/sound/` with an entry in
+`brand/sound/LICENSES.json` (CC0, Pixabay or Mixkit Free License only); music beds stay out of git.
 
 ## Design system
 

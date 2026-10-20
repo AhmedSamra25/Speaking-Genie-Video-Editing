@@ -1,0 +1,14 @@
+{
+  "about": "Ledger for every recorded sound and music bed in brand/sound/. A file not listed here must not be used. `file` is relative to brand/sound/. Allowed sources: CC0 (Kenney Interface Sounds, BigSoundBank), the Pixabay Content License and the Mixkit Free License (not items marked Restricted). Pixabay items can never be part of a sonic logo or trademark. Keep the Pixabay licence certificate (PDF) for each music bed, for YouTube Content ID claims. Synthesised sounds live in sgv/sfx.py, are owned outright and need no entry. SFX files in sfx/ and ambience/ are committed; music/ stays git-ignored (this ledger is the record).",
+  "fields": {
+    "file": "path under brand/sound/",
+    "source": "page URL the file came from",
+    "author": "creator, when the source names one",
+    "licence": "CC0 | Pixabay Content License | Mixkit Free License",
+    "date": "download date, YYYY-MM-DD",
+    "certificate": "Pixabay licence certificate file or URL (music), else omit",
+    "tags": "mood, tempo (BPM) and use, e.g. calm corporate, 92 BPM",
+    "notes": "edits made, what it is for"
+  },
+  "files": []
+}

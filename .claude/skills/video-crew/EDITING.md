@@ -62,4 +62,6 @@ The design system and track (which decide the copy, accent, close and the look a
 
 - `"sfx": true` adds generated, licence-free sound: a soft whoosh under each motion transition and a light tap on each
   ProductScreen `tap`. `{"volume": 0.4}` to tone it down. Keep it subtle; the voice leads.
+- Brand sound cues (`"sfx": {"cues": [...]}`: ringback, call-connect, notification, impact and more; `bin/sgv sounds`)
+  mark real events on screen, about one per beat at most. An `ambience` bed ducks like music. See the `crew-sound` skill.
 - Music (the user's track, or a bed composed for the project) ducks under the voice automatically.

@@ -26,3 +26,8 @@ __pycache__/
 .DS_Store
 .venv/
 .claude/settings.local.json
+
+# brand sound: small SFX and ambience files are committed with brand/sound/LICENSES.json; music beds stay local
+!brand/sound/sfx/**
+!brand/sound/ambience/**
+brand/sound/music/

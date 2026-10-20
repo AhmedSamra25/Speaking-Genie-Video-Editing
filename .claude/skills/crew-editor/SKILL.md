@@ -21,7 +21,7 @@ You own the cut. Read first: `crew/treatment.md`, `crew/vo.json` (with timings),
 
 ## Captions
 
-- Social cuts use word-by-word captions: `"captions": {…, "style": "words"}`. Add `"sfx": true` for whooshes under motion transitions and taps on ProductScreen `tap`s.
+- Social cuts use word-by-word captions: `"captions": {…, "style": "words"}`. Add `"sfx": true` for whooshes under motion transitions and taps on ProductScreen `tap`s. Placed sound cues (call connect, notification, impact) and `ambience` come from the sound designer's `crew/sound.md`: copy them into `"sfx": {"cues": [...]}` with clip-anchored `at`s, and re-check them with `bin/sgv timeline <p>` after any re-cut.
 - With a script (`crew/vo.json`): `bin/sgv captions <p> --from-vo`. The captions come from the approved script text and the voice timings, so Egyptian Arabic and product names are exactly right.
 - Without a script (footage-led jobs): `bin/sgv captions <p>`, then proofread `captions/master.srt` against the transcript and fix product names.
 - Bilingual: each language's cut gets its own project or `exports` set and its own captions file. Never mix two languages in one caption track.

@@ -37,6 +37,7 @@ Design System.
 | `bin/sgv voice <p> [--engine say\|elevenlabs\|files] [--take f]` | Voice-over lines from `crew/vo.json` → `audio/vo.wav`, timed |
 | `bin/sgv voices [--lang ar,en] [--try "text"]` | Lists the installed premium/enhanced system voices (gender, usable by `say`); `--try` renders a sample per voice |
 | `bin/sgv screen <p> <card> [--lang ar] [--theme dark] [--flow k] [--status speaking]` · `--list [--kit mobile\|web]` | Captures a real product screen from the mobile app or web platform kit |
+| `bin/sgv sounds [--try <name> --spectrum]` | Lists the brand sounds and library files; `--try` renders one to `build/sounds/` and measures it |
 | `bin/sgv timeline <p>` | Shows each clip's start and end on the assembled timeline (use it to place overlays) |
 | `bin/sgv render <p> [--draft] [--preset a,b]` | Renders the exports |
 | `bin/sgv motion <Comp> --props '{…}' [--size 1080x1920] [--still T]` | Renders a single motion graphic, or with `--still` one frame as a PNG (the quick check) |
@@ -82,7 +83,10 @@ Add `-v` before the command (`bin/sgv -v render …`) to print every ffmpeg call
   "voiceover": { "src": "audio/vo.wav", "at": 0, "volume": 1 },
   "music": { "src": "audio/bed.mp3", "volume": 0.5, "duckUnderVoice": true, "fadeIn": 1, "fadeOut": 3 },
   "captions": { "src": "captions/master.srt", "burn": true, "offset": 0, "style": "words" },  // style words = word-by-word highlight
-  "sfx": true   // generated whooshes under motion transitions and taps on ProductScreen taps
+  "ambience": { "src": "brand/sound/ambience/<file>.wav", "volume": 0.25, "duckUnderVoice": true },  // looped room tone
+  "sfx": true   // generated whooshes under motion transitions and taps on ProductScreen taps, or with placed cues:
+  // "sfx": { "auto": true, "volume": 0.5, "cues": [ { "sound": "call-connect", "at": { "clip": 3, "offset": 0.2 }, "volume": 0.6 } ] }
+  //   sound = a brand sound (`sgv sounds --list`) or a brand/sound/ file; at = where it lands; duration repeats rings
 }
 ```
 
