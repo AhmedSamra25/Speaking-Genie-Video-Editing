@@ -1,6 +1,6 @@
 # Plan: lighter renders, modern camera, transitions, motion and brand sound
 
-Status: approved 20 Oct 2026. Phases 1–5 done and merged (results and notes below); phase 6 (crew docs pass and showcase reel) to do. Rack focus, speed ramp and Lottie from phases 3 and 5 are still open.
+Status: approved 20 Oct 2026. Phases 1–6 done (results and notes below). Rack focus and speed ramp added in phase 6; Lottie stays out until a beat needs a moving icon.
 
 Decisions (user, 20 Oct 2026): the dome reveal and capsule wipe are allowed as brand devices; small SFX files are
 committed together with their licence ledger; the Remotion company licence is in place.
@@ -123,8 +123,7 @@ Not adopted: orbit and dolly zoom (dramatic, 3D, heavy).
 Done (20 Oct 2026): ProductScreen `intoDevice` out|in (with `deviceAt`, `deviceDuration`, and `device` for the bare phone,
 geometry from the mobile kit's PhoneFrame), `tilt` (≤10°, settles to a third), `steps` with `{x, y, zoom, travel}`,
 `drift` as push plus a `@remotion/noise` wander, the `DualScreen` composition, and parallax depth in the Enablement look
-(dome 0.25, screen 0.55, text 0.7, capsule 1; `parallax` prop). Not done: rack focus and speed ramp (ffmpeg footage props
-in `sgv/render.py`, which the transitions stream owns).
+(dome 0.25, screen 0.55, text 0.7, capsule 1; `parallax` prop). Rack focus and speed ramp were done in phase 6 (below).
 
 ## Phase 4: transitions
 
@@ -156,6 +155,45 @@ the clip's timeline position) and `cursor`. Lottie not added: no beat needs a mo
 Update `EDITING.md`, the `crew-*` skills and `CLAUDE.md` with when to use each new move, transition and sound. Then build a
 45 s **showcase reel** using every new capability in both looks and both languages, and run it through QA. It doubles as the
 before-and-after render benchmark.
+
+### Phase 6 results (20 Oct 2026)
+
+**Footage moves** (`sgv/render.py`, `sgv/project.py`):
+- `focusPull` on video clips: `"in"`, `"out"` or `{from, to, at, duration}`, a gaussian blur of at most 8 px (at 1080p,
+  scaled to the frame), eased in and out and set every frame by `sendcmd`; the blur is enabled only where it is above
+  zero. Checked on a scratch project: blur measure 15 → 6 across the 0.8 s pull, sharp after it.
+- `ramp` on video clips: `[{at, speed, ease?}]` in source seconds after `in`; each change is eased over 0.4 s as 8
+  constant-speed sections, mapped with one piecewise `setpts`; speeds 0.25–4×; the clip's sound is dropped and its
+  timeline length follows the ramp. Checked against the source: frames land on the expected source times (within one
+  output frame in a 2.5× section). Montage only; never a talking head. Scratch project deleted.
+
+**Crew docs pass:** `EDITING.md` is the one place for when and how often: an effects budget and four tables (camera
+moves, transitions, motion devices, sounds). `crew-editor`, `crew-motion` and `crew-sound` point to it instead of
+repeating it; `crew-camera` gets the footage moves; `crew-qa` checks the budget, gamey sounds and `LICENSES.json`, and no
+longer forbids the approved zoom and push transitions or assumes the Platform fonts in the Enablement look. `CLAUDE.md`,
+`README.md` and `BRAND.md` (dome and capsule as the only shaped reveals) agree with it.
+
+**Showcase reel** (`projects/showcase-reel`, Arabic 9:16, 45.2 s; `projects/showcase-reel-en`, English 16:9, 43.9 s):
+Enablement look, business track, real screens from both kits, scratch `say` voice as a timing placeholder. It uses rack
+focus, screen-to-device zoom, tilt float, step travel with a cursor click, a tap, DualScreen, voice bars, parallax,
+the dome, zoom, push, slide-scale, blur and dip, three TransitionSeries runs, line-mask titles, marker, capsule wipe,
+Arabic-Indic digits, the light sweep, four brand cues plus automatic whooshes and a licensed bed. Not used: the speed
+ramp (the only footage is a talking head) and a match cut (no shared geometry without forcing it). QA round 1 (`projects/showcase-reel/crew/qa-1.md`) said "ship after fixes" with 11 small notes (voice overlap at the
+hook, a call sound without its pair, transitions closer than 6 s, label holds and repeats, the lower third, one colloquial
+word, a learner-track line in the business cut, two callouts); all applied and checked on frames (see its NOTES.md).
+Finals: −14.14 and −14.15 LUFS, TP −1.50 dBTP. Open: the user confirms the co-founder's name spelling and title, and the
+scratch voice is replaced before any release.
+
+**After-benchmark** (same Mac, queue idle, no VM; peak = summed RSS of the render's process tree, sampled every 0.25 s):
+
+| | Before phase 1 (`group-report-reel`, 30 s, 8 graphics) | After (`showcase-reel` first cut, 45.7 s, 10 clips: 1 footage, 3 runs, 2 graphics, 1 overlay) |
+| --- | --- | --- |
+| Draft, cold project cache | 78 s, peak 1.25 GB | **45.6 s**, peak 1.20 GB |
+| Final 1080×1920 | 159 s, peak 1.1 GB | **69.7 s**, peak 1.28 GB |
+| Final 1920×1080 (English cut) | — | 73.7 s, peak 1.02 GB |
+
+A 50% longer video with more graphics and heavier transitions renders in about 0.6× (draft) and 0.45× (final) of the
+old time, with peak memory about the same and well under the 3 GB target.
 
 ## Order and parallel work
 

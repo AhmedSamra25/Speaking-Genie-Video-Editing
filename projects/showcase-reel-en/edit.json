@@ -1,0 +1,304 @@
+{
+  "title": "Speaking Genie · Showcase",
+  "aspect": "16:9",
+  "fps": 30,
+  "theme": "dark",
+  "lang": "en",
+  "look": "enablement",
+  "track": "business",
+  "fit": "fill",
+  "transitionDuration": 0.5,
+  "exports": [
+    "youtube-1080p"
+  ],
+  "timeline": [
+    {
+      "type": "video",
+      "label": "B1 Samra hook, rack focus out into the dome",
+      "src": "footage/DJI_20260831150848_0011_D.MP4",
+      "in": 3.18,
+      "out": 6.0,
+      "focus": [
+        0.52,
+        0.38
+      ],
+      "fit": "fill",
+      "grade": "lift",
+      "focusPull": {
+        "from": 0,
+        "to": 8,
+        "at": 2.0,
+        "duration": 0.82
+      }
+    },
+    {
+      "type": "motion",
+      "composition": "TitleCard",
+      "label": "B2 confidence gap",
+      "props": {
+        "overline": "Speaking Genie",
+        "title": "Proficiency isn't the problem. Confidence is.",
+        "highlight": "Confidence",
+        "exitFade": false
+      },
+      "transition": "dome",
+      "transitionDuration": 0.6,
+      "duration": 4.501
+    },
+    {
+      "type": "motion",
+      "composition": "ProductScreen",
+      "label": "B3 the AI call: screen-to-device zoom, voice bars",
+      "props": {
+        "src": "assets/screens/17-call-speaking.png",
+        "scale": 3,
+        "intoDevice": "out",
+        "deviceAt": 0.3,
+        "wave": true,
+        "drift": 0.03,
+        "label": "Voice call with AI agents",
+        "callout": {
+          "x": 135,
+          "y": 293,
+          "w": 160,
+          "h": 236
+        },
+        "ringAt": 40,
+        "enterFade": false,
+        "exitFade": false
+      },
+      "duration": 6.123
+    },
+    {
+      "type": "motion",
+      "composition": "ProductScreen",
+      "label": "B3a curriculum call tasks: tilt float, tap",
+      "props": {
+        "src": "assets/screens/06-lab-tasks.png",
+        "scale": 3,
+        "tilt": 7,
+        "drift": 0.03,
+        "callout": {
+          "x": 37,
+          "y": 300,
+          "w": 356,
+          "h": 211
+        },
+        "label": "Goal-oriented curriculum call tasks",
+        "startZoom": 0.8,
+        "pushFrames": 14,
+        "tap": {
+          "x": 260,
+          "y": 474,
+          "at": 2.2
+        },
+        "enterFade": false,
+        "exitFade": false
+      },
+      "duration": 4.3
+    },
+    {
+      "type": "motion",
+      "composition": "ProductScreen",
+      "label": "B4 post-session feedback (zoom in: deeper into the same call)",
+      "props": {
+        "src": "assets/screens/21-session-feedback.png",
+        "scale": 3,
+        "callout": {
+          "x": 52,
+          "y": 488,
+          "w": 326,
+          "h": 139
+        },
+        "calloutFill": 0.5,
+        "label": "Post-session feedback",
+        "startZoom": 0.6,
+        "pushFrames": 16,
+        "drift": 0.03,
+        "enterFade": false,
+        "exitFade": false
+      },
+      "transition": "zoom",
+      "transitionDuration": 0.35,
+      "duration": 4.222
+    },
+    {
+      "type": "motion",
+      "composition": "DualScreen",
+      "label": "B5 student and centre in one shot",
+      "props": {
+        "mobileSrc": "assets/screens/23-reports.png",
+        "webSrc": "assets/screens/groupReport.png",
+        "webAt": 0.6,
+        "enterFade": false,
+        "exitFade": false
+      },
+      "duration": 3.675
+    },
+    {
+      "type": "motion",
+      "composition": "ProductScreen",
+      "label": "B6 group report: travel between points, cursor click on PDF",
+      "props": {
+        "src": "assets/screens/groupReport.png",
+        "drift": 0.02,
+        "steps": [
+          {
+            "callout": {
+              "x": 754,
+              "y": 380,
+              "w": 652,
+              "h": 140
+            },
+            "label": "Shared mistakes",
+            "at": 0
+          },
+          {
+            "callout": {
+              "x": 1272,
+              "y": 131,
+              "w": 136,
+              "h": 40
+            },
+            "at": 2.9
+          }
+        ],
+        "startZoom": 1,
+        "pushFrames": 1,
+        "cursor": [
+          {
+            "x": 1140,
+            "y": 300,
+            "at": 2.5
+          },
+          {
+            "x": 1340.0,
+            "y": 153,
+            "at": 3.5,
+            "click": true
+          }
+        ],
+        "enterFade": false,
+        "exitFade": false
+      },
+      "transition": "push-left",
+      "transitionDuration": 0.35,
+      "duration": 4.238
+    },
+    {
+      "type": "motion",
+      "composition": "StatCard",
+      "label": "B7 verified number (Investor Deck, June 2026)",
+      "props": {
+        "label": "learners actively served",
+        "value": 500,
+        "caption": "Source: Investor Deck · June 2026",
+        "enterFade": false,
+        "exitFade": false
+      },
+      "transition": "blur",
+      "transitionDuration": 0.5,
+      "duration": 3.958
+    },
+    {
+      "type": "motion",
+      "composition": "TitleCard",
+      "label": "B8 the promise",
+      "props": {
+        "title": "The only curriculum-integrated solution.",
+        "marker": "curriculum-integrated"
+      },
+      "transition": "slide-scale",
+      "transitionDuration": 0.4,
+      "duration": 6.408
+    },
+    {
+      "type": "motion",
+      "composition": "EndCard",
+      "label": "B9 close: a conversation, light sweep",
+      "props": {
+        "headline": "Let's talk about your students",
+        "highlight": "your students",
+        "subline": "A pilot with one of your groups",
+        "cta": "Book a walkthrough",
+        "url": "speakingenie.com",
+        "enterFade": false
+      },
+      "sweep": true,
+      "transition": "dip",
+      "transitionDuration": 0.5,
+      "duration": 6.324
+    }
+  ],
+  "overlays": [
+    {
+      "composition": "LowerThird",
+      "at": {
+        "clip": 0,
+        "offset": 0.3
+      },
+      "duration": 2.0,
+      "props": {
+        "name": "Ahmed Abosamra",
+        "role": "Co-founder · Product"
+      }
+    }
+  ],
+  "logo": {
+    "enabled": false
+  },
+  "voiceover": {
+    "src": "audio/vo.wav",
+    "at": 0,
+    "volume": 1
+  },
+  "music": {
+    "src": "brand/sound/music/corporate-calm-leberch.mp3",
+    "volume": 0.35,
+    "duckUnderVoice": true,
+    "fadeIn": 1,
+    "fadeOut": 2.5
+  },
+  "captions": {
+    "src": "captions/master.srt",
+    "burn": true,
+    "style": "words"
+  },
+  "sfx": {
+    "auto": true,
+    "volume": 0.5,
+    "cues": [
+      {
+        "sound": "mic-on",
+        "at": {
+          "clip": 2,
+          "offset": 1.2
+        },
+        "volume": 0.5
+      },
+      {
+        "sound": "notification",
+        "at": {
+          "clip": 5,
+          "offset": 0.7
+        }
+      },
+      {
+        "sound": "impact",
+        "at": {
+          "clip": 7,
+          "offset": 0.45
+        },
+        "volume": 0.5
+      },
+      {
+        "sound": "riser",
+        "at": {
+          "clip": 8,
+          "offset": 0.25
+        },
+        "volume": 0.5
+      }
+    ]
+  }
+}

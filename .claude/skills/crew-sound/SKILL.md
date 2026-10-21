@@ -33,19 +33,10 @@ The brand sounds are synthesised in `sgv/sfx.py` (owned, no licence). `bin/sgv s
 files in `brand/sound/`; `bin/sgv sounds --try <name> --spectrum` renders one to `build/sounds/`, prints its peak, RMS and
 loudest-moment LUFS, and draws a spectrogram you can Read.
 
-| Sound | Use it for |
-| --- | --- |
-| `whoosh`, `tap` | automatic: motion transitions and ProductScreen `tap`s (don't cue them by hand) |
-| `ringback` | the learner is calling the AI tutor (Egyptian 425 Hz, 1 s on / 4 s off); give `duration` to ring more than once |
-| `incoming-ring` | the AI tutor or a teacher is calling; `duration` repeats the motif every 2.5 s |
-| `call-connect` / `hang-up` | the call screen goes live / the call ends (a pair: use both or neither) |
-| `mic-on` | the microphone opens, the learner starts speaking |
-| `message-sent` | an answer, message or report is sent |
-| `notification` | a report or feedback arrives |
-| `success` | a passed exercise, a finished report |
-| `streak` (`level-up`) | a streak kept or a level reached: a warm chord, never a fanfare |
-| `riser` | into a reveal or key line; its `at` is where it ends |
-| `impact` | a stat or title landing; soft and low |
+When to use each sound and how often (at most one cue per beat; `riser` once, `impact` twice a video; nothing gamey):
+the sounds table in `.claude/skills/video-crew/EDITING.md`. Names: `whoosh`, `tap` (automatic), `ringback`,
+`incoming-ring`, `call-connect`, `hang-up`, `mic-on`, `message-sent`, `notification`, `success`, `streak`
+(`level-up`), `riser`, `impact`. `ringback` and `incoming-ring` repeat for a cue's `duration`.
 
 ```jsonc
 "sfx": { "volume": 0.5, "cues": [
@@ -58,8 +49,6 @@ loudest-moment LUFS, and draws a spectrogram you can Read.
 
 - `"sfx": true` still means automatic sounds only; `"auto": false` turns those off and keeps the cues. A cue's `at` is
   the moment the sound lands, in seconds or `{clip, offset}` like overlays.
-- **Sparingly:** about one cue per beat at most, and none under a key line of voice-over. A sound marks a real event
-  on screen (the call connects, the report arrives); it never decorates. Most beats need none.
 - Levels: the sounds are balanced to sit about 12–16 dB under the voice at `volume` 0.5. Lower a cue's `volume`
   rather than raising the global one. Call sounds (ring, connect) can sit a little higher in a silent hook.
 - Ambience (room tone, classroom, office) only where the picture is a real place; keep it at 0.15–0.3 and let it duck.

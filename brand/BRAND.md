@@ -45,7 +45,8 @@ Modern Standard Arabic for on-screen text; Egyptian Arabic is fine for voice-ove
 - Transitions between shots: hard cut by default; 0.4–0.6s cross-dissolve between scenes;
   fade-through-canvas for chapter breaks. Motion transitions, used sparingly to mark a turn in the story:
   a gentle zoom-through (outgoing +25%, incoming settles from +15%) or a push, 0.3–0.4s, eased, with real motion
-  blur and an optional soft whoosh. No wipes, spins, flips, glitches or bounces.
+  blur and an optional soft whoosh. No wipes, spins, flips, glitches or bounces. The only shaped reveals are the
+  Enablement dome reveal and capsule wipe (allowed as brand devices, 20 Oct 2026), in the Enablement look only.
 - Product screens never sit still: a slow drift (≤ 4% over the shot), eased camera travel between points, a ring
   that draws itself on, and a touch indicator that taps the button the voice mentions.
 

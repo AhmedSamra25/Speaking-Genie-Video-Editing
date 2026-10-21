@@ -10,9 +10,9 @@ brand/        design tokens, video brand rules, fonts, logos  (from the Speaking
 sgv/          the editing engine (Python + ffmpeg): ingest, look, silence/scene detection,
               transcription, timeline assembly, captions, loudness, multi-format export
 bin/sgv       command line entry point
-motion/       Remotion project: Intro, TitleCard, StatCard, QuoteCard, EndCard, LowerThird
+motion/       Remotion project: the branded graphics (titles, stats, quotes, end cards, product screens)
 projects/     one folder per video (edit.json + NOTES.md committed; media git-ignored)
-.claude/      skills (edit-video, motion-graphics) and permissions for Claude Code
+.claude/      skills (edit-video, motion-graphics, video-crew, crew-*), crew agents and permissions
 CLAUDE.md     how Claude edits in this repo — read this first
 ```
 
@@ -142,7 +142,7 @@ Remotion `TransitionSeries` render, a living camera on every product screen (dri
 `steps` and element tracking, a ring that draws itself on, a finger `tap` or a desktop `cursor`, the screen-to-device
 zoom `intoDevice`, a 3D `tilt` float, voice bars that follow the voice-over on the AI call), the `DualScreen`
 phone-plus-web shot, 2.5D parallax in the Enablement look, line-mask titles with a highlight `marker`, the capsule
-wipe, draw-on ring, line and bar charts, counters in Arabic-Indic digits, word-by-word captions, generated sound
+wipe, draw-on ring, line and bar charts, a rack focus (`focusPull`) and an eased speed ramp (`ramp`) on footage, counters in Arabic-Indic digits, word-by-word captions, generated sound
 effects (`"sfx": true`) and a brand sound library. The rules for using them are in `.claude/skills/video-crew/EDITING.md`.
 
 ### Brand sound
@@ -166,5 +166,6 @@ dark caption pill). `brand/BRAND.md` marks which rules are video-only additions.
 
 - Fonts are SIL OFL 1.1 (`brand/fonts/OFL.txt`).
 - **Remotion** is free for individuals and for companies with up to 3 employees. Larger companies
-  need a [Remotion company license](https://www.remotion.dev/license). Check this before using it
-  in production.
+  need a [Remotion company license](https://www.remotion.dev/license); Speaking Genie's is in place (confirmed 20 Oct 2026).
+- Sound: the synthesised brand sounds are owned; every recorded file and music bed is listed with its source and
+  licence in `brand/sound/LICENSES.json`.

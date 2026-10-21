@@ -23,6 +23,19 @@ Write a selects table to `crew/shots.md`:
 
 Add B-roll covers for jump cuts in talking heads (`→ @editor`).
 
+## Footage moves
+
+Give these in the Why column (or a Moves column) with exact values, so the editor can paste them. When and how often:
+the camera table in `.claude/skills/video-crew/EDITING.md`.
+
+| Move | Prop on the `video` clip | Rules |
+| --- | --- | --- |
+| Punch-in | `"scale": 1.1–1.2` toward `focus` | covers a jump cut; ≤ 1.2 on 1080p sources; check moiré (blinds, screens) on a still |
+| Rack focus | `"focusPull": "in"` (soft to sharp over the first 0.8 s) · `"out"` (sharp to soft over the last 0.8 s) · `{"from": 8, "to": 0, "at": 1.2, "duration": 0.8}` | gaussian blur in px at 1080p, 8 at most, eased in and out; the blur is switched off where it is zero, so the sharp part costs nothing. Use it where footage hands over to text (soft under a quote card's entrance, sharp after a dip) |
+| Speed ramp | `"ramp": [{"at": 1.5, "speed": 2.5}, {"at": 4.0, "speed": 1, "ease": 0.4}]` | `at` is source seconds after `in`; each key eases from the speed before it (the clip's `speed` at first) over `ease` seconds (0.4 default); speeds 0.25–4. **Montage beats only, never a talking head or anyone speaking**: the clip's sound is dropped. Below 1× use 50/60 fps footage (frames repeat otherwise). The clip's length on the timeline follows from the ramp (`bin/sgv timeline <p>`) |
+
+Check every move with `bin/sgv look <draft> --at T` on its first, middle and last frame.
+
 ## Footage the user must film: the shoot plan
 
 When a beat needs footage that doesn't exist, write a shoot plan the user can follow with an iPhone:

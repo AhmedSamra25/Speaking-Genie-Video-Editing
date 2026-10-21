@@ -1,0 +1,101 @@
+{
+  "lang": "en",
+  "voice": {
+    "engine": "say",
+    "voice_id": "Ava (Premium)",
+    "notes": "SCRATCH VOICE, timing placeholder only. Replace with a recorded or cleared voice before any release."
+  },
+  "lines": [
+    {
+      "id": "L1",
+      "beat": "B2",
+      "text": "Your students know the rules. Speaking takes practice.",
+      "max_seconds": 3.4,
+      "duration": 3.401,
+      "file": "audio/vo/L1.wav",
+      "start": 2.97,
+      "at": 2.97
+    },
+    {
+      "id": "L2",
+      "beat": "B3",
+      "text": "With Speaking Genie, every student practises on a voice call with an AI partner, any time.",
+      "max_seconds": 5.0,
+      "duration": 5.523,
+      "file": "audio/vo/L2.wav",
+      "start": 6.971,
+      "at": 6.971
+    },
+    {
+      "id": "L3",
+      "beat": "B3a",
+      "text": "Every call task follows your centre's curriculum.",
+      "max_seconds": 3.0,
+      "duration": 2.669,
+      "file": "audio/vo/L3.wav",
+      "start": 13.094,
+      "at": 13.094
+    },
+    {
+      "id": "L4",
+      "beat": "B4",
+      "text": "After each session, they get clear feedback on what they said.",
+      "max_seconds": 3.6,
+      "duration": 3.662,
+      "file": "audio/vo/L4.wav",
+      "start": 17.004,
+      "at": 17.004
+    },
+    {
+      "id": "L5",
+      "beat": "B5",
+      "text": "And you see the progress of every student, and every group.",
+      "max_seconds": 3.4,
+      "duration": 3.075,
+      "file": "audio/vo/L5.wav",
+      "start": 21.266,
+      "at": 21.266
+    },
+    {
+      "id": "L6",
+      "beat": "B6",
+      "text": "Group reports show the shared mistakes, ready for the next lesson.",
+      "max_seconds": 4.0,
+      "duration": 3.678,
+      "file": "audio/vo/L6.wav",
+      "start": 24.551,
+      "at": 24.551
+    },
+    {
+      "id": "L7",
+      "beat": "B7",
+      "text": "Five hundred learners are actively served on Speaking Genie.",
+      "max_seconds": 3.2,
+      "duration": 3.308,
+      "file": "audio/vo/L7.wav",
+      "start": 28.379,
+      "at": 28.379
+    },
+    {
+      "id": "L8",
+      "beat": "B8",
+      "text": "The only curriculum-integrated solution. More practice hours, and no grading load for your teachers.",
+      "max_seconds": 5.0,
+      "duration": 5.818,
+      "file": "audio/vo/L8.wav",
+      "start": 31.877,
+      "at": 31.877
+    },
+    {
+      "id": "L9",
+      "beat": "B9",
+      "text": "Talk to us, and let's start a pilot with your students.",
+      "max_seconds": 3.2,
+      "duration": 3.024,
+      "file": "audio/vo/L9.wav",
+      "start": 37.845,
+      "at": 37.845
+    }
+  ],
+  "engine": "say"
+}
