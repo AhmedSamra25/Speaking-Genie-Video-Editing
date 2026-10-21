@@ -99,10 +99,28 @@ def cmd_captions(a):
 
 
 def cmd_voice(a):
+    if a.list_styles:
+        for name, (sound, use, _) in voice.STYLES.items():
+            print(f"  {name:10} {sound}\n  {'':10} use: {use}")
+        print("\n  delivery (ElevenLabs): " + ", ".join(voice.DELIVERY) + " · pace 0.8–1.2 and pitch −4…+4 semitones: any voice")
+        return
+    if not a.project:
+        raise SystemExit("sgv voice needs a project.")
     p = project.find(a.project)
     script = p.root / a.script
+    if a.audition is not None:
+        for name, f, lufs in voice.audition(p, [s.strip() for s in a.audition.split(",") if s.strip()] or None):
+            print(f"  {name:10} {lufs:6.1f} LUFS  {f.relative_to(paths.ROOT)}")
+        print("Listen to compare.wav (the opening in each style, in the order above), then: "
+              f"sgv voice {a.project} --restyle <style>")
+        return
+    if a.restyle:
+        out = voice.restyle(p, script, a.restyle)
+        print(f"{out.relative_to(paths.ROOT)}  restyled: {a.restyle} (saved in {a.script})")
+        return
     lines = voice.run(p, script, a.engine, voice=a.voice, take=p.path(a.take) if a.take else None, gap=a.gap,
-                      lead=a.lead, min_silence=a.min_silence, rate=a.rate, clean_up=not a.no_enhance, keep_timing=a.keep_timing)
+                      lead=a.lead, min_silence=a.min_silence, rate=a.rate, clean_up=not a.no_enhance, keep_timing=a.keep_timing,
+                      style=a.style, pace=a.pace, pitch=a.pitch, delivery=a.delivery)
     over = 0
     for l in lines:
         limit = l.get("max_seconds")
@@ -329,7 +347,7 @@ def main(argv=None) -> int:
     s.set_defaults(fn=cmd_captions)
 
     s = sub.add_parser("voice", help="voice-over lines from crew/vo.json → audio/vo/*.wav + audio/vo.wav, timed")
-    s.add_argument("project")
+    s.add_argument("project", nargs="?")
     s.add_argument("--engine", default="say", choices=["say", "elevenlabs", "files"])
     s.add_argument("--voice", help="say voice name or ElevenLabs voice id")
     s.add_argument("--take", help="one recorded take with pauses between lines (engine files)")
@@ -341,6 +359,14 @@ def main(argv=None) -> int:
     s.add_argument("--no-enhance", action="store_true", help="skip the clean-up of a human recording (engine files)")
     s.add_argument("--keep-timing", action="store_true",
                    help="with --take: place each line where it was said (keeps the speaker's pauses) instead of at its beat")
+    s.add_argument("--style", help="sound of the whole voice-over (see --list-styles); kept in vo.json")
+    s.add_argument("--pace", type=float, help="tempo factor 0.8–1.2 for every line, pitch kept (any engine)")
+    s.add_argument("--pitch", type=float, help="semitones −4…+4 for every line, formants kept (any engine)")
+    s.add_argument("--delivery", help="ElevenLabs performance: " + ", ".join(voice.DELIVERY))
+    s.add_argument("--list-styles", action="store_true", help="list the voice styles and when to use each")
+    s.add_argument("--audition", nargs="?", const="", metavar="STYLES",
+                   help="render the voice-over in every style (or a comma list) to build/voice-styles/ to compare")
+    s.add_argument("--restyle", metavar="STYLE", help="change the style of the existing voice-over without re-cutting it")
     s.set_defaults(fn=cmd_voice)
 
     s = sub.add_parser("voices", help="list installed Arabic/English system voices (premium, enhanced) for --engine say")

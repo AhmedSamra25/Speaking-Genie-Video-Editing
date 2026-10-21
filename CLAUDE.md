@@ -34,7 +34,8 @@ Design System.
 | `bin/sgv transcribe <file> [--lang ar]` | Writes a whisper.cpp transcript (`.srt` + `.json`) next to the file |
 | `bin/sgv captions <p>` | Renders a draft, transcribes it and sets `captions/master.srt` on the project |
 | `bin/sgv captions <p> --from-vo` | Captions from the approved script text and voice timings (`crew/vo.json`) |
-| `bin/sgv voice <p> [--engine say\|elevenlabs\|files] [--take f]` | Voice-over lines from `crew/vo.json` → `audio/vo.wav`, timed |
+| `bin/sgv voice <p> [--engine say\|elevenlabs\|files] [--take f] [--style s] [--pace f] [--pitch n] [--delivery d]` | Voice-over lines from `crew/vo.json` → `audio/vo.wav`, timed, in a voice style |
+| `bin/sgv voice <p> --audition` · `--restyle <style>` · `bin/sgv voice --list-styles` | Hear the voice-over in every style (`build/voice-styles/compare.wav`), then switch style without re-cutting |
 | `bin/sgv voices [--lang ar,en] [--try "text"]` | Lists the installed premium/enhanced system voices (gender, usable by `say`); `--try` renders a sample per voice |
 | `bin/sgv screen <p> <card> [--lang ar] [--theme dark] [--flow k] [--status speaking]` · `--list [--kit mobile\|web]` | Captures a real product screen from the mobile app or web platform kit |
 | `bin/sgv sounds [--try <name> --spectrum]` | Lists the brand sounds and library files; `--try` renders one to `build/sounds/` and measures it |

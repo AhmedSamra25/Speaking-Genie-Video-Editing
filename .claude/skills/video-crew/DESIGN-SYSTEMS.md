@@ -110,7 +110,7 @@ Source: `brand/enablement/guidelines/company-brief.html`. Facts come from there 
 | producer | ask the audience and channel at intake; write `design system` and `track` into the brief |
 | creative-director | set the track, accent, close and look in the treatment; reject a treatment that mixes tracks |
 | scriptwriter | write in the track's register and person; only verified facts and verbatim feature names; the right close |
-| voice-director | cast for the register: colloquial for individual, simplified formal (or English) for business |
+| voice-director | cast for the register: colloquial for individual, simplified formal (or English) for business; voice style `social` or `warm` for individual, `broadcast` or `narrator` for business, `natural` in-product |
 | cinematographer | grade and frame photography and footage to the track's direction; no untreated stock |
 | screen-producer | pick the kit by whose side the beat shows; never restyle UI |
 | motion-designer | use the look the brief names; flag the Enablement-look gap until it is built |

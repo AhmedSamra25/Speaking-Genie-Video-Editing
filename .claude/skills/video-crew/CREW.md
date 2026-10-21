@@ -58,10 +58,12 @@ Visual source is one of `footage: …`, `screen: <screen id>`, `motion: <Composi
 ```json
 {
   "lang": "ar-eg",
-  "voice": { "engine": "elevenlabs", "voice_id": "…", "notes": "warm, mid-30s, calm teacher" },
+  "voice": { "engine": "elevenlabs", "voice_id": "…", "notes": "warm, mid-30s, calm teacher",
+             "style": "broadcast", "pace": 1.0, "pitch": 0, "delivery": "calm" },   // style/pace/pitch/delivery: crew-voice
   "lines": [
     { "id": "L1", "beat": "B1", "text": "طلابك بيتكلموا، وSpeaking Genie بيسمعهم.", "max_seconds": 2.4,
-      "direction": "calm, a smile on 'بيسمعهم'" }
+      "direction": "calm, a smile on 'بيسمعهم'" },
+    { "id": "L2", "text": "…", "style": "phone" }   // optional per line: style, pace, pitch, rate (say), delivery (ElevenLabs)
   ]
 }
 ```

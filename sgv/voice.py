@@ -27,11 +27,11 @@ def _say(text: str, voice: str, out: Path, rate: int | None = None) -> None:
     subprocess.run(["say", "-v", voice, *(["-r", str(rate)] if rate else []), "-o", str(out), text], check=True)
 
 
-def _elevenlabs(text: str, voice: str, model: str, out: Path) -> None:
+def _elevenlabs(text: str, voice: str, model: str, out: Path, settings: dict | None = None) -> None:
     key = os.environ.get("ELEVENLABS_API_KEY")
     if not key:
         raise SystemExit("ELEVENLABS_API_KEY is not set.")
-    body = json.dumps({"text": text, "model_id": model}).encode()
+    body = json.dumps({"text": text, "model_id": model, **({"voice_settings": settings} if settings else {})}).encode()
     req = urllib.request.Request(ELEVENLABS_URL.format(voice=voice), data=body, method="POST",
                                  headers={"xi-api-key": key, "Content-Type": "application/json", "Accept": "audio/mpeg"})
     try:
@@ -50,6 +50,98 @@ SHAPE = ("deesser=i=0.3,equalizer=f=250:t=q:w=1.2:g=-2,equalizer=f=3500:t=q:w=1.
 CLEAN_ROOM = "highpass=f=80,afftdn=nr=10:nf=-50:tn=1," + SHAPE
 NOISY_ROOM = ("highpass=f=80,afftdn=nr=14:nf=-45:tn=1,afftdn=nr=8:nf=-50:tn=1," + SHAPE +
               ",agate=threshold={gate:.5f}:ratio=1.5:range=0.4:attack=10:release=350")
+
+# Voice styles: the character of the finished voice-over, applied after the clean-up to a human recording or a
+# generated voice alike. Each is (what it sounds like, when to use it, ffmpeg chain). All stay calm and natural;
+# none adds an effect a listener would notice as an effect, except `phone`, which is for single lines (the AI partner
+# on a call, a quoted voice message). The level is matched to the dry voice afterwards, so the mix stays put.
+STYLES = {
+    "natural": ("the clean-up only: true to the voice",
+                "in-product how-to and onboarding, anything that should just sound like a person", ""),
+    "warm": ("fuller low mids, softened top, gentle compression",
+             "testimonials, founder story, learner stories",
+             "equalizer=f=180:t=q:w=1:g=2.5,equalizer=f=3000:t=q:w=1.5:g=-1,highshelf=f=9000:g=-1.5,"
+             "acompressor=threshold=-20dB:ratio=2:attack=15:release=200:makeup=1"),
+    "broadcast": ("close, confident announcer: proximity warmth, presence, air, firm two-stage compression",
+                  "ads, launches, LinkedIn and business-track videos, product tours with music",
+                  "lowshelf=f=120:g=3,equalizer=f=350:t=q:w=1.2:g=-2.5,equalizer=f=4200:t=q:w=1.2:g=3,"
+                  "highshelf=f=11000:g=2,deesser=i=0.4,"
+                  "acompressor=threshold=-24dB:ratio=3.5:attack=5:release=90:makeup=3,"
+                  "asoftclip=type=tanh:threshold=0.9,alimiter=limit=0.89:attack=3:release=60:level=disabled"),
+    "social": ("bright and forward, cuts through phone speakers, tight level",
+               "Reels, TikTok and Stories for learners (individual track), fast hooks",
+               "highpass=f=100,equalizer=f=300:t=q:w=1.5:g=-3,equalizer=f=5000:t=q:w=1.2:g=3.5,"
+               "aexciter=amount=1.5:drive=4:freq=6000:blend=0,deesser=i=0.5,"
+               "acompressor=threshold=-26dB:ratio=4:attack=3:release=60:makeup=4,"
+               "alimiter=limit=0.89:attack=2:release=50:level=disabled"),
+    "intimate": ("soft and close, little compression, rounded top",
+                 "emotional beats, a quiet opening, the confidence-gap story",
+                 "equalizer=f=220:t=q:w=1:g=2,highshelf=f=7000:g=-2,"
+                 "acompressor=threshold=-18dB:ratio=1.6:attack=20:release=250:makeup=1"),
+    "narrator": ("even documentary read with a faint small-room sheen",
+                 "explainers, brand films, long-form YouTube",
+                 "equalizer=f=150:t=q:w=1:g=1.5,equalizer=f=3500:t=q:w=1.4:g=1.5,"
+                 "acompressor=threshold=-22dB:ratio=2.5:attack=10:release=150:makeup=2,"
+                 "aecho=0.9:0.9:23|37:0.10|0.06"),
+    "room": ("places a dry voice in a small real room; takes the 'in a box' edge off a synthetic voice",
+             "macOS and ElevenLabs voices that sound too clean against footage or music",
+             "equalizer=f=250:t=q:w=1:g=1,aecho=0.85:0.9:17|29|43:0.14|0.10|0.06"),
+    "phone": ("a voice heard through a phone: narrow band, a little grit",
+              "single lines only: the AI partner on the call, a quoted voice note",
+              "highpass=f=320,lowpass=f=3400,equalizer=f=1500:t=q:w=1:g=4,asoftclip=type=atan:threshold=0.6,"
+              "acompressor=threshold=-20dB:ratio=4:attack=5:release=80:makeup=3"),
+}
+
+# How an ElevenLabs voice performs the lines (voice_settings). `speed` is ElevenLabs' own, 0.7–1.2.
+DELIVERY = {
+    "calm": {"stability": 0.6, "similarity_boost": 0.8, "style": 0.1, "speed": 0.95},
+    "conversational": {"stability": 0.45, "similarity_boost": 0.8, "style": 0.3, "speed": 1.0},
+    "energetic": {"stability": 0.35, "similarity_boost": 0.75, "style": 0.5, "speed": 1.08},
+    "authoritative": {"stability": 0.7, "similarity_boost": 0.85, "style": 0.2, "speed": 0.95},
+}
+
+
+def style_chain(name: str) -> str:
+    if name not in STYLES:
+        raise SystemExit(f"Unknown voice style '{name}'. Styles: {', '.join(STYLES)}")
+    return STYLES[name][2]
+
+
+def _loudness(f: Path) -> float:
+    proc = ff.run(["ffmpeg", "-loglevel", "info", "-i", f, "-af", "ebur128", "-f", "null", "-"], capture=True)
+    found = re.findall(r"I:\s+(-?[\d.]+) LUFS", proc.stderr)
+    return float(found[-1]) if found else -70.0
+
+
+def apply_style(src: Path, out: Path, style: str) -> Path:
+    """Run `src` through a voice style, then match its integrated loudness to `src` so the mix balance holds."""
+    chain = style_chain(style)
+    if not chain:
+        shutil.copyfile(src, out)
+        return out
+    tmp = out.with_name(out.stem + ".styled.wav")
+    ff.run(["ffmpeg", "-i", src, "-af", chain, "-ar", "48000", "-c:a", "pcm_s24le", tmp])
+    gain = _loudness(src) - _loudness(tmp)
+    ff.run(["ffmpeg", "-i", tmp, "-af", f"volume={gain:.2f}dB,alimiter=limit=0.95:level=disabled", "-ar", "48000",
+            "-c:a", "pcm_s24le", out])
+    tmp.unlink(missing_ok=True)
+    return out
+
+
+def apply_delivery(src: Path, out: Path, pace: float = 1.0, pitch: float = 0.0) -> Path:
+    """Change pace (tempo factor, 0.8–1.2) and pitch (semitones, −4…+4) without the chipmunk effect: Rubber Band
+    with formants preserved keeps the voice's character. Works on any engine, including the user's own recording."""
+    if not (0.8 <= pace <= 1.2) or not (-4 <= pitch <= 4):
+        raise SystemExit("pace must be 0.8–1.2 and pitch −4…+4 semitones; beyond that a voice stops sounding natural.")
+    if pace == 1 and pitch == 0:
+        shutil.copyfile(src, out)
+        return out
+    if "rubberband" not in ff.filters():
+        raise SystemExit("pace/pitch need ffmpeg built with librubberband (Homebrew ffmpeg-full has it).")
+    ff.run(["ffmpeg", "-i", src, "-af", f"rubberband=tempo={pace}:pitch={2 ** (pitch / 12):.6f}:formant=preserved"
+            ":pitchq=quality:window=standard:transients=mixed", "-ar", "48000", "-c:a", "pcm_s16le", out])
+    return out
+
 
 _VOICES_JS = """
 ObjC.import("AVFoundation");
@@ -154,7 +246,8 @@ def _split_take(take: Path, n: int, tmp: Path, min_silence: float) -> list:
 
 def run(project: Project, script: Path, engine: str, voice: str | None = None, take: Path | None = None,
         gap: float = 0.35, lead: float = 0.3, min_silence: float = 1.2, rate: int | None = None,
-        clean_up: bool = True, keep_timing: bool = False) -> list:
+        clean_up: bool = True, keep_timing: bool = False, style: str | None = None, pace: float | None = None,
+        pitch: float | None = None, delivery: str | None = None) -> list:
     data = json.loads(script.read_text(encoding="utf-8"))
     lines = data.get("lines", [])
     if not lines:
@@ -162,7 +255,14 @@ def run(project: Project, script: Path, engine: str, voice: str | None = None, t
     lang = str(data.get("lang", project.lang))
     vo_dir = project.root / "audio" / "vo"
     vo_dir.mkdir(parents=True, exist_ok=True)
-    meta = data.get("voice", {})
+    meta = data.setdefault("voice", {})
+    # choices given on the command line are kept in vo.json, so the next run (and the crew) see them
+    for k, v in (("style", style), ("pace", pace), ("pitch", pitch), ("delivery", delivery)):
+        if v is not None:
+            meta[k] = v
+    style_chain(meta.get("style", "natural"))
+    if meta.get("delivery") and meta["delivery"] not in DELIVERY:
+        raise SystemExit(f"Unknown delivery '{meta['delivery']}'. Choices: {', '.join(DELIVERY)}")
 
     with tempfile.TemporaryDirectory() as td:
         tmp = Path(td)
@@ -173,13 +273,17 @@ def run(project: Project, script: Path, engine: str, voice: str | None = None, t
         for i, line in enumerate(lines):
             if engine == "say":
                 raw = tmp / f"{line['id']}.aiff"
-                _say(line.get("say_as", line["text"]), voice or meta.get("say_voice") or SAY_VOICES["ar" if lang.startswith("ar") else "en"], raw, rate)
+                _say(line.get("say_as", line["text"]), voice or meta.get("say_voice") or SAY_VOICES["ar" if lang.startswith("ar") else "en"],
+                     raw, line.get("rate", rate or meta.get("rate")))
             elif engine == "elevenlabs":
                 vid = voice or meta.get("voice_id")
                 if not vid:
                     raise SystemExit("ElevenLabs needs a voice id: --voice <id> or voice.voice_id in vo.json.")
                 raw = tmp / f"{line['id']}.mp3"
-                _elevenlabs(line.get("say_as", line["text"]), vid, meta.get("model", "eleven_multilingual_v2"), raw)
+                settings = {**DELIVERY.get(line.get("delivery", meta.get("delivery", "")), {}),
+                            **meta.get("voice_settings", {})}
+                _elevenlabs(line.get("say_as", line["text"]), vid, meta.get("model", "eleven_multilingual_v2"), raw,
+                            settings or None)
             elif take:
                 raw = raws[i]
             else:
@@ -189,7 +293,16 @@ def run(project: Project, script: Path, engine: str, voice: str | None = None, t
                     raise SystemExit(f"No recording for {line['id']}: expected audio/vo-takes/{line['id']}.wav (or .m4a, .mp3).")
                 if clean_up:
                     raw = enhance(raw, tmp / f"{line['id']}-enhanced.wav")
-            line["duration"] = round(_clean(raw, vo_dir / f"{line['id']}.wav"), 3)
+            out = vo_dir / f"{line['id']}.wav"
+            _clean(raw, out)
+            # delivery (pace, pitch) and a per-line style change the line itself, so they come before its timing
+            l_pace, l_pitch = float(line.get("pace", meta.get("pace", 1))), float(line.get("pitch", meta.get("pitch", 0)))
+            if l_pace != 1 or l_pitch != 0:
+                shutil.copyfile(apply_delivery(out, tmp / f"{line['id']}-delivery.wav", l_pace, l_pitch), out)
+            if line.get("style"):
+                shutil.copyfile(apply_style(out, tmp / f"{line['id']}-style.wav", line["style"]), out)
+            ff.probe.cache_clear()
+            line["duration"] = round(ff.probe(str(out))["duration"], 3)
             line["file"] = f"audio/vo/{line['id']}.wav"
 
     if keep_timing and engine == "files" and take:
@@ -214,9 +327,51 @@ def run(project: Project, script: Path, engine: str, voice: str | None = None, t
         parts.append(f"[{i}:a]adelay={ms}|{ms},aformat=channel_layouts=stereo[l{i}]")
     mix = "".join(f"[l{i}]" for i in range(len(lines)))
     parts.append(f"{mix}amix=inputs={len(lines)}:normalize=0:dropout_transition=0,apad,atrim=duration={total:.3f}[out]")
+    dry = vo_dir / "mix-dry.wav"  # the voice-over before its style, so `restyle` can change the style in seconds
     ff.run(["ffmpeg", *inputs, "-filter_complex", ";".join(parts), "-map", "[out]", "-ar", "48000", "-c:a", "pcm_s24le",
-            project.root / "audio" / "vo.wav"])
+            dry])
+    apply_style(dry, project.root / "audio" / "vo.wav", meta.get("style", "natural"))
 
     data["engine"] = engine
     script.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return lines
+
+
+def restyle(project: Project, script: Path, style: str) -> Path:
+    """Change the whole voice-over's style without cutting it again (from audio/vo/mix-dry.wav)."""
+    dry = project.root / "audio" / "vo" / "mix-dry.wav"
+    if not dry.exists():
+        raise SystemExit("No audio/vo/mix-dry.wav yet: run `sgv voice` once first.")
+    data = json.loads(script.read_text(encoding="utf-8"))
+    data.setdefault("voice", {})["style"] = style
+    out = apply_style(dry, project.root / "audio" / "vo.wav", style)
+    script.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return out
+
+
+def audition(project: Project, styles: list | None = None, seconds: float = 12.0) -> list:
+    """Render the project's voice-over in every style (or the ones named) to build/voice-styles/, plus one file that
+    plays the same opening in each style in turn, a short pause between, to compare by ear. Nothing in the project
+    changes. Returns (style, file, LUFS) rows."""
+    dry = project.root / "audio" / "vo" / "mix-dry.wav"
+    src = dry if dry.exists() else project.root / "audio" / "vo.wav"
+    if not src.exists():
+        raise SystemExit("No voice-over yet: run `sgv voice` first.")
+    out_dir = project.build / "voice-styles"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    rows, clips = [], []
+    for name in styles or [s for s in STYLES if s != "phone"]:
+        f = apply_style(src, out_dir / f"{name}.wav", name)
+        rows.append((name, f, _loudness(f)))
+        clip = out_dir / f".{name}-clip.wav"
+        ff.run(["ffmpeg", "-i", f, "-t", f"{seconds}", "-af", "afade=t=out:st={0}:d=0.4,apad=pad_dur=0.8".format(seconds - 0.4),
+                "-ar", "48000", "-ac", "2", "-c:a", "pcm_s24le", clip])
+        clips.append(clip)
+    reel = out_dir / "compare.wav"
+    ff.run(["ffmpeg", *sum([["-i", c] for c in clips], []), "-filter_complex",
+            "".join(f"[{i}:a]" for i in range(len(clips))) + f"concat=n={len(clips)}:v=0:a=1[a]", "-map", "[a]",
+            "-c:a", "pcm_s24le", reel])
+    for c in clips:
+        c.unlink(missing_ok=True)
+    rows.append(("compare", reel, _loudness(reel)))
+    return rows

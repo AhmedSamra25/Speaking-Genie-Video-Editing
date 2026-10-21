@@ -101,6 +101,13 @@ Voice-over options (the producer asks at the start, together with the video's la
   can't be used). Apple's Arabic voices are Modern Standard Arabic with a Gulf accent, not Egyptian.
 - **ElevenLabs.** Set `ELEVENLABS_API_KEY`; the script is sent to ElevenLabs.
 
+**Voice styles.** Whatever the source, the finished voice-over can take a style: `natural`, `warm`, `broadcast`,
+`social`, `intimate`, `narrator`, `room`, or `phone` for a single line (`bin/sgv voice --list-styles`).
+`bin/sgv voice <p> --audition` renders the real voice-over in each style to `build/voice-styles/` with a
+`compare.wav` that plays the opening in every style; `--restyle <style>` switches in seconds without re-cutting. Styles
+are loudness-matched, so the music mix holds. `--pace` (0.8–1.2) and `--pitch` (±4 semitones) re-time or re-pitch the
+lines with formants kept, and `--delivery calm|conversational|energetic|authoritative` sets an ElevenLabs voice's performance.
+
 ### Product screens
 
 Two kits from the design systems, both working click-throughs, captured with `bin/sgv screen` (headless Chrome over

@@ -47,6 +47,40 @@ bin/sgv voice <p> --engine files                       # use audio/vo-takes/L1.w
 
 `sgv voice` trims silence from each line, levels it, writes `audio/vo/<id>.wav`, places the lines on the timeline (`start` from each line's `at` if set, otherwise one after another with `--gap` seconds between them), mixes `audio/vo.wav`, and writes `file`, `start` and `duration` back into `vo.json`. It prints every line that runs over its `max_seconds`.
 
+## Choose the style
+
+The same read can sound like an announcer, a friend or a documentary. `sgv voice` keeps the unstyled mix
+(`audio/vo/mix-dry.wav`), so the style is a choice you can audition and change in seconds, for any engine:
+
+```bash
+bin/sgv voice --list-styles                         # each style: what it sounds like and when to use it
+bin/sgv voice <p> --audition                        # every style → build/voice-styles/*.wav + compare.wav (same opening, style by style)
+bin/sgv voice <p> --restyle broadcast               # apply one to audio/vo.wav (kept in vo.json), no re-cut
+```
+
+| Style | Sounds | Use for |
+| --- | --- | --- |
+| `natural` (default) | the clean-up only | in-product how-to, onboarding |
+| `warm` | fuller, softened top | testimonials, founder and learner stories |
+| `broadcast` | close announcer, presence, firm level | ads, launches, LinkedIn, business track |
+| `social` | bright, forward, tight | Reels and TikTok for learners (individual track), hooks |
+| `intimate` | soft, close, light compression | emotional beats, quiet openings |
+| `narrator` | even, faint small-room sheen | explainers, brand films, long YouTube |
+| `room` | puts a dry voice in a small room | macOS or ElevenLabs voices that sound boxed-in |
+| `phone` | narrow phone band | **one line only** (`"style": "phone"` on that line): the AI partner on the call, a voice note |
+
+Pick by the track first (`.claude/skills/video-crew/DESIGN-SYSTEMS.md`): learners on social → `social` or `warm`;
+buyers → `broadcast` or `narrator`; in-product → `natural`. Then audition the two closest and tell the producer which
+one and why; the user hears `compare.wav` at the draft gate when the choice isn't obvious. Every style is matched to
+the dry voice's loudness, so changing it never upsets the music mix.
+
+**Delivery.** `--pace 0.8–1.2` and `--pitch −4…+4` (semitones) re-time or re-pitch every line with formants kept, so
+the voice stays itself; set `"pace"` or `"pitch"` on one line to change only that line. Use pace for a read that is a
+touch slow (1.03–1.08), never to cram an over-long line (ask the scriptwriter instead). Pitch is for small
+corrections (±1), not for disguising a voice. For ElevenLabs, `--delivery calm|conversational|energetic|authoritative`
+sets the voice's performance (stability, style, speed); `voice.voice_settings` in vo.json overrides single values.
+For macOS voices, `"rate"` on a line sets that line's speaking rate. Every choice is written into `vo.json` `voice`.
+
 ## Check before handing over
 
 - Listen through the numbers: no line over its slot, no clipped first or last syllable (look at the waveform with `bin/sgv look` if needed), and consistent level (the export normalises loudness, but the lines should sit within 2 dB of each other).
