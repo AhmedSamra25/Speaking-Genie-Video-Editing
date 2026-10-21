@@ -90,11 +90,13 @@ def cmd_captions(a):
         p.edit_path.write_text(json.dumps(p.edit, indent=2, ensure_ascii=False) + "\n")
         print(f"{srt.relative_to(paths.ROOT)} — from {vo.relative_to(p.root)}")
         return
+    p.edit.pop("captions", None)  # transcribe the cut without the old captions burned in (or before there are any)
     drafts = render.render(p, draft=True)
     out = p.root / "captions" / "master"
     srt = captions.transcribe(drafts[0], out, lang=a.lang or ("auto" if p.lang == "auto" else p.lang), model=a.model)
-    p.edit["captions"] = {**p.edit.get("captions", {}), "src": str(srt.relative_to(p.root)), "burn": True}
-    p.edit_path.write_text(json.dumps(p.edit, indent=2, ensure_ascii=False) + "\n")
+    edit = json.loads(p.edit_path.read_text())  # as on disk, keeping the captions style and offset
+    edit["captions"] = {**edit.get("captions", {}), "src": str(srt.relative_to(p.root)), "burn": True}
+    p.edit_path.write_text(json.dumps(edit, indent=2, ensure_ascii=False) + "\n")
     print(f"{srt.relative_to(paths.ROOT)} — proofread it, then `bin/sgv render {p.name}`")
 
 
